@@ -24,8 +24,7 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `,
 			wantErr: false,
 		},
@@ -34,8 +33,7 @@ ai:
 			configData: `
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `,
 			wantErr:     true,
 			errContains: "telegram token is required",
@@ -58,13 +56,12 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `,
 			envVars: map[string]string{
-				"BOT_TELEGRAM_TOKEN":   "env-token",
-				"AI_ANTHROPIC_API_KEY": "env-key",
-				"AI_MODEL":             "env-model",
+				"BOT_TELEGRAM_TOKEN": "env-token",
+				"AI_API_KEY":         "env-key",
+				"AI_MODEL":           "env-model",
 			},
 			wantErr: false,
 		},
@@ -109,7 +106,7 @@ ai:
 			// Check if env vars were properly applied
 			if len(tt.envVars) > 0 {
 				assert.Equal(t, tt.envVars["BOT_TELEGRAM_TOKEN"], cfg.Bot.TelegramToken)
-				assert.Equal(t, tt.envVars["AI_ANTHROPIC_API_KEY"], cfg.AI.Anthropic.APIKey)
+				assert.Equal(t, tt.envVars["AI_API_KEY"], cfg.AI.APIKey)
 				assert.Equal(t, tt.envVars["AI_MODEL"], cfg.AI.Model)
 			}
 		})

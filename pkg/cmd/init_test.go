@@ -63,8 +63,7 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `,
 			textFormat: false,
 			wantErr:    false,
@@ -77,8 +76,7 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `,
 			textFormat:  false,
 			wantErr:     true,
@@ -192,8 +190,7 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `
 	tmpfile, err := os.CreateTemp("", "config-*.yaml")
 	require.NoError(t, err)

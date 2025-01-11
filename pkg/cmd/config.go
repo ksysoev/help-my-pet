@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"strings"
 
+	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/spf13/viper"
 )
 
@@ -12,13 +13,7 @@ type Config struct {
 	Bot struct {
 		TelegramToken string `mapstructure:"telegram_token"`
 	} `mapstructure:"bot"`
-	AI struct {
-		Model     string `mapstructure:"model"`
-		Anthropic struct {
-			APIKey    string `mapstructure:"api_key"`
-			MaxTokens int    `mapstructure:"max_tokens"`
-		} `mapstructure:"anthropic"`
-	} `mapstructure:"ai"`
+	AI anthropic.Config `mapstructure:"ai"`
 }
 
 // initConfig initializes the configuration by reading from the specified config file.
@@ -27,7 +22,7 @@ func initConfig(arg *args) (*Config, error) {
 
 	// Set default values
 	v.SetDefault("ai.model", "claude-2")
-	v.SetDefault("ai.anthropic.max_tokens", 1000)
+	v.SetDefault("ai.max_tokens", 1000)
 
 	if arg.ConfigPath != "" {
 		v.SetConfigFile(arg.ConfigPath)
@@ -49,7 +44,7 @@ func initConfig(arg *args) (*Config, error) {
 	if cfg.Bot.TelegramToken == "" {
 		return nil, fmt.Errorf("telegram token is required")
 	}
-	if cfg.AI.Anthropic.APIKey == "" {
+	if cfg.AI.APIKey == "" {
 		return nil, fmt.Errorf("anthropic API key is required")
 	}
 

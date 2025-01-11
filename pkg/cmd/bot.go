@@ -48,11 +48,7 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		if r.llmProvider != nil {
 			llmProvider = r.llmProvider
 		} else {
-			llmProvider, err = anthropic.New(anthropic.Config{
-				APIKey:    cfg.AI.Anthropic.APIKey,
-				Model:     cfg.AI.Model,
-				MaxTokens: cfg.AI.Anthropic.MaxTokens,
-			})
+			llmProvider, err = anthropic.New(cfg.AI)
 			if err != nil {
 				return fmt.Errorf("failed to initialize Anthropic provider: %w", err)
 			}
