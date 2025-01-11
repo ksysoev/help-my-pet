@@ -12,25 +12,29 @@ type AIProvider interface {
 	GetPetAdvice(ctx context.Context, question string) (string, error)
 }
 
-type Service struct {
+type Service interface {
+	Run(ctx context.Context) error
+}
+
+type ServiceImpl struct {
 	Bot   BotAPI
 	AISvc AIProvider
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
-func NewService(cfg *Config, aiSvc AIProvider) (*Service, error) {
+func NewService(cfg *Config, aiSvc AIProvider) (Service, error) {
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
-	return &Service{
+	return &ServiceImpl{
 		Bot:   bot,
 		AISvc: aiSvc,
 	}, nil
 }
 
-func (s *Service) Run(ctx context.Context) error {
+func (s *ServiceImpl) Run(ctx context.Context) error {
 	slog.Info("Starting Telegram bot")
 
 	updateConfig := tgbotapi.NewUpdate(0)
@@ -55,7 +59,7 @@ func (s *Service) Run(ctx context.Context) error {
 	}
 }
 
-func (s *Service) handleMessage(ctx context.Context, message *tgbotapi.Message) {
+func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Message) {
 	slog.Info("Received message",
 		slog.Int64("chat_id", message.Chat.ID),
 		slog.String("text", message.Text),
@@ -97,7 +101,7 @@ func (s *Service) handleMessage(ctx context.Context, message *tgbotapi.Message) 
 	}
 }
 
-func (s *Service) sendErrorMessage(chatID int64) {
+func (s *ServiceImpl) sendErrorMessage(chatID int64) {
 	msg := tgbotapi.NewMessage(chatID, "Sorry, I encountered an error while processing your request. Please try again later.")
 	if _, err := s.Bot.Send(msg); err != nil {
 		slog.Error("Failed to send error message",

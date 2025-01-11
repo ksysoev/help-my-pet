@@ -10,7 +10,6 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -129,12 +128,8 @@ ai:
 			}
 
 			// For successful case, run the bot service with mocks
-			mockBotAPI := bot.NewMockBotAPI(t)
-			mockAIProvider := bot.NewMockAIProvider(t)
 			updatesChan := make(chan tgbotapi.Update)
 			close(updatesChan)
-			mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(updatesChan))
-			mockBotAPI.On("StopReceivingUpdates").Return()
 
 			// Create cancellable context
 			ctx, cancel := context.WithCancel(context.Background())
@@ -142,10 +137,9 @@ ai:
 
 			// Create bot runner with mock service
 			runner := NewBotRunner()
-			runner.WithBotService(&bot.Service{
-				Bot:   mockBotAPI,
-				AISvc: mockAIProvider,
-			})
+			mockService := bot.NewMockService(t)
+			mockService.EXPECT().Run(ctx).Return(nil)
+			runner.WithBotService(mockService)
 
 			// Override the bot command's RunE to use our runner
 			cmd.RunE = func(cmd *cobra.Command, _ []string) error {
@@ -178,7 +172,6 @@ ai:
 			}
 
 			require.NoError(t, err)
-			mockBotAPI.AssertExpectations(t)
 		})
 	}
 }
@@ -207,13 +200,9 @@ ai:
 		TextFormat: false,
 	}
 
-	// Create mock bot API and AI provider
-	mockBotAPI := bot.NewMockBotAPI(t)
-	mockAIProvider := bot.NewMockAIProvider(t)
+	// Create mock bot API
 	updatesChan := make(chan tgbotapi.Update)
 	close(updatesChan)
-	mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(updatesChan))
-	mockBotAPI.On("StopReceivingUpdates").Return()
 
 	cmd := BotCommand(args)
 	require.NotNil(t, cmd)
@@ -224,10 +213,9 @@ ai:
 
 	// Create bot runner with mock service
 	runner := NewBotRunner()
-	runner.WithBotService(&bot.Service{
-		Bot:   mockBotAPI,
-		AISvc: mockAIProvider,
-	})
+	mockService := bot.NewMockService(t)
+	mockService.EXPECT().Run(ctx).Return(nil)
+	runner.WithBotService(mockService)
 
 	// Override the bot command's RunE to use our runner
 	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
@@ -252,5 +240,4 @@ ai:
 
 	err = cmd.RunE(cmd, []string{})
 	require.NoError(t, err)
-	mockBotAPI.AssertExpectations(t)
 }

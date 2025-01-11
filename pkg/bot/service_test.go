@@ -99,7 +99,7 @@ func TestService_handleMessage(t *testing.T) {
 				MessageID: 456,
 			}
 
-			svc := &Service{
+			svc := &ServiceImpl{
 				Bot:   mockBot,
 				AISvc: mockAI,
 			}
@@ -139,7 +139,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
-	svc := &Service{
+	svc := &ServiceImpl{
 		Bot:   mockBot,
 		AISvc: mockAI,
 	}
@@ -180,7 +180,7 @@ func TestService_Run_EmptyUpdateMessage(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
-	svc := &Service{
+	svc := &ServiceImpl{
 		Bot:   mockBot,
 		AISvc: mockAI,
 	}
@@ -233,7 +233,7 @@ func TestService_Run_SendError(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
-	svc := &Service{
+	svc := &ServiceImpl{
 		Bot:   mockBot,
 		AISvc: mockAI,
 	}

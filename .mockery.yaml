@@ -12,3 +12,4 @@ packages:
     interfaces:
       AIProvider:
       BotAPI:
+      Service:
