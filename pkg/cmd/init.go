@@ -52,7 +52,7 @@ func BotCommand(arg *args) *cobra.Command {
 				return err
 			}
 
-			return runBot(cmd.Context(), cfg, nil)
+			return runBot(cmd.Context(), cfg)
 		},
 	}
 }

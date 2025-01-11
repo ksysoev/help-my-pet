@@ -5,7 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -114,23 +115,51 @@ ai:
 				TextFormat: tt.textFormat,
 			}
 
-			// Create mock bot service
-			mockBot := NewMockBotService()
-			mockBot.On("Run", mock.Anything).Return(nil)
-
-			// Create mock factory
-			mockFactory := func(token string, aiSvc *core.AIService) BotService {
-				return mockBot
-			}
-
 			cmd := BotCommand(args)
 			require.NotNil(t, cmd)
+
+			// For error cases, we don't need to run the bot service
+			if tt.wantErr {
+				err := cmd.RunE(cmd, []string{})
+				require.Error(t, err)
+				if tt.errContains != "" {
+					assert.Contains(t, err.Error(), tt.errContains)
+				}
+				return
+			}
+
+			// For successful case, run the bot service with mocks
+			mockBotAPI := bot.NewMockBotAPI(t)
+			mockAIProvider := bot.NewMockAIProvider(t)
+			updatesChan := make(chan tgbotapi.Update)
+			close(updatesChan)
+			mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(updatesChan))
+			mockBotAPI.On("StopReceivingUpdates").Return()
+
+			// Create cancellable context
+			ctx, cancel := context.WithCancel(context.Background())
+			cmd.SetContext(ctx)
 
 			// Override runBot function
 			oldRunBot := runBot
 			defer func() { runBot = oldRunBot }()
-			runBot = func(ctx context.Context, cfg *Config, factory BotServiceFactory) error {
-				return oldRunBot(ctx, cfg, mockFactory)
+			runBot = func(ctx context.Context, cfg *Config) error {
+				// Create bot service with mock API and AI provider
+				botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
+
+				// Run bot service in goroutine
+				errChan := make(chan error, 1)
+				go func() {
+					errChan <- botService.Run(ctx)
+				}()
+
+				// Cancel context after a short delay
+				go func() {
+					cancel()
+				}()
+
+				// Wait for either error or completion
+				return <-errChan
 			}
 
 			err := cmd.RunE(cmd, []string{})
@@ -143,7 +172,7 @@ ai:
 			}
 
 			require.NoError(t, err)
-			mockBot.AssertExpectations(t)
+			mockBotAPI.AssertExpectations(t)
 		})
 	}
 }
@@ -173,32 +202,44 @@ ai:
 		TextFormat: false,
 	}
 
-	// Create mock bot service
-	mockBot := NewMockBotService()
-	mockBot.On("Run", mock.Anything).Return(nil)
-
-	// Create mock factory
-	mockFactory := func(token string, aiSvc *core.AIService) BotService {
-		return mockBot
-	}
+	// Create mock bot API and AI provider
+	mockBotAPI := bot.NewMockBotAPI(t)
+	mockAIProvider := bot.NewMockAIProvider(t)
+	updatesChan := make(chan tgbotapi.Update)
+	close(updatesChan)
+	mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(updatesChan))
+	mockBotAPI.On("StopReceivingUpdates").Return()
 
 	cmd := BotCommand(args)
 	require.NotNil(t, cmd)
 
-	// Override runBot function
-	oldRunBot := runBot
-	defer func() { runBot = oldRunBot }()
-	runBot = func(ctx context.Context, cfg *Config, factory BotServiceFactory) error {
-		return oldRunBot(ctx, cfg, mockFactory)
-	}
-
+	// Create cancellable context
 	ctx, cancel := context.WithCancel(context.Background())
 	cmd.SetContext(ctx)
 
-	// Cancel the context immediately
-	cancel()
+	// Override runBot function
+	oldRunBot := runBot
+	defer func() { runBot = oldRunBot }()
+	runBot = func(ctx context.Context, cfg *Config) error {
+		// Create bot service with mock API and AI provider
+		botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
+
+		// Run bot service in goroutine
+		errChan := make(chan error, 1)
+		go func() {
+			errChan <- botService.Run(ctx)
+		}()
+
+		// Cancel context after a short delay
+		go func() {
+			cancel()
+		}()
+
+		// Wait for either error or completion
+		return <-errChan
+	}
 
 	err = cmd.RunE(cmd, []string{})
 	require.NoError(t, err)
-	mockBot.AssertExpectations(t)
+	mockBotAPI.AssertExpectations(t)
 }
