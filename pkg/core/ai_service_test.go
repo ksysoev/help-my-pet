@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	mock "github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -52,12 +51,11 @@ Please provide a clear and informative response:`, tt.query)
 
 			// Setup mock expectations
 			mockLLM.EXPECT().
-				Call(context.Background(), expectedPrompt, mock.Anything, mock.Anything).
+				Call(context.Background(), expectedPrompt).
 				Return(tt.response, tt.err)
 
 			svc := &AIService{
-				llm:   mockLLM,
-				model: "test-model",
+				llm: mockLLM,
 			}
 
 			got, err := svc.GetPetAdvice(context.Background(), tt.query)
@@ -75,9 +73,8 @@ Please provide a clear and informative response:`, tt.query)
 func TestNewAIService(t *testing.T) {
 	t.Run("successful creation", func(t *testing.T) {
 		mockLLM := NewMockLLM(t)
-		svc := NewAIService(mockLLM, "test-model")
+		svc := NewAIService(mockLLM)
 		require.NotNil(t, svc)
-		assert.Equal(t, "test-model", svc.model)
 		assert.Equal(t, mockLLM, svc.llm)
 	})
 }
@@ -96,12 +93,11 @@ Question: %s
 Please provide a clear and informative response:`, "test question")
 
 	mockLLM.EXPECT().
-		Call(ctx, expectedPrompt, mock.Anything, mock.Anything).
+		Call(ctx, expectedPrompt).
 		Return("", context.Canceled)
 
 	svc := &AIService{
-		llm:   mockLLM,
-		model: "test-model",
+		llm: mockLLM,
 	}
 
 	_, err := svc.GetPetAdvice(ctx, "test question")

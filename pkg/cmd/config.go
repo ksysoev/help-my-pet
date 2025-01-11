@@ -19,7 +19,8 @@ type Config struct {
 	AI struct {
 		Model     string `mapstructure:"model"`
 		Anthropic struct {
-			APIKey string `mapstructure:"api_key"`
+			APIKey    string `mapstructure:"api_key"`
+			MaxTokens int    `mapstructure:"max_tokens"`
 		} `mapstructure:"anthropic"`
 	} `mapstructure:"ai"`
 }
@@ -30,6 +31,7 @@ func initConfig(arg *args) (*Config, error) {
 
 	// Set default values
 	v.SetDefault("ai.model", "claude-2")
+	v.SetDefault("ai.anthropic.max_tokens", 1000)
 
 	if arg.ConfigPath != "" {
 		v.SetConfigFile(arg.ConfigPath)
@@ -81,14 +83,15 @@ var runBot runBotFunc = func(ctx context.Context, cfg *Config, factory BotServic
 	}
 
 	llmProvider, err := anthropic.New(anthropic.Config{
-		APIKey: cfg.AI.Anthropic.APIKey,
-		Model:  cfg.AI.Model,
+		APIKey:    cfg.AI.Anthropic.APIKey,
+		Model:     cfg.AI.Model,
+		MaxTokens: cfg.AI.Anthropic.MaxTokens,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to initialize Anthropic provider: %w", err)
 	}
 
-	aiService := core.NewAIService(llmProvider, cfg.AI.Model)
+	aiService := core.NewAIService(llmProvider)
 	botService := factory(cfg.Bot.TelegramToken, aiService)
 
 	return botService.Run(ctx)

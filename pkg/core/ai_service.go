@@ -3,19 +3,15 @@ package core
 import (
 	"context"
 	"fmt"
-
-	"github.com/tmc/langchaingo/llms"
 )
 
 type AIService struct {
-	llm   LLM
-	model string
+	llm LLM
 }
 
-func NewAIService(llm LLM, model string) *AIService {
+func NewAIService(llm LLM) *AIService {
 	return &AIService{
-		model: model,
-		llm:   llm,
+		llm: llm,
 	}
 }
 
@@ -26,10 +22,7 @@ Question: %s
 
 Please provide a clear and informative response:`, question)
 
-	completion, err := s.llm.Call(ctx, prompt,
-		llms.WithModel(s.model),
-		llms.WithMaxTokens(1000),
-	)
+	completion, err := s.llm.Call(ctx, prompt)
 	if err != nil {
 		return "", fmt.Errorf("failed to get AI response: %w", err)
 	}
