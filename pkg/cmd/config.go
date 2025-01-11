@@ -1,14 +1,10 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"log/slog"
 	"strings"
 
-	"github.com/ksysoev/help-my-pet/pkg/bot"
-	"github.com/ksysoev/help-my-pet/pkg/core"
-	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/spf13/viper"
 )
 
@@ -60,24 +56,4 @@ func initConfig(arg *args) (*Config, error) {
 	slog.Debug("Config loaded", slog.Any("config", cfg))
 
 	return &cfg, nil
-}
-
-// runBotFunc is the function type for running the bot
-type runBotFunc func(ctx context.Context, cfg *Config) error
-
-// runBot is the default implementation
-var runBot runBotFunc = func(ctx context.Context, cfg *Config) error {
-	llmProvider, err := anthropic.New(anthropic.Config{
-		APIKey:    cfg.AI.Anthropic.APIKey,
-		Model:     cfg.AI.Model,
-		MaxTokens: cfg.AI.Anthropic.MaxTokens,
-	})
-	if err != nil {
-		return fmt.Errorf("failed to initialize Anthropic provider: %w", err)
-	}
-
-	aiService := core.NewAIService(llmProvider)
-	botService := bot.NewService(cfg.Bot.TelegramToken, aiService)
-
-	return botService.Run(ctx)
 }

@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"context"
+	"log/slog"
 	"os"
 	"testing"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot"
+	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -140,26 +142,32 @@ ai:
 			ctx, cancel := context.WithCancel(context.Background())
 			cmd.SetContext(ctx)
 
-			// Override runBot function
-			oldRunBot := runBot
-			defer func() { runBot = oldRunBot }()
-			runBot = func(ctx context.Context, cfg *Config) error {
-				// Create bot service with mock API and AI provider
-				botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
+			// Create bot service with mock API and AI provider
+			botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
 
-				// Run bot service in goroutine
-				errChan := make(chan error, 1)
-				go func() {
-					errChan <- botService.Run(ctx)
-				}()
+			// Create bot runner with mock service
+			runner := NewBotRunner()
+			runner.WithBotService(botService)
+
+			// Override the bot command's RunE to use our runner
+			cmd.RunE = func(cmd *cobra.Command, _ []string) error {
+				if err := initLogger(args); err != nil {
+					return err
+				}
+
+				slog.Info("Starting Help My Pet bot", slog.String("version", args.version))
+
+				cfg, err := initConfig(args)
+				if err != nil {
+					return err
+				}
 
 				// Cancel context after a short delay
 				go func() {
 					cancel()
 				}()
 
-				// Wait for either error or completion
-				return <-errChan
+				return runner.RunBot(cmd.Context(), cfg)
 			}
 
 			err := cmd.RunE(cmd, []string{})
@@ -217,26 +225,32 @@ ai:
 	ctx, cancel := context.WithCancel(context.Background())
 	cmd.SetContext(ctx)
 
-	// Override runBot function
-	oldRunBot := runBot
-	defer func() { runBot = oldRunBot }()
-	runBot = func(ctx context.Context, cfg *Config) error {
-		// Create bot service with mock API and AI provider
-		botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
+	// Create bot service with mock API and AI provider
+	botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
 
-		// Run bot service in goroutine
-		errChan := make(chan error, 1)
-		go func() {
-			errChan <- botService.Run(ctx)
-		}()
+	// Create bot runner with mock service
+	runner := NewBotRunner()
+	runner.WithBotService(botService)
+
+	// Override the bot command's RunE to use our runner
+	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
+		if err := initLogger(args); err != nil {
+			return err
+		}
+
+		slog.Info("Starting Help My Pet bot", slog.String("version", args.version))
+
+		cfg, err := initConfig(args)
+		if err != nil {
+			return err
+		}
 
 		// Cancel context after a short delay
 		go func() {
 			cancel()
 		}()
 
-		// Wait for either error or completion
-		return <-errChan
+		return runner.RunBot(cmd.Context(), cfg)
 	}
 
 	err = cmd.RunE(cmd, []string{})
