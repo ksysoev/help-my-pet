@@ -1,0 +1,6 @@
+bot:
+  telegram_token: "" # Set your Telegram bot token here
+
+ai:
+  anthropic_key: "" # Set your Anthropic API key here
+  model: "claude-2" # Anthropic model to use
