@@ -4,10 +4,13 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/stretchr/testify/assert"
+	mock "github.com/stretchr/testify/mock"
 )
 
 func TestNewBotRunner(t *testing.T) {
@@ -20,7 +23,7 @@ func TestNewBotRunner(t *testing.T) {
 
 func TestBotRunner_WithBotService(t *testing.T) {
 	runner := NewBotRunner()
-	mockService := bot.NewMockService(t)
+	mockService := NewMockBotService(t)
 
 	result := runner.WithBotService(mockService)
 
@@ -49,8 +52,8 @@ func TestBotRunner_RunBot(t *testing.T) {
 		{
 			name: "success with custom bot service",
 			setupRunner: func() *BotRunner {
-				mockService := bot.NewMockService(t)
-				mockService.EXPECT().Run(context.Background()).Return(nil)
+				mockService := NewMockBotService(t)
+				mockService.On("Run", mock.Anything).Return(nil)
 				runner := NewBotRunner()
 				return runner.WithBotService(mockService)
 			},
@@ -61,11 +64,18 @@ func TestBotRunner_RunBot(t *testing.T) {
 			name: "success with custom LLM provider",
 			setupRunner: func() *BotRunner {
 				mockLLMProvider := core.NewMockLLM(t)
-				mockService := bot.NewMockService(t)
-				mockService.EXPECT().Run(context.Background()).Return(nil)
+				mockBotAPI := bot.NewMockBotAPI(t)
+				ch := make(chan tgbotapi.Update)
+				close(ch)
+				mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(ch))
+				mockBotAPI.On("StopReceivingUpdates").Return()
+
 				runner := NewBotRunner()
-				runner.createService = func(cfg *bot.Config, aiSvc bot.AIProvider) (bot.Service, error) {
-					return mockService, nil
+				runner.createService = func(cfg *bot.Config, aiSvc bot.AIProvider) (*bot.ServiceImpl, error) {
+					return &bot.ServiceImpl{
+						Bot:   mockBotAPI,
+						AISvc: aiSvc,
+					}, nil
 				}
 				return runner.WithLLMProvider(mockLLMProvider)
 			},
@@ -77,7 +87,7 @@ func TestBotRunner_RunBot(t *testing.T) {
 			setupRunner: func() *BotRunner {
 				mockLLMProvider := core.NewMockLLM(t)
 				runner := NewBotRunner()
-				runner.createService = func(cfg *bot.Config, aiSvc bot.AIProvider) (bot.Service, error) {
+				runner.createService = func(cfg *bot.Config, aiSvc bot.AIProvider) (*bot.ServiceImpl, error) {
 					return nil, errors.New("service creation error")
 				}
 				return runner.WithLLMProvider(mockLLMProvider)
@@ -90,8 +100,16 @@ func TestBotRunner_RunBot(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			ctx, cancel := context.WithCancel(context.Background())
 			runner := tt.setupRunner()
-			err := runner.RunBot(context.Background(), tt.cfg)
+
+			go func() {
+				// Cancel context after a short delay to simulate shutdown
+				time.Sleep(10 * time.Millisecond)
+				cancel()
+			}()
+
+			err := runner.RunBot(ctx, tt.cfg)
 
 			if tt.wantErr {
 				assert.Error(t, err)

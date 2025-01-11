@@ -12,17 +12,13 @@ type AIProvider interface {
 	GetPetAdvice(ctx context.Context, question string) (string, error)
 }
 
-type Service interface {
-	Run(ctx context.Context) error
-}
-
 type ServiceImpl struct {
 	Bot   BotAPI
 	AISvc AIProvider
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
-func NewService(cfg *Config, aiSvc AIProvider) (Service, error) {
+func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)

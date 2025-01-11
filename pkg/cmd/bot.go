@@ -9,11 +9,16 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 )
 
+// BotService represents the interface for bot service operations
+type BotService interface {
+	Run(ctx context.Context) error
+}
+
 // BotRunner handles the initialization and running of the Telegram bot.
 type BotRunner struct {
-	botService    bot.Service
+	botService    BotService
 	llmProvider   core.LLM
-	createService func(cfg *bot.Config, aiSvc bot.AIProvider) (bot.Service, error)
+	createService func(cfg *bot.Config, aiSvc bot.AIProvider) (*bot.ServiceImpl, error)
 }
 
 // NewBotRunner creates a new BotRunner with default implementations.
@@ -24,7 +29,7 @@ func NewBotRunner() *BotRunner {
 }
 
 // WithBotService sets a custom bot service for testing.
-func (r *BotRunner) WithBotService(service bot.Service) *BotRunner {
+func (r *BotRunner) WithBotService(service BotService) *BotRunner {
 	r.botService = service
 	return r
 }
@@ -55,10 +60,10 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 	}
 
 	aiService := core.NewAIService(llmProvider)
-	botService, err := r.createService(&cfg.Bot, aiService)
+	serviceImpl, err := r.createService(&cfg.Bot, aiService)
 	if err != nil {
 		return fmt.Errorf("failed to create bot service: %w", err)
 	}
 
-	return botService.Run(ctx)
+	return serviceImpl.Run(ctx)
 }

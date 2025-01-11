@@ -4,6 +4,7 @@ inpackage: true
 filename: "{{.InterfaceName | snakecase }}_mock.go"
 dir: "{{.InterfaceDir}}"
 mockname: "Mock{{.InterfaceName}}"
+issue-845-fix: true
 packages:
   github.com/ksysoev/help-my-pet/pkg/core:
     interfaces:
@@ -12,4 +13,6 @@ packages:
     interfaces:
       AIProvider:
       BotAPI:
-      Service:
+  github.com/ksysoev/help-my-pet/pkg/cmd:
+    interfaces:
+      BotService:
