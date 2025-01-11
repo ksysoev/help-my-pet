@@ -80,7 +80,12 @@ func (s *Service) handleMessage(ctx context.Context, message *tgbotapi.Message) 
 
 	// Send typing action
 	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
-	s.bot.Send(typing)
+	if _, err := s.bot.Send(typing); err != nil {
+		slog.Error("Failed to send typing action",
+			slog.Any("error", err),
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+	}
 
 	// Get AI response
 	response, err := s.aiSvc.GetPetAdvice(ctx, message.Text)
@@ -107,5 +112,10 @@ func (s *Service) handleMessage(ctx context.Context, message *tgbotapi.Message) 
 
 func (s *Service) sendErrorMessage(chatID int64) {
 	msg := tgbotapi.NewMessage(chatID, "Sorry, I encountered an error while processing your request. Please try again later.")
-	s.bot.Send(msg)
+	if _, err := s.bot.Send(msg); err != nil {
+		slog.Error("Failed to send error message",
+			slog.Any("error", err),
+			slog.Int64("chat_id", chatID),
+		)
+	}
 }

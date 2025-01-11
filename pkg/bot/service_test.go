@@ -75,18 +75,15 @@ func TestService_handleMessage(t *testing.T) {
 					sendErr = fmt.Errorf("send error")
 				}
 
-				// Expect typing action
 				mockBot.EXPECT().
 					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
 					Return(tgbotapi.Message{}, sendErr)
 
 				if tt.aiErr != nil {
-					// Expect error message
 					mockBot.EXPECT().
 						Send(tgbotapi.NewMessage(int64(123), "Sorry, I encountered an error while processing your request. Please try again later.")).
 						Return(tgbotapi.Message{}, sendErr)
 				} else {
-					// Expect response message
 					msg := tgbotapi.NewMessage(int64(123), tt.aiResponse)
 					msg.ReplyToMessageID = 456
 					mockBot.EXPECT().
@@ -109,205 +106,193 @@ func TestService_handleMessage(t *testing.T) {
 	}
 }
 
-func TestService_Run(t *testing.T) {
-	t.Run("successful message handling", func(t *testing.T) {
-		mockAI := NewMockAIProvider(t)
-		mockBot := NewMockBotAPI(t)
+func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
+	mockAI := NewMockAIProvider(t)
+	mockBot := NewMockBotAPI(t)
 
-		updates := make(chan tgbotapi.Update)
-		mockBot.EXPECT().
-			GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
-			Return(updates)
+	updates := make(chan tgbotapi.Update)
+	mockBot.EXPECT().
+		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
+		Return(updates)
 
-		mockBot.EXPECT().
-			Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-				_, ok := c.(tgbotapi.ChatActionConfig)
-				return ok
-			})).
-			Return(tgbotapi.Message{}, nil)
+	mockBot.EXPECT().
+		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+			_, ok := c.(tgbotapi.ChatActionConfig)
+			return ok
+		})).
+		Return(tgbotapi.Message{}, nil)
 
-		mockAI.EXPECT().
-			GetPetAdvice(mock.Anything, "test message").
-			Return("test response", nil)
+	mockAI.EXPECT().
+		GetPetAdvice(mock.Anything, "test message").
+		Return("test response", nil)
 
-		mockBot.EXPECT().
-			Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-				msg, ok := c.(tgbotapi.MessageConfig)
-				return ok && msg.Text == "test response"
-			})).
-			Return(tgbotapi.Message{}, nil)
+	mockBot.EXPECT().
+		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+			msg, ok := c.(tgbotapi.MessageConfig)
+			return ok && msg.Text == "test response"
+		})).
+		Return(tgbotapi.Message{}, nil)
 
-		mockBot.EXPECT().
-			StopReceivingUpdates().
-			Return()
+	mockBot.EXPECT().
+		StopReceivingUpdates().
+		Return()
 
-		svc := NewServiceWithBot(mockBot, mockAI)
+	svc := NewServiceWithBot(mockBot, mockAI)
 
-		ctx, cancel := context.WithCancel(context.Background())
-		errCh := make(chan error)
+	ctx, cancel := context.WithCancel(context.Background())
+	errCh := make(chan error)
 
-		go func() {
-			errCh <- svc.Run(ctx)
-		}()
+	go func() {
+		errCh <- svc.Run(ctx)
+	}()
 
-		// Send a test message
-		updates <- tgbotapi.Update{
-			Message: &tgbotapi.Message{
-				Text: "test message",
-				Chat: &tgbotapi.Chat{
-					ID: 123,
-				},
-				MessageID: 456,
+	updates <- tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			Text: "test message",
+			Chat: &tgbotapi.Chat{
+				ID: 123,
 			},
-		}
+			MessageID: 456,
+		},
+	}
 
-		// Wait a bit for the message to be processed
-		time.Sleep(100 * time.Millisecond)
-		cancel()
-		err := <-errCh
-		assert.NoError(t, err)
-	})
+	time.Sleep(100 * time.Millisecond)
+	cancel()
+	err := <-errCh
+	assert.NoError(t, err)
+}
 
-	t.Run("empty update message", func(t *testing.T) {
-		mockAI := NewMockAIProvider(t)
-		mockBot := NewMockBotAPI(t)
+func TestService_Run_EmptyUpdateMessage(t *testing.T) {
+	mockAI := NewMockAIProvider(t)
+	mockBot := NewMockBotAPI(t)
 
-		updates := make(chan tgbotapi.Update)
-		mockBot.EXPECT().
-			GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
-			Return(updates)
+	updates := make(chan tgbotapi.Update)
+	mockBot.EXPECT().
+		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
+		Return(updates)
 
-		mockBot.EXPECT().
-			StopReceivingUpdates().
-			Return()
+	mockBot.EXPECT().
+		StopReceivingUpdates().
+		Return()
 
-		svc := NewServiceWithBot(mockBot, mockAI)
+	svc := NewServiceWithBot(mockBot, mockAI)
 
-		ctx, cancel := context.WithCancel(context.Background())
-		errCh := make(chan error)
+	ctx, cancel := context.WithCancel(context.Background())
+	errCh := make(chan error)
 
-		go func() {
-			errCh <- svc.Run(ctx)
-		}()
+	go func() {
+		errCh <- svc.Run(ctx)
+	}()
 
-		// Send an empty update
-		updates <- tgbotapi.Update{
-			Message: nil,
-		}
+	updates <- tgbotapi.Update{
+		Message: nil,
+	}
 
-		// Wait a bit for the message to be processed
-		time.Sleep(100 * time.Millisecond)
-		cancel()
-		err := <-errCh
-		assert.NoError(t, err)
-	})
+	time.Sleep(100 * time.Millisecond)
+	cancel()
+	err := <-errCh
+	assert.NoError(t, err)
+}
 
-	t.Run("send error", func(t *testing.T) {
-		mockAI := NewMockAIProvider(t)
-		mockBot := NewMockBotAPI(t)
+func TestService_Run_SendError(t *testing.T) {
+	mockAI := NewMockAIProvider(t)
+	mockBot := NewMockBotAPI(t)
 
-		updates := make(chan tgbotapi.Update)
-		mockBot.EXPECT().
-			GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
-			Return(updates)
+	updates := make(chan tgbotapi.Update)
+	mockBot.EXPECT().
+		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
+		Return(updates)
 
-		mockBot.EXPECT().
-			Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-				_, ok := c.(tgbotapi.ChatActionConfig)
-				return ok
-			})).
-			Return(tgbotapi.Message{}, fmt.Errorf("send error"))
+	mockBot.EXPECT().
+		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+			_, ok := c.(tgbotapi.ChatActionConfig)
+			return ok
+		})).
+		Return(tgbotapi.Message{}, fmt.Errorf("send error"))
 
-		mockAI.EXPECT().
-			GetPetAdvice(mock.Anything, "test message").
-			Return("test response", nil)
+	mockAI.EXPECT().
+		GetPetAdvice(mock.Anything, "test message").
+		Return("test response", nil)
 
-		mockBot.EXPECT().
-			Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-				msg, ok := c.(tgbotapi.MessageConfig)
-				return ok && msg.Text == "test response"
-			})).
-			Return(tgbotapi.Message{}, fmt.Errorf("send error"))
+	mockBot.EXPECT().
+		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+			msg, ok := c.(tgbotapi.MessageConfig)
+			return ok && msg.Text == "test response"
+		})).
+		Return(tgbotapi.Message{}, fmt.Errorf("send error"))
 
-		mockBot.EXPECT().
-			StopReceivingUpdates().
-			Return()
+	mockBot.EXPECT().
+		StopReceivingUpdates().
+		Return()
 
-		svc := NewServiceWithBot(mockBot, mockAI)
+	svc := NewServiceWithBot(mockBot, mockAI)
 
-		ctx, cancel := context.WithCancel(context.Background())
-		errCh := make(chan error)
+	ctx, cancel := context.WithCancel(context.Background())
+	errCh := make(chan error)
 
-		go func() {
-			errCh <- svc.Run(ctx)
-		}()
+	go func() {
+		errCh <- svc.Run(ctx)
+	}()
 
-		// Send a test message
-		updates <- tgbotapi.Update{
-			Message: &tgbotapi.Message{
-				Text: "test message",
-				Chat: &tgbotapi.Chat{
-					ID: 123,
-				},
-				MessageID: 456,
+	updates <- tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			Text: "test message",
+			Chat: &tgbotapi.Chat{
+				ID: 123,
 			},
-		}
+			MessageID: 456,
+		},
+	}
 
-		// Wait a bit for the message to be processed
-		time.Sleep(100 * time.Millisecond)
-		cancel()
-		err := <-errCh
-		assert.NoError(t, err)
+	time.Sleep(100 * time.Millisecond)
+	cancel()
+	err := <-errCh
+	assert.NoError(t, err)
+}
+
+func TestDefaultBotAPIFactory_ValidToken(t *testing.T) {
+	bot, err := defaultBotAPIFactory("test-token")
+	assert.Error(t, err) // Will error with "Not Found" since it's not a real token
+	assert.Nil(t, bot)
+}
+
+func TestDefaultBotAPIFactory_EmptyToken(t *testing.T) {
+	bot, err := defaultBotAPIFactory("")
+	assert.Error(t, err)
+	assert.Nil(t, bot)
+}
+
+func TestNewService_SuccessfulCreation(t *testing.T) {
+	mockAI := NewMockAIProvider(t)
+	mockBot := NewMockBotAPI(t)
+
+	factory := func(token string) (BotAPI, error) {
+		assert.Equal(t, "test-token", token)
+		return mockBot, nil
+	}
+
+	svc := NewServiceWithFactory("test-token", mockAI, factory)
+	require.NotNil(t, svc)
+	assert.Equal(t, mockBot, svc.bot)
+	assert.Equal(t, mockAI, svc.aiSvc)
+}
+
+func TestNewService_FactoryError(t *testing.T) {
+	mockAI := NewMockAIProvider(t)
+
+	factory := func(token string) (BotAPI, error) {
+		return nil, fmt.Errorf("factory error")
+	}
+
+	assert.Panics(t, func() {
+		NewServiceWithFactory("test-token", mockAI, factory)
 	})
 }
 
-func TestDefaultBotAPIFactory(t *testing.T) {
-	t.Run("valid token", func(t *testing.T) {
-		bot, err := defaultBotAPIFactory("test-token")
-		assert.Error(t, err) // Will error with "Not Found" since it's not a real token
-		assert.Nil(t, bot)
-	})
-
-	t.Run("empty token", func(t *testing.T) {
-		bot, err := defaultBotAPIFactory("")
-		assert.Error(t, err)
-		assert.Nil(t, bot)
-	})
-}
-
-func TestNewService(t *testing.T) {
-	t.Run("successful creation", func(t *testing.T) {
-		mockAI := NewMockAIProvider(t)
-		mockBot := NewMockBotAPI(t)
-
-		factory := func(token string) (BotAPI, error) {
-			assert.Equal(t, "test-token", token)
-			return mockBot, nil
-		}
-
-		svc := NewServiceWithFactory("test-token", mockAI, factory)
-		require.NotNil(t, svc)
-		assert.Equal(t, mockBot, svc.bot)
-		assert.Equal(t, mockAI, svc.aiSvc)
-	})
-
-	t.Run("factory error", func(t *testing.T) {
-		mockAI := NewMockAIProvider(t)
-
-		factory := func(token string) (BotAPI, error) {
-			return nil, fmt.Errorf("factory error")
-		}
-
-		assert.Panics(t, func() {
-			NewServiceWithFactory("test-token", mockAI, factory)
-		})
-	})
-
-	t.Run("using default factory", func(t *testing.T) {
-		mockAI := NewMockAIProvider(t)
-		assert.Panics(t, func() {
-			NewService("invalid-token", mockAI)
-		})
+func TestNewService_UsingDefaultFactory(t *testing.T) {
+	mockAI := NewMockAIProvider(t)
+	assert.Panics(t, func() {
+		NewService("invalid-token", mockAI)
 	})
 }
 
