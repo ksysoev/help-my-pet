@@ -5,15 +5,14 @@ import (
 	"log/slog"
 	"strings"
 
+	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
-	Bot struct {
-		TelegramToken string `mapstructure:"telegram_token"`
-	} `mapstructure:"bot"`
-	AI anthropic.Config `mapstructure:"ai"`
+	Bot bot.Config       `mapstructure:"bot"`
+	AI  anthropic.Config `mapstructure:"ai"`
 }
 
 // initConfig initializes the configuration by reading from the specified config file.
