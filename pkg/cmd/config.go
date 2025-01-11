@@ -8,6 +8,7 @@ import (
 
 	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/spf13/viper"
 )
 
@@ -16,8 +17,10 @@ type Config struct {
 		TelegramToken string `mapstructure:"telegram_token"`
 	} `mapstructure:"bot"`
 	AI struct {
-		AnthropicKey string `mapstructure:"anthropic_key"`
-		Model        string `mapstructure:"model"`
+		Model     string `mapstructure:"model"`
+		Anthropic struct {
+			APIKey string `mapstructure:"api_key"`
+		} `mapstructure:"anthropic"`
 	} `mapstructure:"ai"`
 }
 
@@ -48,8 +51,8 @@ func initConfig(arg *args) (*Config, error) {
 	if cfg.Bot.TelegramToken == "" {
 		return nil, fmt.Errorf("telegram token is required")
 	}
-	if cfg.AI.AnthropicKey == "" {
-		return nil, fmt.Errorf("anthropic key is required")
+	if cfg.AI.Anthropic.APIKey == "" {
+		return nil, fmt.Errorf("anthropic API key is required")
 	}
 
 	slog.Debug("Config loaded", slog.Any("config", cfg))
@@ -77,7 +80,15 @@ var runBot runBotFunc = func(ctx context.Context, cfg *Config, factory BotServic
 		factory = defaultBotServiceFactory
 	}
 
-	aiService := core.NewAIService(cfg.AI.AnthropicKey, cfg.AI.Model)
+	llmProvider, err := anthropic.New(anthropic.Config{
+		APIKey: cfg.AI.Anthropic.APIKey,
+		Model:  cfg.AI.Model,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to initialize Anthropic provider: %w", err)
+	}
+
+	aiService := core.NewAIService(llmProvider, cfg.AI.Model)
 	botService := factory(cfg.Bot.TelegramToken, aiService)
 
 	return botService.Run(ctx)

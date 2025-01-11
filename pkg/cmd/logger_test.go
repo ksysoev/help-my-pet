@@ -12,8 +12,8 @@ func TestInitLogger(t *testing.T) {
 	tests := []struct {
 		name      string
 		logLevel  string
-		logText   bool
 		wantLevel slog.Level
+		logText   bool
 		wantErr   bool
 	}{
 		{

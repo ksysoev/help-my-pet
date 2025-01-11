@@ -12,10 +12,10 @@ import (
 
 func TestAIService_GetPetAdvice(t *testing.T) {
 	tests := []struct {
+		err      error
 		name     string
 		query    string
 		response string
-		err      error
 		wantErr  bool
 	}{
 		{
@@ -74,15 +74,11 @@ Please provide a clear and informative response:`, tt.query)
 
 func TestNewAIService(t *testing.T) {
 	t.Run("successful creation", func(t *testing.T) {
-		svc := NewAIService("test-key", "test-model")
+		mockLLM := NewMockLLM(t)
+		svc := NewAIService(mockLLM, "test-model")
 		require.NotNil(t, svc)
 		assert.Equal(t, "test-model", svc.model)
-	})
-
-	t.Run("invalid api key", func(t *testing.T) {
-		assert.Panics(t, func() {
-			NewAIService("", "test-model")
-		})
+		assert.Equal(t, mockLLM, svc.llm)
 	})
 }
 

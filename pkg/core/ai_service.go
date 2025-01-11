@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/llms/anthropic"
 )
 
 type AIService struct {
@@ -13,12 +12,7 @@ type AIService struct {
 	model string
 }
 
-func NewAIService(apiKey, model string) *AIService {
-	llm, err := anthropic.New(anthropic.WithToken(apiKey))
-	if err != nil {
-		panic(fmt.Sprintf("Failed to initialize Anthropic LLM: %v", err))
-	}
-
+func NewAIService(llm LLM, model string) *AIService {
 	return &AIService{
 		model: model,
 		llm:   llm,

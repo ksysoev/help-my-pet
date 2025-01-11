@@ -10,12 +10,12 @@ import (
 
 func TestInitConfig(t *testing.T) {
 	tests := []struct {
+		envVars     map[string]string
 		name        string
 		configFile  string
 		configData  string
-		envVars     map[string]string
-		wantErr     bool
 		errContains string
+		wantErr     bool
 	}{
 		{
 			name: "valid config file",
@@ -23,8 +23,9 @@ func TestInitConfig(t *testing.T) {
 bot:
   telegram_token: "test-token"
 ai:
-  anthropic_key: "test-key"
   model: "test-model"
+  anthropic:
+    api_key: "test-key"
 `,
 			wantErr: false,
 		},
@@ -32,8 +33,9 @@ ai:
 			name: "missing telegram token",
 			configData: `
 ai:
-  anthropic_key: "test-key"
   model: "test-model"
+  anthropic:
+    api_key: "test-key"
 `,
 			wantErr:     true,
 			errContains: "telegram token is required",
@@ -47,7 +49,7 @@ ai:
   model: "test-model"
 `,
 			wantErr:     true,
-			errContains: "anthropic key is required",
+			errContains: "anthropic API key is required",
 		},
 		{
 			name: "env vars override",
@@ -55,13 +57,14 @@ ai:
 bot:
   telegram_token: "test-token"
 ai:
-  anthropic_key: "test-key"
   model: "test-model"
+  anthropic:
+    api_key: "test-key"
 `,
 			envVars: map[string]string{
-				"BOT_TELEGRAM_TOKEN": "env-token",
-				"AI_ANTHROPIC_KEY":   "env-key",
-				"AI_MODEL":           "env-model",
+				"BOT_TELEGRAM_TOKEN":   "env-token",
+				"AI_ANTHROPIC_API_KEY": "env-key",
+				"AI_MODEL":             "env-model",
 			},
 			wantErr: false,
 		},
@@ -106,7 +109,7 @@ ai:
 			// Check if env vars were properly applied
 			if len(tt.envVars) > 0 {
 				assert.Equal(t, tt.envVars["BOT_TELEGRAM_TOKEN"], cfg.Bot.TelegramToken)
-				assert.Equal(t, tt.envVars["AI_ANTHROPIC_KEY"], cfg.AI.AnthropicKey)
+				assert.Equal(t, tt.envVars["AI_ANTHROPIC_API_KEY"], cfg.AI.Anthropic.APIKey)
 				assert.Equal(t, tt.envVars["AI_MODEL"], cfg.AI.Model)
 			}
 		})

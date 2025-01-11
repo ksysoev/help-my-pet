@@ -48,9 +48,9 @@ func TestBotCommand(t *testing.T) {
 		logLevel    string
 		configPath  string
 		configData  string
+		errContains string
 		textFormat  bool
 		wantErr     bool
-		errContains string
 	}{
 		{
 			name:     "valid configuration",
@@ -59,8 +59,9 @@ func TestBotCommand(t *testing.T) {
 bot:
   telegram_token: "test-token"
 ai:
-  anthropic_key: "test-key"
   model: "test-model"
+  anthropic:
+    api_key: "test-key"
 `,
 			textFormat: false,
 			wantErr:    false,
@@ -72,8 +73,9 @@ ai:
 bot:
   telegram_token: "test-token"
 ai:
-  anthropic_key: "test-key"
   model: "test-model"
+  anthropic:
+    api_key: "test-key"
 `,
 			textFormat:  false,
 			wantErr:     true,
@@ -152,8 +154,9 @@ func TestBotCommand_ContextCancellation(t *testing.T) {
 bot:
   telegram_token: "test-token"
 ai:
-  anthropic_key: "test-key"
   model: "test-model"
+  anthropic:
+    api_key: "test-key"
 `
 	tmpfile, err := os.CreateTemp("", "config-*.yaml")
 	require.NoError(t, err)
