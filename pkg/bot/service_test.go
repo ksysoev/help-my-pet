@@ -9,7 +9,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/require"
 )
 
 func TestService_handleMessage(t *testing.T) {
@@ -100,7 +99,10 @@ func TestService_handleMessage(t *testing.T) {
 				MessageID: 456,
 			}
 
-			svc := NewServiceWithBot(mockBot, mockAI)
+			svc := &Service{
+				Bot:   mockBot,
+				AISvc: mockAI,
+			}
 			svc.handleMessage(context.Background(), msg)
 		})
 	}
@@ -137,7 +139,10 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
-	svc := NewServiceWithBot(mockBot, mockAI)
+	svc := &Service{
+		Bot:   mockBot,
+		AISvc: mockAI,
+	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	errCh := make(chan error)
@@ -175,7 +180,10 @@ func TestService_Run_EmptyUpdateMessage(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
-	svc := NewServiceWithBot(mockBot, mockAI)
+	svc := &Service{
+		Bot:   mockBot,
+		AISvc: mockAI,
+	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	errCh := make(chan error)
@@ -225,7 +233,10 @@ func TestService_Run_SendError(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
-	svc := NewServiceWithBot(mockBot, mockAI)
+	svc := &Service{
+		Bot:   mockBot,
+		AISvc: mockAI,
+	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	errCh := make(chan error)
@@ -250,57 +261,22 @@ func TestService_Run_SendError(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestDefaultBotAPIFactory_ValidToken(t *testing.T) {
-	bot, err := defaultBotAPIFactory("test-token")
-	assert.Error(t, err) // Will error with "Not Found" since it's not a real token
-	assert.Nil(t, bot)
-}
-
-func TestDefaultBotAPIFactory_EmptyToken(t *testing.T) {
-	bot, err := defaultBotAPIFactory("")
-	assert.Error(t, err)
-	assert.Nil(t, bot)
-}
-
-func TestNewService_SuccessfulCreation(t *testing.T) {
+func TestNewService(t *testing.T) {
 	mockAI := NewMockAIProvider(t)
-	mockBot := NewMockBotAPI(t)
-
-	factory := func(token string) (BotAPI, error) {
-		assert.Equal(t, "test-token", token)
-		return mockBot, nil
+	cfg := &Config{
+		TelegramToken: "test-token",
 	}
 
-	svc := NewServiceWithFactory("test-token", mockAI, factory)
-	require.NotNil(t, svc)
-	assert.Equal(t, mockBot, svc.bot)
-	assert.Equal(t, mockAI, svc.aiSvc)
-}
-
-func TestNewService_FactoryError(t *testing.T) {
-	mockAI := NewMockAIProvider(t)
-
-	factory := func(token string) (BotAPI, error) {
-		return nil, fmt.Errorf("factory error")
-	}
-
-	assert.Panics(t, func() {
-		NewServiceWithFactory("test-token", mockAI, factory)
+	t.Run("invalid token", func(t *testing.T) {
+		svc, err := NewService(cfg, mockAI)
+		assert.Error(t, err)
+		assert.Nil(t, svc)
 	})
-}
 
-func TestNewService_UsingDefaultFactory(t *testing.T) {
-	mockAI := NewMockAIProvider(t)
-	assert.Panics(t, func() {
-		NewService("invalid-token", mockAI)
+	t.Run("empty token", func(t *testing.T) {
+		cfg := &Config{}
+		svc, err := NewService(cfg, mockAI)
+		assert.Error(t, err)
+		assert.Nil(t, svc)
 	})
-}
-
-func TestNewServiceWithBot(t *testing.T) {
-	mockAI := NewMockAIProvider(t)
-	mockBot := NewMockBotAPI(t)
-	svc := NewServiceWithBot(mockBot, mockAI)
-	require.NotNil(t, svc)
-	assert.Equal(t, mockBot, svc.bot)
-	assert.Equal(t, mockAI, svc.aiSvc)
 }

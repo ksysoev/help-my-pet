@@ -140,12 +140,12 @@ ai:
 			ctx, cancel := context.WithCancel(context.Background())
 			cmd.SetContext(ctx)
 
-			// Create bot service with mock API and AI provider
-			botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
-
 			// Create bot runner with mock service
 			runner := NewBotRunner()
-			runner.WithBotService(botService)
+			runner.WithBotService(&bot.Service{
+				Bot:   mockBotAPI,
+				AISvc: mockAIProvider,
+			})
 
 			// Override the bot command's RunE to use our runner
 			cmd.RunE = func(cmd *cobra.Command, _ []string) error {
@@ -222,12 +222,12 @@ ai:
 	ctx, cancel := context.WithCancel(context.Background())
 	cmd.SetContext(ctx)
 
-	// Create bot service with mock API and AI provider
-	botService := bot.NewServiceWithBot(mockBotAPI, mockAIProvider)
-
 	// Create bot runner with mock service
 	runner := NewBotRunner()
-	runner.WithBotService(botService)
+	runner.WithBotService(&bot.Service{
+		Bot:   mockBotAPI,
+		AISvc: mockAIProvider,
+	})
 
 	// Override the bot command's RunE to use our runner
 	cmd.RunE = func(cmd *cobra.Command, _ []string) error {

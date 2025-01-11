@@ -13,7 +13,7 @@ import (
 type BotRunner struct {
 	botService    *bot.Service
 	llmProvider   core.LLM
-	createService func(token string, aiSvc bot.AIProvider) *bot.Service
+	createService func(cfg *bot.Config, aiSvc bot.AIProvider) (*bot.Service, error)
 }
 
 // NewBotRunner creates a new BotRunner with default implementations.
@@ -55,7 +55,10 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 
 		aiService := core.NewAIService(llmProvider)
-		botService = r.createService(cfg.Bot.TelegramToken, aiService)
+		botService, err = r.createService(&cfg.Bot, aiService)
+		if err != nil {
+			return fmt.Errorf("failed to create bot service: %w", err)
+		}
 	}
 
 	return botService.Run(ctx)
