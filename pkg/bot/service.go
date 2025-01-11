@@ -13,16 +13,30 @@ type AIProvider interface {
 }
 
 type Service struct {
-	bot   *tgbotapi.BotAPI
+	bot   BotAPI
 	aiSvc AIProvider
 }
 
+type BotAPIFactory func(token string) (BotAPI, error)
+
+func defaultBotAPIFactory(token string) (BotAPI, error) {
+	return tgbotapi.NewBotAPI(token)
+}
+
 func NewService(token string, aiSvc AIProvider) *Service {
-	bot, err := tgbotapi.NewBotAPI(token)
+	return NewServiceWithFactory(token, aiSvc, defaultBotAPIFactory)
+}
+
+func NewServiceWithFactory(token string, aiSvc AIProvider, factory BotAPIFactory) *Service {
+	bot, err := factory(token)
 	if err != nil {
 		panic(fmt.Sprintf("Failed to create Telegram bot: %v", err))
 	}
 
+	return NewServiceWithBot(bot, aiSvc)
+}
+
+func NewServiceWithBot(bot BotAPI, aiSvc AIProvider) *Service {
 	return &Service{
 		bot:   bot,
 		aiSvc: aiSvc,

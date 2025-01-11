@@ -57,10 +57,28 @@ func initConfig(arg *args) (*Config, error) {
 	return &cfg, nil
 }
 
-// runBot initializes and starts the Telegram bot server
-func runBot(ctx context.Context, cfg *Config) error {
+type BotServiceFactory func(token string, aiSvc *core.AIService) BotService
+
+type BotService interface {
+	Run(ctx context.Context) error
+}
+
+// defaultBotServiceFactory creates a real bot service
+func defaultBotServiceFactory(token string, aiSvc *core.AIService) BotService {
+	return bot.NewService(token, aiSvc)
+}
+
+// runBotFunc is the function type for running the bot
+type runBotFunc func(ctx context.Context, cfg *Config, factory BotServiceFactory) error
+
+// runBot is the default implementation
+var runBot runBotFunc = func(ctx context.Context, cfg *Config, factory BotServiceFactory) error {
+	if factory == nil {
+		factory = defaultBotServiceFactory
+	}
+
 	aiService := core.NewAIService(cfg.AI.AnthropicKey, cfg.AI.Model)
-	botService := bot.NewService(cfg.Bot.TelegramToken, aiService)
+	botService := factory(cfg.Bot.TelegramToken, aiService)
 
 	return botService.Run(ctx)
 }

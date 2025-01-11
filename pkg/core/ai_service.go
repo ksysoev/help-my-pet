@@ -9,7 +9,7 @@ import (
 )
 
 type AIService struct {
-	llm   llms.LLM
+	llm   LLM
 	model string
 }
 
