@@ -2,12 +2,14 @@ package cmd
 
 import (
 	"context"
+	"log/slog"
 	"os"
 	"testing"
 
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/bot"
+	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -60,8 +62,7 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `,
 			textFormat: false,
 			wantErr:    false,
@@ -74,8 +75,7 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `,
 			textFormat:  false,
 			wantErr:     true,
@@ -114,23 +114,52 @@ ai:
 				TextFormat: tt.textFormat,
 			}
 
-			// Create mock bot service
-			mockBot := NewMockBotService()
-			mockBot.On("Run", mock.Anything).Return(nil)
-
-			// Create mock factory
-			mockFactory := func(token string, aiSvc *core.AIService) BotService {
-				return mockBot
-			}
-
 			cmd := BotCommand(args)
 			require.NotNil(t, cmd)
 
-			// Override runBot function
-			oldRunBot := runBot
-			defer func() { runBot = oldRunBot }()
-			runBot = func(ctx context.Context, cfg *Config, factory BotServiceFactory) error {
-				return oldRunBot(ctx, cfg, mockFactory)
+			// For error cases, we don't need to run the bot service
+			if tt.wantErr {
+				err := cmd.RunE(cmd, []string{})
+				require.Error(t, err)
+				if tt.errContains != "" {
+					assert.Contains(t, err.Error(), tt.errContains)
+				}
+				return
+			}
+
+			// For successful case, run the bot service with mocks
+			updatesChan := make(chan tgbotapi.Update)
+			close(updatesChan)
+
+			// Create cancellable context
+			ctx, cancel := context.WithCancel(context.Background())
+			cmd.SetContext(ctx)
+
+			// Create bot runner with mock service
+			runner := NewBotRunner()
+			mockService := bot.NewMockService(t)
+			mockService.EXPECT().Run(ctx).Return(nil)
+			runner.WithBotService(mockService)
+
+			// Override the bot command's RunE to use our runner
+			cmd.RunE = func(cmd *cobra.Command, _ []string) error {
+				if err := initLogger(args); err != nil {
+					return err
+				}
+
+				slog.Info("Starting Help My Pet bot", slog.String("version", args.version))
+
+				cfg, err := initConfig(args)
+				if err != nil {
+					return err
+				}
+
+				// Cancel context after a short delay
+				go func() {
+					cancel()
+				}()
+
+				return runner.RunBot(cmd.Context(), cfg)
 			}
 
 			err := cmd.RunE(cmd, []string{})
@@ -143,7 +172,6 @@ ai:
 			}
 
 			require.NoError(t, err)
-			mockBot.AssertExpectations(t)
 		})
 	}
 }
@@ -155,8 +183,7 @@ bot:
   telegram_token: "test-token"
 ai:
   model: "test-model"
-  anthropic:
-    api_key: "test-key"
+  api_key: "test-key"
 `
 	tmpfile, err := os.CreateTemp("", "config-*.yaml")
 	require.NoError(t, err)
@@ -173,32 +200,44 @@ ai:
 		TextFormat: false,
 	}
 
-	// Create mock bot service
-	mockBot := NewMockBotService()
-	mockBot.On("Run", mock.Anything).Return(nil)
-
-	// Create mock factory
-	mockFactory := func(token string, aiSvc *core.AIService) BotService {
-		return mockBot
-	}
+	// Create mock bot API
+	updatesChan := make(chan tgbotapi.Update)
+	close(updatesChan)
 
 	cmd := BotCommand(args)
 	require.NotNil(t, cmd)
 
-	// Override runBot function
-	oldRunBot := runBot
-	defer func() { runBot = oldRunBot }()
-	runBot = func(ctx context.Context, cfg *Config, factory BotServiceFactory) error {
-		return oldRunBot(ctx, cfg, mockFactory)
-	}
-
+	// Create cancellable context
 	ctx, cancel := context.WithCancel(context.Background())
 	cmd.SetContext(ctx)
 
-	// Cancel the context immediately
-	cancel()
+	// Create bot runner with mock service
+	runner := NewBotRunner()
+	mockService := bot.NewMockService(t)
+	mockService.EXPECT().Run(ctx).Return(nil)
+	runner.WithBotService(mockService)
+
+	// Override the bot command's RunE to use our runner
+	cmd.RunE = func(cmd *cobra.Command, _ []string) error {
+		if err := initLogger(args); err != nil {
+			return err
+		}
+
+		slog.Info("Starting Help My Pet bot", slog.String("version", args.version))
+
+		cfg, err := initConfig(args)
+		if err != nil {
+			return err
+		}
+
+		// Cancel context after a short delay
+		go func() {
+			cancel()
+		}()
+
+		return runner.RunBot(cmd.Context(), cfg)
+	}
 
 	err = cmd.RunE(cmd, []string{})
 	require.NoError(t, err)
-	mockBot.AssertExpectations(t)
 }
