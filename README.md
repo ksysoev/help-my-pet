@@ -116,10 +116,19 @@ Set up the following secrets in your GitHub repository (Settings -> Secrets and 
 
 ### Deployment Process
 
-1. Push your changes to the main branch
+#### Pull Request Testing
+1. Create or update a pull request
 2. GitHub Actions will automatically:
+   - Build and push a PR-specific Docker image
+   - Deploy to Digital Ocean on port 8081
+   - Add a comment to the PR with deployment details
+3. Test your changes using the PR-specific deployment
+4. The PR deployment uses a separate container and config file to avoid conflicts with production
+
+#### Production Deployment
+1. After merging to main branch, GitHub Actions will automatically:
    - Build and push the Docker image to GitHub Container Registry
-   - Deploy the latest version to your Digital Ocean droplet
+   - Deploy the latest version to Digital Ocean on port 8080
    - Set up the configuration and start the container
 
 ### Manual Deployment

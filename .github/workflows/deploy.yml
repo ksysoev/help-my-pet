@@ -7,6 +7,8 @@ on:
       - completed
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
@@ -15,20 +17,24 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: |
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+      github.event_name == 'pull_request'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create SSH key
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.DO_HOST }} >> ~/.ssh/known_hosts
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          name: id_ed25519
+          known_hosts: ${{ secrets.DO_HOST }}
+          config: |
+            Host *
+              StrictHostKeyChecking no
+              UserKnownHostsFile=/dev/null
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
@@ -37,35 +43,59 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set deployment variables
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "CONTAINER_NAME=help-my-pet-pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "CONFIG_FILE=config-pr-${{ github.event.pull_request.number }}.yaml" >> $GITHUB_OUTPUT
+            echo "PORT=8081" >> $GITHUB_OUTPUT
+          else
+            echo "CONTAINER_NAME=help-my-pet" >> $GITHUB_OUTPUT
+            echo "CONFIG_FILE=config.yaml" >> $GITHUB_OUTPUT
+            echo "PORT=8080" >> $GITHUB_OUTPUT
+          fi
+
       - name: Deploy to Digital Ocean
         env:
           DO_HOST: ${{ secrets.DO_HOST }}
           DO_USER: ${{ secrets.DO_USER }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CONTAINER_NAME: ${{ steps.vars.outputs.CONTAINER_NAME }}
+          CONFIG_FILE: ${{ steps.vars.outputs.CONFIG_FILE }}
+          PORT: ${{ steps.vars.outputs.PORT }}
         run: |
           # Create docker-compose.yml on remote host
-          ssh $DO_USER@$DO_HOST "cat > ~/docker-compose.yml << 'EOL'
+          ssh $DO_USER@$DO_HOST "cat > ~/docker-compose-${CONTAINER_NAME}.yml << 'EOL'
           version: '3.8'
 
           services:
-            help-my-pet:
-              image: ghcr.io/${{ github.repository }}:main
-              container_name: help-my-pet
+            ${CONTAINER_NAME}:
+              image: ghcr.io/${{ github.repository }}:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
+              container_name: ${CONTAINER_NAME}
               restart: always
+              ports:
+                - \"${PORT}:8080\"
               environment:
                 - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+                - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
               volumes:
-                - ./config.yaml:/app/config.yaml
+                - ./${CONFIG_FILE}:/app/config.yaml
+              command: [\"bot\", \"--config\", \"/app/config.yaml\"]
           EOL"
 
           # Deploy using docker-compose
           ssh $DO_USER@$DO_HOST "
             # Copy config file if it doesn't exist
-            if [ ! -f config.yaml ]; then
-              echo 'Creating default config.yaml'
-              cat > config.yaml << 'EOL'
+            if [ ! -f ${CONFIG_FILE} ]; then
+              echo 'Creating ${CONFIG_FILE}'
+              cat > ${CONFIG_FILE} << 'EOL'
+              bot:
+                telegram_token: ${TELEGRAM_TOKEN}
               anthropic:
                 api_key: ${ANTHROPIC_API_KEY}
+                model: \"claude-2\"
               EOL
             fi
 
@@ -73,9 +103,21 @@ jobs:
             echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Pull and deploy
-            docker-compose pull
-            docker-compose up -d
+            docker-compose -f docker-compose-${CONTAINER_NAME}.yml pull
+            docker-compose -f docker-compose-${CONTAINER_NAME}.yml up -d
 
             # Verify deployment
-            docker ps | grep help-my-pet
+            docker ps | grep ${CONTAINER_NAME}
           "
+
+      - name: Add PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 Deployment Preview Ready!\n\nYour PR has been deployed for testing.\nContainer: help-my-pet-pr-${context.issue.number}\nPort: 8081`
+            })
