@@ -114,6 +114,102 @@ func TestRateLimiter(t *testing.T) {
 		}
 	})
 
+	t.Run("first access for new user", func(t *testing.T) {
+		userID := int64(4)
+		limiter := NewRateLimiter(cfg)
+
+		// First access should be allowed
+		allowed, err := limiter.IsAllowed(ctx, userID)
+		if err != nil {
+			t.Errorf("unexpected error: %v", err)
+		}
+		if !allowed {
+			t.Error("first access should be allowed")
+		}
+
+		// Record the access
+		if err := limiter.RecordAccess(ctx, userID); err != nil {
+			t.Errorf("unexpected error recording access: %v", err)
+		}
+	})
+
+	t.Run("daily reset in IsAllowed", func(t *testing.T) {
+		userID := int64(5)
+		limiter := NewRateLimiter(cfg)
+
+		// Set up expired daily limits
+		limiter.limits[userID] = &UserLimits{
+			HourlyReset: time.Now().Add(time.Hour),
+			DailyReset:  time.Now().Add(-time.Minute), // Expired
+			HourlyCount: cfg.HourlyLimit - 1,
+			DailyCount:  cfg.DailyLimit,
+		}
+
+		// Should be allowed due to daily reset
+		allowed, err := limiter.IsAllowed(ctx, userID)
+		if err != nil {
+			t.Errorf("unexpected error: %v", err)
+		}
+		if !allowed {
+			t.Error("request should be allowed after daily reset")
+		}
+	})
+
+	t.Run("hourly reset with daily limit not exceeded", func(t *testing.T) {
+		userID := int64(6)
+		limiter := NewRateLimiter(cfg)
+
+		// Set up expired hourly limits but not daily
+		limiter.limits[userID] = &UserLimits{
+			HourlyReset: time.Now().Add(-time.Minute), // Expired
+			DailyReset:  time.Now().Add(time.Hour),
+			HourlyCount: cfg.HourlyLimit,
+			DailyCount:  cfg.DailyLimit - 1, // Not exceeded
+		}
+
+		// Should be allowed due to hourly reset and daily limit not exceeded
+		allowed, err := limiter.IsAllowed(ctx, userID)
+		if err != nil {
+			t.Errorf("unexpected error: %v", err)
+		}
+		if !allowed {
+			t.Error("request should be allowed after hourly reset with daily limit not exceeded")
+		}
+	})
+
+	t.Run("record access with expired limits", func(t *testing.T) {
+		userID := int64(7)
+		limiter := NewRateLimiter(cfg)
+
+		// Set up expired limits
+		limiter.limits[userID] = &UserLimits{
+			HourlyReset: time.Now().Add(-time.Hour),      // Expired
+			DailyReset:  time.Now().Add(-24 * time.Hour), // Expired
+			HourlyCount: cfg.HourlyLimit,
+			DailyCount:  cfg.DailyLimit,
+		}
+
+		// Record access should reset both limits
+		if err := limiter.RecordAccess(ctx, userID); err != nil {
+			t.Errorf("unexpected error recording access: %v", err)
+		}
+
+		// Verify counts were reset
+		limits := limiter.limits[userID]
+		if limits.HourlyCount != 1 {
+			t.Errorf("expected hourly count to be 1, got %d", limits.HourlyCount)
+		}
+		if limits.DailyCount != 1 {
+			t.Errorf("expected daily count to be 1, got %d", limits.DailyCount)
+		}
+		if !limits.HourlyReset.After(time.Now()) {
+			t.Error("hourly reset time should be in the future")
+		}
+		if !limits.DailyReset.After(time.Now()) {
+			t.Error("daily reset time should be in the future")
+		}
+	})
+
 	t.Run("resets limits after time period", func(t *testing.T) {
 		userID := int64(3)
 		limiter := NewRateLimiter(cfg)

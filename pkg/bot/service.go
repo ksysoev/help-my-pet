@@ -28,6 +28,18 @@ type ServiceImpl struct {
 
 // NewService creates a new bot service with the given configuration and AI provider
 func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
+	if cfg == nil {
+		return nil, fmt.Errorf("config cannot be nil")
+	}
+
+	if aiSvc == nil {
+		return nil, fmt.Errorf("AI provider cannot be nil")
+	}
+
+	if cfg.TelegramToken == "" {
+		return nil, fmt.Errorf("telegram token cannot be empty")
+	}
+
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
@@ -80,8 +92,8 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 		return
 	}
 
-	// Skip rate limiting for /start command
-	if message.Text != "/start" && s.rateLimiter != nil {
+	// Skip rate limiting for /start command or if rate limiter is not configured
+	if message.Text != "/start" && s.rateLimiter != nil && message.From != nil {
 		allowed, err := s.rateLimiter.IsAllowed(ctx, message.From.ID)
 		if err != nil {
 			slog.Error("Rate limit exceeded",
@@ -152,7 +164,7 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 	}
 
 	// Record the access after successful response
-	if message.Text != "/start" && s.rateLimiter != nil {
+	if message.Text != "/start" && s.rateLimiter != nil && message.From != nil {
 		if err := s.rateLimiter.RecordAccess(ctx, message.From.ID); err != nil {
 			slog.Error("Failed to record rate limit access",
 				slog.Any("error", err),
