@@ -18,4 +18,4 @@ COPY --from=builder /help-my-pet /help-my-pet
 COPY config.yaml /config.yaml
 
 ENTRYPOINT ["/help-my-pet"]
-CMD ["bot"]
+CMD ["bot", "--config", "/config.yaml"]
