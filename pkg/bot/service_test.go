@@ -19,6 +19,7 @@ func TestService_handleMessage(t *testing.T) {
 		aiResponse    string
 		expectError   bool
 		mockSendError bool
+		isStart       bool
 	}{
 		{
 			name:        "successful response",
@@ -57,6 +58,23 @@ func TestService_handleMessage(t *testing.T) {
 			expectError:   true,
 			mockSendError: true,
 		},
+		{
+			name:        "start command",
+			message:     "/start",
+			aiResponse:  "Welcome to Help My Pet Bot!",
+			aiErr:       nil,
+			expectError: false,
+			isStart:     true,
+		},
+		{
+			name:          "start command with error",
+			message:       "/start",
+			aiResponse:    "",
+			aiErr:         fmt.Errorf("start error"),
+			expectError:   true,
+			isStart:       true,
+			mockSendError: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -64,15 +82,47 @@ func TestService_handleMessage(t *testing.T) {
 			mockAI := NewMockAIProvider(t)
 			mockBot := NewMockBotAPI(t)
 
-			if tt.message != "" {
+			var sendErr error
+			if tt.mockSendError {
+				sendErr = fmt.Errorf("send error")
+			}
+
+			if tt.message == "" {
+				msg := &tgbotapi.Message{
+					Text: tt.message,
+					Chat: &tgbotapi.Chat{
+						ID: 123,
+					},
+					MessageID: 456,
+				}
+
+				svc := &ServiceImpl{
+					Bot:   mockBot,
+					AISvc: mockAI,
+				}
+				svc.handleMessage(context.Background(), msg)
+				return
+			}
+
+			if tt.isStart {
+				mockAI.EXPECT().
+					Start(context.Background()).
+					Return(tt.aiResponse, tt.aiErr)
+
+				if tt.aiErr != nil {
+					mockBot.EXPECT().
+						Send(tgbotapi.NewMessage(int64(123), "Sorry, I encountered an error while processing your request. Please try again later.")).
+						Return(tgbotapi.Message{}, sendErr)
+				} else {
+					msg := tgbotapi.NewMessage(int64(123), tt.aiResponse)
+					mockBot.EXPECT().
+						Send(msg).
+						Return(tgbotapi.Message{}, sendErr)
+				}
+			} else {
 				mockAI.EXPECT().
 					GetPetAdvice(context.Background(), tt.message).
 					Return(tt.aiResponse, tt.aiErr)
-
-				var sendErr error
-				if tt.mockSendError {
-					sendErr = fmt.Errorf("send error")
-				}
 
 				mockBot.EXPECT().
 					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
