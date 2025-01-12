@@ -2,6 +2,6 @@ bot:
   telegram_token: "" # Set your Telegram bot token here
 
 ai:
-  model: "claude-2" # Anthropic model to use
-  anthropic:
-    api_key: "" # Set your Anthropic API key here
+  model: "claude-3-5-sonnet-20241022" # Anthropic model to use
+  api_key: "" # Set your Anthropic API key here
+  max_tokens: 1000 # Maximum number of tokens in the response
