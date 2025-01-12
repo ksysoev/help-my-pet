@@ -67,7 +67,7 @@ golangci-lint run
 
 ## Docker
 
-You can run the bot using Docker in two ways:
+You can run the bot using Docker in the following ways:
 
 ### Pull from GitHub Packages
 
@@ -94,6 +94,47 @@ docker build -t help-my-pet .
 ```bash
 docker run -v $(pwd)/config.local.yaml:/app/config.yaml help-my-pet bot
 ```
+
+## Deployment
+
+The application can be automatically deployed to Digital Ocean using GitHub Actions. The deployment process is triggered automatically when changes are pushed to the main branch.
+
+### Prerequisites
+
+1. A Digital Ocean droplet with Docker and Docker Compose installed
+2. SSH access to the droplet
+3. GitHub repository secrets configured
+
+### Required GitHub Secrets
+
+Set up the following secrets in your GitHub repository (Settings -> Secrets and variables -> Actions):
+
+- `DO_SSH_PRIVATE_KEY`: SSH private key for accessing the Digital Ocean droplet
+- `DO_HOST`: Your Digital Ocean droplet's IP address or hostname
+- `DO_USER`: SSH user for the Digital Ocean droplet
+- `ANTHROPIC_API_KEY`: Your Anthropic API key for the deployed instance
+
+### Deployment Process
+
+1. Push your changes to the main branch
+2. GitHub Actions will automatically:
+   - Build and push the Docker image to GitHub Container Registry
+   - Deploy the latest version to your Digital Ocean droplet
+   - Set up the configuration and start the container
+
+### Manual Deployment
+
+If you need to deploy manually, you can:
+
+1. SSH into your Digital Ocean droplet
+2. Pull the latest image:
+   ```bash
+   docker pull ghcr.io/ksysoev/help-my-pet:main
+   ```
+3. Update the container:
+   ```bash
+   docker-compose pull && docker-compose up -d
+   ```
 
 ## Project Structure
 

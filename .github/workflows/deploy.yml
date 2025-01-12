@@ -1,0 +1,81 @@
+name: Deploy to Digital Ocean
+
+on:
+  workflow_run:
+    workflows: ["Build Docker image"]
+    types:
+      - completed
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.DO_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to Digital Ocean
+        env:
+          DO_HOST: ${{ secrets.DO_HOST }}
+          DO_USER: ${{ secrets.DO_USER }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # Create docker-compose.yml on remote host
+          ssh $DO_USER@$DO_HOST "cat > ~/docker-compose.yml << 'EOL'
+          version: '3.8'
+
+          services:
+            help-my-pet:
+              image: ghcr.io/${{ github.repository }}:main
+              container_name: help-my-pet
+              restart: always
+              environment:
+                - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+              volumes:
+                - ./config.yaml:/app/config.yaml
+          EOL"
+
+          # Deploy using docker-compose
+          ssh $DO_USER@$DO_HOST "
+            # Copy config file if it doesn't exist
+            if [ ! -f config.yaml ]; then
+              echo 'Creating default config.yaml'
+              cat > config.yaml << 'EOL'
+              anthropic:
+                api_key: ${ANTHROPIC_API_KEY}
+              EOL
+            fi
+
+            # Login to GitHub Container Registry
+            echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Pull and deploy
+            docker-compose pull
+            docker-compose up -d
+
+            # Verify deployment
+            docker ps | grep help-my-pet
+          "
