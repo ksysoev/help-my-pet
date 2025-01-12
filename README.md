@@ -65,6 +65,36 @@ go test ./...
 golangci-lint run
 ```
 
+## Docker
+
+You can run the bot using Docker in two ways:
+
+### Pull from GitHub Packages
+
+1. Pull the image:
+```bash
+docker pull ghcr.io/ksysoev/help-my-pet:latest
+```
+
+2. Create your config file as described in the Installation section
+
+3. Run the container:
+```bash
+docker run -v $(pwd)/config.local.yaml:/app/config.yaml ghcr.io/ksysoev/help-my-pet bot
+```
+
+### Build Locally
+
+1. Build the image:
+```bash
+docker build -t help-my-pet .
+```
+
+2. Run the container:
+```bash
+docker run -v $(pwd)/config.local.yaml:/app/config.yaml help-my-pet bot
+```
+
 ## Project Structure
 
 - `cmd/help-my-pet/` - Main application entry point
