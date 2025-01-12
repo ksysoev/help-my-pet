@@ -22,12 +22,6 @@ type UserLimits struct {
 	DailyCount  int
 }
 
-// RateLimiter defines the interface for rate limiting functionality
-type RateLimiter interface {
-	IsAllowed(ctx context.Context, userID int64) (bool, error)
-	RecordAccess(ctx context.Context, userID int64) error
-}
-
 // InMemoryRateLimiter implements RateLimiter using in-memory storage
 type InMemoryRateLimiter struct {
 	limits    map[int64]*UserLimits

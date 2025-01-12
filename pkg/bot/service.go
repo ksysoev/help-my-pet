@@ -6,8 +6,14 @@ import (
 	"log/slog"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/ksysoev/help-my-pet/pkg/ratelimit"
+	"github.com/ksysoev/help-my-pet/pkg/bot/ratelimit"
 )
+
+// RateLimiter defines the interface for rate limiting functionality
+type RateLimiter interface {
+	IsAllowed(ctx context.Context, userID int64) (bool, error)
+	RecordAccess(ctx context.Context, userID int64) error
+}
 
 type AIProvider interface {
 	GetPetAdvice(ctx context.Context, question string) (string, error)
@@ -17,7 +23,7 @@ type AIProvider interface {
 type ServiceImpl struct {
 	Bot         BotAPI
 	AISvc       AIProvider
-	rateLimiter ratelimit.RateLimiter
+	rateLimiter RateLimiter
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -27,7 +33,7 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
-	var limiter ratelimit.RateLimiter
+	var limiter RateLimiter
 	if cfg.RateLimit != nil {
 		limiter = ratelimit.NewRateLimiter(cfg.RateLimit)
 	}

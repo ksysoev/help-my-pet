@@ -1,6 +1,6 @@
 package bot
 
-import "github.com/ksysoev/help-my-pet/pkg/ratelimit"
+import "github.com/ksysoev/help-my-pet/pkg/bot/ratelimit"
 
 // Config holds the configuration for the Telegram bot
 type Config struct {
