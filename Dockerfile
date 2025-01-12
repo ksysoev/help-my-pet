@@ -16,6 +16,7 @@ FROM scratch
 
 COPY --from=builder /help-my-pet /help-my-pet
 COPY config.yaml /config.yaml
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 ENTRYPOINT ["/help-my-pet"]
 CMD ["bot", "--config", "/config.yaml"]
