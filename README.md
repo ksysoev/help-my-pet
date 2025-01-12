@@ -36,11 +36,12 @@ cp config.yaml config.local.yaml
 4. Edit `config.local.yaml` and add your API keys:
 ```yaml
 bot:
-  telegram_token: "your-telegram-bot-token"
+  telegram_token: "your-telegram-bot-token" # Required: Your Telegram bot token from BotFather
 
 ai:
-  anthropic_key: "your-anthropic-api-key"
-  model: "claude-2"
+  model: "claude-2"      # Optional: Anthropic model to use (default: claude-2)
+  api_key: ""           # Required: Your Anthropic API key
+  max_tokens: 1000      # Optional: Maximum tokens in response (default: 1000)
 ```
 
 ## Usage
