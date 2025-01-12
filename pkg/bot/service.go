@@ -6,7 +6,14 @@ import (
 	"log/slog"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/bot/ratelimit"
 )
+
+// RateLimiter defines the interface for rate limiting functionality
+type RateLimiter interface {
+	IsAllowed(ctx context.Context, userID int64) (bool, error)
+	RecordAccess(ctx context.Context, userID int64) error
+}
 
 type AIProvider interface {
 	GetPetAdvice(ctx context.Context, question string) (string, error)
@@ -14,20 +21,39 @@ type AIProvider interface {
 }
 
 type ServiceImpl struct {
-	Bot   BotAPI
-	AISvc AIProvider
+	Bot         BotAPI
+	AISvc       AIProvider
+	rateLimiter RateLimiter
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
 func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
+	if cfg == nil {
+		return nil, fmt.Errorf("config cannot be nil")
+	}
+
+	if aiSvc == nil {
+		return nil, fmt.Errorf("AI provider cannot be nil")
+	}
+
+	if cfg.TelegramToken == "" {
+		return nil, fmt.Errorf("telegram token cannot be empty")
+	}
+
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
+	var limiter RateLimiter
+	if cfg.RateLimit != nil {
+		limiter = ratelimit.NewRateLimiter(cfg.RateLimit)
+	}
+
 	return &ServiceImpl{
-		Bot:   bot,
-		AISvc: aiSvc,
+		Bot:         bot,
+		AISvc:       aiSvc,
+		rateLimiter: limiter,
 	}, nil
 }
 
@@ -64,6 +90,23 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 
 	if message.Text == "" {
 		return
+	}
+
+	// Skip rate limiting for /start command or if rate limiter is not configured
+	if message.Text != "/start" && s.rateLimiter != nil && message.From != nil {
+		allowed, err := s.rateLimiter.IsAllowed(ctx, message.From.ID)
+		if err != nil {
+			slog.Error("Rate limit exceeded",
+				slog.Any("error", err),
+				slog.Int64("user_id", message.From.ID),
+			)
+			s.sendRateLimitExceededMessage(message.Chat.ID)
+			return
+		}
+		if !allowed {
+			s.sendRateLimitExceededMessage(message.Chat.ID)
+			return
+		}
 	}
 
 	// Handle /start command
@@ -117,6 +160,17 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),
 		)
+		return
+	}
+
+	// Record the access after successful response
+	if message.Text != "/start" && s.rateLimiter != nil && message.From != nil {
+		if err := s.rateLimiter.RecordAccess(ctx, message.From.ID); err != nil {
+			slog.Error("Failed to record rate limit access",
+				slog.Any("error", err),
+				slog.Int64("user_id", message.From.ID),
+			)
+		}
 	}
 }
 
@@ -124,6 +178,16 @@ func (s *ServiceImpl) sendErrorMessage(chatID int64) {
 	msg := tgbotapi.NewMessage(chatID, "Sorry, I encountered an error while processing your request. Please try again later.")
 	if _, err := s.Bot.Send(msg); err != nil {
 		slog.Error("Failed to send error message",
+			slog.Any("error", err),
+			slog.Int64("chat_id", chatID),
+		)
+	}
+}
+
+func (s *ServiceImpl) sendRateLimitExceededMessage(chatID int64) {
+	msg := tgbotapi.NewMessage(chatID, "Rate limit exceeded. Please try again later.")
+	if _, err := s.Bot.Send(msg); err != nil {
+		slog.Error("Failed to send rate limit message",
 			slog.Any("error", err),
 			slog.Int64("chat_id", chatID),
 		)

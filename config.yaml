@@ -1,5 +1,9 @@
 bot:
   telegram_token: "" # Set your Telegram bot token here
+  rate_limit:
+    hourly_limit: 5  # Maximum number of requests per hour per user
+    daily_limit: 15  # Maximum number of requests per day per user
+    whitelist_ids: [816297198] # List of user IDs exempt from rate limiting
 
 ai:
   model: "claude-3-5-sonnet-20241022" # Anthropic model to use

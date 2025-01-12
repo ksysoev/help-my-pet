@@ -13,6 +13,7 @@ packages:
     interfaces:
       AIProvider:
       BotAPI:
+      RateLimiter:
   github.com/ksysoev/help-my-pet/pkg/cmd:
     interfaces:
       BotService:
