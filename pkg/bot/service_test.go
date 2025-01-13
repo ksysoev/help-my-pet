@@ -15,17 +15,17 @@ import (
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
 		aiErr            error
+		rateLimitErr     error
+		recordAccessErr  error
 		name             string
 		message          string
 		aiResponse       string
+		userID           int64
 		expectError      bool
 		mockSendError    bool
 		isStart          bool
-		userID           int64
 		rateLimit        bool
 		rateLimitAllowed bool
-		rateLimitErr     error
-		recordAccessErr  error
 	}{
 		{
 			name:             "successful response",
@@ -295,7 +295,7 @@ func TestService_handleMessage(t *testing.T) {
 					}
 				} else {
 					mockAI.EXPECT().
-						GetPetAdvice(context.Background(), tt.message).
+						GetPetAdvice(context.Background(), "123", tt.message).
 						Return(tt.aiResponse, tt.aiErr)
 
 					mockBot.EXPECT().
@@ -329,12 +329,12 @@ func TestService_handleMessage(t *testing.T) {
 
 func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 	tests := []struct {
+		rateLimitErr     error
 		name             string
 		message          string
 		userID           int64
 		rateLimit        bool
 		rateLimitAllowed bool
-		rateLimitErr     error
 	}{
 		{
 			name:             "successful message without rate limit",
@@ -404,7 +404,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 					Return(tgbotapi.Message{}, nil)
 
 				mockAI.EXPECT().
-					GetPetAdvice(mock.Anything, tt.message).
+					GetPetAdvice(mock.Anything, fmt.Sprintf("%d", tt.userID), tt.message).
 					Return("test response", nil)
 
 				mockBot.EXPECT().
@@ -505,7 +505,7 @@ func TestService_Run_SendError(t *testing.T) {
 		Return(tgbotapi.Message{}, fmt.Errorf("send error"))
 
 	mockAI.EXPECT().
-		GetPetAdvice(mock.Anything, "test message").
+		GetPetAdvice(mock.Anything, "123", "test message").
 		Return("test response", nil)
 
 	mockBot.EXPECT().
