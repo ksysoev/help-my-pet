@@ -7,6 +7,7 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
+	"github.com/ksysoev/help-my-pet/pkg/repo/memory"
 )
 
 // BotService represents the interface for bot service operations
@@ -59,8 +60,16 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 	}
 
-	aiService := core.NewAIService(llmProvider)
-	serviceImpl, err := r.createService(&cfg.Bot, aiService)
+	// Initialize conversation repository
+	conversationRepo := memory.NewConversationRepository()
+
+	// Create AI service with conversation support
+	aiService := core.NewAIService(llmProvider, conversationRepo)
+
+	// Create adapter to match bot.AIProvider interface
+	aiAdapter := core.NewAIServiceAdapter(aiService)
+
+	serviceImpl, err := r.createService(&cfg.Bot, aiAdapter)
 	if err != nil {
 		return fmt.Errorf("failed to create bot service: %w", err)
 	}

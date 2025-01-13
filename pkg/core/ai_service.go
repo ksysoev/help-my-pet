@@ -6,12 +6,14 @@ import (
 )
 
 type AIService struct {
-	llm LLM
+	llm  LLM
+	repo ConversationRepository
 }
 
-func NewAIService(llm LLM) *AIService {
+func NewAIService(llm LLM, repo ConversationRepository) *AIService {
 	return &AIService{
-		llm: llm,
+		llm:  llm,
+		repo: repo,
 	}
 }
 
@@ -31,16 +33,44 @@ Simply type your question or concern about your pet, and I'll provide helpful, i
 To get started, just ask me any question about your pet!`, nil
 }
 
-func (s *AIService) GetPetAdvice(ctx context.Context, question string) (string, error) {
-	prompt := fmt.Sprintf(`You are a helpful veterinary AI assistant. Please provide accurate, helpful, and compassionate advice for the following pet-related question. If the question involves a serious medical condition, always recommend consulting with a veterinarian.
+func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question string) (string, error) {
+	conversation, err := s.repo.FindOrCreate(ctx, chatID)
+	if err != nil {
+		return "", fmt.Errorf("failed to get conversation: %w", err)
+	}
+
+	// Add user's question to conversation
+	conversation.AddMessage("user", question)
+
+	// Build prompt with conversation context
+	var prompt string
+	if len(conversation.GetContext()) <= 1 {
+		// First message in conversation
+		prompt = fmt.Sprintf(`You are a helpful veterinary AI assistant. Please provide accurate, helpful, and compassionate advice for the following pet-related question. If the question involves a serious medical condition, always recommend consulting with a veterinarian.
 
 Question: %s
 
 Please provide a clear and informative response:`, question)
+	} else {
+		// Include conversation history
+		prompt = "Previous conversation:\n"
+		for _, msg := range conversation.GetContext()[:len(conversation.GetContext())-1] {
+			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
+		}
+		prompt += fmt.Sprintf("\nCurrent question: %s\n\nPlease provide a clear and informative response, taking into account the conversation history:", question)
+	}
 
 	completion, err := s.llm.Call(ctx, prompt)
 	if err != nil {
 		return "", fmt.Errorf("failed to get AI response: %w", err)
+	}
+
+	// Add AI's response to conversation
+	conversation.AddMessage("assistant", completion)
+
+	// Save updated conversation
+	if err := s.repo.Save(ctx, conversation); err != nil {
+		return "", fmt.Errorf("failed to save conversation: %w", err)
 	}
 
 	return completion, nil

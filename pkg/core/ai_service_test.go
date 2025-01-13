@@ -54,11 +54,25 @@ Please provide a clear and informative response:`, tt.query)
 				Call(context.Background(), expectedPrompt).
 				Return(tt.response, tt.err)
 
-			svc := &AIService{
-				llm: mockLLM,
+			mockRepo := NewMockConversationRepository(t)
+			conversation := NewConversation("test-chat")
+
+			mockRepo.EXPECT().
+				FindOrCreate(context.Background(), "test-chat").
+				Return(conversation, nil)
+
+			if !tt.wantErr {
+				mockRepo.EXPECT().
+					Save(context.Background(), conversation).
+					Return(nil)
 			}
 
-			got, err := svc.GetPetAdvice(context.Background(), tt.query)
+			svc := &AIService{
+				llm:  mockLLM,
+				repo: mockRepo,
+			}
+
+			got, err := svc.GetPetAdvice(context.Background(), "test-chat", tt.query)
 			if tt.wantErr {
 				assert.Error(t, err)
 				return
@@ -73,16 +87,19 @@ Please provide a clear and informative response:`, tt.query)
 func TestNewAIService(t *testing.T) {
 	t.Run("successful creation", func(t *testing.T) {
 		mockLLM := NewMockLLM(t)
-		svc := NewAIService(mockLLM)
+		mockRepo := NewMockConversationRepository(t)
+		svc := NewAIService(mockLLM, mockRepo)
 		require.NotNil(t, svc)
 		assert.Equal(t, mockLLM, svc.llm)
+		assert.Equal(t, mockRepo, svc.repo)
 	})
 }
 
 func TestAIService_Start(t *testing.T) {
 	t.Run("successful start", func(t *testing.T) {
 		mockLLM := NewMockLLM(t)
-		svc := NewAIService(mockLLM)
+		mockRepo := NewMockConversationRepository(t)
+		svc := NewAIService(mockLLM, mockRepo)
 
 		response, err := svc.Start(context.Background())
 		require.NoError(t, err)
@@ -93,7 +110,8 @@ func TestAIService_Start(t *testing.T) {
 
 	t.Run("with cancelled context", func(t *testing.T) {
 		mockLLM := NewMockLLM(t)
-		svc := NewAIService(mockLLM)
+		mockRepo := NewMockConversationRepository(t)
+		svc := NewAIService(mockLLM, mockRepo)
 
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel()
@@ -106,6 +124,7 @@ func TestAIService_Start(t *testing.T) {
 
 func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 	mockLLM := NewMockLLM(t)
+	mockRepo := NewMockConversationRepository(t)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// Cancel context before the call
@@ -121,11 +140,17 @@ Please provide a clear and informative response:`, "test question")
 		Call(ctx, expectedPrompt).
 		Return("", context.Canceled)
 
+	conversation := NewConversation("test-chat")
+	mockRepo.EXPECT().
+		FindOrCreate(ctx, "test-chat").
+		Return(conversation, nil)
+
 	svc := &AIService{
-		llm: mockLLM,
+		llm:  mockLLM,
+		repo: mockRepo,
 	}
 
-	_, err := svc.GetPetAdvice(ctx, "test question")
+	_, err := svc.GetPetAdvice(ctx, "test-chat", "test question")
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to get AI response")
 }

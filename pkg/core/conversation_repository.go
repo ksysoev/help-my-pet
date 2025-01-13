@@ -1,5 +1,7 @@
 package core
 
+//go:generate mockery --name ConversationRepository
+
 import (
 	"context"
 	"fmt"
