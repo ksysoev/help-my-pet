@@ -26,7 +26,6 @@ I'm your personal pet care assistant, ready to help you take better care of your
 • Diet and nutrition advice
 • Training tips and techniques
 • General pet care guidance
-• Emergency situation advice
 
 Simply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.
 
