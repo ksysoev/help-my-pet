@@ -45,19 +45,14 @@ func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question st
 	// Build prompt with conversation context
 	var prompt string
 	if len(conversation.GetContext()) <= 1 {
-		// First message in conversation
-		prompt = fmt.Sprintf(`You are a helpful veterinary AI assistant. Please provide accurate, helpful, and compassionate advice for the following pet-related question. If the question involves a serious medical condition, always recommend consulting with a veterinarian.
-
-Question: %s
-
-Please provide a clear and informative response:`, question)
+		prompt = question
 	} else {
 		// Include conversation history
 		prompt = "Previous conversation:\n"
 		for _, msg := range conversation.GetContext()[:len(conversation.GetContext())-1] {
 			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 		}
-		prompt += fmt.Sprintf("\nCurrent question: %s\n\nPlease provide a clear and informative response, taking into account the conversation history:", question)
+		prompt += fmt.Sprintf("\nCurrent question: %s", question)
 	}
 
 	completion, err := s.llm.Call(ctx, prompt)

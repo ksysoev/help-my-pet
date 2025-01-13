@@ -2,6 +2,7 @@ package anthropic
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -72,8 +73,9 @@ func TestProvider_Call(t *testing.T) {
 			prompt: "test prompt",
 			setupMock: func(t *testing.T) *Provider {
 				mockLLM := core.NewMockLLM(t)
+				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
 				mockLLM.EXPECT().
-					Call(ctx, "test prompt",
+					Call(ctx, expectedPrompt,
 						mock.MatchedBy(func(opt llms.CallOption) bool { return true }),
 						mock.MatchedBy(func(opt llms.CallOption) bool { return true })).
 					Return("test response", nil)
@@ -92,8 +94,9 @@ func TestProvider_Call(t *testing.T) {
 			prompt: "test prompt",
 			setupMock: func(t *testing.T) *Provider {
 				mockLLM := core.NewMockLLM(t)
+				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
 				mockLLM.EXPECT().
-					Call(ctx, "test prompt",
+					Call(ctx, expectedPrompt,
 						mock.MatchedBy(func(opt llms.CallOption) bool { return true }),
 						mock.MatchedBy(func(opt llms.CallOption) bool { return true })).
 					Return("", assert.AnError)

@@ -43,11 +43,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mockLLM := NewMockLLM(t)
-			expectedPrompt := fmt.Sprintf(`You are a helpful veterinary AI assistant. Please provide accurate, helpful, and compassionate advice for the following pet-related question. If the question involves a serious medical condition, always recommend consulting with a veterinarian.
-
-Question: %s
-
-Please provide a clear and informative response:`, tt.query)
+			expectedPrompt := tt.query
 
 			// Setup mock expectations
 			mockLLM.EXPECT().
@@ -130,11 +126,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 	// Cancel context before the call
 	cancel()
 
-	expectedPrompt := fmt.Sprintf(`You are a helpful veterinary AI assistant. Please provide accurate, helpful, and compassionate advice for the following pet-related question. If the question involves a serious medical condition, always recommend consulting with a veterinarian.
-
-Question: %s
-
-Please provide a clear and informative response:`, "test question")
+	expectedPrompt := "test question"
 
 	mockLLM.EXPECT().
 		Call(ctx, expectedPrompt).

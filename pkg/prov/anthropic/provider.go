@@ -9,6 +9,8 @@ import (
 	"github.com/tmc/langchaingo/llms/anthropic"
 )
 
+const systemPrompt = `You are a helpful veterinary AI assistant. Please provide accurate, helpful, and compassionate advice for pet-related questions. If the question involves a serious medical condition, always recommend consulting with a veterinarian.`
+
 type Config struct {
 	APIKey    string `mapstructure:"api_key"`
 	Model     string `mapstructure:"model"`
@@ -40,5 +42,7 @@ func (p *Provider) Call(ctx context.Context, prompt string, options ...llms.Call
 		llms.WithMaxTokens(p.config.MaxTokens),
 	}
 	options = append(defaultOptions, options...)
-	return p.llm.Call(ctx, prompt, options...)
+
+	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, prompt)
+	return p.llm.Call(ctx, fullPrompt, options...)
 }
