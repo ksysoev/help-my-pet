@@ -66,10 +66,7 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 	// Create AI service with conversation support
 	aiService := core.NewAIService(llmProvider, conversationRepo)
 
-	// Create adapter to match bot.AIProvider interface
-	aiAdapter := core.NewAIServiceAdapter(aiService)
-
-	serviceImpl, err := r.createService(&cfg.Bot, aiAdapter)
+	serviceImpl, err := r.createService(&cfg.Bot, aiService)
 	if err != nil {
 		return fmt.Errorf("failed to create bot service: %w", err)
 	}

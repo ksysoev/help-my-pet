@@ -3,6 +3,8 @@ package core
 import (
 	"context"
 	"fmt"
+
+	"github.com/sagikazarmark/slog-shim"
 )
 
 type AIService struct {
@@ -33,6 +35,8 @@ To get started, just ask me any question about your pet!`, nil
 }
 
 func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question string) (string, error) {
+	slog.Info("getting pet advice", "chat_id", chatID, "question", question)
+
 	conversation, err := s.repo.FindOrCreate(ctx, chatID)
 	if err != nil {
 		return "", fmt.Errorf("failed to get conversation: %w", err)

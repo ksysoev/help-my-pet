@@ -16,7 +16,7 @@ type RateLimiter interface {
 }
 
 type AIProvider interface {
-	GetPetAdvice(ctx context.Context, question string) (string, error)
+	GetPetAdvice(ctx context.Context, chatID string, question string) (string, error)
 	Start(ctx context.Context) (string, error)
 }
 
@@ -141,7 +141,7 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 	}
 
 	// Get AI response
-	response, err := s.AISvc.GetPetAdvice(ctx, message.Text)
+	response, err := s.AISvc.GetPetAdvice(ctx, fmt.Sprintf("%d", message.Chat.ID), message.Text)
 	if err != nil {
 		slog.Error("Failed to get AI response",
 			slog.Any("error", err),
