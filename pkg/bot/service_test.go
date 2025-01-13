@@ -15,17 +15,17 @@ import (
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
 		aiErr            error
+		rateLimitErr     error
+		recordAccessErr  error
 		name             string
 		message          string
 		aiResponse       string
+		userID           int64
 		expectError      bool
 		mockSendError    bool
 		isStart          bool
-		userID           int64
 		rateLimit        bool
 		rateLimitAllowed bool
-		rateLimitErr     error
-		recordAccessErr  error
 	}{
 		{
 			name:             "successful response",
@@ -329,12 +329,12 @@ func TestService_handleMessage(t *testing.T) {
 
 func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 	tests := []struct {
+		rateLimitErr     error
 		name             string
 		message          string
 		userID           int64
 		rateLimit        bool
 		rateLimitAllowed bool
-		rateLimitErr     error
 	}{
 		{
 			name:             "successful message without rate limit",
