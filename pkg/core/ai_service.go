@@ -3,8 +3,7 @@ package core
 import (
 	"context"
 	"fmt"
-
-	"github.com/sagikazarmark/slog-shim"
+	"log/slog"
 )
 
 type AIService struct {
