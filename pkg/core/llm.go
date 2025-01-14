@@ -7,16 +7,10 @@ import (
 	"github.com/tmc/langchaingo/llms"
 )
 
-// Answer represents a predefined answer option for a question
-type Answer struct {
-	Text  string `json:"text"`
-	Value string `json:"value"`
-}
-
 // Question represents a follow-up question with optional predefined answers
 type Question struct {
 	Text    string   `json:"text"`
-	Answers []Answer `json:"answers,omitempty"`
+	Answers []string `json:"answers,omitempty"`
 }
 
 // Response represents a structured response from the LLM

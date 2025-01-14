@@ -73,8 +73,8 @@ func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question st
 			questionsStr += fmt.Sprintf("\n%d. %s", i+1, q.Text)
 			if len(q.Answers) > 0 {
 				questionsStr += "\nOptions:"
-				for _, a := range q.Answers {
-					questionsStr += fmt.Sprintf("\n- %s", a.Text)
+				for _, answer := range q.Answers {
+					questionsStr += fmt.Sprintf("\n- %s", answer)
 				}
 			}
 		}

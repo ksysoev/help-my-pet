@@ -27,11 +27,8 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Questions: []Question{
 					{Text: "How old is your cat?"},
 					{
-						Text: "Is your cat indoor or outdoor?",
-						Answers: []Answer{
-							{Text: "Indoor", Value: "indoor"},
-							{Text: "Outdoor", Value: "outdoor"},
-						},
+						Text:    "Is your cat indoor or outdoor?",
+						Answers: []string{"Indoor", "Outdoor"},
 					},
 				},
 			},
@@ -46,11 +43,8 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 						Questions: []Question{
 							{Text: "How old is your cat?"},
 							{
-								Text: "Is your cat indoor or outdoor?",
-								Answers: []Answer{
-									{Text: "Indoor", Value: "indoor"},
-									{Text: "Outdoor", Value: "outdoor"},
-								},
+								Text:    "Is your cat indoor or outdoor?",
+								Answers: []string{"Indoor", "Outdoor"},
 							},
 						},
 					}, nil)
@@ -227,8 +221,8 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 						foundQuestions = true
 						for _, q := range tt.response.Questions {
 							assert.Contains(t, msg.Content, q.Text)
-							for _, a := range q.Answers {
-								assert.Contains(t, msg.Content, a.Text)
+							for _, answer := range q.Answers {
+								assert.Contains(t, msg.Content, answer)
 							}
 						}
 					}
