@@ -33,12 +33,12 @@ Simply type your question or concern about your pet, and I'll provide helpful, i
 To get started, just ask me any question about your pet!`, nil
 }
 
-func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question string) (string, error) {
+func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question string) (*PetAdviceResponse, error) {
 	slog.Info("getting pet advice", "chat_id", chatID, "question", question)
 
 	conversation, err := s.repo.FindOrCreate(ctx, chatID)
 	if err != nil {
-		return "", fmt.Errorf("failed to get conversation: %w", err)
+		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
 	// Add user's question to conversation
@@ -59,7 +59,7 @@ func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question st
 
 	response, err := s.llm.Call(ctx, prompt)
 	if err != nil {
-		return "", fmt.Errorf("failed to get AI response: %w", err)
+		return nil, fmt.Errorf("failed to get AI response: %w", err)
 	}
 
 	// Add AI's response to conversation
@@ -83,8 +83,20 @@ func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question st
 
 	// Save updated conversation
 	if err := s.repo.Save(ctx, conversation); err != nil {
-		return "", fmt.Errorf("failed to save conversation: %w", err)
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	return response.Text, nil
+	// Create response with text and answers from the first question if available
+	answers := []string{}
+	if len(response.Questions) > 0 && len(response.Questions[0].Answers) > 0 {
+		answers = response.Questions[0].Answers
+	}
+
+	// If there's a follow-up question, append it to the message
+	message := response.Text
+	if len(response.Questions) > 0 {
+		message = message + "\n\n" + response.Questions[0].Text
+	}
+
+	return NewPetAdviceResponse(message, answers), nil
 }

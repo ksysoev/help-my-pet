@@ -16,6 +16,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		query          string
 		response       *Response
 		expectedPrompt string
+		expectedResult *PetAdviceResponse
 		errorContains  string
 		wantErr        bool
 	}{
@@ -31,6 +32,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				},
+			},
+			expectedResult: &PetAdviceResponse{
+				Message: "Cats need a balanced diet...\n\nHow old is your cat?",
+				Answers: []string{},
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				mockRepo.EXPECT().
@@ -62,6 +67,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:      "Cats need a balanced diet...",
 				Questions: []Question{},
 			},
+			expectedResult: &PetAdviceResponse{
+				Message: "Cats need a balanced diet...",
+				Answers: []string{},
+			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -85,6 +94,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			response: &Response{
 				Text:      "I understand you have a pet-related question...",
 				Questions: []Question{},
+			},
+			expectedResult: &PetAdviceResponse{
+				Message: "I understand you have a pet-related question...",
+				Answers: []string{},
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				mockRepo.EXPECT().
@@ -161,6 +174,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:      "Dogs need different food...",
 				Questions: []Question{},
 			},
+			expectedResult: &PetAdviceResponse{
+				Message: "Dogs need different food...",
+				Answers: []string{},
+			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				// Add previous conversation
 				conversation.AddMessage("user", "What food is good for cats?")
@@ -210,7 +227,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			assert.Equal(t, tt.response.Text, got)
+			assert.Equal(t, tt.expectedResult, got)
 
 			// Verify questions were stored in conversation if present
 			if tt.response != nil && len(tt.response.Questions) > 0 {

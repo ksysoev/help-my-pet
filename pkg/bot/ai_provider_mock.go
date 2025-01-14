@@ -7,6 +7,7 @@ package bot
 import (
 	context "context"
 
+	core "github.com/ksysoev/help-my-pet/pkg/core"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -24,22 +25,24 @@ func (_m *MockAIProvider) EXPECT() *MockAIProvider_Expecter {
 }
 
 // GetPetAdvice provides a mock function with given fields: ctx, chatID, question
-func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, chatID string, question string) (string, error) {
+func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, chatID string, question string) (*core.PetAdviceResponse, error) {
 	ret := _m.Called(ctx, chatID, question)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetPetAdvice")
 	}
 
-	var r0 string
+	var r0 *core.PetAdviceResponse
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) (string, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) (*core.PetAdviceResponse, error)); ok {
 		return rf(ctx, chatID, question)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) string); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) *core.PetAdviceResponse); ok {
 		r0 = rf(ctx, chatID, question)
 	} else {
-		r0 = ret.Get(0).(string)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*core.PetAdviceResponse)
+		}
 	}
 
 	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
@@ -71,12 +74,12 @@ func (_c *MockAIProvider_GetPetAdvice_Call) Run(run func(ctx context.Context, ch
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) Return(_a0 string, _a1 error) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_GetPetAdvice_Call) Return(_a0 *core.PetAdviceResponse, _a1 error) *MockAIProvider_GetPetAdvice_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) RunAndReturn(run func(context.Context, string, string) (string, error)) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_GetPetAdvice_Call) RunAndReturn(run func(context.Context, string, string) (*core.PetAdviceResponse, error)) *MockAIProvider_GetPetAdvice_Call {
 	_c.Call.Return(run)
 	return _c
 }

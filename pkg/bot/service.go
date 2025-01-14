@@ -7,6 +7,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot/ratelimit"
+	"github.com/ksysoev/help-my-pet/pkg/core"
 )
 
 // RateLimiter defines the interface for rate limiting functionality
@@ -16,7 +17,7 @@ type RateLimiter interface {
 }
 
 type AIProvider interface {
-	GetPetAdvice(ctx context.Context, chatID string, question string) (string, error)
+	GetPetAdvice(ctx context.Context, chatID string, question string) (*core.PetAdviceResponse, error)
 	Start(ctx context.Context) (string, error)
 }
 
@@ -151,9 +152,24 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 		return
 	}
 
-	// Send response
-	msg := tgbotapi.NewMessage(message.Chat.ID, response)
+	// Create message with buttons if available
+	msg := tgbotapi.NewMessage(message.Chat.ID, response.Message)
 	msg.ReplyToMessageID = message.MessageID
+
+	// Add reply keyboard if there are answers
+	if len(response.Answers) > 0 {
+		keyboard := make([][]tgbotapi.KeyboardButton, len(response.Answers))
+		for i, answer := range response.Answers {
+			keyboard[i] = []tgbotapi.KeyboardButton{
+				{Text: answer},
+			}
+		}
+		msg.ReplyMarkup = tgbotapi.ReplyKeyboardMarkup{
+			Keyboard:        keyboard,
+			OneTimeKeyboard: true,
+			ResizeKeyboard:  true,
+		}
+	}
 
 	if _, err := s.Bot.Send(msg); err != nil {
 		slog.Error("Failed to send message",

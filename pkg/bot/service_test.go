@@ -8,6 +8,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot/ratelimit"
+	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -19,7 +20,7 @@ func TestService_handleMessage(t *testing.T) {
 		recordAccessErr  error
 		name             string
 		message          string
-		aiResponse       string
+		aiResponse       *core.PetAdviceResponse
 		userID           int64
 		expectError      bool
 		mockSendError    bool
@@ -30,7 +31,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "successful response",
 			message:          "What food is good for cats?",
-			aiResponse:       "Cats need a balanced diet...",
+			aiResponse:       core.NewPetAdviceResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
 			aiErr:            nil,
 			expectError:      false,
 			userID:           123,
@@ -40,7 +41,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "empty message",
 			message:          "",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            nil,
 			expectError:      false,
 			userID:           123,
@@ -50,7 +51,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "ai error",
 			message:          "What food is good for cats?",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            fmt.Errorf("ai error"),
 			expectError:      true,
 			userID:           123,
@@ -60,7 +61,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "send error",
 			message:          "What food is good for cats?",
-			aiResponse:       "Cats need a balanced diet...",
+			aiResponse:       core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
 			aiErr:            nil,
 			expectError:      true,
 			mockSendError:    true,
@@ -71,7 +72,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "ai error with send error",
 			message:          "What food is good for cats?",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            fmt.Errorf("ai error"),
 			expectError:      true,
 			mockSendError:    true,
@@ -82,7 +83,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "start command",
 			message:          "/start",
-			aiResponse:       "Welcome to Help My Pet Bot!",
+			aiResponse:       core.NewPetAdviceResponse("Welcome to Help My Pet Bot!", []string{}),
 			aiErr:            nil,
 			expectError:      false,
 			isStart:          true,
@@ -93,7 +94,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "start command with error",
 			message:          "/start",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            fmt.Errorf("start error"),
 			expectError:      true,
 			isStart:          true,
@@ -105,7 +106,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "rate limit not allowed",
 			message:          "What food is good for cats?",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            nil,
 			expectError:      false,
 			userID:           123,
@@ -116,7 +117,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "rate limit error",
 			message:          "What food is good for cats?",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            nil,
 			expectError:      false,
 			userID:           123,
@@ -127,7 +128,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "successful message with rate limit",
 			message:          "What food is good for cats?",
-			aiResponse:       "Cats need a balanced diet...",
+			aiResponse:       core.NewPetAdviceResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
 			aiErr:            nil,
 			expectError:      false,
 			userID:           123,
@@ -138,7 +139,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "message without From field",
 			message:          "What food is good for cats?",
-			aiResponse:       "Cats need a balanced diet...",
+			aiResponse:       core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
 			aiErr:            nil,
 			expectError:      false,
 			userID:           0,
@@ -149,7 +150,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "error sending start message",
 			message:          "/start",
-			aiResponse:       "Welcome to Help My Pet Bot!",
+			aiResponse:       core.NewPetAdviceResponse("Welcome to Help My Pet Bot!", []string{}),
 			aiErr:            nil,
 			expectError:      true,
 			mockSendError:    true,
@@ -161,7 +162,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "error sending error message",
 			message:          "What food is good for cats?",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            fmt.Errorf("ai error"),
 			expectError:      true,
 			mockSendError:    true,
@@ -172,7 +173,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "error sending rate limit message",
 			message:          "What food is good for cats?",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            nil,
 			expectError:      true,
 			mockSendError:    true,
@@ -184,7 +185,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "error sending rate limit error message",
 			message:          "What food is good for cats?",
-			aiResponse:       "",
+			aiResponse:       core.NewPetAdviceResponse("", []string{}),
 			aiErr:            nil,
 			expectError:      true,
 			mockSendError:    true,
@@ -196,7 +197,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "typing action error but successful response",
 			message:          "What food is good for cats?",
-			aiResponse:       "Cats need a balanced diet...",
+			aiResponse:       core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
 			aiErr:            nil,
 			expectError:      false,
 			mockSendError:    true,
@@ -207,7 +208,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:             "error recording rate limit access",
 			message:          "What food is good for cats?",
-			aiResponse:       "Cats need a balanced diet...",
+			aiResponse:       core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
 			aiErr:            nil,
 			expectError:      false,
 			userID:           123,
@@ -281,14 +282,14 @@ func TestService_handleMessage(t *testing.T) {
 				if tt.isStart {
 					mockAI.EXPECT().
 						Start(context.Background()).
-						Return(tt.aiResponse, tt.aiErr)
+						Return(tt.aiResponse.Message, tt.aiErr)
 
 					if tt.aiErr != nil {
 						mockBot.EXPECT().
 							Send(tgbotapi.NewMessage(int64(123), "Sorry, I encountered an error while processing your request. Please try again later.")).
 							Return(tgbotapi.Message{}, sendErr)
 					} else {
-						msg := tgbotapi.NewMessage(int64(123), tt.aiResponse)
+						msg := tgbotapi.NewMessage(int64(123), tt.aiResponse.Message)
 						mockBot.EXPECT().
 							Send(msg).
 							Return(tgbotapi.Message{}, sendErr)
@@ -307,8 +308,24 @@ func TestService_handleMessage(t *testing.T) {
 							Send(tgbotapi.NewMessage(int64(123), "Sorry, I encountered an error while processing your request. Please try again later.")).
 							Return(tgbotapi.Message{}, sendErr)
 					} else {
-						responseMsg := tgbotapi.NewMessage(int64(123), tt.aiResponse)
+						responseMsg := tgbotapi.NewMessage(int64(123), tt.aiResponse.Message)
 						responseMsg.ReplyToMessageID = 456
+
+						// Add reply keyboard if there are answers
+						if len(tt.aiResponse.Answers) > 0 {
+							keyboard := make([][]tgbotapi.KeyboardButton, len(tt.aiResponse.Answers))
+							for i, answer := range tt.aiResponse.Answers {
+								keyboard[i] = []tgbotapi.KeyboardButton{
+									{Text: answer},
+								}
+							}
+							responseMsg.ReplyMarkup = tgbotapi.ReplyKeyboardMarkup{
+								Keyboard:        keyboard,
+								OneTimeKeyboard: true,
+								ResizeKeyboard:  true,
+							}
+						}
+
 						mockBot.EXPECT().
 							Send(responseMsg).
 							Return(tgbotapi.Message{}, sendErr)
@@ -405,7 +422,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 
 				mockAI.EXPECT().
 					GetPetAdvice(mock.Anything, fmt.Sprintf("%d", tt.userID), tt.message).
-					Return("test response", nil)
+					Return(core.NewPetAdviceResponse("test response", []string{}), nil)
 
 				mockBot.EXPECT().
 					Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
@@ -506,7 +523,7 @@ func TestService_Run_SendError(t *testing.T) {
 
 	mockAI.EXPECT().
 		GetPetAdvice(mock.Anything, "123", "test message").
-		Return("test response", nil)
+		Return(core.NewPetAdviceResponse("test response", []string{}), nil)
 
 	mockBot.EXPECT().
 		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
