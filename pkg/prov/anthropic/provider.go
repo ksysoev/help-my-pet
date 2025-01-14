@@ -3,6 +3,8 @@ package anthropic
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"strings"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/tmc/langchaingo/llms"
@@ -32,22 +34,7 @@ Core Guidelines:
    - When discussing health topics, emphasize the importance of professional veterinary consultation
    - Do not attempt to diagnose without sufficient information
 
-4. Response Format:
-   Your response must be a valid JSON object with the following structure:
-   {
-     "text": "Your main response text here",
-     "questions": [
-       {
-         "text": "Follow-up question text",
-         "answers": [  // Optional predefined answers
-           {
-             "text": "Display text for the answer",
-             "value": "Internal value for the answer"
-           }
-         ]
-       }
-     ]
-   }
+{format_instructions}
 
 Please provide accurate, helpful, and compassionate advice while following these guidelines strictly.`
 
@@ -59,6 +46,7 @@ type Config struct {
 
 type Provider struct {
 	caller LLMCaller
+	parser *core.ResponseParser
 	model  string
 	config Config
 }
@@ -69,10 +57,16 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("failed to initialize Anthropic LLM: %w", err)
 	}
 
+	parser, err := core.NewResponseParser()
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize response parser: %w", err)
+	}
+
 	return &Provider{
 		caller: NewLLMAdapter(model),
 		model:  cfg.Model,
 		config: cfg,
+		parser: parser,
 	}, nil
 }
 
@@ -83,20 +77,26 @@ func (p *Provider) Call(ctx context.Context, prompt string, options ...llms.Call
 	}
 	options = append(defaultOptions, options...)
 
-	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, prompt)
+	// Replace format instructions placeholder with actual instructions
+	formattedSystemPrompt := strings.Replace(systemPrompt, "{format_instructions}", p.parser.FormatInstructions(), 1)
+	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", formattedSystemPrompt, prompt)
+
 	response, err := p.caller.Call(ctx, fullPrompt, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic LLM: %w", err)
 	}
 
-	structuredResponse, err := core.ParseResponse(response)
+	structuredResponse, err := p.parser.Parse(response)
 	if err != nil {
+		slog.Error("failed to parse response", slog.Any("error", err), slog.String("response", response))
 		// If parsing fails, create a simple response with just the text
 		return &core.Response{
 			Text:      response,
 			Questions: []core.Question{},
 		}, nil
 	}
+
+	slog.Info("Anthropic LLM response", slog.Any("response", structuredResponse))
 
 	return structuredResponse, nil
 }

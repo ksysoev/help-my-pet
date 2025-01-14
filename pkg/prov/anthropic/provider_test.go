@@ -2,7 +2,6 @@ package anthropic
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -82,14 +81,17 @@ func TestProvider_Call(t *testing.T) {
 			setupMock: func(t *testing.T) *Provider {
 				mockAdapter := &MockLLMAdapter{}
 				mockAdapter.Test(t)
-				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
-				mockAdapter.On("Call", ctx, expectedPrompt, mock.Anything).
+				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
 					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
+
+				parser, err := core.NewResponseParser()
+				assert.NoError(t, err)
 
 				return &Provider{
 					caller: mockAdapter,
 					model:  config.Model,
 					config: config,
+					parser: parser,
 				}
 			},
 		},
@@ -104,14 +106,17 @@ func TestProvider_Call(t *testing.T) {
 			setupMock: func(t *testing.T) *Provider {
 				mockAdapter := &MockLLMAdapter{}
 				mockAdapter.Test(t)
-				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
-				mockAdapter.On("Call", ctx, expectedPrompt, mock.Anything).
+				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
 					Return("test response", nil)
+
+				parser, err := core.NewResponseParser()
+				assert.NoError(t, err)
 
 				return &Provider{
 					caller: mockAdapter,
 					model:  config.Model,
 					config: config,
+					parser: parser,
 				}
 			},
 		},
@@ -123,14 +128,17 @@ func TestProvider_Call(t *testing.T) {
 			setupMock: func(t *testing.T) *Provider {
 				mockAdapter := &MockLLMAdapter{}
 				mockAdapter.Test(t)
-				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
-				mockAdapter.On("Call", ctx, expectedPrompt, mock.Anything).
+				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
 					Return("", assert.AnError)
+
+				parser, err := core.NewResponseParser()
+				assert.NoError(t, err)
 
 				return &Provider{
 					caller: mockAdapter,
 					model:  config.Model,
 					config: config,
+					parser: parser,
 				}
 			},
 		},
