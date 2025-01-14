@@ -14,22 +14,46 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation)
 		name           string
 		query          string
-		response       string
+		response       *Response
 		expectedPrompt string
 		errorContains  string
 		wantErr        bool
 	}{
 		{
-			name:     "successful response",
-			query:    "What food is good for cats?",
-			response: "Cats need a balanced diet...",
+			name:  "successful response with follow-up questions",
+			query: "What food is good for cats?",
+			response: &Response{
+				Text: "Cats need a balanced diet...",
+				Questions: []Question{
+					{Text: "How old is your cat?"},
+					{
+						Text: "Is your cat indoor or outdoor?",
+						Answers: []Answer{
+							{Text: "Indoor", Value: "indoor"},
+							{Text: "Outdoor", Value: "outdoor"},
+						},
+					},
+				},
+			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
 				mockLLM.EXPECT().
 					Call(context.Background(), "What food is good for cats?").
-					Return("Cats need a balanced diet...", nil)
+					Return(&Response{
+						Text: "Cats need a balanced diet...",
+						Questions: []Question{
+							{Text: "How old is your cat?"},
+							{
+								Text: "Is your cat indoor or outdoor?",
+								Answers: []Answer{
+									{Text: "Indoor", Value: "indoor"},
+									{Text: "Outdoor", Value: "outdoor"},
+								},
+							},
+						},
+					}, nil)
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
@@ -38,16 +62,46 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			wantErr:        false,
 		},
 		{
-			name:     "empty question",
-			query:    "",
-			response: "I understand you have a pet-related question...",
+			name:  "successful response without questions",
+			query: "What food is good for cats?",
+			response: &Response{
+				Text:      "Cats need a balanced diet...",
+				Questions: []Question{},
+			},
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+				mockRepo.EXPECT().
+					FindOrCreate(context.Background(), "test-chat").
+					Return(conversation, nil)
+				mockLLM.EXPECT().
+					Call(context.Background(), "What food is good for cats?").
+					Return(&Response{
+						Text:      "Cats need a balanced diet...",
+						Questions: []Question{},
+					}, nil)
+				mockRepo.EXPECT().
+					Save(context.Background(), conversation).
+					Return(nil)
+			},
+			expectedPrompt: "What food is good for cats?",
+			wantErr:        false,
+		},
+		{
+			name:  "empty question",
+			query: "",
+			response: &Response{
+				Text:      "I understand you have a pet-related question...",
+				Questions: []Question{},
+			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
 				mockLLM.EXPECT().
 					Call(context.Background(), "").
-					Return("I understand you have a pet-related question...", nil)
+					Return(&Response{
+						Text:      "I understand you have a pet-related question...",
+						Questions: []Question{},
+					}, nil)
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
@@ -56,16 +110,15 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			wantErr:        false,
 		},
 		{
-			name:     "llm error",
-			query:    "What food is good for cats?",
-			response: "",
+			name:  "llm error",
+			query: "What food is good for cats?",
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
 				mockLLM.EXPECT().
 					Call(context.Background(), "What food is good for cats?").
-					Return("", fmt.Errorf("llm error"))
+					Return(nil, fmt.Errorf("llm error"))
 			},
 			expectedPrompt: "What food is good for cats?",
 			wantErr:        true,
@@ -83,16 +136,22 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			errorContains: "failed to get conversation",
 		},
 		{
-			name:     "repository Save error",
-			query:    "What food is good for cats?",
-			response: "Cats need a balanced diet...",
+			name:  "repository Save error",
+			query: "What food is good for cats?",
+			response: &Response{
+				Text:      "Cats need a balanced diet...",
+				Questions: []Question{},
+			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
 				mockLLM.EXPECT().
 					Call(context.Background(), "What food is good for cats?").
-					Return("Cats need a balanced diet...", nil)
+					Return(&Response{
+						Text:      "Cats need a balanced diet...",
+						Questions: []Question{},
+					}, nil)
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(fmt.Errorf("save error"))
@@ -102,9 +161,12 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			errorContains:  "failed to save conversation",
 		},
 		{
-			name:     "with conversation history",
-			query:    "What about dogs?",
-			response: "Dogs need different food...",
+			name:  "with conversation history",
+			query: "What about dogs?",
+			response: &Response{
+				Text:      "Dogs need different food...",
+				Questions: []Question{},
+			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
 				// Add previous conversation
 				conversation.AddMessage("user", "What food is good for cats?")
@@ -117,7 +179,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				expectedPrompt := "Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return("Dogs need different food...", nil)
+					Return(&Response{
+						Text:      "Dogs need different food...",
+						Questions: []Question{},
+					}, nil)
 
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
@@ -151,7 +216,25 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			assert.Equal(t, tt.response, got)
+			assert.Equal(t, tt.response.Text, got)
+
+			// Verify questions were stored in conversation if present
+			if tt.response != nil && len(tt.response.Questions) > 0 {
+				messages := conversation.GetContext()
+				var foundQuestions bool
+				for _, msg := range messages {
+					if msg.Role == "assistant_questions" {
+						foundQuestions = true
+						for _, q := range tt.response.Questions {
+							assert.Contains(t, msg.Content, q.Text)
+							for _, a := range q.Answers {
+								assert.Contains(t, msg.Content, a.Text)
+							}
+						}
+					}
+				}
+				assert.True(t, foundQuestions, "Questions should be stored in conversation")
+			}
 		})
 	}
 }
@@ -206,7 +289,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 
 	mockLLM.EXPECT().
 		Call(ctx, expectedPrompt).
-		Return("", context.Canceled)
+		Return(nil, context.Canceled)
 
 	conversation := NewConversation("test-chat")
 	mockRepo.EXPECT().

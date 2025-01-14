@@ -8,7 +8,6 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/tmc/langchaingo/llms"
 )
 
 func TestNew(t *testing.T) {
@@ -65,49 +64,72 @@ func TestProvider_Call(t *testing.T) {
 		name       string
 		prompt     string
 		setupMock  func(t *testing.T) *Provider
-		wantResult string
+		wantResult *core.Response
 		wantErr    bool
 	}{
 		{
-			name:   "successful call",
+			name:   "successful call with valid JSON response",
 			prompt: "test prompt",
 			setupMock: func(t *testing.T) *Provider {
-				mockLLM := core.NewMockLLM(t)
+				mockAdapter := &MockLLMAdapter{}
+				mockAdapter.Test(t)
 				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
-				mockLLM.EXPECT().
-					Call(ctx, expectedPrompt,
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true }),
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true })).
-					Return("test response", nil)
+				mockAdapter.On("Call", ctx, expectedPrompt, mock.Anything).
+					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
 
 				return &Provider{
-					llm:    mockLLM,
+					caller: mockAdapter,
 					model:  config.Model,
 					config: config,
 				}
 			},
-			wantResult: "test response",
-			wantErr:    false,
+			wantResult: &core.Response{
+				Text: "test response",
+				Questions: []core.Question{
+					{Text: "follow up?"},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name:   "successful call with non-JSON response",
+			prompt: "test prompt",
+			setupMock: func(t *testing.T) *Provider {
+				mockAdapter := &MockLLMAdapter{}
+				mockAdapter.Test(t)
+				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
+				mockAdapter.On("Call", ctx, expectedPrompt, mock.Anything).
+					Return("test response", nil)
+
+				return &Provider{
+					caller: mockAdapter,
+					model:  config.Model,
+					config: config,
+				}
+			},
+			wantResult: &core.Response{
+				Text:      "test response",
+				Questions: []core.Question{},
+			},
+			wantErr: false,
 		},
 		{
 			name:   "error from LLM",
 			prompt: "test prompt",
 			setupMock: func(t *testing.T) *Provider {
-				mockLLM := core.NewMockLLM(t)
+				mockAdapter := &MockLLMAdapter{}
+				mockAdapter.Test(t)
 				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
-				mockLLM.EXPECT().
-					Call(ctx, expectedPrompt,
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true }),
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true })).
+				mockAdapter.On("Call", ctx, expectedPrompt, mock.Anything).
 					Return("", assert.AnError)
 
 				return &Provider{
-					llm:    mockLLM,
+					caller: mockAdapter,
 					model:  config.Model,
 					config: config,
 				}
 			},
-			wantResult: "",
+			wantResult: nil,
 			wantErr:    true,
 		},
 	}
@@ -119,7 +141,7 @@ func TestProvider_Call(t *testing.T) {
 
 			if tt.wantErr {
 				assert.Error(t, err)
-				assert.Empty(t, result)
+				assert.Nil(t, result)
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.wantResult, result)

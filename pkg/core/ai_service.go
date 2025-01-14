@@ -58,18 +58,34 @@ func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question st
 		prompt += fmt.Sprintf("\nCurrent question: %s", question)
 	}
 
-	completion, err := s.llm.Call(ctx, prompt)
+	response, err := s.llm.Call(ctx, prompt)
 	if err != nil {
 		return "", fmt.Errorf("failed to get AI response: %w", err)
 	}
 
 	// Add AI's response to conversation
-	conversation.AddMessage("assistant", completion)
+	conversation.AddMessage("assistant", response.Text)
+
+	// Store follow-up questions if any
+	if len(response.Questions) > 0 {
+		// Store questions in a format that can be retrieved later
+		questionsStr := "\nFollow-up questions:"
+		for i, q := range response.Questions {
+			questionsStr += fmt.Sprintf("\n%d. %s", i+1, q.Text)
+			if len(q.Answers) > 0 {
+				questionsStr += "\nOptions:"
+				for _, a := range q.Answers {
+					questionsStr += fmt.Sprintf("\n- %s", a.Text)
+				}
+			}
+		}
+		conversation.AddMessage("assistant_questions", questionsStr)
+	}
 
 	// Save updated conversation
 	if err := s.repo.Save(ctx, conversation); err != nil {
 		return "", fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	return completion, nil
+	return response.Text, nil
 }
