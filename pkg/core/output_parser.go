@@ -22,8 +22,23 @@ func NewResponseParser() (*ResponseParser, error) {
 			Description: "The main response text providing pet care advice",
 		},
 		{
-			Name:        "questions",
-			Description: "Array of follow-up questions with optional predefined answers",
+			Name: "questions",
+			Description: `Array of follow-up questions. Each question should be an object with the following structure:
+{
+  "text": "The question text (required)",
+  "answers": ["array", "of", "predefined", "answer", "options"] (optional)
+}
+Example:
+[
+  {
+    "text": "How old is your cat?",
+    "answers": []
+  },
+  {
+    "text": "Is your cat indoor or outdoor?",
+    "answers": ["Indoor", "Outdoor"]
+  }
+]`,
 		},
 	}
 
