@@ -60,16 +60,25 @@ func TestProvider_Call(t *testing.T) {
 		MaxTokens: 1000,
 	}
 
-	tests := []struct {
+	type testCase struct {
+		wantResult *core.Response
+		setupMock  func(t *testing.T) *Provider
 		name       string
 		prompt     string
-		setupMock  func(t *testing.T) *Provider
-		wantResult *core.Response
 		wantErr    bool
-	}{
+	}
+
+	tests := []testCase{
 		{
-			name:   "successful call with valid JSON response",
-			prompt: "test prompt",
+			wantErr: false,
+			name:    "successful call with valid JSON response",
+			prompt:  "test prompt",
+			wantResult: &core.Response{
+				Text: "test response",
+				Questions: []core.Question{
+					{Text: "follow up?"},
+				},
+			},
 			setupMock: func(t *testing.T) *Provider {
 				mockAdapter := &MockLLMAdapter{}
 				mockAdapter.Test(t)
@@ -83,17 +92,15 @@ func TestProvider_Call(t *testing.T) {
 					config: config,
 				}
 			},
-			wantResult: &core.Response{
-				Text: "test response",
-				Questions: []core.Question{
-					{Text: "follow up?"},
-				},
-			},
-			wantErr: false,
 		},
 		{
-			name:   "successful call with non-JSON response",
-			prompt: "test prompt",
+			wantErr: false,
+			name:    "successful call with non-JSON response",
+			prompt:  "test prompt",
+			wantResult: &core.Response{
+				Text:      "test response",
+				Questions: []core.Question{},
+			},
 			setupMock: func(t *testing.T) *Provider {
 				mockAdapter := &MockLLMAdapter{}
 				mockAdapter.Test(t)
@@ -107,15 +114,12 @@ func TestProvider_Call(t *testing.T) {
 					config: config,
 				}
 			},
-			wantResult: &core.Response{
-				Text:      "test response",
-				Questions: []core.Question{},
-			},
-			wantErr: false,
 		},
 		{
-			name:   "error from LLM",
-			prompt: "test prompt",
+			wantErr:    true,
+			name:       "error from LLM",
+			prompt:     "test prompt",
+			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockAdapter := &MockLLMAdapter{}
 				mockAdapter.Test(t)
@@ -129,8 +133,6 @@ func TestProvider_Call(t *testing.T) {
 					config: config,
 				}
 			},
-			wantResult: nil,
-			wantErr:    true,
 		},
 	}
 

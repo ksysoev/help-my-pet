@@ -11,15 +11,19 @@ type LLMCaller interface {
 	Call(ctx context.Context, prompt string, options ...llms.CallOption) (string, error)
 }
 
-// LLMAdapter adapts the langchaingo LLM to our core.LLM interface
+// LLMAdapter adapts the langchaingo Model to our core.LLM interface
 type LLMAdapter struct {
-	llm llms.LLM
+	model llms.Model
 }
 
-func NewLLMAdapter(llm llms.LLM) LLMCaller {
-	return &LLMAdapter{llm: llm}
+func NewLLMAdapter(model llms.Model) LLMCaller {
+	return &LLMAdapter{model: model}
 }
 
 func (a *LLMAdapter) Call(ctx context.Context, prompt string, options ...llms.CallOption) (string, error) {
-	return a.llm.Call(ctx, prompt, options...)
+	response, err := llms.GenerateFromSinglePrompt(ctx, a.model, prompt, options...)
+	if err != nil {
+		return "", err
+	}
+	return response, nil
 }

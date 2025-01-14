@@ -64,13 +64,13 @@ type Provider struct {
 }
 
 func New(cfg Config) (*Provider, error) {
-	llm, err := anthropic.New(anthropic.WithToken(cfg.APIKey))
+	model, err := anthropic.New(anthropic.WithToken(cfg.APIKey))
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic LLM: %w", err)
 	}
 
 	return &Provider{
-		caller: NewLLMAdapter(llm),
+		caller: NewLLMAdapter(model),
 		model:  cfg.Model,
 		config: cfg,
 	}, nil
