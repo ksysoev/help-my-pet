@@ -33,14 +33,25 @@ Simply type your question or concern about your pet, and I'll provide helpful, i
 To get started, just ask me any question about your pet!`, nil
 }
 
-func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question string) (*PetAdviceResponse, error) {
-	slog.Info("getting pet advice", "chat_id", chatID, "question", question)
+func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, userInput string) (*PetAdviceResponse, error) {
+	slog.Info("getting pet advice", "chat_id", chatID, "input", userInput)
 
 	conversation, err := s.repo.FindOrCreate(ctx, chatID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
+	// Handle questionnaire state if active
+	if conversation.State == StateQuestioning {
+		return s.handleQuestionnaireResponse(ctx, conversation, userInput)
+	}
+
+	// Handle new question flow
+	return s.handleNewQuestion(ctx, conversation, userInput)
+}
+
+// handleNewQuestion processes a new question from the user
+func (s *AIService) handleNewQuestion(ctx context.Context, conversation *Conversation, question string) (*PetAdviceResponse, error) {
 	// Add user's question to conversation
 	conversation.AddMessage("user", question)
 
@@ -79,24 +90,91 @@ func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, question st
 			}
 		}
 		conversation.AddMessage("assistant_questions", questionsStr)
+
+		// Initialize questionnaire
+		conversation.StartQuestionnaire(response.Text, response.Questions)
+
+		// Get the first question
+		currentQuestion, err := conversation.GetCurrentQuestion()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get first question: %w", err)
+		}
+
+		// Save conversation state
+		if err := s.repo.Save(ctx, conversation); err != nil {
+			return nil, fmt.Errorf("failed to save conversation: %w", err)
+		}
+
+		// Return response with first question
+		answers := []string{}
+		if len(currentQuestion.Answers) > 0 {
+			answers = currentQuestion.Answers
+		}
+		return NewPetAdviceResponse(
+			response.Text+"\n\n"+currentQuestion.Text,
+			answers,
+		), nil
 	}
 
-	// Save updated conversation
+	// Save conversation state
 	if err := s.repo.Save(ctx, conversation); err != nil {
 		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	// Create response with text and answers from the first question if available
-	answers := []string{}
-	if len(response.Questions) > 0 && len(response.Questions[0].Answers) > 0 {
-		answers = response.Questions[0].Answers
+	return NewPetAdviceResponse(response.Text, []string{}), nil
+}
+
+// handleQuestionnaireResponse processes a response to a follow-up question
+func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, answer string) (*PetAdviceResponse, error) {
+	// Add user's answer to conversation
+	conversation.AddMessage("user", answer)
+
+	// Store the answer and check if questionnaire is complete
+	isComplete, err := conversation.AddQuestionAnswer(answer)
+	if err != nil {
+		return nil, fmt.Errorf("failed to add question answer: %w", err)
 	}
 
-	// If there's a follow-up question, append it to the message
-	message := response.Text
-	if len(response.Questions) > 0 {
-		message = message + "\n\n" + response.Questions[0].Text
+	if isComplete {
+		// Get all collected answers
+		initialPrompt, answers, err := conversation.GetQuestionnaireResult()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get questionnaire result: %w", err)
+		}
+
+		// Build prompt with all answers
+		prompt := initialPrompt + "\n\nFollow-up information:\n"
+		for i, q := range conversation.Questionnaire.Questions {
+			prompt += fmt.Sprintf("%s: %s\n", q.Text, answers[i])
+		}
+
+		// Get final response from LLM
+		response, err := s.llm.Call(ctx, prompt)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get AI response: %w", err)
+		}
+
+		// Add AI's final response to conversation
+		conversation.AddMessage("assistant", response.Text)
+
+		// Save conversation state
+		if err := s.repo.Save(ctx, conversation); err != nil {
+			return nil, fmt.Errorf("failed to save conversation: %w", err)
+		}
+
+		return NewPetAdviceResponse(response.Text, []string{}), nil
 	}
 
-	return NewPetAdviceResponse(message, answers), nil
+	// Get next question
+	currentQuestion, err := conversation.GetCurrentQuestion()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get next question: %w", err)
+	}
+
+	// Save conversation state
+	if err := s.repo.Save(ctx, conversation); err != nil {
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
+	}
+
+	return NewPetAdviceResponse(currentQuestion.Text, currentQuestion.Answers), nil
 }
