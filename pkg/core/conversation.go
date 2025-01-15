@@ -15,20 +15,20 @@ const (
 
 // QuestionnaireState tracks the state of follow-up questions
 type QuestionnaireState struct {
-	Questions     []Question // Questions from LLM
-	CurrentIndex  int        // Index of current question
-	Answers       []string   // Collected answers
-	InitialPrompt string     // Original response text from LLM
+	InitialPrompt string
+	Questions     []Question
+	Answers       []string
+	CurrentIndex  int
 }
 
 // Conversation represents a chat conversation with its context and messages.
 type Conversation struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
-	ID            string
-	Messages      []Message
-	State         ConversationState
 	Questionnaire *QuestionnaireState
+	ID            string
+	State         ConversationState
+	Messages      []Message
 }
 
 // Message represents a single message in a conversation.

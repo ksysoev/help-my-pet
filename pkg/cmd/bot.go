@@ -64,16 +64,7 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 	conversationRepo := memory.NewConversationRepository()
 	var rateLimiter core.RateLimiter
 	if cfg.Bot.RateLimit != nil {
-		// Convert int64 whitelist IDs to strings
-		whitelist := make([]string, len(cfg.Bot.RateLimit.WhitelistIDs))
-		for i, id := range cfg.Bot.RateLimit.WhitelistIDs {
-			whitelist[i] = fmt.Sprintf("%d", id)
-		}
-
-		rateLimiter = memory.NewRateLimiter(&core.RateLimitConfig{
-			HourlyLimit: cfg.Bot.RateLimit.HourlyLimit,
-			Whitelist:   whitelist,
-		})
+		rateLimiter = memory.NewRateLimiter(cfg.Bot.RateLimit)
 	}
 
 	// Create AI service with conversation support and rate limiting

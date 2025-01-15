@@ -6,7 +6,7 @@ import (
 )
 
 // RateLimitConfig holds configuration for rate limiting
-type RateLimitConfig struct {
+type RateLicmitConfig struct {
 	HourlyLimit int
 	Whitelist   []string
 }

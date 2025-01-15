@@ -15,9 +15,9 @@ import (
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
 		aiErr         error
+		aiResponse    *core.PetAdviceResponse
 		name          string
 		message       string
-		aiResponse    *core.PetAdviceResponse
 		userID        int64
 		expectError   bool
 		mockSendError bool

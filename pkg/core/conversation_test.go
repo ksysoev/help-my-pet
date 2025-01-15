@@ -101,10 +101,10 @@ func TestConversation_StartQuestionnaire(t *testing.T) {
 
 func TestConversation_GetCurrentQuestion(t *testing.T) {
 	tests := []struct {
-		name         string
 		setupConv    func() *Conversation
-		wantErr      bool
 		wantQuestion *Question
+		name         string
+		wantErr      bool
 	}{
 		{
 			name: "get first question",
@@ -148,13 +148,13 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 
 func TestConversation_AddQuestionAnswer(t *testing.T) {
 	tests := []struct {
-		name          string
 		setupConv     func() *Conversation
+		name          string
 		answer        string
-		wantComplete  bool
-		wantErr       bool
 		wantState     ConversationState
 		wantNextIndex int
+		wantComplete  bool
+		wantErr       bool
 	}{
 		{
 			name: "add first answer",
@@ -218,8 +218,8 @@ func TestConversation_AddQuestionAnswer(t *testing.T) {
 
 func TestConversation_GetQuestionnaireResult(t *testing.T) {
 	tests := []struct {
-		name      string
 		setupConv func() *Conversation
+		name      string
 		wantErr   bool
 	}{
 		{

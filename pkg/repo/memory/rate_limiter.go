@@ -2,6 +2,7 @@ package memory
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"time"
 
@@ -13,19 +14,21 @@ type UserRequests struct {
 	Timestamps []time.Time
 }
 
-// RateLimiter implements core.RateLimiter using in-memory storage
+var _ core.RateLimiter = (*RateLimiter)(nil)
+
+// RateLimiter implements core.RateLimiter interface using in-memory storage
 type RateLimiter struct {
-	mu        sync.RWMutex
 	requests  map[string]*UserRequests
-	config    *core.RateLimitConfig
+	config    *RateLimitConfig
 	whitelist map[string]struct{}
+	mu        sync.RWMutex
 }
 
 // NewRateLimiter creates a new RateLimiter with the given configuration
-func NewRateLimiter(cfg *core.RateLimitConfig) *RateLimiter {
+func NewRateLimiter(cfg *RateLimitConfig) *RateLimiter {
 	whitelist := make(map[string]struct{})
-	for _, id := range cfg.Whitelist {
-		whitelist[id] = struct{}{}
+	for _, id := range cfg.WhitelistIDs {
+		whitelist[fmt.Sprintf("%d", id)] = struct{}{}
 	}
 
 	return &RateLimiter{
