@@ -6,6 +6,13 @@ import (
 	"log/slog"
 )
 
+// PetAdviceRequest represents a request for pet advice
+type PetAdviceRequest struct {
+	UserID  string
+	ChatID  string
+	Message string
+}
+
 type AIService struct {
 	llm         LLM
 	repo        ConversationRepository
@@ -35,54 +42,54 @@ Simply type your question or concern about your pet, and I'll provide helpful, i
 To get started, just ask me any question about your pet!`, nil
 }
 
-func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, userInput string) (*PetAdviceResponse, error) {
-	slog.Info("getting pet advice", "chat_id", chatID, "input", userInput)
+func (s *AIService) GetPetAdvice(ctx context.Context, request *PetAdviceRequest) (*PetAdviceResponse, error) {
+	slog.Info("getting pet advice", "user_id", request.UserID, "chat_id", request.ChatID, "input", request.Message)
 
-	conversation, err := s.repo.FindOrCreate(ctx, chatID)
+	conversation, err := s.repo.FindOrCreate(ctx, request.ChatID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
 	// Handle questionnaire state if active
 	if conversation.State == StateQuestioning {
-		return s.handleQuestionnaireResponse(ctx, conversation, userInput)
+		return s.handleQuestionnaireResponse(ctx, conversation, request.Message)
 	}
 
 	// Handle new question flow
-	return s.handleNewQuestion(ctx, conversation, userInput)
+	return s.handleNewQuestion(ctx, request, conversation)
 }
 
 // handleNewQuestion processes a new question from the user
-func (s *AIService) handleNewQuestion(ctx context.Context, conversation *Conversation, question string) (*PetAdviceResponse, error) {
+func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceRequest, conversation *Conversation) (*PetAdviceResponse, error) {
 	// Check rate limit for new questions
 	if s.rateLimiter != nil {
-		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, conversation.ID)
+		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, request.UserID)
 		if err != nil {
 			return nil, fmt.Errorf("failed to check rate limit: %w", err)
 		}
 		if !allowed {
-			return nil, fmt.Errorf("rate limit exceeded for user %s", conversation.ID)
+			return nil, fmt.Errorf("rate limit exceeded for user %s", request.UserID)
 		}
 
-		if err := s.rateLimiter.RecordNewQuestion(ctx, conversation.ID); err != nil {
+		if err := s.rateLimiter.RecordNewQuestion(ctx, request.UserID); err != nil {
 			return nil, fmt.Errorf("failed to record rate limit: %w", err)
 		}
 	}
 
 	// Add user's question to conversation
-	conversation.AddMessage("user", question)
+	conversation.AddMessage("user", request.Message)
 
 	// Build prompt with conversation context
 	var prompt string
 	if len(conversation.GetContext()) <= 1 {
-		prompt = question
+		prompt = request.Message
 	} else {
 		// Include conversation history
 		prompt = "Previous conversation:\n"
 		for _, msg := range conversation.GetContext()[:len(conversation.GetContext())-1] {
 			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 		}
-		prompt += fmt.Sprintf("\nCurrent question: %s", question)
+		prompt += fmt.Sprintf("\nCurrent question: %s", request.Message)
 	}
 
 	response, err := s.llm.Call(ctx, prompt)
