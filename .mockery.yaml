@@ -10,6 +10,7 @@ packages:
     interfaces:
       ConversationRepository:
       LLM:
+      RateLimiter:
   github.com/ksysoev/help-my-pet/pkg/bot:
     interfaces:
       AIProvider:

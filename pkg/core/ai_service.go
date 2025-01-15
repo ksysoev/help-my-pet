@@ -7,14 +7,16 @@ import (
 )
 
 type AIService struct {
-	llm  LLM
-	repo ConversationRepository
+	llm         LLM
+	repo        ConversationRepository
+	rateLimiter RateLimiter
 }
 
-func NewAIService(llm LLM, repo ConversationRepository) *AIService {
+func NewAIService(llm LLM, repo ConversationRepository, rateLimiter RateLimiter) *AIService {
 	return &AIService{
-		llm:  llm,
-		repo: repo,
+		llm:         llm,
+		repo:        repo,
+		rateLimiter: rateLimiter,
 	}
 }
 
@@ -52,6 +54,21 @@ func (s *AIService) GetPetAdvice(ctx context.Context, chatID string, userInput s
 
 // handleNewQuestion processes a new question from the user
 func (s *AIService) handleNewQuestion(ctx context.Context, conversation *Conversation, question string) (*PetAdviceResponse, error) {
+	// Check rate limit for new questions
+	if s.rateLimiter != nil {
+		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, conversation.ID)
+		if err != nil {
+			return nil, fmt.Errorf("failed to check rate limit: %w", err)
+		}
+		if !allowed {
+			return nil, fmt.Errorf("rate limit exceeded for user %s", conversation.ID)
+		}
+
+		if err := s.rateLimiter.RecordNewQuestion(ctx, conversation.ID); err != nil {
+			return nil, fmt.Errorf("failed to record rate limit: %w", err)
+		}
+	}
+
 	// Add user's question to conversation
 	conversation.AddMessage("user", question)
 

@@ -11,7 +11,7 @@ import (
 
 func TestAIService_GetPetAdvice(t *testing.T) {
 	tests := []struct {
-		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation)
+		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation)
 		name           string
 		query          string
 		response       *Response
@@ -37,7 +37,9 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "Cats need a balanced diet...\n\nHow old is your cat?",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(true, nil)
+				mockRateLimiter.On("RecordNewQuestion", context.Background(), "test-chat").Return(nil)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -71,7 +73,9 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "Cats need a balanced diet...",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(true, nil)
+				mockRateLimiter.On("RecordNewQuestion", context.Background(), "test-chat").Return(nil)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -99,7 +103,9 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "I understand you have a pet-related question...",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(true, nil)
+				mockRateLimiter.On("RecordNewQuestion", context.Background(), "test-chat").Return(nil)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -119,7 +125,9 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		{
 			name:  "llm error",
 			query: "What food is good for cats?",
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(true, nil)
+				mockRateLimiter.On("RecordNewQuestion", context.Background(), "test-chat").Return(nil)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -134,7 +142,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		{
 			name:  "repository FindOrCreate error",
 			query: "What food is good for cats?",
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(nil, fmt.Errorf("db error"))
@@ -143,13 +151,39 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			errorContains: "failed to get conversation",
 		},
 		{
+			name:  "rate limit exceeded",
+			query: "What food is good for cats?",
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRepo.EXPECT().
+					FindOrCreate(context.Background(), "test-chat").
+					Return(conversation, nil)
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(false, nil)
+			},
+			wantErr:       true,
+			errorContains: "rate limit exceeded for user",
+		},
+		{
+			name:  "rate limit check error",
+			query: "What food is good for cats?",
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRepo.EXPECT().
+					FindOrCreate(context.Background(), "test-chat").
+					Return(conversation, nil)
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(false, fmt.Errorf("rate limit check failed"))
+			},
+			wantErr:       true,
+			errorContains: "failed to check rate limit",
+		},
+		{
 			name:  "repository Save error",
 			query: "What food is good for cats?",
 			response: &Response{
 				Text:      "Cats need a balanced diet...",
 				Questions: []Question{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(true, nil)
+				mockRateLimiter.On("RecordNewQuestion", context.Background(), "test-chat").Return(nil)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -178,7 +212,9 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "Dogs need different food...",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, conversation *Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
+				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "test-chat").Return(true, nil)
+				mockRateLimiter.On("RecordNewQuestion", context.Background(), "test-chat").Return(nil)
 				// Add previous conversation
 				conversation.AddMessage("user", "What food is good for cats?")
 				conversation.AddMessage("assistant", "Cats need a balanced diet...")
@@ -208,14 +244,11 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			mockLLM := NewMockLLM(t)
 			mockRepo := NewMockConversationRepository(t)
 			conversation := NewConversation("test-chat")
+			mockRateLimiter := NewMockRateLimiter(t)
 
 			// Setup mocks based on test case
-			tt.setupMocks(t, mockLLM, mockRepo, conversation)
-
-			svc := &AIService{
-				llm:  mockLLM,
-				repo: mockRepo,
-			}
+			tt.setupMocks(t, mockLLM, mockRepo, mockRateLimiter, conversation)
+			svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
 
 			got, err := svc.GetPetAdvice(context.Background(), "test-chat", tt.query)
 			if tt.wantErr {
@@ -254,10 +287,12 @@ func TestNewAIService(t *testing.T) {
 	t.Run("successful creation", func(t *testing.T) {
 		mockLLM := NewMockLLM(t)
 		mockRepo := NewMockConversationRepository(t)
-		svc := NewAIService(mockLLM, mockRepo)
+		mockRateLimiter := NewMockRateLimiter(t)
+		svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
 		require.NotNil(t, svc)
 		assert.Equal(t, mockLLM, svc.llm)
 		assert.Equal(t, mockRepo, svc.repo)
+		assert.Equal(t, mockRateLimiter, svc.rateLimiter)
 	})
 }
 
@@ -265,7 +300,8 @@ func TestAIService_Start(t *testing.T) {
 	t.Run("successful start", func(t *testing.T) {
 		mockLLM := NewMockLLM(t)
 		mockRepo := NewMockConversationRepository(t)
-		svc := NewAIService(mockLLM, mockRepo)
+		mockRateLimiter := NewMockRateLimiter(t)
+		svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
 
 		response, err := svc.Start(context.Background())
 		require.NoError(t, err)
@@ -277,7 +313,8 @@ func TestAIService_Start(t *testing.T) {
 	t.Run("with cancelled context", func(t *testing.T) {
 		mockLLM := NewMockLLM(t)
 		mockRepo := NewMockConversationRepository(t)
-		svc := NewAIService(mockLLM, mockRepo)
+		mockRateLimiter := NewMockRateLimiter(t)
+		svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
 
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel()
@@ -298,6 +335,10 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 
 	expectedPrompt := "test question"
 
+	mockRateLimiter := NewMockRateLimiter(t)
+	mockRateLimiter.On("IsNewQuestionAllowed", ctx, "test-chat").Return(true, nil)
+	mockRateLimiter.On("RecordNewQuestion", ctx, "test-chat").Return(nil)
+
 	mockLLM.EXPECT().
 		Call(ctx, expectedPrompt).
 		Return(nil, context.Canceled)
@@ -306,11 +347,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 	mockRepo.EXPECT().
 		FindOrCreate(ctx, "test-chat").
 		Return(conversation, nil)
-
-	svc := &AIService{
-		llm:  mockLLM,
-		repo: mockRepo,
-	}
+	svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
 
 	_, err := svc.GetPetAdvice(ctx, "test-chat", "test question")
 	assert.Error(t, err)

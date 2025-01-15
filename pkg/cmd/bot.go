@@ -60,11 +60,24 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 	}
 
-	// Initialize conversation repository
+	// Initialize repositories
 	conversationRepo := memory.NewConversationRepository()
+	var rateLimiter core.RateLimiter
+	if cfg.Bot.RateLimit != nil {
+		// Convert int64 whitelist IDs to strings
+		whitelist := make([]string, len(cfg.Bot.RateLimit.WhitelistIDs))
+		for i, id := range cfg.Bot.RateLimit.WhitelistIDs {
+			whitelist[i] = fmt.Sprintf("%d", id)
+		}
 
-	// Create AI service with conversation support
-	aiService := core.NewAIService(llmProvider, conversationRepo)
+		rateLimiter = memory.NewRateLimiter(&core.RateLimitConfig{
+			HourlyLimit: cfg.Bot.RateLimit.HourlyLimit,
+			Whitelist:   whitelist,
+		})
+	}
+
+	// Create AI service with conversation support and rate limiting
+	aiService := core.NewAIService(llmProvider, conversationRepo, rateLimiter)
 
 	// Create adapter to convert AIService to AIProvider
 	aiProvider := bot.NewAIServiceAdapter(aiService)
