@@ -1,10 +1,11 @@
-package core
+package anthropic
 
 import (
 	"encoding/json"
 	"log/slog"
 	"strings"
 
+	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/tmc/langchaingo/outputparser"
 )
 
@@ -56,8 +57,8 @@ func (p *ResponseParser) FormatInstructions() string {
 }
 
 // Parse parses the LLM output into our Response struct
-func (p *ResponseParser) Parse(text string) (*Response, error) {
-	var response Response
+func (p *ResponseParser) Parse(text string) (*core.Response, error) {
+	var response core.Response
 	if strings.HasPrefix(text, "```json") && strings.HasSuffix(text, "```") {
 		// Extract JSON from markdown code block
 		text = strings.TrimPrefix(text, "```json\n")
@@ -67,9 +68,9 @@ func (p *ResponseParser) Parse(text string) (*Response, error) {
 	if err := json.Unmarshal([]byte(text), &response); err != nil {
 		slog.Error("failed to parse response", slog.Any("error", err), slog.String("response", text))
 
-		return &Response{
+		return &core.Response{
 			Text:      text,
-			Questions: []Question{},
+			Questions: []core.Question{},
 		}, nil
 	}
 

@@ -84,7 +84,7 @@ func TestProvider_Call(t *testing.T) {
 				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
 					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
 
-				parser, err := core.NewResponseParser()
+				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
 				return &Provider{
@@ -109,7 +109,7 @@ func TestProvider_Call(t *testing.T) {
 				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
 					Return("test response", nil)
 
-				parser, err := core.NewResponseParser()
+				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
 				return &Provider{
@@ -131,7 +131,7 @@ func TestProvider_Call(t *testing.T) {
 				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
 					Return("", assert.AnError)
 
-				parser, err := core.NewResponseParser()
+				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
 				return &Provider{

@@ -46,7 +46,7 @@ type Config struct {
 
 type Provider struct {
 	caller LLMCaller
-	parser *core.ResponseParser
+	parser *ResponseParser
 	model  string
 	config Config
 }
@@ -57,7 +57,7 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("failed to initialize Anthropic LLM: %w", err)
 	}
 
-	parser, err := core.NewResponseParser()
+	parser, err := NewResponseParser()
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize response parser: %w", err)
 	}
