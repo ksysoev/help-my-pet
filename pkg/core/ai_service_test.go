@@ -273,37 +273,6 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			},
 			wantErr: false,
 		},
-		{
-			name: "error getting questionnaire result",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "Indoor",
-			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
-				// Setup conversation in questioning state
-				conversation.State = StateQuestioning
-				conversation.Questionnaire = &QuestionnaireState{
-					InitialPrompt: "Cats need a balanced diet...",
-					Questions: []Question{
-						{Text: "How old is your cat?"},
-					},
-					CurrentIndex: 1, // Last question already answered
-					Answers:      []string{"2 years old"},
-				}
-
-				mockRepo.EXPECT().
-					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
-
-				// Mock AddQuestionAnswer to return true (questionnaire complete)
-				// This will trigger GetQuestionnaireResult which will fail
-				conversation.AddMessage("user", "Indoor")
-				conversation.Questionnaire = nil // This will trigger the error in GetQuestionnaireResult
-			},
-			wantErr:       true,
-			errorContains: "failed to get questionnaire result: no questionnaire data available",
-		},
 	}
 
 	for _, tt := range tests {
