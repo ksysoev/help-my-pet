@@ -7,8 +7,8 @@ import (
 
 // RateLimitConfig holds configuration for rate limiting
 type RateLicmitConfig struct {
-	HourlyLimit int
 	Whitelist   []string
+	HourlyLimit int
 }
 
 // RateLimiter defines the interface for rate limiting functionality
