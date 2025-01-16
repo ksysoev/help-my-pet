@@ -2,7 +2,6 @@ package core
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/tmc/langchaingo/llms"
 )
@@ -23,13 +22,4 @@ type Response struct {
 type LLM interface {
 	// Call sends a prompt to the LLM and returns a structured response
 	Call(ctx context.Context, prompt string, options ...llms.CallOption) (*Response, error)
-}
-
-// ParseResponse attempts to parse a JSON string into a Response struct
-func ParseResponse(jsonStr string) (*Response, error) {
-	var response Response
-	if err := json.Unmarshal([]byte(jsonStr), &response); err != nil {
-		return nil, err
-	}
-	return &response, nil
 }

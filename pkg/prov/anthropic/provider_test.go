@@ -79,16 +79,15 @@ func TestProvider_Call(t *testing.T) {
 				},
 			},
 			setupMock: func(t *testing.T) *Provider {
-				mockAdapter := &MockLLMAdapter{}
-				mockAdapter.Test(t)
-				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
+				mockModel := NewMockModel(t)
+				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
 					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
 
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
 				return &Provider{
-					caller: mockAdapter,
+					llm:    mockModel,
 					model:  config.Model,
 					config: config,
 					parser: parser,
@@ -104,16 +103,15 @@ func TestProvider_Call(t *testing.T) {
 				Questions: []core.Question{},
 			},
 			setupMock: func(t *testing.T) *Provider {
-				mockAdapter := &MockLLMAdapter{}
-				mockAdapter.Test(t)
-				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
+				mockModel := NewMockModel(t)
+				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
 					Return("test response", nil)
 
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
 				return &Provider{
-					caller: mockAdapter,
+					llm:    mockModel,
 					model:  config.Model,
 					config: config,
 					parser: parser,
@@ -126,16 +124,15 @@ func TestProvider_Call(t *testing.T) {
 			prompt:     "test prompt",
 			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
-				mockAdapter := &MockLLMAdapter{}
-				mockAdapter.Test(t)
-				mockAdapter.On("Call", ctx, mock.Anything, mock.Anything).
+				mockModel := NewMockModel(t)
+				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
 					Return("", assert.AnError)
 
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
 				return &Provider{
-					caller: mockAdapter,
+					llm:    mockModel,
 					model:  config.Model,
 					config: config,
 					parser: parser,

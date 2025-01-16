@@ -6,6 +6,9 @@ dir: "{{.InterfaceDir}}"
 mockname: "Mock{{.InterfaceName}}"
 issue-845-fix: true
 packages:
+  github.com/ksysoev/help-my-pet/pkg/prov/anthropic:
+    interfaces:
+      Model:
   github.com/ksysoev/help-my-pet/pkg/core:
     interfaces:
       ConversationRepository:

@@ -45,14 +45,14 @@ type Config struct {
 }
 
 type Provider struct {
-	caller LLMCaller
+	llm    Model
 	parser *ResponseParser
 	model  string
 	config Config
 }
 
 func New(cfg Config) (*Provider, error) {
-	model, err := anthropic.New(anthropic.WithToken(cfg.APIKey))
+	llm, err := anthropic.New(anthropic.WithToken(cfg.APIKey))
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic LLM: %w", err)
 	}
@@ -63,7 +63,7 @@ func New(cfg Config) (*Provider, error) {
 	}
 
 	return &Provider{
-		caller: NewLLMAdapter(model),
+		llm:    llm,
 		model:  cfg.Model,
 		config: cfg,
 		parser: parser,
@@ -81,7 +81,7 @@ func (p *Provider) Call(ctx context.Context, prompt string, options ...llms.Call
 	formattedSystemPrompt := strings.Replace(systemPrompt, "{format_instructions}", p.parser.FormatInstructions(), 1)
 	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", formattedSystemPrompt, prompt)
 
-	response, err := p.caller.Call(ctx, fullPrompt, options...)
+	response, err := p.llm.Call(ctx, fullPrompt, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic LLM: %w", err)
 	}
