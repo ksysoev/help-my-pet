@@ -10,7 +10,7 @@ import (
 )
 
 type AIProvider interface {
-	GetPetAdvice(ctx context.Context, chatID string, question string) (*core.PetAdviceResponse, error)
+	GetPetAdvice(ctx context.Context, userID string, question string) (*core.PetAdviceResponse, error)
 	Start(ctx context.Context) (string, error)
 }
 
@@ -111,7 +111,11 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 	}
 
 	// Get AI response
-	response, err := s.AISvc.GetPetAdvice(ctx, fmt.Sprintf("%d", message.Chat.ID), message.Text)
+	userID := message.Chat.ID
+	if message.From != nil {
+		userID = message.From.ID
+	}
+	response, err := s.AISvc.GetPetAdvice(ctx, fmt.Sprintf("%d", userID), message.Text)
 	if err != nil {
 		slog.Error("Failed to get AI response",
 			slog.Any("error", err),
