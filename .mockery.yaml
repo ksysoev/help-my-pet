@@ -11,11 +11,12 @@ packages:
       ConversationRepository:
       LLM:
       RateLimiter:
+      AIService:
   github.com/ksysoev/help-my-pet/pkg/bot:
     interfaces:
-      AIProvider:
       BotAPI:
       RateLimiter:
+      AIProvider:
   github.com/ksysoev/help-my-pet/pkg/cmd:
     interfaces:
       BotService:

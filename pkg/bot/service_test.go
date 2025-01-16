@@ -174,8 +174,13 @@ func TestService_handleMessage(t *testing.T) {
 						Return(tgbotapi.Message{}, sendErr)
 				}
 			} else {
+				expectedRequest := &core.PetAdviceRequest{
+					UserID:  "123",
+					ChatID:  "123",
+					Message: tt.message,
+				}
 				mockAI.EXPECT().
-					GetPetAdvice(context.Background(), "123", tt.message).
+					GetPetAdvice(context.Background(), expectedRequest).
 					Return(tt.aiResponse, tt.aiErr)
 
 				mockBot.EXPECT().
@@ -251,7 +256,11 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 				Return(tgbotapi.Message{}, nil)
 
 			mockAI.EXPECT().
-				GetPetAdvice(mock.Anything, fmt.Sprintf("%d", tt.userID), tt.message).
+				GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+					UserID:  fmt.Sprintf("%d", tt.userID),
+					ChatID:  fmt.Sprintf("%d", tt.userID),
+					Message: tt.message,
+				}).
 				Return(core.NewPetAdviceResponse("test response", []string{}), nil)
 
 			mockBot.EXPECT().
@@ -345,7 +354,11 @@ func TestService_Run_SendError(t *testing.T) {
 		Return(tgbotapi.Message{}, fmt.Errorf("send error"))
 
 	mockAI.EXPECT().
-		GetPetAdvice(mock.Anything, "123", "test message").
+		GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+			UserID:  "123",
+			ChatID:  "123",
+			Message: "test message",
+		}).
 		Return(core.NewPetAdviceResponse("test response", []string{}), nil)
 
 	mockBot.EXPECT().
