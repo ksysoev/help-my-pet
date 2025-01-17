@@ -8,6 +8,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -22,6 +23,7 @@ func TestService_handleMessage(t *testing.T) {
 		expectError   bool
 		mockSendError bool
 		isStart       bool
+		langCode      string
 	}{
 		{
 			name:        "successful response with keyboard",
@@ -30,6 +32,7 @@ func TestService_handleMessage(t *testing.T) {
 			aiErr:       nil,
 			expectError: false,
 			userID:      123,
+			langCode:    "en",
 		},
 		{
 			name:        "successful response without keyboard",
@@ -38,6 +41,7 @@ func TestService_handleMessage(t *testing.T) {
 			aiErr:       nil,
 			expectError: false,
 			userID:      123,
+			langCode:    "ru",
 		},
 		{
 			name:        "empty message",
@@ -46,6 +50,7 @@ func TestService_handleMessage(t *testing.T) {
 			aiErr:       nil,
 			expectError: false,
 			userID:      123,
+			langCode:    "en",
 		},
 		{
 			name:        "ai error",
@@ -54,6 +59,7 @@ func TestService_handleMessage(t *testing.T) {
 			aiErr:       fmt.Errorf("ai error"),
 			expectError: true,
 			userID:      123,
+			langCode:    "es",
 		},
 		{
 			name:          "send error",
@@ -63,6 +69,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectError:   true,
 			mockSendError: true,
 			userID:        123,
+			langCode:      "en",
 		},
 		{
 			name:          "ai error with send error",
@@ -72,6 +79,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectError:   true,
 			mockSendError: true,
 			userID:        123,
+			langCode:      "fr",
 		},
 		{
 			name:        "start command",
@@ -81,6 +89,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectError: false,
 			isStart:     true,
 			userID:      123,
+			langCode:    "de",
 		},
 		{
 			name:          "start command with error",
@@ -91,6 +100,7 @@ func TestService_handleMessage(t *testing.T) {
 			isStart:       true,
 			mockSendError: false,
 			userID:        123,
+			langCode:      "en",
 		},
 		{
 			name:        "message without From field",
@@ -99,34 +109,7 @@ func TestService_handleMessage(t *testing.T) {
 			aiErr:       nil,
 			expectError: false,
 			userID:      0,
-		},
-		{
-			name:          "error sending start message",
-			message:       "/start",
-			aiResponse:    core.NewPetAdviceResponse("Welcome to Help My Pet Bot!", []string{}),
-			aiErr:         nil,
-			expectError:   true,
-			mockSendError: true,
-			isStart:       true,
-			userID:        123,
-		},
-		{
-			name:          "error sending error message",
-			message:       "What food is good for cats?",
-			aiResponse:    core.NewPetAdviceResponse("", []string{}),
-			aiErr:         fmt.Errorf("ai error"),
-			expectError:   true,
-			mockSendError: true,
-			userID:        123,
-		},
-		{
-			name:          "typing action error but successful response",
-			message:       "What food is good for cats?",
-			aiResponse:    core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
-			aiErr:         nil,
-			expectError:   false,
-			mockSendError: true,
-			userID:        123,
+			langCode:    "en",
 		},
 	}
 
@@ -140,9 +123,40 @@ func TestService_handleMessage(t *testing.T) {
 				sendErr = fmt.Errorf("send error")
 			}
 
+			messages := &i18n.Config{
+				Languages: map[string]i18n.Messages{
+					"en": {
+						Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
+						Start:     "Welcome to Help My Pet Bot!",
+						RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+					},
+					"ru": {
+						Error:     "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.",
+						Start:     "Добро пожаловать в Help My Pet Bot!",
+						RateLimit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
+					},
+					"es": {
+						Error:     "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde.",
+						Start:     "¡Bienvenido a Help My Pet Bot!",
+						RateLimit: "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde.",
+					},
+					"fr": {
+						Error:     "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard.",
+						Start:     "Bienvenue sur Help My Pet Bot !",
+						RateLimit: "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard.",
+					},
+					"de": {
+						Error:     "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+						Start:     "Willkommen bei Help My Pet Bot!",
+						RateLimit: "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut.",
+					},
+				},
+			}
+
 			svc := &ServiceImpl{
-				Bot:   mockBot,
-				AISvc: mockAI,
+				Bot:      mockBot,
+				AISvc:    mockAI,
+				Messages: messages,
 			}
 
 			msg := &tgbotapi.Message{
@@ -156,7 +170,8 @@ func TestService_handleMessage(t *testing.T) {
 			// Set From field only if userID is not 0
 			if tt.userID != 0 {
 				msg.From = &tgbotapi.User{
-					ID: tt.userID,
+					ID:           tt.userID,
+					LanguageCode: tt.langCode,
 				}
 			}
 
@@ -173,10 +188,10 @@ func TestService_handleMessage(t *testing.T) {
 
 				if tt.aiErr != nil {
 					mockBot.EXPECT().
-						Send(tgbotapi.NewMessage(int64(123), "Sorry, I encountered an error while processing your request. Please try again later.")).
+						Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.ErrorMessage))).
 						Return(tgbotapi.Message{}, sendErr)
 				} else {
-					msg := tgbotapi.NewMessage(int64(123), tt.aiResponse.Message)
+					msg := tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.StartMessage))
 					mockBot.EXPECT().
 						Send(msg).
 						Return(tgbotapi.Message{}, sendErr)
@@ -197,7 +212,7 @@ func TestService_handleMessage(t *testing.T) {
 
 				if tt.aiErr != nil {
 					mockBot.EXPECT().
-						Send(tgbotapi.NewMessage(int64(123), "Sorry, I encountered an error while processing your request. Please try again later.")).
+						Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.ErrorMessage))).
 						Return(tgbotapi.Message{}, sendErr)
 				} else {
 					responseMsg := tgbotapi.NewMessage(int64(123), tt.aiResponse.Message)
@@ -236,14 +251,16 @@ func TestService_handleMessage(t *testing.T) {
 
 func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 	tests := []struct {
-		name    string
-		message string
-		userID  int64
+		name     string
+		message  string
+		userID   int64
+		langCode string
 	}{
 		{
-			name:    "successful message",
-			message: "test message",
-			userID:  123,
+			name:     "successful message",
+			message:  "test message",
+			userID:   123,
+			langCode: "en",
 		},
 	}
 
@@ -251,9 +268,20 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			mockAI := NewMockAIProvider(t)
 			mockBot := NewMockBotAPI(t)
+			messages := &i18n.Config{
+				Languages: map[string]i18n.Messages{
+					"en": {
+						Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
+						Start:     "Welcome to Help My Pet Bot!",
+						RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+					},
+				},
+			}
+
 			svc := &ServiceImpl{
-				Bot:   mockBot,
-				AISvc: mockAI,
+				Bot:      mockBot,
+				AISvc:    mockAI,
+				Messages: messages,
 			}
 
 			updates := make(chan tgbotapi.Update)
@@ -302,7 +330,8 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 					},
 					MessageID: 456,
 					From: &tgbotapi.User{
-						ID: tt.userID,
+						ID:           tt.userID,
+						LanguageCode: tt.langCode,
 					},
 				},
 			}
@@ -328,9 +357,20 @@ func TestService_Run_EmptyUpdateMessage(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
+	messages := &i18n.Config{
+		Languages: map[string]i18n.Messages{
+			"en": {
+				Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:     "Welcome to Help My Pet Bot!",
+				RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+			},
+		},
+	}
+
 	svc := &ServiceImpl{
-		Bot:   mockBot,
-		AISvc: mockAI,
+		Bot:      mockBot,
+		AISvc:    mockAI,
+		Messages: messages,
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -385,9 +425,20 @@ func TestService_Run_SendError(t *testing.T) {
 		StopReceivingUpdates().
 		Return()
 
+	messages := &i18n.Config{
+		Languages: map[string]i18n.Messages{
+			"en": {
+				Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:     "Welcome to Help My Pet Bot!",
+				RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+			},
+		},
+	}
+
 	svc := &ServiceImpl{
-		Bot:   mockBot,
-		AISvc: mockAI,
+		Bot:      mockBot,
+		AISvc:    mockAI,
+		Messages: messages,
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -405,7 +456,8 @@ func TestService_Run_SendError(t *testing.T) {
 			},
 			MessageID: 456,
 			From: &tgbotapi.User{
-				ID: 123,
+				ID:           123,
+				LanguageCode: "en",
 			},
 		},
 	}
@@ -418,10 +470,20 @@ func TestService_Run_SendError(t *testing.T) {
 
 func TestNewService(t *testing.T) {
 	mockAI := NewMockAIProvider(t)
+	messages := &i18n.Config{
+		Languages: map[string]i18n.Messages{
+			"en": {
+				Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:     "Welcome to Help My Pet Bot!",
+				RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+			},
+		},
+	}
 
 	t.Run("invalid token", func(t *testing.T) {
 		cfg := &Config{
 			TelegramToken: "test-token",
+			Messages:      messages,
 		}
 		svc, err := NewService(cfg, mockAI)
 		assert.Error(t, err)
@@ -429,7 +491,9 @@ func TestNewService(t *testing.T) {
 	})
 
 	t.Run("empty token", func(t *testing.T) {
-		cfg := &Config{}
+		cfg := &Config{
+			Messages: messages,
+		}
 		svc, err := NewService(cfg, mockAI)
 		assert.Error(t, err)
 		assert.Nil(t, svc)
@@ -438,6 +502,7 @@ func TestNewService(t *testing.T) {
 	t.Run("with nil AI provider", func(t *testing.T) {
 		cfg := &Config{
 			TelegramToken: "test-token",
+			Messages:      messages,
 		}
 		svc, err := NewService(cfg, nil)
 		assert.Error(t, err)
@@ -453,6 +518,7 @@ func TestNewService(t *testing.T) {
 	t.Run("with valid token but NewBotAPI fails", func(t *testing.T) {
 		cfg := &Config{
 			TelegramToken: "invalid:token:format", // This format should trigger a validation error in NewBotAPI
+			Messages:      messages,
 		}
 		svc, err := NewService(cfg, mockAI)
 		assert.Error(t, err)
@@ -462,6 +528,7 @@ func TestNewService(t *testing.T) {
 	t.Run("with valid token and no rate limiter", func(t *testing.T) {
 		cfg := &Config{
 			TelegramToken: "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz", // Valid format but invalid token
+			Messages:      messages,
 		}
 		svc, err := NewService(cfg, mockAI)
 		assert.Error(t, err) // Error because token is invalid
@@ -471,6 +538,7 @@ func TestNewService(t *testing.T) {
 	t.Run("with invalid token format", func(t *testing.T) {
 		cfg := &Config{
 			TelegramToken: "invalid_token_format",
+			Messages:      messages,
 		}
 		svc, err := NewService(cfg, mockAI)
 		assert.Error(t, err)

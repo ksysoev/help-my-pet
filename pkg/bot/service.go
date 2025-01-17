@@ -7,6 +7,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 type AIProvider interface {
@@ -15,8 +16,9 @@ type AIProvider interface {
 }
 
 type ServiceImpl struct {
-	Bot   BotAPI
-	AISvc AIProvider
+	Bot      BotAPI
+	AISvc    AIProvider
+	Messages *i18n.Config
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -33,14 +35,19 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		return nil, fmt.Errorf("telegram token cannot be empty")
 	}
 
+	if cfg.Messages == nil {
+		return nil, fmt.Errorf("messages config cannot be nil")
+	}
+
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
 	return &ServiceImpl{
-		Bot:   bot,
-		AISvc: aiSvc,
+		Bot:      bot,
+		AISvc:    aiSvc,
+		Messages: cfg.Messages,
 	}, nil
 }
 
@@ -81,17 +88,17 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 
 	// Handle /start command
 	if message.Text == "/start" {
-		response, err := s.AISvc.Start(ctx)
+		_, err := s.AISvc.Start(ctx)
 		if err != nil {
 			slog.Error("Failed to get start message",
 				slog.Any("error", err),
 				slog.Int64("chat_id", message.Chat.ID),
 			)
-			s.sendErrorMessage(message.Chat.ID)
+			s.sendErrorMessage(message.Chat.ID, message.From.LanguageCode)
 			return
 		}
 
-		msg := tgbotapi.NewMessage(message.Chat.ID, response)
+		msg := tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.StartMessage))
 		if _, err := s.Bot.Send(msg); err != nil {
 			slog.Error("Failed to send start message",
 				slog.Any("error", err),
@@ -126,7 +133,7 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),
 		)
-		s.sendErrorMessage(message.Chat.ID)
+		s.sendErrorMessage(message.Chat.ID, message.From.LanguageCode)
 		return
 	}
 
@@ -161,11 +168,10 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 		)
 		return
 	}
-
 }
 
-func (s *ServiceImpl) sendErrorMessage(chatID int64) {
-	msg := tgbotapi.NewMessage(chatID, "Sorry, I encountered an error while processing your request. Please try again later.")
+func (s *ServiceImpl) sendErrorMessage(chatID int64, lang string) {
+	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.ErrorMessage))
 	if _, err := s.Bot.Send(msg); err != nil {
 		slog.Error("Failed to send error message",
 			slog.Any("error", err),
