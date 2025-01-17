@@ -134,7 +134,7 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 	msg := tgbotapi.NewMessage(message.Chat.ID, response.Message)
 	msg.ReplyToMessageID = message.MessageID
 
-	// Add reply keyboard if there are answers
+	// Handle keyboard markup based on answers
 	if len(response.Answers) > 0 {
 		keyboard := make([][]tgbotapi.KeyboardButton, len(response.Answers))
 		for i, answer := range response.Answers {
@@ -146,6 +146,11 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 			Keyboard:        keyboard,
 			OneTimeKeyboard: true,
 			ResizeKeyboard:  true,
+		}
+	} else {
+		msg.ReplyMarkup = tgbotapi.ReplyKeyboardRemove{
+			RemoveKeyboard: true,
+			Selective:      false,
 		}
 	}
 

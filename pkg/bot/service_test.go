@@ -24,9 +24,17 @@ func TestService_handleMessage(t *testing.T) {
 		isStart       bool
 	}{
 		{
-			name:        "successful response",
+			name:        "successful response with keyboard",
 			message:     "What food is good for cats?",
 			aiResponse:  core.NewPetAdviceResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
+			aiErr:       nil,
+			expectError: false,
+			userID:      123,
+		},
+		{
+			name:        "successful response without keyboard",
+			message:     "What food is good for cats?",
+			aiResponse:  core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
 			aiErr:       nil,
 			expectError: false,
 			userID:      123,
@@ -195,7 +203,7 @@ func TestService_handleMessage(t *testing.T) {
 					responseMsg := tgbotapi.NewMessage(int64(123), tt.aiResponse.Message)
 					responseMsg.ReplyToMessageID = 456
 
-					// Add reply keyboard if there are answers
+					// Set keyboard markup based on answers
 					if len(tt.aiResponse.Answers) > 0 {
 						keyboard := make([][]tgbotapi.KeyboardButton, len(tt.aiResponse.Answers))
 						for i, answer := range tt.aiResponse.Answers {
@@ -207,6 +215,11 @@ func TestService_handleMessage(t *testing.T) {
 							Keyboard:        keyboard,
 							OneTimeKeyboard: true,
 							ResizeKeyboard:  true,
+						}
+					} else {
+						responseMsg.ReplyMarkup = tgbotapi.ReplyKeyboardRemove{
+							RemoveKeyboard: true,
+							Selective:      false,
 						}
 					}
 
@@ -463,5 +476,4 @@ func TestNewService(t *testing.T) {
 		assert.Error(t, err)
 		assert.Nil(t, svc)
 	})
-
 }
