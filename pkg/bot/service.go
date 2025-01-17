@@ -2,6 +2,7 @@ package bot
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 
@@ -133,7 +134,11 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),
 		)
-		s.sendErrorMessage(message.Chat.ID, message.From.LanguageCode)
+		if errors.Is(err, core.ErrRateLimit) {
+			s.sendRateLimitMessage(message.Chat.ID, message.From.LanguageCode)
+		} else {
+			s.sendErrorMessage(message.Chat.ID, message.From.LanguageCode)
+		}
 		return
 	}
 
@@ -174,6 +179,16 @@ func (s *ServiceImpl) sendErrorMessage(chatID int64, lang string) {
 	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.ErrorMessage))
 	if _, err := s.Bot.Send(msg); err != nil {
 		slog.Error("Failed to send error message",
+			slog.Any("error", err),
+			slog.Int64("chat_id", chatID),
+		)
+	}
+}
+
+func (s *ServiceImpl) sendRateLimitMessage(chatID int64, lang string) {
+	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.RateLimitMessage))
+	if _, err := s.Bot.Send(msg); err != nil {
+		slog.Error("Failed to send rate limit message",
 			slog.Any("error", err),
 			slog.Int64("chat_id", chatID),
 		)

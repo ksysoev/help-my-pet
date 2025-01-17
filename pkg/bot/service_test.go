@@ -19,11 +19,11 @@ func TestService_handleMessage(t *testing.T) {
 		aiResponse    *core.PetAdviceResponse
 		name          string
 		message       string
+		langCode      string
 		userID        int64
 		expectError   bool
 		mockSendError bool
 		isStart       bool
-		langCode      string
 	}{
 		{
 			name:        "successful response with keyboard",
@@ -253,8 +253,8 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 	tests := []struct {
 		name     string
 		message  string
-		userID   int64
 		langCode string
+		userID   int64
 	}{
 		{
 			name:     "successful message",
