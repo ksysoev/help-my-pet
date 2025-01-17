@@ -1,12 +1,267 @@
+ai:
+  model: "claude-3-5-sonnet-20241022" # Anthropic model to use
+  api_key: "" # Set your Anthropic API key here
+  max_tokens: 1000 # Maximum number of tokens in the response
+
 bot:
   telegram_token: "" # Set your Telegram bot token here
   rate_limit:
     hourly_limit: 5  # Maximum number of requests per hour per user
     daily_limit: 15  # Maximum number of requests per day per user
     whitelist_ids: [] # List of user IDs exempt from rate limiting
-  messages: !include config/messages.yaml # Include translations from messages.yaml
+  messages:
+    languages:
+      en:
+        error: "Sorry, I encountered an error while processing your request. Please try again later."
+        start: |
+          Welcome to Help My Pet Bot! 🐾
 
-ai:
-  model: "claude-3-5-sonnet-20241022" # Anthropic model to use
-  api_key: "" # Set your Anthropic API key here
-  max_tokens: 1000 # Maximum number of tokens in the response
+          I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:
+
+          • Pet health and behavior questions
+          • Diet and nutrition advice
+          • Training tips and techniques
+          • General pet care guidance
+
+          Simply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.
+
+          To get started, just ask me any question about your pet!
+        rate_limit: "You have reached the maximum number of requests per hour. Please try again later."
+      
+      ru:
+        error: "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже."
+        start: |
+          Добро пожаловать в Help My Pet Bot! 🐾
+
+          Я ваш личный ассистент по уходу за питомцами, готовый помочь вам лучше заботиться о вашем пушистом друге. Я могу помочь вам с:
+
+          • Вопросами о здоровье и поведении питомцев
+          • Советами по диете и питанию
+          • Советами по дрессировке
+          • Общими рекомендациями по уходу
+
+          Просто напишите ваш вопрос или опишите проблему, и я предоставлю полезные, информативные ответы на основе надежных ветеринарных знаний. Помните, что хотя я могу дать рекомендации, при серьезных медицинских проблемах всегда консультируйтесь с ветеринаром.
+
+          Чтобы начать, просто задайте любой вопрос о вашем питомце!
+        rate_limit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже."
+
+      es:
+        error: "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde."
+        start: |
+          ¡Bienvenido a Help My Pet Bot! 🐾
+
+          Soy tu asistente personal de cuidado de mascotas, listo para ayudarte a cuidar mejor a tu amigo peludo. Puedo ayudarte con:
+
+          • Preguntas sobre salud y comportamiento
+          • Consejos sobre dieta y nutrición
+          • Consejos y técnicas de entrenamiento
+          • Guía general de cuidado de mascotas
+
+          Simplemente escribe tu pregunta o preocupación sobre tu mascota, y te proporcionaré respuestas útiles e informativas basadas en conocimientos veterinarios confiables. Recuerda, aunque puedo ofrecer orientación, para condiciones médicas serias, siempre consulta con un veterinario.
+
+          ¡Para empezar, solo hazme cualquier pregunta sobre tu mascota!
+        rate_limit: "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde."
+
+      fr:
+        error: "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard."
+        start: |
+          Bienvenue sur Help My Pet Bot ! 🐾
+
+          Je suis votre assistant personnel pour les soins des animaux, prêt à vous aider à mieux prendre soin de votre ami à fourrure. Je peux vous aider avec :
+
+          • Questions sur la santé et le comportement
+          • Conseils en alimentation et nutrition
+          • Conseils et techniques de dressage
+          • Guide général des soins aux animaux
+
+          Il vous suffit de taper votre question ou préoccupation concernant votre animal, et je vous fournirai des réponses utiles et informatives basées sur des connaissances vétérinaires fiables. N'oubliez pas que, bien que je puisse vous guider, pour les problèmes médicaux graves, consultez toujours un vétérinaire.
+
+          Pour commencer, posez-moi simplement une question sur votre animal !
+        rate_limit: "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard."
+
+      de:
+        error: "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        start: |
+          Willkommen bei Help My Pet Bot! 🐾
+
+          Ich bin Ihr persönlicher Haustier-Assistent, bereit Ihnen zu helfen, sich besser um Ihren pelzigen Freund zu kümmern. Ich kann Ihnen helfen bei:
+
+          • Fragen zu Gesundheit und Verhalten
+          • Ernährungs- und Diätberatung
+          • Trainingstipps und -techniken
+          • Allgemeine Pflegehinweise
+
+          Schreiben Sie einfach Ihre Frage oder Ihr Anliegen zu Ihrem Haustier, und ich werde Ihnen hilfreiche, informative Antworten auf Basis zuverlässiger tierärztlicher Kenntnisse geben. Denken Sie daran, dass ich zwar Orientierung geben kann, aber bei ernsten medizinischen Problemen sollten Sie immer einen Tierarzt aufsuchen.
+
+          Um zu beginnen, stellen Sie mir einfach eine Frage über Ihr Haustier!
+        rate_limit: "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut."
+
+      ko:
+        error: "죄송합니다. 요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+        start: |
+          Help My Pet Bot에 오신 것을 환영합니다! 🐾
+
+          저는 여러분의 반려동물을 더 잘 돌볼 수 있도록 도와주는 개인 반려동물 관리 도우미입니다. 다음과 같은 도움을 드릴 수 있습니다:
+
+          • 반려동물 건강 및 행동 관련 질문
+          • 식이 및 영양 조언
+          • 훈련 팁과 기술
+          • 일반적인 반려동물 관리 지침
+
+          반려동물에 대한 질문이나 걱정거리를 입력하시면, 신뢰할 수 있는 수의학 지식을 바탕으로 유용하고 유익한 답변을 제공해 드립니다. 안내는 해드릴 수 있지만, 심각한 의료 상태의 경우 항상 수의사와 상담하시기 바랍니다.
+
+          시작하려면 반려동물에 대한 질문을 해주세요!
+        rate_limit: "시간당 최대 요청 수에 도달했습니다. 나중에 다시 시도해 주세요."
+
+      tr:
+        error: "Üzgünüm, isteğinizi işlerken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+        start: |
+          Help My Pet Bot'a hoş geldiniz! 🐾
+
+          Ben sizin kişisel evcil hayvan bakım asistanınızım, tüylü dostunuza daha iyi bakmanıza yardımcı olmaya hazırım. Size şu konularda yardımcı olabilirim:
+
+          • Evcil hayvan sağlığı ve davranış soruları
+          • Diyet ve beslenme tavsiyeleri
+          • Eğitim ipuçları ve teknikleri
+          • Genel evcil hayvan bakım rehberliği
+
+          Evcil hayvanınız hakkındaki sorunuzu veya endişenizi yazmanız yeterli, size güvenilir veteriner bilgilerine dayalı yararlı, bilgilendirici cevaplar vereceğim. Unutmayın, rehberlik edebilsem de, ciddi tıbbi durumlar için her zaman bir veterinere danışın.
+
+          Başlamak için, evcil hayvanınız hakkında herhangi bir soru sorun!
+        rate_limit: "Saatlik maksimum istek sayısına ulaştınız. Lütfen daha sonra tekrar deneyin."
+
+      it:
+        error: "Mi dispiace, ho riscontrato un errore durante l'elaborazione della tua richiesta. Per favore riprova più tardi."
+        start: |
+          Benvenuto su Help My Pet Bot! 🐾
+
+          Sono il tuo assistente personale per la cura degli animali domestici, pronto ad aiutarti a prenderti cura meglio del tuo amico peloso. Posso aiutarti con:
+
+          • Domande sulla salute e sul comportamento
+          • Consigli su dieta e nutrizione
+          • Suggerimenti e tecniche di addestramento
+          • Guida generale alla cura degli animali domestici
+
+          Scrivi semplicemente la tua domanda o preoccupazione sul tuo animale domestico, e ti fornirò risposte utili e informative basate su conoscenze veterinarie affidabili. Ricorda, anche se posso fornire una guida, per condizioni mediche serie, consulta sempre un veterinario.
+
+          Per iniziare, fammi qualsiasi domanda sul tuo animale domestico!
+        rate_limit: "Hai raggiunto il numero massimo di richieste per ora. Per favore riprova più tardi."
+
+      pl:
+        error: "Przepraszam, wystąpił błąd podczas przetwarzania Twojego zapytania. Spróbuj ponownie później."
+        start: |
+          Witaj w Help My Pet Bot! 🐾
+
+          Jestem Twoim osobistym asystentem opieki nad zwierzętami, gotowym pomóc Ci lepiej zadbać o Twojego futrzanego przyjaciela. Mogę pomóc Ci w:
+
+          • Pytaniach o zdrowie i zachowanie zwierząt
+          • Poradach dotyczących diety i żywienia
+          • Wskazówkach i technikach treningu
+          • Ogólnych wskazówkach dotyczących opieki nad zwierzętami
+
+          Po prostu wpisz swoje pytanie lub problem dotyczący Twojego zwierzaka, a ja udzielę pomocnych, informacyjnych odpowiedzi opartych na wiarygodnej wiedzy weterynaryjnej. Pamiętaj, że chociaż mogę udzielić wskazówek, w przypadku poważnych problemów zdrowotnych zawsze konsultuj się z weterynarzem.
+
+          Aby rozpocząć, zadaj mi dowolne pytanie o Twoje zwierzę!
+        rate_limit: "Osiągnąłeś maksymalną liczbę zapytań na godzinę. Spróbuj ponownie później."
+
+      uk:
+        error: "Вибачте, під час обробки вашого запиту сталася помилка. Будь ласка, спробуйте пізніше."
+        start: |
+          Ласкаво просимо до Help My Pet Bot! 🐾
+
+          Я ваш особистий помічник з догляду за домашніми тваринами, готовий допомогти вам краще піклуватися про вашого пухнастого друга. Я можу допомогти вам з:
+
+          • Питаннями про здоров'я та поведінку тварин
+          • Порадами щодо дієти та харчування
+          • Порадами та техніками тренування
+          • Загальними рекомендаціями з догляду
+
+          Просто напишіть ваше питання або проблему щодо вашої тварини, і я надам корисні, інформативні відповіді на основі надійних ветеринарних знань. Пам'ятайте, що хоча я можу надати рекомендації, при серйозних медичних проблемах завжди консультуйтеся з ветеринаром.
+
+          Щоб почати, просто задайте будь-яке питання про вашу тварину!
+        rate_limit: "Ви досягли максимальної кількості запитів на годину. Будь ласка, спробуйте пізніше."
+
+      be:
+        error: "Прабачце, падчас апрацоўкі вашага запыту адбылася памылка. Калі ласка, паспрабуйце пазней."
+        start: |
+          Сардэчна запрашаем у Help My Pet Bot! 🐾
+
+          Я ваш асабісты памочнік па доглядзе за хатнімі жывёламі, гатовы дапамагчы вам лепш клапаціцца пра вашага пухнатага сябра. Я магу дапамагчы вам з:
+
+          • Пытаннямі пра здароўе і паводзіны жывёл
+          • Парадамі па дыеце і харчаванні
+          • Парадамі і тэхнікамі трэніроўкі
+          • Агульнымі рэкамендацыямі па доглядзе
+
+          Проста напішыце ваша пытанне ці праблему адносна вашай жывёлы, і я прадастаўлю карысныя, інфарматыўныя адказы на аснове надзейных ветэрынарных ведаў. Памятайце, што хоць я магу даць рэкамендацыі, пры сур'ёзных медыцынскіх праблемах заўсёды кансультуйцеся з ветэрынарам.
+
+          Каб пачаць, проста задайце любое пытанне пра вашу жывёлу!
+        rate_limit: "Вы дасягнулі максімальнай колькасці запытаў на гадзіну. Калі ласка, паспрабуйце пазней."
+
+      nl:
+        error: "Sorry, er is een fout opgetreden bij het verwerken van uw verzoek. Probeer het later opnieuw."
+        start: |
+          Welkom bij Help My Pet Bot! 🐾
+
+          Ik ben je persoonlijke huisdierenverzorgingsassistent, klaar om je te helpen beter voor je harige vriend te zorgen. Ik kan je helpen met:
+
+          • Vragen over gezondheid en gedrag van huisdieren
+          • Advies over dieet en voeding
+          • Training tips en technieken
+          • Algemene verzorgingsrichtlijnen
+
+          Type gewoon je vraag of zorg over je huisdier, en ik zal je nuttige, informatieve antwoorden geven gebaseerd op betrouwbare veterinaire kennis. Onthoud dat, hoewel ik begeleiding kan bieden, je voor ernstige medische aandoeningen altijd een dierenarts moet raadplegen.
+
+          Om te beginnen, stel me gewoon een vraag over je huisdier!
+        rate_limit: "Je hebt het maximale aantal verzoeken per uur bereikt. Probeer het later opnieuw."
+
+      ms:
+        error: "Maaf, saya mengalami ralat semasa memproses permintaan anda. Sila cuba lagi kemudian."
+        start: |
+          Selamat datang ke Help My Pet Bot! 🐾
+
+          Saya adalah pembantu penjagaan haiwan kesayangan peribadi anda, bersedia untuk membantu anda menjaga rakan berbulu anda dengan lebih baik. Saya boleh membantu anda dengan:
+
+          • Soalan kesihatan dan tingkah laku haiwan kesayangan
+          • Nasihat diet dan pemakanan
+          • Tip dan teknik latihan
+          • Panduan penjagaan umum
+
+          Hanya taip soalan atau kebimbangan anda tentang haiwan kesayangan anda, dan saya akan memberikan jawapan yang berguna dan bermaklumat berdasarkan pengetahuan veterinar yang boleh dipercayai. Ingat, walaupun saya boleh memberi panduan, untuk keadaan perubatan yang serius, sentiasa rujuk doktor haiwan.
+
+          Untuk bermula, tanya saya apa-apa soalan tentang haiwan kesayangan anda!
+        rate_limit: "Anda telah mencapai had maksimum permintaan sejam. Sila cuba lagi kemudian."
+
+      pt:
+        error: "Desculpe, encontrei um erro ao processar seu pedido. Por favor, tente novamente mais tarde."
+        start: |
+          Bem-vindo ao Help My Pet Bot! 🐾
+
+          Sou seu assistente pessoal de cuidados com animais de estimação, pronto para ajudá-lo a cuidar melhor do seu amigo peludo. Posso ajudá-lo com:
+
+          • Questões sobre saúde e comportamento
+          • Conselhos sobre dieta e nutrição
+          • Dicas e técnicas de treinamento
+          • Orientação geral sobre cuidados com animais
+
+          Simplesmente digite sua pergunta ou preocupação sobre seu animal de estimação, e eu fornecerei respostas úteis e informativas baseadas em conhecimentos veterinários confiáveis. Lembre-se, embora eu possa oferecer orientação, para condições médicas sérias, sempre consulte um veterinário.
+
+          Para começar, faça-me qualquer pergunta sobre seu animal de estimação!
+        rate_limit: "Você atingiu o número máximo de solicitações por hora. Por favor, tente novamente mais tarde."
+
+      ca:
+        error: "Ho sento, he trobat un error en processar la teva sol·licitud. Si us plau, torna-ho a provar més tard."
+        start: |
+          Benvingut a Help My Pet Bot! 🐾
+
+          Sóc el teu assistent personal de cura de mascotes, preparat per ajudar-te a cuidar millor del teu amic pelut. Puc ajudar-te amb:
+
+          • Preguntes sobre salut i comportament
+          • Consells sobre dieta i nutrició
+          • Consells i tècniques d'entrenament
+          • Guia general de cura de mascotes
+
+          Simplement escriu la teva pregunta o preocupació sobre la teva mascota, i et proporcionaré respostes útils i informatives basades en coneixements veterinaris fiables. Recorda que, tot i que puc oferir orientació, per a condicions mèdiques serioses, sempre consulta amb un veterinari.
+
+          Per començar, fes-me qualsevol pregunta sobre la teva mascota!
+        rate_limit: "Has arribat al nombre màxim de sol·licituds per hora. Si us plau, torna-ho a provar més tard."
