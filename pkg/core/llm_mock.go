@@ -25,7 +25,7 @@ func (_m *MockLLM) EXPECT() *MockLLM_Expecter {
 }
 
 // Call provides a mock function with given fields: ctx, prompt, options
-func (_m *MockLLM) Call(ctx context.Context, prompt string, options ...llms.CallOption) (string, error) {
+func (_m *MockLLM) Call(ctx context.Context, prompt string, options ...llms.CallOption) (*Response, error) {
 	_va := make([]interface{}, len(options))
 	for _i := range options {
 		_va[_i] = options[_i]
@@ -39,15 +39,17 @@ func (_m *MockLLM) Call(ctx context.Context, prompt string, options ...llms.Call
 		panic("no return value specified for Call")
 	}
 
-	var r0 string
+	var r0 *Response
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, ...llms.CallOption) (string, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string, ...llms.CallOption) (*Response, error)); ok {
 		return rf(ctx, prompt, options...)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string, ...llms.CallOption) string); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string, ...llms.CallOption) *Response); ok {
 		r0 = rf(ctx, prompt, options...)
 	} else {
-		r0 = ret.Get(0).(string)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*Response)
+		}
 	}
 
 	if rf, ok := ret.Get(1).(func(context.Context, string, ...llms.CallOption) error); ok {
@@ -86,12 +88,12 @@ func (_c *MockLLM_Call_Call) Run(run func(ctx context.Context, prompt string, op
 	return _c
 }
 
-func (_c *MockLLM_Call_Call) Return(_a0 string, _a1 error) *MockLLM_Call_Call {
+func (_c *MockLLM_Call_Call) Return(_a0 *Response, _a1 error) *MockLLM_Call_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockLLM_Call_Call) RunAndReturn(run func(context.Context, string, ...llms.CallOption) (string, error)) *MockLLM_Call_Call {
+func (_c *MockLLM_Call_Call) RunAndReturn(run func(context.Context, string, ...llms.CallOption) (*Response, error)) *MockLLM_Call_Call {
 	_c.Call.Return(run)
 	return _c
 }

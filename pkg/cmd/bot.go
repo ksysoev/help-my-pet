@@ -60,11 +60,15 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 	}
 
-	// Initialize conversation repository
+	// Initialize repositories
 	conversationRepo := memory.NewConversationRepository()
+	var rateLimiter core.RateLimiter
+	if cfg.Bot.RateLimit != nil {
+		rateLimiter = memory.NewRateLimiter(cfg.Bot.RateLimit)
+	}
 
-	// Create AI service with conversation support
-	aiService := core.NewAIService(llmProvider, conversationRepo)
+	// Create AI service with conversation support and rate limiting
+	aiService := core.NewAIService(llmProvider, conversationRepo, rateLimiter)
 
 	serviceImpl, err := r.createService(&cfg.Bot, aiService)
 	if err != nil {

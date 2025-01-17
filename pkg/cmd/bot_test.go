@@ -9,6 +9,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/stretchr/testify/assert"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -67,19 +68,23 @@ func TestBotRunner_RunBot(t *testing.T) {
 				mockBotAPI := bot.NewMockBotAPI(t)
 				ch := make(chan tgbotapi.Update)
 				close(ch)
-				mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(ch))
-				mockBotAPI.On("StopReceivingUpdates").Return()
+				mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(ch)).Once()
+				mockBotAPI.On("StopReceivingUpdates").Return().Once()
 
 				runner := NewBotRunner()
 				runner.createService = func(cfg *bot.Config, aiSvc bot.AIProvider) (*bot.ServiceImpl, error) {
-					return &bot.ServiceImpl{
+					svc := &bot.ServiceImpl{
 						Bot:   mockBotAPI,
 						AISvc: aiSvc,
-					}, nil
+					}
+					return svc, nil
 				}
 				return runner.WithLLMProvider(mockLLMProvider)
 			},
-			cfg:     &Config{},
+			cfg: &Config{
+				Bot: bot.Config{},
+				AI:  anthropic.Config{},
+			},
 			wantErr: false,
 		},
 		{

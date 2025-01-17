@@ -2,13 +2,11 @@ package anthropic
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/tmc/langchaingo/llms"
 )
 
 func TestNew(t *testing.T) {
@@ -61,54 +59,82 @@ func TestProvider_Call(t *testing.T) {
 		MaxTokens: 1000,
 	}
 
-	tests := []struct {
+	type testCase struct {
+		wantResult *core.Response
+		setupMock  func(t *testing.T) *Provider
 		name       string
 		prompt     string
-		setupMock  func(t *testing.T) *Provider
-		wantResult string
 		wantErr    bool
-	}{
+	}
+
+	tests := []testCase{
 		{
-			name:   "successful call",
-			prompt: "test prompt",
+			wantErr: false,
+			name:    "successful call with valid JSON response",
+			prompt:  "test prompt",
+			wantResult: &core.Response{
+				Text: "test response",
+				Questions: []core.Question{
+					{Text: "follow up?"},
+				},
+			},
 			setupMock: func(t *testing.T) *Provider {
-				mockLLM := core.NewMockLLM(t)
-				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
-				mockLLM.EXPECT().
-					Call(ctx, expectedPrompt,
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true }),
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true })).
-					Return("test response", nil)
+				mockModel := NewMockModel(t)
+				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
+					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
+
+				parser, err := NewResponseParser()
+				assert.NoError(t, err)
 
 				return &Provider{
-					llm:    mockLLM,
+					llm:    mockModel,
 					model:  config.Model,
 					config: config,
+					parser: parser,
 				}
 			},
-			wantResult: "test response",
-			wantErr:    false,
 		},
 		{
-			name:   "error from LLM",
-			prompt: "test prompt",
+			wantErr:    true,
+			name:       "invalid JSON response from LLM",
+			prompt:     "test prompt",
+			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
-				mockLLM := core.NewMockLLM(t)
-				expectedPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, "test prompt")
-				mockLLM.EXPECT().
-					Call(ctx, expectedPrompt,
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true }),
-						mock.MatchedBy(func(opt llms.CallOption) bool { return true })).
-					Return("", assert.AnError)
+				mockModel := NewMockModel(t)
+				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
+					Return("test response", nil)
+
+				parser, err := NewResponseParser()
+				assert.NoError(t, err)
 
 				return &Provider{
-					llm:    mockLLM,
+					llm:    mockModel,
 					model:  config.Model,
 					config: config,
+					parser: parser,
 				}
 			},
-			wantResult: "",
+		},
+		{
 			wantErr:    true,
+			name:       "error from LLM",
+			prompt:     "test prompt",
+			wantResult: nil,
+			setupMock: func(t *testing.T) *Provider {
+				mockModel := NewMockModel(t)
+				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
+					Return("", assert.AnError)
+
+				parser, err := NewResponseParser()
+				assert.NoError(t, err)
+
+				return &Provider{
+					llm:    mockModel,
+					model:  config.Model,
+					config: config,
+					parser: parser,
+				}
+			},
 		},
 	}
 
@@ -119,7 +145,7 @@ func TestProvider_Call(t *testing.T) {
 
 			if tt.wantErr {
 				assert.Error(t, err)
-				assert.Empty(t, result)
+				assert.Nil(t, result)
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.wantResult, result)

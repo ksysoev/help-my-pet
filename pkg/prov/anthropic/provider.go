@@ -3,6 +3,8 @@ package anthropic
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"strings"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/tmc/langchaingo/llms"
@@ -18,7 +20,7 @@ const systemPrompt = `You are a helpful veterinary AI assistant. You are only al
 
 Core Guidelines:
 1. Never make assumptions or guess when information is insufficient:
-   - Always ask specific follow-up questions to gather necessary details
+   - Ask specific follow-up questions to gather necessary details
    - For health issues, ask about symptoms, duration, pet's age, breed, and relevant history
    - For behavior questions, ask about the context, frequency, and environmental factors
    - For diet questions, ask about the pet's age, weight, activity level, and any health conditions
@@ -32,12 +34,9 @@ Core Guidelines:
    - When discussing health topics, emphasize the importance of professional veterinary consultation
    - Do not attempt to diagnose without sufficient information
 
-4. Information Gathering:
-   - Break down complex questions into specific follow-up queries
-   - Ensure you have all relevant details before providing advice
-   - If the user's response lacks critical information, continue asking clarifying questions
+{format_instructions}
 
-Please provide accurate, helpful, and compassionate advice while following these guidelines strictly. Remember: it's better to ask more questions than to make assumptions.`
+Please provide accurate, helpful, and compassionate advice while following these guidelines strictly.`
 
 type Config struct {
 	APIKey    string `mapstructure:"api_key"`
@@ -46,7 +45,8 @@ type Config struct {
 }
 
 type Provider struct {
-	llm    core.LLM
+	llm    Model
+	parser *ResponseParser
 	model  string
 	config Config
 }
@@ -57,20 +57,41 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("failed to initialize Anthropic LLM: %w", err)
 	}
 
+	parser, err := NewResponseParser()
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize response parser: %w", err)
+	}
+
 	return &Provider{
 		llm:    llm,
 		model:  cfg.Model,
 		config: cfg,
+		parser: parser,
 	}, nil
 }
 
-func (p *Provider) Call(ctx context.Context, prompt string, options ...llms.CallOption) (string, error) {
+func (p *Provider) Call(ctx context.Context, prompt string, options ...llms.CallOption) (*core.Response, error) {
 	defaultOptions := []llms.CallOption{
 		llms.WithModel(p.model),
 		llms.WithMaxTokens(p.config.MaxTokens),
 	}
 	options = append(defaultOptions, options...)
 
-	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", systemPrompt, prompt)
-	return p.llm.Call(ctx, fullPrompt, options...)
+	// Replace format instructions placeholder with actual instructions
+	formattedSystemPrompt := strings.Replace(systemPrompt, "{format_instructions}", p.parser.FormatInstructions(), 1)
+	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", formattedSystemPrompt, prompt)
+
+	response, err := p.llm.Call(ctx, fullPrompt, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to call Anthropic LLM: %w", err)
+	}
+
+	structuredResponse, err := p.parser.Parse(response)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
+	}
+
+	slog.Debug("Anthropic LLM response", slog.Any("response", structuredResponse))
+
+	return structuredResponse, nil
 }

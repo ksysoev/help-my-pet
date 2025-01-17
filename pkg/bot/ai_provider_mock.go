@@ -7,6 +7,7 @@ package bot
 import (
 	context "context"
 
+	core "github.com/ksysoev/help-my-pet/pkg/core"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -23,27 +24,29 @@ func (_m *MockAIProvider) EXPECT() *MockAIProvider_Expecter {
 	return &MockAIProvider_Expecter{mock: &_m.Mock}
 }
 
-// GetPetAdvice provides a mock function with given fields: ctx, chatID, question
-func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, chatID string, question string) (string, error) {
-	ret := _m.Called(ctx, chatID, question)
+// GetPetAdvice provides a mock function with given fields: ctx, request
+func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, request *core.PetAdviceRequest) (*core.PetAdviceResponse, error) {
+	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetPetAdvice")
 	}
 
-	var r0 string
+	var r0 *core.PetAdviceResponse
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) (string, error)); ok {
-		return rf(ctx, chatID, question)
+	if rf, ok := ret.Get(0).(func(context.Context, *core.PetAdviceRequest) (*core.PetAdviceResponse, error)); ok {
+		return rf(ctx, request)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) string); ok {
-		r0 = rf(ctx, chatID, question)
+	if rf, ok := ret.Get(0).(func(context.Context, *core.PetAdviceRequest) *core.PetAdviceResponse); ok {
+		r0 = rf(ctx, request)
 	} else {
-		r0 = ret.Get(0).(string)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*core.PetAdviceResponse)
+		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
-		r1 = rf(ctx, chatID, question)
+	if rf, ok := ret.Get(1).(func(context.Context, *core.PetAdviceRequest) error); ok {
+		r1 = rf(ctx, request)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -58,25 +61,24 @@ type MockAIProvider_GetPetAdvice_Call struct {
 
 // GetPetAdvice is a helper method to define mock.On call
 //   - ctx context.Context
-//   - chatID string
-//   - question string
-func (_e *MockAIProvider_Expecter) GetPetAdvice(ctx interface{}, chatID interface{}, question interface{}) *MockAIProvider_GetPetAdvice_Call {
-	return &MockAIProvider_GetPetAdvice_Call{Call: _e.mock.On("GetPetAdvice", ctx, chatID, question)}
+//   - request *core.PetAdviceRequest
+func (_e *MockAIProvider_Expecter) GetPetAdvice(ctx interface{}, request interface{}) *MockAIProvider_GetPetAdvice_Call {
+	return &MockAIProvider_GetPetAdvice_Call{Call: _e.mock.On("GetPetAdvice", ctx, request)}
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) Run(run func(ctx context.Context, chatID string, question string)) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_GetPetAdvice_Call) Run(run func(ctx context.Context, request *core.PetAdviceRequest)) *MockAIProvider_GetPetAdvice_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(string), args[2].(string))
+		run(args[0].(context.Context), args[1].(*core.PetAdviceRequest))
 	})
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) Return(_a0 string, _a1 error) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_GetPetAdvice_Call) Return(_a0 *core.PetAdviceResponse, _a1 error) *MockAIProvider_GetPetAdvice_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) RunAndReturn(run func(context.Context, string, string) (string, error)) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_GetPetAdvice_Call) RunAndReturn(run func(context.Context, *core.PetAdviceRequest) (*core.PetAdviceResponse, error)) *MockAIProvider_GetPetAdvice_Call {
 	_c.Call.Return(run)
 	return _c
 }
