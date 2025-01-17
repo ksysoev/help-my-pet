@@ -88,15 +88,10 @@ func (p *Provider) Call(ctx context.Context, prompt string, options ...llms.Call
 
 	structuredResponse, err := p.parser.Parse(response)
 	if err != nil {
-		slog.Error("failed to parse response", slog.Any("error", err), slog.String("response", response))
-		// If parsing fails, create a simple response with just the text
-		return &core.Response{
-			Text:      response,
-			Questions: []core.Question{},
-		}, nil
+		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
 	}
 
-	slog.Info("Anthropic LLM response", slog.Any("response", structuredResponse))
+	slog.Debug("Anthropic LLM response", slog.Any("response", structuredResponse))
 
 	return structuredResponse, nil
 }

@@ -95,13 +95,10 @@ func TestProvider_Call(t *testing.T) {
 			},
 		},
 		{
-			wantErr: false,
-			name:    "successful call with non-JSON response",
-			prompt:  "test prompt",
-			wantResult: &core.Response{
-				Text:      "test response",
-				Questions: []core.Question{},
-			},
+			wantErr:    true,
+			name:       "invalid JSON response from LLM",
+			prompt:     "test prompt",
+			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
 				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).

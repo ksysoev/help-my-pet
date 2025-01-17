@@ -2,11 +2,18 @@ package anthropic
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"log/slog"
 	"strings"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/tmc/langchaingo/outputparser"
+)
+
+var (
+	ErrInvalidJSON = errors.New("invalid JSON format in response")
+	ErrEmptyText   = errors.New("response text is empty")
 )
 
 // ResponseParser is a custom output parser for our Response type
@@ -67,13 +74,12 @@ func (p *ResponseParser) Parse(text string) (*core.Response, error) {
 
 	if err := json.Unmarshal([]byte(text), &response); err != nil {
 		slog.Error("failed to parse response", slog.Any("error", err), slog.String("response", text))
-
-		return &core.Response{
-			Text:      text,
-			Questions: []core.Question{},
-		}, nil
+		return nil, fmt.Errorf("%w: %v", ErrInvalidJSON, err)
 	}
 
-	// If inner parsing fails or text is not JSON, return the outer response
+	if response.Text == "" {
+		return nil, ErrEmptyText
+	}
+
 	return &response, nil
 }

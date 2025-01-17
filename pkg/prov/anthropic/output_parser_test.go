@@ -47,13 +47,10 @@ func TestResponseParser_Parse(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:  "invalid JSON response",
-			input: "This is not JSON",
-			expected: &core.Response{
-				Text:      "This is not JSON",
-				Questions: []core.Question{},
-			},
-			wantErr: false,
+			name:     "invalid JSON response",
+			input:    "This is not JSON",
+			expected: nil,
+			wantErr:  true,
 		},
 		{
 			name: "empty questions array",
