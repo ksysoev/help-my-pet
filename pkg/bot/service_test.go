@@ -13,6 +13,68 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+func TestService_sendRateLimitMessage(t *testing.T) {
+	tests := []struct {
+		name          string
+		langCode      string
+		mockSendError bool
+	}{
+		{
+			name:          "successful rate limit message - en",
+			langCode:      "en",
+			mockSendError: false,
+		},
+		{
+			name:          "successful rate limit message - ru",
+			langCode:      "ru",
+			mockSendError: false,
+		},
+		{
+			name:          "failed rate limit message - en",
+			langCode:      "en",
+			mockSendError: true,
+		},
+		{
+			name:          "failed rate limit message - ru",
+			langCode:      "ru",
+			mockSendError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockBot := NewMockBotAPI(t)
+			messages := &i18n.Config{
+				Languages: map[string]i18n.Messages{
+					"en": {
+						RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+					},
+					"ru": {
+						RateLimit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
+					},
+				},
+			}
+
+			svc := &ServiceImpl{
+				Bot:      mockBot,
+				Messages: messages,
+			}
+
+			var sendErr error
+			if tt.mockSendError {
+				sendErr = fmt.Errorf("send error")
+			}
+
+			msg := tgbotapi.NewMessage(123, messages.GetMessage(tt.langCode, i18n.RateLimitMessage))
+			mockBot.EXPECT().
+				Send(msg).
+				Return(tgbotapi.Message{}, sendErr)
+
+			svc.sendRateLimitMessage(123, tt.langCode)
+		})
+	}
+}
+
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
 		aiErr         error
@@ -60,6 +122,25 @@ func TestService_handleMessage(t *testing.T) {
 			expectError: true,
 			userID:      123,
 			langCode:    "es",
+		},
+		{
+			name:        "rate limit error",
+			message:     "What food is good for cats?",
+			aiResponse:  core.NewPetAdviceResponse("", []string{}),
+			aiErr:       core.ErrRateLimit,
+			expectError: true,
+			userID:      123,
+			langCode:    "en",
+		},
+		{
+			name:          "rate limit error with send error",
+			message:       "What food is good for cats?",
+			aiResponse:    core.NewPetAdviceResponse("", []string{}),
+			aiErr:         core.ErrRateLimit,
+			expectError:   true,
+			mockSendError: true,
+			userID:        123,
+			langCode:      "ru",
 		},
 		{
 			name:          "send error",
@@ -190,9 +271,15 @@ func TestService_handleMessage(t *testing.T) {
 					Return(tgbotapi.Message{}, sendErr)
 
 				if tt.aiErr != nil {
-					mockBot.EXPECT().
-						Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.ErrorMessage))).
-						Return(tgbotapi.Message{}, sendErr)
+					if tt.aiErr == core.ErrRateLimit {
+						mockBot.EXPECT().
+							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.RateLimitMessage))).
+							Return(tgbotapi.Message{}, sendErr)
+					} else {
+						mockBot.EXPECT().
+							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.ErrorMessage))).
+							Return(tgbotapi.Message{}, sendErr)
+					}
 				} else {
 					responseMsg := tgbotapi.NewMessage(int64(123), tt.aiResponse.Message)
 					responseMsg.ReplyToMessageID = 456
