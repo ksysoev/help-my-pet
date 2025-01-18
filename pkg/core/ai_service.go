@@ -27,21 +27,6 @@ func NewAIService(llm LLM, repo ConversationRepository, rateLimiter RateLimiter)
 	}
 }
 
-func (s *AIService) Start(ctx context.Context) (string, error) {
-	return `Welcome to Help My Pet Bot! 🐾
-
-I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:
-
-• Pet health and behavior questions
-• Diet and nutrition advice
-• Training tips and techniques
-• General pet care guidance
-
-Simply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.
-
-To get started, just ask me any question about your pet!`, nil
-}
-
 func (s *AIService) GetPetAdvice(ctx context.Context, request *PetAdviceRequest) (*PetAdviceResponse, error) {
 	slog.Info("getting pet advice", "user_id", request.UserID, "chat_id", request.ChatID, "input", request.Message)
 

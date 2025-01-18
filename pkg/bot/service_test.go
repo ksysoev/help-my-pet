@@ -92,17 +92,6 @@ func TestService_handleMessage(t *testing.T) {
 			langCode:    "de",
 		},
 		{
-			name:          "start command with error",
-			message:       "/start",
-			aiResponse:    core.NewPetAdviceResponse("", []string{}),
-			aiErr:         fmt.Errorf("start error"),
-			expectError:   true,
-			isStart:       true,
-			mockSendError: false,
-			userID:        123,
-			langCode:      "en",
-		},
-		{
 			name:        "message without From field",
 			message:     "What food is good for cats?",
 			aiResponse:  core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
@@ -182,20 +171,10 @@ func TestService_handleMessage(t *testing.T) {
 			}
 
 			if tt.isStart {
-				mockAI.EXPECT().
-					Start(context.Background()).
-					Return(tt.aiResponse.Message, tt.aiErr)
-
-				if tt.aiErr != nil {
-					mockBot.EXPECT().
-						Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.ErrorMessage))).
-						Return(tgbotapi.Message{}, sendErr)
-				} else {
-					msg := tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.StartMessage))
-					mockBot.EXPECT().
-						Send(msg).
-						Return(tgbotapi.Message{}, sendErr)
-				}
+				msg := tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.StartMessage))
+				mockBot.EXPECT().
+					Send(msg).
+					Return(tgbotapi.Message{}, sendErr)
 			} else {
 				expectedRequest := &core.PetAdviceRequest{
 					UserID:  "123",

@@ -13,7 +13,6 @@ import (
 
 type AIProvider interface {
 	GetPetAdvice(ctx context.Context, request *core.PetAdviceRequest) (*core.PetAdviceResponse, error)
-	Start(ctx context.Context) (string, error)
 }
 
 type ServiceImpl struct {
@@ -89,16 +88,6 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 
 	// Handle /start command
 	if message.Text == "/start" {
-		_, err := s.AISvc.Start(ctx)
-		if err != nil {
-			slog.Error("Failed to get start message",
-				slog.Any("error", err),
-				slog.Int64("chat_id", message.Chat.ID),
-			)
-			s.sendErrorMessage(message.Chat.ID, message.From.LanguageCode)
-			return
-		}
-
 		msg := tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.StartMessage))
 		if _, err := s.Bot.Send(msg); err != nil {
 			slog.Error("Failed to send start message",
