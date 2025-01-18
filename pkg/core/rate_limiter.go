@@ -5,12 +5,6 @@ import (
 	"time"
 )
 
-// RateLimitConfig holds configuration for rate limiting
-type RateLicmitConfig struct {
-	Whitelist   []string
-	HourlyLimit int
-}
-
 // RateLimiter defines the interface for rate limiting functionality
 type RateLimiter interface {
 	// IsNewQuestionAllowed checks if a user is allowed to ask a new question
@@ -23,6 +17,8 @@ type RateLimiter interface {
 type RateLimitRepository interface {
 	// GetUserRequests gets the number of requests a user has made within the last hour
 	GetUserRequests(ctx context.Context, userID string, since time.Time) (int, error)
+	// GetGlobalRequests gets the total number of requests made by all users since the given time
+	GetGlobalRequests(ctx context.Context, since time.Time) (int, error)
 	// AddUserRequest records a new request for a user
 	AddUserRequest(ctx context.Context, userID string, timestamp time.Time) error
 	// IsWhitelisted checks if a user is whitelisted (not subject to rate limiting)

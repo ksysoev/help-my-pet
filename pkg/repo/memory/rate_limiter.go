@@ -58,6 +58,23 @@ func (r *RateLimiter) GetUserRequests(ctx context.Context, userID string, since 
 	return count, nil
 }
 
+// GetGlobalRequests gets the total number of requests made by all users since the given time
+func (r *RateLimiter) GetGlobalRequests(ctx context.Context, since time.Time) (int, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	count := 0
+	for _, userReqs := range r.requests {
+		for _, ts := range userReqs.Timestamps {
+			if ts.After(since) {
+				count++
+			}
+		}
+	}
+
+	return count, nil
+}
+
 // AddUserRequest records a new request for a user
 func (r *RateLimiter) AddUserRequest(ctx context.Context, userID string, timestamp time.Time) error {
 	r.mu.Lock()
@@ -93,13 +110,27 @@ func (r *RateLimiter) IsNewQuestionAllowed(ctx context.Context, userID string) (
 		return true, nil
 	}
 
+	// Check hourly limit
 	hourAgo := time.Now().Add(-time.Hour)
 	count, err := r.GetUserRequests(ctx, userID, hourAgo)
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("failed to get user requests: %w", err)
+	}
+	if count >= r.config.HourlyLimit {
+		return false, core.ErrRateLimit
 	}
 
-	return count < r.config.HourlyLimit, nil
+	// Check daily global limit
+	dayStart := time.Now().Truncate(24 * time.Hour)
+	globalCount, err := r.GetGlobalRequests(ctx, dayStart)
+	if err != nil {
+		return false, fmt.Errorf("failed to get global requests: %w", err)
+	}
+	if globalCount >= r.config.DailyLimit {
+		return false, core.ErrGlobalLimit
+	}
+
+	return true, nil
 }
 
 // RecordNewQuestion records that a user has asked a new question
