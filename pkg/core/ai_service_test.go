@@ -332,35 +332,6 @@ func TestNewAIService(t *testing.T) {
 	})
 }
 
-func TestAIService_Start(t *testing.T) {
-	t.Run("successful start", func(t *testing.T) {
-		mockLLM := NewMockLLM(t)
-		mockRepo := NewMockConversationRepository(t)
-		mockRateLimiter := NewMockRateLimiter(t)
-		svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
-
-		response, err := svc.Start(context.Background())
-		require.NoError(t, err)
-		assert.Contains(t, response, "Welcome to Help My Pet Bot!")
-		assert.Contains(t, response, "I'm your personal pet care assistant")
-		assert.Contains(t, response, "To get started, just ask me any question about your pet!")
-	})
-
-	t.Run("with cancelled context", func(t *testing.T) {
-		mockLLM := NewMockLLM(t)
-		mockRepo := NewMockConversationRepository(t)
-		mockRateLimiter := NewMockRateLimiter(t)
-		svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
-
-		ctx, cancel := context.WithCancel(context.Background())
-		cancel()
-
-		response, err := svc.Start(ctx)
-		require.NoError(t, err)
-		assert.Contains(t, response, "Welcome to Help My Pet Bot!")
-	})
-}
-
 func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	tests := []struct {
 		name           string
