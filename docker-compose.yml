@@ -1,0 +1,10 @@
+services:
+  help-my-pet:
+    container_name: help-my-pet
+    image: "ghcr.io/ksysoev/help-my-pet:main"
+    restart: unless-stopped
+    volumes:
+      - ./config.yaml:/config.yaml:ro
+    environment:
+      - AI_API_KEY=${AI_API_KEY:-} # Anthropic API key
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN:-} # Telegram bot token
