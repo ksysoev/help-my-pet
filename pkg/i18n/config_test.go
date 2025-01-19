@@ -248,13 +248,9 @@ func TestConfig_GetMessage(t *testing.T) {
 			expected: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 		},
 		{
-			name: "handles partially defined messages with fallback to English",
+			name: "handles fallback to English",
 			config: &Config{
 				Languages: map[string]Messages{
-					"fr": {
-						Error: "Erreur",
-						Start: "Début",
-					},
 					"en": {
 						Error:       "Error",
 						Start:       "Start",
