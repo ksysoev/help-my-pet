@@ -6,8 +6,9 @@ ai:
 bot:
   telegram_token: "" # Set your Telegram bot token here
   rate_limit:
-    hourly_limit: 5  # Maximum number of requests per hour per user
-    daily_limit: 15  # Maximum number of requests per day per user
+    user_hourly_limit: 5  # Maximum number of requests per hour per user
+    user_daily_limit: 15  # Maximum number of requests per day per user
+    global_daily_limit: 1000  # Maximum total requests per day across all users
     whitelist_ids: [] # List of user IDs exempt from rate limiting
   messages:
     languages:
@@ -27,6 +28,7 @@ bot:
 
           To get started, just ask me any question about your pet!
         rate_limit: "You have reached the maximum number of requests per hour. Please try again later."
+        global_limit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed."
       
       ru:
         error: "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже."
@@ -44,6 +46,7 @@ bot:
 
           Чтобы начать, просто задайте любой вопрос о вашем питомце!
         rate_limit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже."
+        global_limit: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится."
 
       es:
         error: "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde."
@@ -61,6 +64,7 @@ bot:
 
           ¡Para empezar, solo hazme cualquier pregunta sobre tu mascota!
         rate_limit: "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde."
+        global_limit: "Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vuelve mañana cuando nuestro presupuesto se haya renovado."
 
       fr:
         error: "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard."
@@ -78,6 +82,7 @@ bot:
 
           Pour commencer, posez-moi simplement une question sur votre animal !
         rate_limit: "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard."
+        global_limit: "Nous avons atteint notre limite quotidienne de demandes. Veuillez revenir demain lorsque notre budget sera renouvelé."
 
       de:
         error: "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
@@ -95,6 +100,7 @@ bot:
 
           Um zu beginnen, stellen Sie mir einfach eine Frage über Ihr Haustier!
         rate_limit: "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut."
+        global_limit: "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde."
 
       ko:
         error: "죄송합니다. 요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도해 주세요."
@@ -112,6 +118,7 @@ bot:
 
           시작하려면 반려동물에 대한 질문을 해주세요!
         rate_limit: "시간당 최대 요청 수에 도달했습니다. 나중에 다시 시도해 주세요."
+        global_limit: "일일 요청 한도에 도달했습니다. 내일 예산이 갱신되면 다시 방문해 주세요."
 
       tr:
         error: "Üzgünüm, isteğinizi işlerken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
@@ -129,6 +136,7 @@ bot:
 
           Başlamak için, evcil hayvanınız hakkında herhangi bir soru sorun!
         rate_limit: "Saatlik maksimum istek sayısına ulaştınız. Lütfen daha sonra tekrar deneyin."
+        global_limit: "Günlük istek limitimize ulaştık. Lütfen bütçemiz yenilendiğinde yarın tekrar gelin."
 
       it:
         error: "Mi dispiace, ho riscontrato un errore durante l'elaborazione della tua richiesta. Per favore riprova più tardi."
@@ -146,6 +154,7 @@ bot:
 
           Per iniziare, fammi qualsiasi domanda sul tuo animale domestico!
         rate_limit: "Hai raggiunto il numero massimo di richieste per ora. Per favore riprova più tardi."
+        global_limit: "Abbiamo raggiunto il nostro limite giornaliero di richieste. Per favore torna domani quando il nostro budget sarà rinnovato."
 
       pl:
         error: "Przepraszam, wystąpił błąd podczas przetwarzania Twojego zapytania. Spróbuj ponownie później."
@@ -163,6 +172,7 @@ bot:
 
           Aby rozpocząć, zadaj mi dowolne pytanie o Twoje zwierzę!
         rate_limit: "Osiągnąłeś maksymalną liczbę zapytań na godzinę. Spróbuj ponownie później."
+        global_limit: "Osiągnęliśmy dzienny limit zapytań. Prosimy wrócić jutro, gdy nasz budżet zostanie odnowiony."
 
       uk:
         error: "Вибачте, під час обробки вашого запиту сталася помилка. Будь ласка, спробуйте пізніше."
@@ -180,6 +190,7 @@ bot:
 
           Щоб почати, просто задайте будь-яке питання про вашу тварину!
         rate_limit: "Ви досягли максимальної кількості запитів на годину. Будь ласка, спробуйте пізніше."
+        global_limit: "Ми досягли денного ліміту запитів. Будь ласка, поверніться завтра, коли наш бюджет оновиться."
 
       be:
         error: "Прабачце, падчас апрацоўкі вашага запыту адбылася памылка. Калі ласка, паспрабуйце пазней."
@@ -197,6 +208,7 @@ bot:
 
           Каб пачаць, проста задайце любое пытанне пра вашу жывёлу!
         rate_limit: "Вы дасягнулі максімальнай колькасці запытаў на гадзіну. Калі ласка, паспрабуйце пазней."
+        global_limit: "Мы дасягнулі дзённага ліміту запытаў. Калі ласка, вярніцеся заўтра, калі наш бюджэт абновіцца."
 
       nl:
         error: "Sorry, er is een fout opgetreden bij het verwerken van uw verzoek. Probeer het later opnieuw."
@@ -214,6 +226,7 @@ bot:
 
           Om te beginnen, stel me gewoon een vraag over je huisdier!
         rate_limit: "Je hebt het maximale aantal verzoeken per uur bereikt. Probeer het later opnieuw."
+        global_limit: "We hebben onze dagelijkse aanvraag limiet bereikt. Kom morgen terug als ons budget is vernieuwd."
 
       ms:
         error: "Maaf, saya mengalami ralat semasa memproses permintaan anda. Sila cuba lagi kemudian."
@@ -231,6 +244,7 @@ bot:
 
           Untuk bermula, tanya saya apa-apa soalan tentang haiwan kesayangan anda!
         rate_limit: "Anda telah mencapai had maksimum permintaan sejam. Sila cuba lagi kemudian."
+        global_limit: "Kami telah mencapai had permintaan harian. Sila kembali esok apabila bajet kami diperbaharui."
 
       pt:
         error: "Desculpe, encontrei um erro ao processar seu pedido. Por favor, tente novamente mais tarde."
@@ -248,6 +262,7 @@ bot:
 
           Para começar, faça-me qualquer pergunta sobre seu animal de estimação!
         rate_limit: "Você atingiu o número máximo de solicitações por hora. Por favor, tente novamente mais tarde."
+        global_limit: "Atingimos nosso limite diário de solicitações. Por favor, volte amanhã quando nosso orçamento for renovado."
 
       ca:
         error: "Ho sento, he trobat un error en processar la teva sol·licitud. Si us plau, torna-ho a provar més tard."
@@ -265,3 +280,4 @@ bot:
 
           Per començar, fes-me qualsevol pregunta sobre la teva mascota!
         rate_limit: "Has arribat al nombre màxim de sol·licituds per hora. Si us plau, torna-ho a provar més tard."
+        global_limit: "Hem arribat al nostre límit diari de sol·licituds. Si us plau, torna demà quan el nostre pressupost s'hagi renovat."

@@ -107,25 +107,32 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 		)
 	}
 
-	// Get AI response
-	userID := message.Chat.ID
-	if message.From != nil {
-		userID = message.From.ID
-	}
 	request := &core.PetAdviceRequest{
-		UserID:  fmt.Sprintf("%d", userID),
-		ChatID:  fmt.Sprintf("%d", userID),
+		ChatID:  fmt.Sprintf("%d", message.Chat.ID),
 		Message: message.Text,
 	}
+
+	if message.From == nil {
+		slog.Warn("Message from is nil",
+			slog.Any("message", message),
+		)
+		return
+	}
+
+	request.UserID = fmt.Sprintf("%d", message.From.ID)
+
 	response, err := s.AISvc.GetPetAdvice(ctx, request)
 	if err != nil {
 		slog.Error("Failed to get AI response",
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),
 		)
-		if errors.Is(err, core.ErrRateLimit) {
+		switch {
+		case errors.Is(err, core.ErrRateLimit):
 			s.sendRateLimitMessage(message.Chat.ID, message.From.LanguageCode)
-		} else {
+		case errors.Is(err, core.ErrGlobalLimit):
+			s.sendGlobalLimitMessage(message.Chat.ID, message.From.LanguageCode)
+		default:
 			s.sendErrorMessage(message.Chat.ID, message.From.LanguageCode)
 		}
 		return
@@ -178,6 +185,16 @@ func (s *ServiceImpl) sendRateLimitMessage(chatID int64, lang string) {
 	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.RateLimitMessage))
 	if _, err := s.Bot.Send(msg); err != nil {
 		slog.Error("Failed to send rate limit message",
+			slog.Any("error", err),
+			slog.Int64("chat_id", chatID),
+		)
+	}
+}
+
+func (s *ServiceImpl) sendGlobalLimitMessage(chatID int64, lang string) {
+	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.GlobalLimitMessage))
+	if _, err := s.Bot.Send(msg); err != nil {
+		slog.Error("Failed to send global limit message",
 			slog.Any("error", err),
 			slog.Int64("chat_id", chatID),
 		)

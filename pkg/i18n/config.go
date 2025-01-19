@@ -4,9 +4,10 @@ package i18n
 type Message string
 
 const (
-	ErrorMessage     Message = "error"
-	StartMessage     Message = "start"
-	RateLimitMessage Message = "rate_limit"
+	ErrorMessage       Message = "error"
+	StartMessage       Message = "start"
+	RateLimitMessage   Message = "rate_limit"
+	GlobalLimitMessage Message = "global_limit"
 )
 
 // Config holds translations for all supported languages
@@ -16,9 +17,10 @@ type Config struct {
 
 // Messages holds translations for a specific language
 type Messages struct {
-	Error     string `mapstructure:"error"`
-	Start     string `mapstructure:"start"`
-	RateLimit string `mapstructure:"rate_limit"`
+	Error       string `mapstructure:"error"`
+	Start       string `mapstructure:"start"`
+	RateLimit   string `mapstructure:"rate_limit"`
+	GlobalLimit string `mapstructure:"global_limit"`
 }
 
 // GetMessage returns a translated message for the given language and message type
@@ -35,6 +37,8 @@ func (c *Config) GetMessage(lang string, msgType Message) string {
 			return messages.Start
 		case RateLimitMessage:
 			return messages.RateLimit
+		case GlobalLimitMessage:
+			return messages.GlobalLimit
 		}
 	}
 
@@ -47,6 +51,8 @@ func (c *Config) GetMessage(lang string, msgType Message) string {
 			return messages.Start
 		case RateLimitMessage:
 			return messages.RateLimit
+		case GlobalLimitMessage:
+			return messages.GlobalLimit
 		}
 	}
 
@@ -58,6 +64,8 @@ func (c *Config) GetMessage(lang string, msgType Message) string {
 		return "Welcome to Help My Pet Bot! How can I help you today?"
 	case RateLimitMessage:
 		return "You have reached the maximum number of requests per hour. Please try again later."
+	case GlobalLimitMessage:
+		return "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed."
 	default:
 		return "An error occurred."
 	}

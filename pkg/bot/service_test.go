@@ -13,6 +13,68 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+func TestService_sendGlobalLimitMessage(t *testing.T) {
+	tests := []struct {
+		name          string
+		langCode      string
+		mockSendError bool
+	}{
+		{
+			name:          "successful global limit message - en",
+			langCode:      "en",
+			mockSendError: false,
+		},
+		{
+			name:          "successful global limit message - ru",
+			langCode:      "ru",
+			mockSendError: false,
+		},
+		{
+			name:          "failed global limit message - en",
+			langCode:      "en",
+			mockSendError: true,
+		},
+		{
+			name:          "failed global limit message - ru",
+			langCode:      "ru",
+			mockSendError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockBot := NewMockBotAPI(t)
+			messages := &i18n.Config{
+				Languages: map[string]i18n.Messages{
+					"en": {
+						GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+					},
+					"ru": {
+						GlobalLimit: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
+					},
+				},
+			}
+
+			svc := &ServiceImpl{
+				Bot:      mockBot,
+				Messages: messages,
+			}
+
+			var sendErr error
+			if tt.mockSendError {
+				sendErr = fmt.Errorf("send error")
+			}
+
+			msg := tgbotapi.NewMessage(123, messages.GetMessage(tt.langCode, i18n.GlobalLimitMessage))
+			mockBot.EXPECT().
+				Send(msg).
+				Return(tgbotapi.Message{}, sendErr)
+
+			svc.sendGlobalLimitMessage(123, tt.langCode)
+		})
+	}
+}
+
 func TestService_sendRateLimitMessage(t *testing.T) {
 	tests := []struct {
 		name          string
@@ -133,10 +195,29 @@ func TestService_handleMessage(t *testing.T) {
 			langCode:    "en",
 		},
 		{
+			name:        "global limit error",
+			message:     "What food is good for cats?",
+			aiResponse:  core.NewPetAdviceResponse("", []string{}),
+			aiErr:       core.ErrGlobalLimit,
+			expectError: true,
+			userID:      123,
+			langCode:    "en",
+		},
+		{
 			name:          "rate limit error with send error",
 			message:       "What food is good for cats?",
 			aiResponse:    core.NewPetAdviceResponse("", []string{}),
 			aiErr:         core.ErrRateLimit,
+			expectError:   true,
+			mockSendError: true,
+			userID:        123,
+			langCode:      "ru",
+		},
+		{
+			name:          "global limit error with send error",
+			message:       "What food is good for cats?",
+			aiResponse:    core.NewPetAdviceResponse("", []string{}),
+			aiErr:         core.ErrGlobalLimit,
 			expectError:   true,
 			mockSendError: true,
 			userID:        123,
@@ -175,7 +256,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:        "message without From field",
 			message:     "What food is good for cats?",
-			aiResponse:  core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
+			aiResponse:  nil,
 			aiErr:       nil,
 			expectError: false,
 			userID:      0,
@@ -196,29 +277,34 @@ func TestService_handleMessage(t *testing.T) {
 			messages := &i18n.Config{
 				Languages: map[string]i18n.Messages{
 					"en": {
-						Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
-						Start:     "Welcome to Help My Pet Bot!",
-						RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+						Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
+						Start:       "Welcome to Help My Pet Bot!",
+						RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
+						GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 					},
 					"ru": {
-						Error:     "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.",
-						Start:     "Добро пожаловать в Help My Pet Bot!",
-						RateLimit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
+						Error:       "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.",
+						Start:       "Добро пожаловать в Help My Pet Bot!",
+						RateLimit:   "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
+						GlobalLimit: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
 					},
 					"es": {
-						Error:     "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde.",
-						Start:     "¡Bienvenido a Help My Pet Bot!",
-						RateLimit: "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde.",
+						Error:       "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde.",
+						Start:       "¡Bienvenido a Help My Pet Bot!",
+						RateLimit:   "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde.",
+						GlobalLimit: "Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vuelve mañana cuando nuestro presupuesto se haya renovado.",
 					},
 					"fr": {
-						Error:     "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard.",
-						Start:     "Bienvenue sur Help My Pet Bot !",
-						RateLimit: "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard.",
+						Error:       "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard.",
+						Start:       "Bienvenue sur Help My Pet Bot !",
+						RateLimit:   "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard.",
+						GlobalLimit: "Nous avons atteint notre limite quotidienne de demandes. Veuillez revenir demain lorsque notre budget sera renouvelé.",
 					},
 					"de": {
-						Error:     "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
-						Start:     "Willkommen bei Help My Pet Bot!",
-						RateLimit: "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut.",
+						Error:       "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+						Start:       "Willkommen bei Help My Pet Bot!",
+						RateLimit:   "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut.",
+						GlobalLimit: "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
 					},
 				},
 			}
@@ -251,12 +337,24 @@ func TestService_handleMessage(t *testing.T) {
 				return
 			}
 
+			if msg.From == nil {
+				mockBot.EXPECT().
+					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
+					Return(tgbotapi.Message{}, sendErr)
+				svc.handleMessage(context.Background(), msg)
+				return
+			}
+
 			if tt.isStart {
 				msg := tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.StartMessage))
 				mockBot.EXPECT().
 					Send(msg).
 					Return(tgbotapi.Message{}, sendErr)
 			} else {
+				mockBot.EXPECT().
+					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
+					Return(tgbotapi.Message{}, sendErr)
+
 				expectedRequest := &core.PetAdviceRequest{
 					UserID:  "123",
 					ChatID:  "123",
@@ -271,11 +369,16 @@ func TestService_handleMessage(t *testing.T) {
 					Return(tgbotapi.Message{}, sendErr)
 
 				if tt.aiErr != nil {
-					if tt.aiErr == core.ErrRateLimit {
+					switch {
+					case tt.aiErr == core.ErrRateLimit:
 						mockBot.EXPECT().
 							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.RateLimitMessage))).
 							Return(tgbotapi.Message{}, sendErr)
-					} else {
+					case tt.aiErr == core.ErrGlobalLimit:
+						mockBot.EXPECT().
+							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.GlobalLimitMessage))).
+							Return(tgbotapi.Message{}, sendErr)
+					default:
 						mockBot.EXPECT().
 							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.ErrorMessage))).
 							Return(tgbotapi.Message{}, sendErr)
@@ -337,9 +440,10 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 			messages := &i18n.Config{
 				Languages: map[string]i18n.Messages{
 					"en": {
-						Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
-						Start:     "Welcome to Help My Pet Bot!",
-						RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+						Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
+						Start:       "Welcome to Help My Pet Bot!",
+						RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
+						GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 					},
 				},
 			}
@@ -426,9 +530,10 @@ func TestService_Run_EmptyUpdateMessage(t *testing.T) {
 	messages := &i18n.Config{
 		Languages: map[string]i18n.Messages{
 			"en": {
-				Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:     "Welcome to Help My Pet Bot!",
-				RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:       "Welcome to Help My Pet Bot!",
+				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
+				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 			},
 		},
 	}
@@ -494,9 +599,10 @@ func TestService_Run_SendError(t *testing.T) {
 	messages := &i18n.Config{
 		Languages: map[string]i18n.Messages{
 			"en": {
-				Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:     "Welcome to Help My Pet Bot!",
-				RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:       "Welcome to Help My Pet Bot!",
+				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
+				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 			},
 		},
 	}
@@ -539,9 +645,10 @@ func TestNewService(t *testing.T) {
 	messages := &i18n.Config{
 		Languages: map[string]i18n.Messages{
 			"en": {
-				Error:     "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:     "Welcome to Help My Pet Bot!",
-				RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
+				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:       "Welcome to Help My Pet Bot!",
+				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
+				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 			},
 		},
 	}
