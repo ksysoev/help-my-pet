@@ -10,4 +10,4 @@ mocks:
 	mockery
 
 deploy:
-	git pull && docker-compose pull && docker stack deploy -c docker-compose.yml app
+	git pull && docker compose pull && docker stack deploy -c docker-compose.yml app
