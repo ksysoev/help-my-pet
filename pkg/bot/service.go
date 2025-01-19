@@ -107,16 +107,20 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 		)
 	}
 
-	// Get AI response
-	userID := message.Chat.ID
-	if message.From != nil {
-		userID = message.From.ID
-	}
 	request := &core.PetAdviceRequest{
-		UserID:  fmt.Sprintf("%d", userID),
-		ChatID:  fmt.Sprintf("%d", userID),
+		ChatID:  fmt.Sprintf("%d", message.Chat.ID),
 		Message: message.Text,
 	}
+
+	if message.From == nil {
+		slog.Warn("Message from is nil",
+			slog.Any("message", message),
+		)
+		return
+	}
+
+	request.UserID = fmt.Sprintf("%d", message.From.ID)
+
 	response, err := s.AISvc.GetPetAdvice(ctx, request)
 	if err != nil {
 		slog.Error("Failed to get AI response",

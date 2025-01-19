@@ -256,7 +256,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:        "message without From field",
 			message:     "What food is good for cats?",
-			aiResponse:  core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
+			aiResponse:  nil,
 			aiErr:       nil,
 			expectError: false,
 			userID:      0,
@@ -337,12 +337,24 @@ func TestService_handleMessage(t *testing.T) {
 				return
 			}
 
+			if msg.From == nil {
+				mockBot.EXPECT().
+					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
+					Return(tgbotapi.Message{}, sendErr)
+				svc.handleMessage(context.Background(), msg)
+				return
+			}
+
 			if tt.isStart {
 				msg := tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.StartMessage))
 				mockBot.EXPECT().
 					Send(msg).
 					Return(tgbotapi.Message{}, sendErr)
 			} else {
+				mockBot.EXPECT().
+					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
+					Return(tgbotapi.Message{}, sendErr)
+
 				expectedRequest := &core.PetAdviceRequest{
 					UserID:  "123",
 					ChatID:  "123",
