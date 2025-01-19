@@ -37,6 +37,11 @@ cp config.yaml config.local.yaml
 ```yaml
 bot:
   telegram_token: "your-telegram-bot-token" # Required: Your Telegram bot token from BotFather
+  rate_limit:
+    user_hourly_limit: 5   # Maximum number of requests per hour per user
+    user_daily_limit: 15   # Maximum number of requests per day per user
+    global_daily_limit: 1000  # Maximum total requests per day across all users
+    whitelist_ids: []      # List of user IDs exempt from rate limiting
 
 ai:
   model: "claude-2"      # Optional: Anthropic model to use (default: claude-2)

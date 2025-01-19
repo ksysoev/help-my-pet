@@ -112,21 +112,30 @@ func (r *RateLimiter) IsNewQuestionAllowed(ctx context.Context, userID string) (
 
 	// Check hourly limit
 	hourAgo := time.Now().Add(-time.Hour)
-	count, err := r.GetUserRequests(ctx, userID, hourAgo)
+	hourlyCount, err := r.GetUserRequests(ctx, userID, hourAgo)
 	if err != nil {
-		return false, fmt.Errorf("failed to get user requests: %w", err)
+		return false, fmt.Errorf("failed to get user hourly requests: %w", err)
 	}
-	if count >= r.config.HourlyLimit {
+	if hourlyCount >= r.config.UserHourlyLimit {
 		return false, core.ErrRateLimit
 	}
 
-	// Check daily global limit
+	// Check user daily limit
 	dayStart := time.Now().Truncate(24 * time.Hour)
+	userDailyCount, err := r.GetUserRequests(ctx, userID, dayStart)
+	if err != nil {
+		return false, fmt.Errorf("failed to get user daily requests: %w", err)
+	}
+	if userDailyCount >= r.config.UserDailyLimit {
+		return false, core.ErrRateLimit
+	}
+
+	// Check global daily limit
 	globalCount, err := r.GetGlobalRequests(ctx, dayStart)
 	if err != nil {
 		return false, fmt.Errorf("failed to get global requests: %w", err)
 	}
-	if globalCount >= r.config.DailyLimit {
+	if globalCount >= r.config.GlobalDailyLimit {
 		return false, core.ErrGlobalLimit
 	}
 
