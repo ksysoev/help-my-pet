@@ -1,0 +1,7 @@
+services:
+  help-my-pet:
+    image: "ghcr.io/ksysoev/help-my-pet:main"
+    restart: unless-stopped
+    environment:
+      - AI_API_KEY=${AI_API_KEY:-} # Anthropic API key
+      - BOT_TELEGRAM_TOKEN=${BOT_TELEGRAM_TOKEN:-} # Telegram bot token
