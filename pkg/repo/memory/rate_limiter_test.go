@@ -21,6 +21,7 @@ func TestRateLimiter(t *testing.T) {
 			cfg: &memory.RateLimitConfig{
 				WhitelistIDs: []int64{123, 456},
 				HourlyLimit:  10,
+				DailyLimit:   100,
 			},
 			testFn: func(t *testing.T, rl *memory.RateLimiter) {
 				assert.NotNil(t, rl)
@@ -32,7 +33,10 @@ func TestRateLimiter(t *testing.T) {
 		},
 		{
 			name: "GetUserRequests with no requests",
-			cfg:  &memory.RateLimitConfig{HourlyLimit: 10},
+			cfg: &memory.RateLimitConfig{
+				HourlyLimit: 10,
+				DailyLimit:  100,
+			},
 			testFn: func(t *testing.T, rl *memory.RateLimiter) {
 				userID := "user1"
 				now := time.Now()
@@ -44,7 +48,10 @@ func TestRateLimiter(t *testing.T) {
 		},
 		{
 			name: "GetUserRequests with requests",
-			cfg:  &memory.RateLimitConfig{HourlyLimit: 10},
+			cfg: &memory.RateLimitConfig{
+				HourlyLimit: 10,
+				DailyLimit:  100,
+			},
 			testFn: func(t *testing.T, rl *memory.RateLimiter) {
 				userID := "user1"
 				now := time.Now()
@@ -58,8 +65,30 @@ func TestRateLimiter(t *testing.T) {
 			},
 		},
 		{
+			name: "GetGlobalRequests with requests",
+			cfg: &memory.RateLimitConfig{
+				HourlyLimit: 10,
+				DailyLimit:  100,
+			},
+			testFn: func(t *testing.T, rl *memory.RateLimiter) {
+				now := time.Now()
+
+				err := rl.AddUserRequest(context.Background(), "user1", now)
+				assert.NoError(t, err)
+				err = rl.AddUserRequest(context.Background(), "user2", now)
+				assert.NoError(t, err)
+
+				count, err := rl.GetGlobalRequests(context.Background(), now.Add(-24*time.Hour))
+				assert.NoError(t, err)
+				assert.Equal(t, 2, count)
+			},
+		},
+		{
 			name: "AddUserRequest with cleanup",
-			cfg:  &memory.RateLimitConfig{HourlyLimit: 10},
+			cfg: &memory.RateLimitConfig{
+				HourlyLimit: 10,
+				DailyLimit:  100,
+			},
 			testFn: func(t *testing.T, rl *memory.RateLimiter) {
 				userID := "user1"
 				now := time.Now()
@@ -80,6 +109,7 @@ func TestRateLimiter(t *testing.T) {
 			name: "IsNewQuestionAllowed with rate limit",
 			cfg: &memory.RateLimitConfig{
 				HourlyLimit:  2,
+				DailyLimit:   10,
 				WhitelistIDs: []int64{999},
 			},
 			testFn: func(t *testing.T, rl *memory.RateLimiter) {
@@ -92,15 +122,15 @@ func TestRateLimiter(t *testing.T) {
 				assert.NoError(t, err)
 				assert.True(t, allowed)
 
-				// Add requests up to limit
+				// Add requests up to hourly limit
 				err = rl.AddUserRequest(context.Background(), userID, now)
 				assert.NoError(t, err)
 				err = rl.AddUserRequest(context.Background(), userID, now)
 				assert.NoError(t, err)
 
-				// Test at limit
+				// Test at hourly limit
 				allowed, err = rl.IsNewQuestionAllowed(context.Background(), userID)
-				assert.NoError(t, err)
+				assert.Error(t, err)
 				assert.False(t, allowed)
 
 				// Test whitelisted user
@@ -110,8 +140,38 @@ func TestRateLimiter(t *testing.T) {
 			},
 		},
 		{
+			name: "IsNewQuestionAllowed with global limit",
+			cfg: &memory.RateLimitConfig{
+				HourlyLimit:  10,
+				DailyLimit:   2,
+				WhitelistIDs: []int64{999},
+			},
+			testFn: func(t *testing.T, rl *memory.RateLimiter) {
+				now := time.Now()
+
+				// Add requests up to global limit
+				err := rl.AddUserRequest(context.Background(), "user1", now)
+				assert.NoError(t, err)
+				err = rl.AddUserRequest(context.Background(), "user2", now)
+				assert.NoError(t, err)
+
+				// Test at global limit for a new user
+				allowed, err := rl.IsNewQuestionAllowed(context.Background(), "user3")
+				assert.Error(t, err)
+				assert.False(t, allowed)
+
+				// Test whitelisted user still allowed
+				allowed, err = rl.IsNewQuestionAllowed(context.Background(), "999")
+				assert.NoError(t, err)
+				assert.True(t, allowed)
+			},
+		},
+		{
 			name: "RecordNewQuestion",
-			cfg:  &memory.RateLimitConfig{HourlyLimit: 10},
+			cfg: &memory.RateLimitConfig{
+				HourlyLimit: 10,
+				DailyLimit:  100,
+			},
 			testFn: func(t *testing.T, rl *memory.RateLimiter) {
 				userID := "user1"
 
@@ -129,6 +189,8 @@ func TestRateLimiter(t *testing.T) {
 			name: "IsWhitelisted",
 			cfg: &memory.RateLimitConfig{
 				WhitelistIDs: []int64{123, 456},
+				HourlyLimit:  10,
+				DailyLimit:   100,
 			},
 			testFn: func(t *testing.T, rl *memory.RateLimiter) {
 				// Test whitelisted users
