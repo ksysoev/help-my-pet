@@ -206,6 +206,67 @@ func TestConfig_GetMessage(t *testing.T) {
 			msgType:  ErrorMessage,
 			expected: "Sorry, I encountered an error while processing your request. Please try again later.",
 		},
+		{
+			name: "returns global limit message for specified language",
+			config: &Config{
+				Languages: map[string]Messages{
+					"es": {
+						Error:       "Error en español",
+						Start:       "Inicio en español",
+						RateLimit:   "Límite en español",
+						GlobalLimit: "Límite global en español",
+					},
+				},
+			},
+			lang:     "es",
+			msgType:  GlobalLimitMessage,
+			expected: "Límite global en español",
+		},
+		{
+			name: "returns global limit message from English fallback",
+			config: &Config{
+				Languages: map[string]Messages{
+					"en": {
+						Error:       "English error",
+						Start:       "English start",
+						RateLimit:   "English rate limit",
+						GlobalLimit: "English global limit",
+					},
+				},
+			},
+			lang:     "fr",
+			msgType:  GlobalLimitMessage,
+			expected: "English global limit",
+		},
+		{
+			name: "returns default global limit message when not defined",
+			config: &Config{
+				Languages: map[string]Messages{},
+			},
+			lang:     "en",
+			msgType:  GlobalLimitMessage,
+			expected: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+		},
+		{
+			name: "handles partially defined messages with fallback to English",
+			config: &Config{
+				Languages: map[string]Messages{
+					"fr": {
+						Error: "Erreur",
+						Start: "Début",
+					},
+					"en": {
+						Error:       "Error",
+						Start:       "Start",
+						RateLimit:   "Rate limit",
+						GlobalLimit: "Global limit",
+					},
+				},
+			},
+			lang:     "fr",
+			msgType:  GlobalLimitMessage,
+			expected: "Global limit",
+		},
 	}
 
 	for _, tt := range tests {
