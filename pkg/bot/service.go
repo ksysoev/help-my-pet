@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -50,6 +51,44 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 	}, nil
 }
 
+func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
+	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
+	// Send typing action
+	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
+	if _, err := s.Bot.Send(typing); err != nil {
+		slog.Error("Failed to send typing action",
+			slog.Any("error", err),
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+	}
+
+	// Handle message with middleware
+	handler := s.setupHandler()
+	msgConfig, err := handler(ctx, message)
+	if err != nil {
+		slog.Error("Unexpected error",
+			slog.Any("error", err),
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+		return
+	}
+
+	// Skip sending if message is empty
+	if msgConfig.Text == "" {
+		return
+	}
+
+	// Send response
+	if _, err := s.Bot.Send(msgConfig); err != nil {
+		slog.Error("Failed to send message",
+			slog.Any("error", err),
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+	}
+}
+
 func (s *ServiceImpl) Run(ctx context.Context) error {
 	slog.Info("Starting Telegram bot")
 
@@ -65,7 +104,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 				continue
 			}
 
-			go s.handleMessage(ctx, update.Message)
+			go s.processMessage(ctx, update.Message)
 
 		case <-ctx.Done():
 			slog.Info("Shutting down bot")

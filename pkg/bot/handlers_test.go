@@ -13,254 +13,118 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestService_sendGlobalLimitMessage(t *testing.T) {
-	tests := []struct {
-		name          string
-		langCode      string
-		mockSendError bool
-	}{
-		{
-			name:          "successful global limit message - en",
-			langCode:      "en",
-			mockSendError: false,
-		},
-		{
-			name:          "successful global limit message - ru",
-			langCode:      "ru",
-			mockSendError: false,
-		},
-		{
-			name:          "failed global limit message - en",
-			langCode:      "en",
-			mockSendError: true,
-		},
-		{
-			name:          "failed global limit message - ru",
-			langCode:      "ru",
-			mockSendError: true,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			mockBot := NewMockBotAPI(t)
-			messages := &i18n.Config{
-				Languages: map[string]i18n.Messages{
-					"en": {
-						GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-					},
-					"ru": {
-						GlobalLimit: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
-					},
-				},
-			}
-
-			svc := &ServiceImpl{
-				Bot:      mockBot,
-				Messages: messages,
-			}
-
-			var sendErr error
-			if tt.mockSendError {
-				sendErr = fmt.Errorf("send error")
-			}
-
-			msg := tgbotapi.NewMessage(123, messages.GetMessage(tt.langCode, i18n.GlobalLimitMessage))
-			mockBot.EXPECT().
-				Send(msg).
-				Return(tgbotapi.Message{}, sendErr)
-
-			svc.sendGlobalLimitMessage(123, tt.langCode)
-		})
-	}
-}
-
-func TestService_sendRateLimitMessage(t *testing.T) {
-	tests := []struct {
-		name          string
-		langCode      string
-		mockSendError bool
-	}{
-		{
-			name:          "successful rate limit message - en",
-			langCode:      "en",
-			mockSendError: false,
-		},
-		{
-			name:          "successful rate limit message - ru",
-			langCode:      "ru",
-			mockSendError: false,
-		},
-		{
-			name:          "failed rate limit message - en",
-			langCode:      "en",
-			mockSendError: true,
-		},
-		{
-			name:          "failed rate limit message - ru",
-			langCode:      "ru",
-			mockSendError: true,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			mockBot := NewMockBotAPI(t)
-			messages := &i18n.Config{
-				Languages: map[string]i18n.Messages{
-					"en": {
-						RateLimit: "You have reached the maximum number of requests per hour. Please try again later.",
-					},
-					"ru": {
-						RateLimit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
-					},
-				},
-			}
-
-			svc := &ServiceImpl{
-				Bot:      mockBot,
-				Messages: messages,
-			}
-
-			var sendErr error
-			if tt.mockSendError {
-				sendErr = fmt.Errorf("send error")
-			}
-
-			msg := tgbotapi.NewMessage(123, messages.GetMessage(tt.langCode, i18n.RateLimitMessage))
-			mockBot.EXPECT().
-				Send(msg).
-				Return(tgbotapi.Message{}, sendErr)
-
-			svc.sendRateLimitMessage(123, tt.langCode)
-		})
-	}
-}
-
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
-		aiErr         error
-		aiResponse    *core.PetAdviceResponse
-		name          string
-		message       string
-		langCode      string
-		userID        int64
-		expectError   bool
-		mockSendError bool
-		isStart       bool
+		aiResponse   *core.PetAdviceResponse
+		aiErr        error
+		name         string
+		message      string
+		expectedText string
+		langCode     string
+		userID       int64
+		expectError  bool
+		isStart      bool
 	}{
 		{
-			name:        "successful response with keyboard",
-			message:     "What food is good for cats?",
-			aiResponse:  core.NewPetAdviceResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
-			aiErr:       nil,
-			expectError: false,
-			userID:      123,
-			langCode:    "en",
+			name:         "successful response with keyboard",
+			message:      "What food is good for cats?",
+			aiResponse:   core.NewPetAdviceResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
+			aiErr:        nil,
+			expectError:  false,
+			userID:       123,
+			langCode:     "en",
+			expectedText: "Cats need a balanced diet...",
 		},
 		{
-			name:        "successful response without keyboard",
-			message:     "What food is good for cats?",
-			aiResponse:  core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
-			aiErr:       nil,
-			expectError: false,
-			userID:      123,
-			langCode:    "ru",
+			name:         "successful response without keyboard",
+			message:      "What food is good for cats?",
+			aiResponse:   core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
+			aiErr:        nil,
+			expectError:  false,
+			userID:       123,
+			langCode:     "ru",
+			expectedText: "Cats need a balanced diet...",
 		},
 		{
-			name:        "empty message",
-			message:     "",
-			aiResponse:  core.NewPetAdviceResponse("", []string{}),
-			aiErr:       nil,
-			expectError: false,
-			userID:      123,
-			langCode:    "en",
+			name:         "empty message",
+			message:      "",
+			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiErr:        nil,
+			expectError:  false,
+			userID:       123,
+			langCode:     "en",
+			expectedText: "",
 		},
 		{
-			name:        "ai error",
-			message:     "What food is good for cats?",
-			aiResponse:  core.NewPetAdviceResponse("", []string{}),
-			aiErr:       fmt.Errorf("ai error"),
-			expectError: true,
-			userID:      123,
-			langCode:    "es",
+			name:         "ai error",
+			message:      "What food is good for cats?",
+			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiErr:        fmt.Errorf("ai error"),
+			expectError:  true,
+			userID:       123,
+			langCode:     "es",
+			expectedText: "",
 		},
 		{
-			name:        "rate limit error",
-			message:     "What food is good for cats?",
-			aiResponse:  core.NewPetAdviceResponse("", []string{}),
-			aiErr:       core.ErrRateLimit,
-			expectError: true,
-			userID:      123,
-			langCode:    "en",
+			name:         "rate limit error",
+			message:      "What food is good for cats?",
+			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiErr:        core.ErrRateLimit,
+			expectError:  false,
+			userID:       123,
+			langCode:     "en",
+			expectedText: "You have reached the maximum number of requests per hour. Please try again later.",
 		},
 		{
-			name:        "global limit error",
-			message:     "What food is good for cats?",
-			aiResponse:  core.NewPetAdviceResponse("", []string{}),
-			aiErr:       core.ErrGlobalLimit,
-			expectError: true,
-			userID:      123,
-			langCode:    "en",
+			name:         "global limit error",
+			message:      "What food is good for cats?",
+			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiErr:        core.ErrGlobalLimit,
+			expectError:  false,
+			userID:       123,
+			langCode:     "en",
+			expectedText: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 		},
 		{
-			name:          "rate limit error with send error",
-			message:       "What food is good for cats?",
-			aiResponse:    core.NewPetAdviceResponse("", []string{}),
-			aiErr:         core.ErrRateLimit,
-			expectError:   true,
-			mockSendError: true,
-			userID:        123,
-			langCode:      "ru",
+			name:         "rate limit error - ru",
+			message:      "What food is good for cats?",
+			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiErr:        core.ErrRateLimit,
+			expectError:  false,
+			userID:       123,
+			langCode:     "ru",
+			expectedText: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
 		},
 		{
-			name:          "global limit error with send error",
-			message:       "What food is good for cats?",
-			aiResponse:    core.NewPetAdviceResponse("", []string{}),
-			aiErr:         core.ErrGlobalLimit,
-			expectError:   true,
-			mockSendError: true,
-			userID:        123,
-			langCode:      "ru",
+			name:         "global limit error - ru",
+			message:      "What food is good for cats?",
+			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiErr:        core.ErrGlobalLimit,
+			expectError:  false,
+			userID:       123,
+			langCode:     "ru",
+			expectedText: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
 		},
 		{
-			name:          "send error",
-			message:       "What food is good for cats?",
-			aiResponse:    core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
-			aiErr:         nil,
-			expectError:   true,
-			mockSendError: true,
-			userID:        123,
-			langCode:      "en",
+			name:         "start command",
+			message:      "/start",
+			aiResponse:   core.NewPetAdviceResponse("Welcome to Help My Pet Bot!", []string{}),
+			aiErr:        nil,
+			expectError:  false,
+			isStart:      true,
+			userID:       123,
+			langCode:     "de",
+			expectedText: "Willkommen bei Help My Pet Bot!",
 		},
 		{
-			name:          "ai error with send error",
-			message:       "What food is good for cats?",
-			aiResponse:    core.NewPetAdviceResponse("", []string{}),
-			aiErr:         fmt.Errorf("ai error"),
-			expectError:   true,
-			mockSendError: true,
-			userID:        123,
-			langCode:      "fr",
-		},
-		{
-			name:        "start command",
-			message:     "/start",
-			aiResponse:  core.NewPetAdviceResponse("Welcome to Help My Pet Bot!", []string{}),
-			aiErr:       nil,
-			expectError: false,
-			isStart:     true,
-			userID:      123,
-			langCode:    "de",
-		},
-		{
-			name:        "message without From field",
-			message:     "What food is good for cats?",
-			aiResponse:  nil,
-			aiErr:       nil,
-			expectError: false,
-			userID:      0,
-			langCode:    "en",
+			name:         "message without From field",
+			message:      "What food is good for cats?",
+			aiResponse:   nil,
+			aiErr:        nil,
+			expectError:  true,
+			userID:       0,
+			langCode:     "en",
+			expectedText: "",
 		},
 	}
 
@@ -268,11 +132,6 @@ func TestService_handleMessage(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			mockAI := NewMockAIProvider(t)
 			mockBot := NewMockBotAPI(t)
-
-			var sendErr error
-			if tt.mockSendError {
-				sendErr = fmt.Errorf("send error")
-			}
 
 			messages := &i18n.Config{
 				Languages: map[string]i18n.Messages{
@@ -331,30 +190,7 @@ func TestService_handleMessage(t *testing.T) {
 				}
 			}
 
-			// Set up expectations based on the test case
-			if tt.message == "" {
-				svc.handleMessage(context.Background(), msg)
-				return
-			}
-
-			if msg.From == nil {
-				mockBot.EXPECT().
-					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
-					Return(tgbotapi.Message{}, sendErr)
-				svc.handleMessage(context.Background(), msg)
-				return
-			}
-
-			if tt.isStart {
-				msg := tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.StartMessage))
-				mockBot.EXPECT().
-					Send(msg).
-					Return(tgbotapi.Message{}, sendErr)
-			} else {
-				mockBot.EXPECT().
-					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
-					Return(tgbotapi.Message{}, sendErr)
-
+			if !tt.isStart && tt.message != "" && msg.From != nil {
 				expectedRequest := &core.PetAdviceRequest{
 					UserID:  "123",
 					ChatID:  "123",
@@ -363,153 +199,110 @@ func TestService_handleMessage(t *testing.T) {
 				mockAI.EXPECT().
 					GetPetAdvice(context.Background(), expectedRequest).
 					Return(tt.aiResponse, tt.aiErr)
-
-				mockBot.EXPECT().
-					Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
-					Return(tgbotapi.Message{}, sendErr)
-
-				if tt.aiErr != nil {
-					switch {
-					case tt.aiErr == core.ErrRateLimit:
-						mockBot.EXPECT().
-							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.RateLimitMessage))).
-							Return(tgbotapi.Message{}, sendErr)
-					case tt.aiErr == core.ErrGlobalLimit:
-						mockBot.EXPECT().
-							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.GlobalLimitMessage))).
-							Return(tgbotapi.Message{}, sendErr)
-					default:
-						mockBot.EXPECT().
-							Send(tgbotapi.NewMessage(int64(123), messages.GetMessage(tt.langCode, i18n.ErrorMessage))).
-							Return(tgbotapi.Message{}, sendErr)
-					}
-				} else {
-					responseMsg := tgbotapi.NewMessage(int64(123), tt.aiResponse.Message)
-					responseMsg.ReplyToMessageID = 456
-
-					// Set keyboard markup based on answers
-					if len(tt.aiResponse.Answers) > 0 {
-						keyboard := make([][]tgbotapi.KeyboardButton, len(tt.aiResponse.Answers))
-						for i, answer := range tt.aiResponse.Answers {
-							keyboard[i] = []tgbotapi.KeyboardButton{
-								{Text: answer},
-							}
-						}
-						responseMsg.ReplyMarkup = tgbotapi.ReplyKeyboardMarkup{
-							Keyboard:        keyboard,
-							OneTimeKeyboard: true,
-							ResizeKeyboard:  true,
-						}
-					} else {
-						responseMsg.ReplyMarkup = tgbotapi.ReplyKeyboardRemove{
-							RemoveKeyboard: true,
-							Selective:      false,
-						}
-					}
-
-					mockBot.EXPECT().
-						Send(responseMsg).
-						Return(tgbotapi.Message{}, sendErr)
-				}
 			}
 
-			svc.handleMessage(context.Background(), msg)
+			msgConfig, err := svc.handleMessage(context.Background(), msg)
+
+			if tt.expectError {
+				assert.Error(t, err)
+				return
+			}
+
+			assert.NoError(t, err)
+			if tt.message == "" {
+				assert.Equal(t, tgbotapi.MessageConfig{}, msgConfig)
+				return
+			}
+
+			assert.Equal(t, tt.expectedText, msgConfig.Text)
+			assert.Equal(t, int64(123), msgConfig.ChatID)
+
+			if tt.aiResponse != nil && len(tt.aiResponse.Answers) > 0 {
+				keyboard, ok := msgConfig.ReplyMarkup.(tgbotapi.ReplyKeyboardMarkup)
+				assert.True(t, ok)
+				assert.Equal(t, len(tt.aiResponse.Answers), len(keyboard.Keyboard))
+				for i, row := range keyboard.Keyboard {
+					assert.Equal(t, tt.aiResponse.Answers[i], row[0].Text)
+				}
+			}
 		})
 	}
 }
 
 func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
-	tests := []struct {
-		name     string
-		message  string
-		langCode string
-		userID   int64
-	}{
-		{
-			name:     "successful message",
-			message:  "test message",
-			userID:   123,
-			langCode: "en",
+	mockAI := NewMockAIProvider(t)
+	mockBot := NewMockBotAPI(t)
+	messages := &i18n.Config{
+		Languages: map[string]i18n.Messages{
+			"en": {
+				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:       "Welcome to Help My Pet Bot!",
+				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
+				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+			},
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			mockAI := NewMockAIProvider(t)
-			mockBot := NewMockBotAPI(t)
-			messages := &i18n.Config{
-				Languages: map[string]i18n.Messages{
-					"en": {
-						Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
-						Start:       "Welcome to Help My Pet Bot!",
-						RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
-						GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-					},
-				},
-			}
-
-			svc := &ServiceImpl{
-				Bot:      mockBot,
-				AISvc:    mockAI,
-				Messages: messages,
-			}
-
-			updates := make(chan tgbotapi.Update)
-			mockBot.EXPECT().
-				GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
-				Return(updates)
-
-			mockBot.EXPECT().
-				Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-					_, ok := c.(tgbotapi.ChatActionConfig)
-					return ok
-				})).
-				Return(tgbotapi.Message{}, nil)
-
-			mockAI.EXPECT().
-				GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-					UserID:  fmt.Sprintf("%d", tt.userID),
-					ChatID:  fmt.Sprintf("%d", tt.userID),
-					Message: tt.message,
-				}).
-				Return(core.NewPetAdviceResponse("test response", []string{}), nil)
-
-			mockBot.EXPECT().
-				Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-					msg, ok := c.(tgbotapi.MessageConfig)
-					return ok && msg.Text == "test response"
-				})).
-				Return(tgbotapi.Message{}, nil)
-
-			mockBot.EXPECT().
-				StopReceivingUpdates().
-				Return()
-
-			ctx, cancel := context.WithCancel(context.Background())
-			errCh := make(chan error)
-
-			go func() {
-				errCh <- svc.Run(ctx)
-			}()
-
-			updates <- tgbotapi.Update{
-				Message: &tgbotapi.Message{
-					Text: tt.message,
-					Chat: &tgbotapi.Chat{
-						ID: tt.userID,
-					},
-					MessageID: 456,
-					From: &tgbotapi.User{
-						ID:           tt.userID,
-						LanguageCode: tt.langCode,
-					},
-				},
-			}
-
-			time.Sleep(100 * time.Millisecond)
-			cancel()
-			err := <-errCh
-			assert.NoError(t, err)
-		})
+	svc := &ServiceImpl{
+		Bot:      mockBot,
+		AISvc:    mockAI,
+		Messages: messages,
 	}
+
+	updates := make(chan tgbotapi.Update)
+	mockBot.EXPECT().
+		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
+		Return(updates)
+
+	// Expect typing action
+	mockBot.EXPECT().
+		Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
+		Return(tgbotapi.Message{}, nil)
+
+	// Expect AI request
+	mockAI.EXPECT().
+		GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+			UserID:  "123",
+			ChatID:  "123",
+			Message: "test message",
+		}).
+		Return(core.NewPetAdviceResponse("test response", []string{}), nil)
+
+	// Expect message send
+	mockBot.EXPECT().
+		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+			msg, ok := c.(tgbotapi.MessageConfig)
+			return ok && msg.Text == "test response"
+		})).
+		Return(tgbotapi.Message{}, nil)
+
+	mockBot.EXPECT().
+		StopReceivingUpdates().
+		Return()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	errCh := make(chan error)
+
+	go func() {
+		errCh <- svc.Run(ctx)
+	}()
+
+	updates <- tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			Text: "test message",
+			Chat: &tgbotapi.Chat{
+				ID: 123,
+			},
+			MessageID: 456,
+			From: &tgbotapi.User{
+				ID:           123,
+				LanguageCode: "en",
+			},
+		},
+	}
+
+	time.Sleep(100 * time.Millisecond)
+	cancel()
+	err := <-errCh
+	assert.NoError(t, err)
 }
