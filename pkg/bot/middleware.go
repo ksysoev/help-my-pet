@@ -2,6 +2,7 @@ package bot
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 
@@ -15,15 +16,29 @@ type Middleware func(next Handler) Handler
 // withErrorHandling middleware handles errors from the message handler
 func withErrorHandling(getMessage func(lang string, msgType i18n.Message) string, next Handler) Handler {
 	return func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+		if message == nil {
+			return tgbotapi.MessageConfig{}, errors.New("message is nil")
+		}
+
 		msgConfig, err := next(ctx, message)
 		if err != nil {
+			var chatID int64
+			if message.Chat != nil {
+				chatID = message.Chat.ID
+			}
+
 			slog.Error("Failed to handle message",
 				slog.Any("error", err),
-				slog.Int64("chat_id", message.Chat.ID),
+				slog.Int64("chat_id", chatID),
 			)
 
+			// Get language code safely
+			var langCode string
+			if message.From != nil {
+				langCode = message.From.LanguageCode
+			}
 			// Return error message to user
-			return tgbotapi.NewMessage(message.Chat.ID, getMessage(message.From.LanguageCode, i18n.ErrorMessage)), nil
+			return tgbotapi.NewMessage(chatID, getMessage(langCode, i18n.ErrorMessage)), nil
 		}
 		return msgConfig, nil
 	}
@@ -36,6 +51,10 @@ func withThrottler(maxConcurrent int) Middleware {
 
 	return func(next Handler) Handler {
 		return func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+			if message == nil {
+				return tgbotapi.MessageConfig{}, errors.New("message is nil")
+			}
+
 			// Try to acquire a slot or wait for context cancellation
 			select {
 			case throttler <- struct{}{}: // Acquire slot
