@@ -55,7 +55,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 	updateConfig := tgbotapi.NewUpdate(0)
 	updateConfig.Timeout = 30
-
+	handler := s.setupHandler()
 	updates := s.Bot.GetUpdatesChan(updateConfig)
 
 	for {
@@ -75,22 +75,13 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 					)
 				}
 
-				// Handle message
-				msgConfig, err := s.handleMessage(ctx, message)
+				// Handle message with middleware
+				msgConfig, err := handler(ctx, message)
 				if err != nil {
-					slog.Error("Failed to handle message",
+					slog.Error("Unexpected error",
 						slog.Any("error", err),
 						slog.Int64("chat_id", message.Chat.ID),
 					)
-
-					// Send error message
-					errMsg := tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage))
-					if _, err := s.Bot.Send(errMsg); err != nil {
-						slog.Error("Failed to send error message",
-							slog.Any("error", err),
-							slog.Int64("chat_id", message.Chat.ID),
-						)
-					}
 					return
 				}
 

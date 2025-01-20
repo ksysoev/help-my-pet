@@ -11,6 +11,34 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
+// Handler represents a function that handles a Telegram message
+type Handler func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error)
+
+// Middleware represents a function that wraps a Handler with additional functionality
+type Middleware func(next Handler) Handler
+
+// setupHandler sets up the message handler with all middleware
+func (s *ServiceImpl) setupHandler() Handler {
+	return s.withErrorHandling(s.handleMessage)
+}
+
+// withErrorHandling middleware handles errors from the message handler
+func (s *ServiceImpl) withErrorHandling(next Handler) Handler {
+	return func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+		msgConfig, err := next(ctx, message)
+		if err != nil {
+			slog.Error("Failed to handle message",
+				slog.Any("error", err),
+				slog.Int64("chat_id", message.Chat.ID),
+			)
+
+			// Return error message to user
+			return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage)), nil
+		}
+		return msgConfig, nil
+	}
+}
+
 func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	slog.Info("Received message",
 		slog.Int64("chat_id", message.Chat.ID),
