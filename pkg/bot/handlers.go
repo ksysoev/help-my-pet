@@ -11,66 +11,41 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
-func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Message) {
+func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	slog.Info("Received message",
 		slog.Int64("chat_id", message.Chat.ID),
 		slog.String("text", message.Text),
 	)
 
 	if message.Text == "" {
-		return
+		return tgbotapi.MessageConfig{}, nil
 	}
 
 	// Handle /start command
 	if message.Text == "/start" {
-		msg := tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.StartMessage))
-		if _, err := s.Bot.Send(msg); err != nil {
-			slog.Error("Failed to send start message",
-				slog.Any("error", err),
-				slog.Int64("chat_id", message.Chat.ID),
-			)
-		}
-		return
+		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.StartMessage)), nil
 	}
 
-	// Send typing action
-	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
-	if _, err := s.Bot.Send(typing); err != nil {
-		slog.Error("Failed to send typing action",
-			slog.Any("error", err),
-			slog.Int64("chat_id", message.Chat.ID),
-		)
+	if message.From == nil {
+		return tgbotapi.MessageConfig{}, fmt.Errorf("message from is nil")
 	}
 
 	request := &core.PetAdviceRequest{
 		ChatID:  fmt.Sprintf("%d", message.Chat.ID),
 		Message: message.Text,
+		UserID:  fmt.Sprintf("%d", message.From.ID),
 	}
-
-	if message.From == nil {
-		slog.Warn("Message from is nil",
-			slog.Any("message", message),
-		)
-		return
-	}
-
-	request.UserID = fmt.Sprintf("%d", message.From.ID)
 
 	response, err := s.AISvc.GetPetAdvice(ctx, request)
 	if err != nil {
-		slog.Error("Failed to get AI response",
-			slog.Any("error", err),
-			slog.Int64("chat_id", message.Chat.ID),
-		)
 		switch {
 		case errors.Is(err, core.ErrRateLimit):
-			s.sendRateLimitMessage(message.Chat.ID, message.From.LanguageCode)
+			return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.RateLimitMessage)), nil
 		case errors.Is(err, core.ErrGlobalLimit):
-			s.sendGlobalLimitMessage(message.Chat.ID, message.From.LanguageCode)
+			return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.GlobalLimitMessage)), nil
 		default:
-			s.sendErrorMessage(message.Chat.ID, message.From.LanguageCode)
+			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 		}
-		return
 	}
 
 	// Create message with buttons if available
@@ -97,41 +72,5 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 		}
 	}
 
-	if _, err := s.Bot.Send(msg); err != nil {
-		slog.Error("Failed to send message",
-			slog.Any("error", err),
-			slog.Int64("chat_id", message.Chat.ID),
-		)
-		return
-	}
-}
-
-func (s *ServiceImpl) sendErrorMessage(chatID int64, lang string) {
-	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.ErrorMessage))
-	if _, err := s.Bot.Send(msg); err != nil {
-		slog.Error("Failed to send error message",
-			slog.Any("error", err),
-			slog.Int64("chat_id", chatID),
-		)
-	}
-}
-
-func (s *ServiceImpl) sendRateLimitMessage(chatID int64, lang string) {
-	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.RateLimitMessage))
-	if _, err := s.Bot.Send(msg); err != nil {
-		slog.Error("Failed to send rate limit message",
-			slog.Any("error", err),
-			slog.Int64("chat_id", chatID),
-		)
-	}
-}
-
-func (s *ServiceImpl) sendGlobalLimitMessage(chatID int64, lang string) {
-	msg := tgbotapi.NewMessage(chatID, s.Messages.GetMessage(lang, i18n.GlobalLimitMessage))
-	if _, err := s.Bot.Send(msg); err != nil {
-		slog.Error("Failed to send global limit message",
-			slog.Any("error", err),
-			slog.Int64("chat_id", chatID),
-		)
-	}
+	return msg, nil
 }

@@ -65,7 +65,48 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 				continue
 			}
 
-			go s.handleMessage(ctx, update.Message)
+			go func(ctx context.Context, message *tgbotapi.Message) {
+				// Send typing action
+				typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
+				if _, err := s.Bot.Send(typing); err != nil {
+					slog.Error("Failed to send typing action",
+						slog.Any("error", err),
+						slog.Int64("chat_id", message.Chat.ID),
+					)
+				}
+
+				// Handle message
+				msgConfig, err := s.handleMessage(ctx, message)
+				if err != nil {
+					slog.Error("Failed to handle message",
+						slog.Any("error", err),
+						slog.Int64("chat_id", message.Chat.ID),
+					)
+
+					// Send error message
+					errMsg := tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage))
+					if _, err := s.Bot.Send(errMsg); err != nil {
+						slog.Error("Failed to send error message",
+							slog.Any("error", err),
+							slog.Int64("chat_id", message.Chat.ID),
+						)
+					}
+					return
+				}
+
+				// Skip sending if message is empty
+				if msgConfig.Text == "" {
+					return
+				}
+
+				// Send response
+				if _, err := s.Bot.Send(msgConfig); err != nil {
+					slog.Error("Failed to send message",
+						slog.Any("error", err),
+						slog.Int64("chat_id", message.Chat.ID),
+					)
+				}
+			}(ctx, update.Message)
 
 		case <-ctx.Done():
 			slog.Info("Shutting down bot")
