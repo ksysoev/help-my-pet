@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -51,6 +52,9 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
+	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
 	// Send typing action
 	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
 	if _, err := s.Bot.Send(typing); err != nil {
