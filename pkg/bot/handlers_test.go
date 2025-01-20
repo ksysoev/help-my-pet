@@ -15,15 +15,15 @@ import (
 
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
-		aiErr        error
 		aiResponse   *core.PetAdviceResponse
+		aiErr        error
 		name         string
 		message      string
+		expectedText string
 		langCode     string
 		userID       int64
 		expectError  bool
 		isStart      bool
-		expectedText string
 	}{
 		{
 			name:         "successful response with keyboard",
