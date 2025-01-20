@@ -50,12 +50,47 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 	}, nil
 }
 
+func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
+	// Send typing action
+	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
+	if _, err := s.Bot.Send(typing); err != nil {
+		slog.Error("Failed to send typing action",
+			slog.Any("error", err),
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+	}
+
+	// Handle message with middleware
+	handler := s.setupHandler()
+	msgConfig, err := handler(ctx, message)
+	if err != nil {
+		slog.Error("Unexpected error",
+			slog.Any("error", err),
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+		return
+	}
+
+	// Skip sending if message is empty
+	if msgConfig.Text == "" {
+		return
+	}
+
+	// Send response
+	if _, err := s.Bot.Send(msgConfig); err != nil {
+		slog.Error("Failed to send message",
+			slog.Any("error", err),
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+	}
+}
+
 func (s *ServiceImpl) Run(ctx context.Context) error {
 	slog.Info("Starting Telegram bot")
 
 	updateConfig := tgbotapi.NewUpdate(0)
 	updateConfig.Timeout = 30
-	handler := s.setupHandler()
+
 	updates := s.Bot.GetUpdatesChan(updateConfig)
 
 	for {
@@ -65,39 +100,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 				continue
 			}
 
-			go func(ctx context.Context, message *tgbotapi.Message) {
-				// Send typing action
-				typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
-				if _, err := s.Bot.Send(typing); err != nil {
-					slog.Error("Failed to send typing action",
-						slog.Any("error", err),
-						slog.Int64("chat_id", message.Chat.ID),
-					)
-				}
-
-				// Handle message with middleware
-				msgConfig, err := handler(ctx, message)
-				if err != nil {
-					slog.Error("Unexpected error",
-						slog.Any("error", err),
-						slog.Int64("chat_id", message.Chat.ID),
-					)
-					return
-				}
-
-				// Skip sending if message is empty
-				if msgConfig.Text == "" {
-					return
-				}
-
-				// Send response
-				if _, err := s.Bot.Send(msgConfig); err != nil {
-					slog.Error("Failed to send message",
-						slog.Any("error", err),
-						slog.Int64("chat_id", message.Chat.ID),
-					)
-				}
-			}(ctx, update.Message)
+			go s.processMessage(ctx, update.Message)
 
 		case <-ctx.Done():
 			slog.Info("Shutting down bot")
