@@ -77,11 +77,6 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 	}()
 
-	// Test Redis connection
-	if err := redisClient.Ping(ctx).Err(); err != nil {
-		return fmt.Errorf("failed to connect to Redis: %w", err)
-	}
-
 	// Initialize repositories
 	conversationRepo := redisrepo.NewConversationRepository(redisClient)
 	var rateLimiter core.RateLimiter
