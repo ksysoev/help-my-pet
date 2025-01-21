@@ -14,13 +14,13 @@ import (
 
 func TestWithErrorHandling(t *testing.T) {
 	tests := []struct {
-		name          string
+		expectedError error
 		handler       Handler
 		getMessage    func(lang string, msgType i18n.Message) string
 		message       *tgbotapi.Message
-		expectedError error
-		expectedMsg   string
 		checkLang     func(t *testing.T, lang string)
+		name          string
+		expectedMsg   string
 	}{
 		{
 			name: "handles error from handler",

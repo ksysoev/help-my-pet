@@ -1,3 +1,8 @@
+redis:
+  url: "redis://localhost:6379" # Redis connection URL
+  password: "" # Redis password (if required)
+  db: 0 # Redis database number
+
 ai:
   model: "claude-3-5-sonnet-20241022" # Anthropic model to use
   api_key: "" # Set your Anthropic API key here

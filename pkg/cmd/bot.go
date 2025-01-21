@@ -3,11 +3,14 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/ksysoev/help-my-pet/pkg/repo/memory"
+	redisrepo "github.com/ksysoev/help-my-pet/pkg/repo/redis"
+	"github.com/redis/go-redis/v9"
 )
 
 // BotService represents the interface for bot service operations
@@ -60,8 +63,27 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 	}
 
+	// Initialize Redis client
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     cfg.Redis.URL,
+		Password: cfg.Redis.Password,
+		DB:       cfg.Redis.DB,
+	})
+
+	// Ensure Redis client is closed
+	defer func() {
+		if err := redisClient.Close(); err != nil {
+			slog.Error("failed to close Redis connection", slog.Any("error", err))
+		}
+	}()
+
+	// Test Redis connection
+	if err := redisClient.Ping(ctx).Err(); err != nil {
+		return fmt.Errorf("failed to connect to Redis: %w", err)
+	}
+
 	// Initialize repositories
-	conversationRepo := memory.NewConversationRepository()
+	conversationRepo := redisrepo.NewConversationRepository(redisClient)
 	var rateLimiter core.RateLimiter
 	if cfg.Bot.RateLimit != nil {
 		rateLimiter = memory.NewRateLimiter(cfg.Bot.RateLimit)
