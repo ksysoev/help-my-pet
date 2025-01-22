@@ -14,7 +14,6 @@ services:
 
   help-my-pet:
     image: "ghcr.io/ksysoev/help-my-pet:main"
-    platform: linux/amd64 # need to fix and start building multi-arch images
     restart: unless-stopped
     environment:
       - AI_API_KEY=${AI_API_KEY:-} # Anthropic API key
