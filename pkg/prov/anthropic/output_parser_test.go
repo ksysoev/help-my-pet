@@ -10,9 +10,9 @@ import (
 
 func TestResponseParser_Parse(t *testing.T) {
 	tests := []struct {
-		expected *core.Response
-		input    string
 		name     string
+		input    string
+		expected *core.Response
 		wantErr  bool
 	}{
 		{
@@ -43,6 +43,89 @@ func TestResponseParser_Parse(t *testing.T) {
 			expected: &core.Response{
 				Text:      "Feed your cat twice daily.",
 				Questions: []core.Question{},
+			},
+			wantErr: false,
+		},
+		{
+			name: "unescaped newlines in string literals",
+			input: `{
+				"text": "Line 1
+Line 2",
+				"questions": [
+					{
+						"text": "Question with
+newline",
+						"answers": ["Answer with
+newline", "Normal answer"]
+					}
+				]
+			}`,
+			expected: &core.Response{
+				Text: "Line 1\nLine 2",
+				Questions: []core.Question{
+					{
+						Text:    "Question with\nnewline",
+						Answers: []string{"Answer with\nnewline", "Normal answer"},
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "properly escaped characters",
+			input: `{
+				"text": "Tab\there \"quoted\" text\\with\\backslashes",
+				"questions": [
+					{
+						"text": "Question with \"quotes\"",
+						"answers": ["Answer with \t tab"]
+					}
+				]
+			}`,
+			expected: &core.Response{
+				Text: "Tab\there \"quoted\" text\\with\\backslashes",
+				Questions: []core.Question{
+					{
+						Text:    "Question with \"quotes\"",
+						Answers: []string{"Answer with \t tab"},
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "unterminated string",
+			input: `{
+				"text": "Unterminated string,
+				"questions": []
+			}`,
+			expected: nil,
+			wantErr:  true,
+		},
+		{
+			name: "mixed content with newlines",
+			input: `
+				{
+					"text": "First line
+					second line
+					third line",
+					"questions": [
+						{
+							"text": "Question spanning
+							multiple lines?",
+							"answers": []
+						}
+					]
+				}
+			`,
+			expected: &core.Response{
+				Text: "First line\n\t\t\t\t\tsecond line\n\t\t\t\t\tthird line",
+				Questions: []core.Question{
+					{
+						Text:    "Question spanning\n\t\t\t\t\t\t\tmultiple lines?",
+						Answers: []string{},
+					},
+				},
 			},
 			wantErr: false,
 		},
@@ -89,6 +172,28 @@ func TestResponseParser_Parse(t *testing.T) {
 					{
 						Text:    "Describe your pet's behavior",
 						Answers: []string{},
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "JSON with comments-like content",
+			input: `{
+				"text": "Text with // comment",
+				"questions": [
+					{
+						"text": "Question with /* comment */",
+						"answers": ["// Answer with comment"]
+					}
+				]
+			}`,
+			expected: &core.Response{
+				Text: "Text with // comment",
+				Questions: []core.Question{
+					{
+						Text:    "Question with /* comment */",
+						Answers: []string{"// Answer with comment"},
 					},
 				},
 			},
