@@ -23,8 +23,6 @@ type QuestionnaireState struct {
 
 // Conversation represents a chat conversation with its context and messages.
 type Conversation struct {
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
 	Questionnaire *QuestionnaireState
 	ID            string
 	State         ConversationState
@@ -40,13 +38,10 @@ type Message struct {
 
 // NewConversation creates a new conversation with the given ID.
 func NewConversation(id string) *Conversation {
-	now := time.Now()
 	return &Conversation{
-		ID:        id,
-		Messages:  make([]Message, 0),
-		CreatedAt: now,
-		UpdatedAt: now,
-		State:     StateNormal,
+		ID:       id,
+		Messages: make([]Message, 0),
+		State:    StateNormal,
 	}
 }
 
@@ -57,7 +52,6 @@ func (c *Conversation) AddMessage(role, content string) {
 		Content:   content,
 		Timestamp: time.Now(),
 	})
-	c.UpdatedAt = time.Now()
 }
 
 // GetContext returns all messages in the conversation as context.
