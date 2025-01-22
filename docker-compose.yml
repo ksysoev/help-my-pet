@@ -18,7 +18,7 @@ services:
     environment:
       - AI_API_KEY=${AI_API_KEY:-} # Anthropic API key
       - BOT_TELEGRAM_TOKEN=${BOT_TELEGRAM_TOKEN:-} # Telegram bot token
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URL=redis:6379
     depends_on:
       - redis
 
