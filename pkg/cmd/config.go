@@ -10,9 +10,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+// RedisConfig holds Redis connection settings
+type RedisConfig struct {
+	URL      string `mapstructure:"url"`
+	Password string `mapstructure:"password"`
+	DB       int    `mapstructure:"db"`
+}
+
 type Config struct {
-	Bot bot.Config       `mapstructure:"bot"`
-	AI  anthropic.Config `mapstructure:"ai"`
+	Bot   bot.Config       `mapstructure:"bot"`
+	AI    anthropic.Config `mapstructure:"ai"`
+	Redis RedisConfig      `mapstructure:"redis"`
 }
 
 // initConfig initializes the configuration by reading from the specified config file.
@@ -22,6 +30,8 @@ func initConfig(arg *args) (*Config, error) {
 	// Set default values
 	v.SetDefault("ai.model", "claude-2")
 	v.SetDefault("ai.max_tokens", 1000)
+	v.SetDefault("redis.url", "redis://localhost:6379")
+	v.SetDefault("redis.db", 0)
 
 	if arg.ConfigPath != "" {
 		v.SetConfigFile(arg.ConfigPath)

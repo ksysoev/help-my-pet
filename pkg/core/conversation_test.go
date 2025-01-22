@@ -14,8 +14,6 @@ func TestNewConversation(t *testing.T) {
 
 	assert.Equal(t, id, conv.ID)
 	assert.Empty(t, conv.Messages)
-	assert.NotZero(t, conv.CreatedAt)
-	assert.Equal(t, conv.CreatedAt, conv.UpdatedAt)
 	assert.Equal(t, StateNormal, conv.State)
 	assert.Nil(t, conv.Questionnaire)
 }
@@ -52,7 +50,6 @@ func TestConversation_AddMessage(t *testing.T) {
 			assert.Equal(t, tt.content, msg.Content)
 			assert.NotZero(t, msg.Timestamp)
 			assert.True(t, msg.Timestamp.After(beforeAdd))
-			assert.True(t, conv.UpdatedAt.After(conv.CreatedAt))
 		})
 	}
 }

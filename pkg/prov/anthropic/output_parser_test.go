@@ -10,9 +10,9 @@ import (
 
 func TestResponseParser_Parse(t *testing.T) {
 	tests := []struct {
+		expected *core.Response
 		name     string
 		input    string
-		expected *core.Response
 		wantErr  bool
 	}{
 		{

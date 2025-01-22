@@ -1,7 +1,28 @@
 services:
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   help-my-pet:
     image: "ghcr.io/ksysoev/help-my-pet:main"
+    platform: linux/amd64 # need to fix and start building multi-arch images
     restart: unless-stopped
     environment:
       - AI_API_KEY=${AI_API_KEY:-} # Anthropic API key
       - BOT_TELEGRAM_TOKEN=${BOT_TELEGRAM_TOKEN:-} # Telegram bot token
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:
