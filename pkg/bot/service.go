@@ -12,6 +12,10 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
+const (
+	requestTimeout = 30 * time.Second
+)
+
 type AIProvider interface {
 	GetPetAdvice(ctx context.Context, request *core.PetAdviceRequest) (*core.PetAdviceResponse, error)
 }
@@ -112,7 +116,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 			go func() {
 				defer wg.Done()
 
-				reqCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+				reqCtx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 
 				defer cancel()
 
@@ -133,7 +137,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 			select {
 			case <-done:
 				slog.Info("Graceful shutdown completed")
-			case <-time.After(45 * time.Second):
+			case <-time.After(requestTimeout):
 				slog.Warn("Graceful shutdown timed out after 30 seconds")
 			}
 
