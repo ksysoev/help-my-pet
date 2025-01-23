@@ -63,7 +63,6 @@ func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Messa
 
 	// Create message with buttons if available
 	msg := tgbotapi.NewMessage(message.Chat.ID, response.Message)
-	msg.ReplyToMessageID = message.MessageID
 
 	// Handle keyboard markup based on answers
 	if len(response.Answers) > 0 {
