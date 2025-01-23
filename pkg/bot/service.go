@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"sync"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -97,6 +98,8 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 	updates := s.Bot.GetUpdatesChan(updateConfig)
 
+	var wg sync.WaitGroup
+
 	for {
 		select {
 		case update := <-updates:
@@ -104,11 +107,36 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 				continue
 			}
 
-			go s.processMessage(ctx, update.Message)
+			wg.Add(1)
+
+			go func() {
+				defer wg.Done()
+
+				reqCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+
+				defer cancel()
+
+				s.processMessage(reqCtx, update.Message)
+			}()
 
 		case <-ctx.Done():
-			slog.Info("Shutting down bot")
+			slog.Info("Starting graceful shutdown")
 			s.Bot.StopReceivingUpdates()
+
+			// Wait for ongoing message processors with a timeout
+			done := make(chan struct{})
+			go func() {
+				wg.Wait()
+				close(done)
+			}()
+
+			select {
+			case <-done:
+				slog.Info("Graceful shutdown completed")
+			case <-time.After(45 * time.Second):
+				slog.Warn("Graceful shutdown timed out after 30 seconds")
+			}
+
 			return nil
 		}
 	}
