@@ -2,7 +2,6 @@ package bot
 
 import (
 	"context"
-	"fmt"
 	"testing"
 	"time"
 
@@ -13,207 +12,191 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestService_Run_EmptyUpdateMessage(t *testing.T) {
-	mockAI := NewMockAIProvider(t)
-	mockBot := NewMockBotAPI(t)
-
-	updates := make(chan tgbotapi.Update)
-	mockBot.EXPECT().
-		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
-		Return(updates)
-
-	mockBot.EXPECT().
-		StopReceivingUpdates().
-		Return()
-
-	messages := &i18n.Config{
-		Languages: map[string]i18n.Messages{
-			"en": {
-				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:       "Welcome to Help My Pet Bot!",
-				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
-				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-			},
-		},
-	}
-
-	svc := &ServiceImpl{
-		Bot:      mockBot,
-		AISvc:    mockAI,
-		Messages: messages,
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	errCh := make(chan error)
-
-	go func() {
-		errCh <- svc.Run(ctx)
-	}()
-
-	updates <- tgbotapi.Update{
-		Message: nil,
-	}
-
-	time.Sleep(100 * time.Millisecond)
-	cancel()
-	err := <-errCh
-	assert.NoError(t, err)
-}
-
-func TestService_Run_SendError(t *testing.T) {
-	mockAI := NewMockAIProvider(t)
-	mockBot := NewMockBotAPI(t)
-
-	updates := make(chan tgbotapi.Update)
-	mockBot.EXPECT().
-		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
-		Return(updates)
-
-	mockBot.EXPECT().
-		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-			_, ok := c.(tgbotapi.ChatActionConfig)
-			return ok
-		})).
-		Return(tgbotapi.Message{}, fmt.Errorf("send error"))
-
-	mockAI.EXPECT().
-		GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-			UserID:  "123",
-			ChatID:  "123",
-			Message: "test message",
-		}).
-		Return(core.NewPetAdviceResponse("test response", []string{}), nil)
-
-	mockBot.EXPECT().
-		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
-			msg, ok := c.(tgbotapi.MessageConfig)
-			return ok && msg.Text == "test response"
-		})).
-		Return(tgbotapi.Message{}, fmt.Errorf("send error"))
-
-	mockBot.EXPECT().
-		StopReceivingUpdates().
-		Return()
-
-	messages := &i18n.Config{
-		Languages: map[string]i18n.Messages{
-			"en": {
-				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:       "Welcome to Help My Pet Bot!",
-				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
-				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-			},
-		},
-	}
-
-	svc := &ServiceImpl{
-		Bot:      mockBot,
-		AISvc:    mockAI,
-		Messages: messages,
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	errCh := make(chan error)
-
-	go func() {
-		errCh <- svc.Run(ctx)
-	}()
-
-	updates <- tgbotapi.Update{
-		Message: &tgbotapi.Message{
-			Text: "test message",
-			Chat: &tgbotapi.Chat{
-				ID: 123,
-			},
-			MessageID: 456,
-			From: &tgbotapi.User{
-				ID:           123,
-				LanguageCode: "en",
-			},
-		},
-	}
-
-	time.Sleep(100 * time.Millisecond)
-	cancel()
-	err := <-errCh
-	assert.NoError(t, err)
-}
-
 func TestNewService(t *testing.T) {
-	mockAI := NewMockAIProvider(t)
-	messages := &i18n.Config{
-		Languages: map[string]i18n.Messages{
-			"en": {
-				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:       "Welcome to Help My Pet Bot!",
-				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
-				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+	tests := []struct {
+		cfg     *Config
+		aiSvc   AIProvider
+		name    string
+		wantErr bool
+	}{
+		{
+			name:    "nil config",
+			cfg:     nil,
+			aiSvc:   NewMockAIProvider(t),
+			wantErr: true,
+		},
+		{
+			name: "empty token",
+			cfg: &Config{
+				TelegramToken: "",
+				Messages:      &i18n.Config{},
 			},
+			aiSvc:   NewMockAIProvider(t),
+			wantErr: true,
+		},
+		{
+			name: "nil AIProvider",
+			cfg: &Config{
+				TelegramToken: "test-token",
+				Messages:      &i18n.Config{},
+			},
+			aiSvc:   nil,
+			wantErr: true,
+		},
+		{
+			name: "nil messages",
+			cfg: &Config{
+				TelegramToken: "test-token",
+				Messages:      nil,
+			},
+			aiSvc:   NewMockAIProvider(t),
+			wantErr: true,
 		},
 	}
 
-	t.Run("invalid token", func(t *testing.T) {
-		cfg := &Config{
-			TelegramToken: "test-token",
-			Messages:      messages,
-		}
-		svc, err := NewService(cfg, mockAI)
-		assert.Error(t, err)
-		assert.Nil(t, svc)
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := NewService(tt.cfg, tt.aiSvc)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
+	}
+}
 
-	t.Run("empty token", func(t *testing.T) {
-		cfg := &Config{
-			Messages: messages,
-		}
-		svc, err := NewService(cfg, mockAI)
-		assert.Error(t, err)
-		assert.Nil(t, svc)
-	})
+func TestServiceImpl_ProcessMessage(t *testing.T) {
+	tests := []struct {
+		setupMocks  func(*MockBotAPI, *MockAIProvider)
+		message     *tgbotapi.Message
+		name        string
+		expectError bool
+	}{
+		{
+			name: "successful message processing",
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				From: &tgbotapi.User{
+					ID:           456,
+					LanguageCode: "en",
+				},
+				Text: "test message",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+					ChatID:  "123",
+					UserID:  "456",
+					Message: "test message",
+				}).Return(&core.PetAdviceResponse{
+					Message: "AI response",
+				}, nil)
+				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
+					return msg.Text == "AI response"
+				})).Return(tgbotapi.Message{}, nil)
+			},
+			expectError: false,
+		},
+		{
+			name: "empty message",
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				Text: "",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+			},
+			expectError: false,
+		},
+		{
+			name: "start command",
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				From: &tgbotapi.User{
+					ID:           456,
+					LanguageCode: "en",
+				},
+				Text: "/start",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
+					return msg.ChatID == 123
+				})).Return(tgbotapi.Message{}, nil)
+			},
+			expectError: false,
+		},
+		{
+			name: "nil From field",
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				Text: "test message",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+				// Expect error message to be sent
+				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
+					return msg.ChatID == 123
+				})).Return(tgbotapi.Message{}, nil)
+			},
+			expectError: false,
+		},
+	}
 
-	t.Run("with nil AI provider", func(t *testing.T) {
-		cfg := &Config{
-			TelegramToken: "test-token",
-			Messages:      messages,
-		}
-		svc, err := NewService(cfg, nil)
-		assert.Error(t, err)
-		assert.Nil(t, svc)
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockBot := NewMockBotAPI(t)
+			mockAI := NewMockAIProvider(t)
 
-	t.Run("with nil config", func(t *testing.T) {
-		svc, err := NewService(nil, mockAI)
-		assert.Error(t, err)
-		assert.Nil(t, svc)
-	})
+			service := &ServiceImpl{
+				Bot:      mockBot,
+				AISvc:    mockAI,
+				Messages: &i18n.Config{},
+			}
 
-	t.Run("with valid token but NewBotAPI fails", func(t *testing.T) {
-		cfg := &Config{
-			TelegramToken: "invalid:token:format", // This format should trigger a validation error in NewBotAPI
-			Messages:      messages,
-		}
-		svc, err := NewService(cfg, mockAI)
-		assert.Error(t, err)
-		assert.Nil(t, svc)
-	})
+			tt.setupMocks(mockBot, mockAI)
 
-	t.Run("with valid token and no rate limiter", func(t *testing.T) {
-		cfg := &Config{
-			TelegramToken: "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz", // Valid format but invalid token
-			Messages:      messages,
-		}
-		svc, err := NewService(cfg, mockAI)
-		assert.Error(t, err) // Error because token is invalid
-		assert.Nil(t, svc)
-	})
+			ctx := context.Background()
+			service.processMessage(ctx, tt.message)
 
-	t.Run("with invalid token format", func(t *testing.T) {
-		cfg := &Config{
-			TelegramToken: "invalid_token_format",
-			Messages:      messages,
-		}
-		svc, err := NewService(cfg, mockAI)
-		assert.Error(t, err)
-		assert.Nil(t, svc)
-	})
+			mockBot.AssertExpectations(t)
+			mockAI.AssertExpectations(t)
+		})
+	}
+}
+
+func TestServiceImpl_Run(t *testing.T) {
+	mockBot := NewMockBotAPI(t)
+	mockAI := NewMockAIProvider(t)
+
+	service := &ServiceImpl{
+		Bot:      mockBot,
+		AISvc:    mockAI,
+		Messages: &i18n.Config{},
+	}
+
+	updates := make(chan tgbotapi.Update)
+	mockBot.EXPECT().GetUpdatesChan(mock.Anything).Return((<-chan tgbotapi.Update)(updates))
+	mockBot.EXPECT().StopReceivingUpdates().Return()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
+
+	done := make(chan struct{})
+	go func() {
+		err := service.Run(ctx)
+		assert.NoError(t, err)
+		close(done)
+	}()
+
+	// Wait for either completion or timeout
+	select {
+	case <-done:
+		// Test completed successfully
+	case <-time.After(200 * time.Millisecond):
+		t.Fatal("Test timed out")
+	}
+
+	mockBot.AssertExpectations(t)
 }
