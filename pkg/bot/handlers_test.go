@@ -256,8 +256,11 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 
 	// Expect typing action
 	mockBot.EXPECT().
-		Send(tgbotapi.NewChatAction(int64(123), tgbotapi.ChatTyping)).
-		Return(tgbotapi.Message{}, nil)
+		Request(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+			action, ok := c.(tgbotapi.ChatActionConfig)
+			return ok && action.ChatID == 123 && action.Action == tgbotapi.ChatTyping
+		})).
+		Return(&tgbotapi.APIResponse{}, nil)
 
 	// Expect AI request
 	mockAI.EXPECT().
