@@ -8,6 +8,7 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
@@ -24,6 +25,7 @@ type ServiceImpl struct {
 	Bot      BotAPI
 	AISvc    AIProvider
 	Messages *i18n.Config
+	reqMgr   *conversation.RequestManager
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -53,12 +55,29 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		Bot:      bot,
 		AISvc:    aiSvc,
 		Messages: cfg.Messages,
+		reqMgr:   conversation.NewRequestManager(),
 	}, nil
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
-	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
+	if s.reqMgr == nil {
+		s.reqMgr = conversation.NewRequestManager()
+	}
+
+	baseCtx, baseCancel := context.WithTimeout(ctx, 30*time.Second)
+	defer baseCancel()
+
+	// Create cancel context for this request
+	requestCancel := s.reqMgr.StartRequest(message.Chat.ID)
+	defer requestCancel()
+
+	// Ensure request is cancelled if context ends
+	go func() {
+		select {
+		case <-baseCtx.Done():
+			requestCancel()
+		}
+	}()
 
 	// Send typing action
 	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
@@ -71,8 +90,16 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	// Handle message with middleware
 	handler := s.setupHandler()
-	msgConfig, err := handler(ctx, message)
+	msgConfig, err := handler(baseCtx, message)
 	if err != nil {
+		if err == context.Canceled {
+			// Request was cancelled by a new message
+			slog.Info("Request cancelled by new message",
+				slog.Int64("chat_id", message.Chat.ID),
+			)
+			return
+		}
+
 		slog.Error("Unexpected error",
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),
