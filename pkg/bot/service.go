@@ -73,10 +73,8 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	// Ensure request is cancelled if context ends
 	go func() {
-		select {
-		case <-baseCtx.Done():
-			requestCancel()
-		}
+		<-baseCtx.Done()
+		requestCancel()
 	}()
 
 	// Send typing action
