@@ -62,7 +62,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	// Send typing action
 	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
-	if _, err := s.Bot.Send(typing); err != nil {
+	if _, err := s.Bot.Request(typing); err != nil {
 		slog.Error("Failed to send typing action",
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),

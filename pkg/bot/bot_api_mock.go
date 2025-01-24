@@ -70,6 +70,64 @@ func (_c *MockBotAPI_GetUpdatesChan_Call) RunAndReturn(run func(tgbotapi.UpdateC
 	return _c
 }
 
+// Request provides a mock function with given fields: c
+func (_m *MockBotAPI) Request(c tgbotapi.Chattable) (*tgbotapi.APIResponse, error) {
+	ret := _m.Called(c)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Request")
+	}
+
+	var r0 *tgbotapi.APIResponse
+	var r1 error
+	if rf, ok := ret.Get(0).(func(tgbotapi.Chattable) (*tgbotapi.APIResponse, error)); ok {
+		return rf(c)
+	}
+	if rf, ok := ret.Get(0).(func(tgbotapi.Chattable) *tgbotapi.APIResponse); ok {
+		r0 = rf(c)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*tgbotapi.APIResponse)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(tgbotapi.Chattable) error); ok {
+		r1 = rf(c)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockBotAPI_Request_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Request'
+type MockBotAPI_Request_Call struct {
+	*mock.Call
+}
+
+// Request is a helper method to define mock.On call
+//   - c tgbotapi.Chattable
+func (_e *MockBotAPI_Expecter) Request(c interface{}) *MockBotAPI_Request_Call {
+	return &MockBotAPI_Request_Call{Call: _e.mock.On("Request", c)}
+}
+
+func (_c *MockBotAPI_Request_Call) Run(run func(c tgbotapi.Chattable)) *MockBotAPI_Request_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(tgbotapi.Chattable))
+	})
+	return _c
+}
+
+func (_c *MockBotAPI_Request_Call) Return(_a0 *tgbotapi.APIResponse, _a1 error) *MockBotAPI_Request_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockBotAPI_Request_Call) RunAndReturn(run func(tgbotapi.Chattable) (*tgbotapi.APIResponse, error)) *MockBotAPI_Request_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // Send provides a mock function with given fields: c
 func (_m *MockBotAPI) Send(c tgbotapi.Chattable) (tgbotapi.Message, error) {
 	ret := _m.Called(c)
