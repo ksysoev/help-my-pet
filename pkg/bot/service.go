@@ -60,10 +60,6 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
-	if s.reqMgr == nil {
-		s.reqMgr = conversation.NewRequestManager()
-	}
-
 	baseCtx, baseCancel := context.WithTimeout(ctx, 30*time.Second)
 	defer baseCancel()
 
