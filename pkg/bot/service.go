@@ -8,7 +8,6 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/ksysoev/help-my-pet/pkg/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
@@ -25,7 +24,7 @@ type ServiceImpl struct {
 	Bot      BotAPI
 	AISvc    AIProvider
 	Messages *i18n.Config
-	reqMgr   *conversation.RequestManager
+	reqMgr   *RequestManager
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -55,7 +54,7 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		Bot:      bot,
 		AISvc:    aiSvc,
 		Messages: cfg.Messages,
-		reqMgr:   conversation.NewRequestManager(),
+		reqMgr:   NewRequestManager(),
 	}, nil
 }
 

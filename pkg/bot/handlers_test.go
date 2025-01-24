@@ -7,7 +7,6 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/ksysoev/help-my-pet/pkg/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
@@ -173,7 +172,7 @@ func TestService_handleMessage(t *testing.T) {
 				Bot:      mockBot,
 				AISvc:    mockAI,
 				Messages: messages,
-				reqMgr:   conversation.NewRequestManager(),
+				reqMgr:   NewRequestManager(),
 			}
 
 			msg := &tgbotapi.Message{
@@ -249,7 +248,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		Bot:      mockBot,
 		AISvc:    mockAI,
 		Messages: messages,
-		reqMgr:   conversation.NewRequestManager(),
+		reqMgr:   NewRequestManager(),
 	}
 
 	updates := make(chan tgbotapi.Update)
