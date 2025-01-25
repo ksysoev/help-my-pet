@@ -30,7 +30,7 @@ func (m *RequestManager) StartRequest(chatID int64) context.CancelFunc {
 	defer m.mu.Unlock()
 
 	// Cancel any existing request for this chat
-	m.CancelPreviousRequest(chatID)
+	m.cancelPreviousRequest(chatID)
 
 	// Create new context and cancel function
 	ctx, cancel := context.WithCancel(context.Background())
@@ -52,8 +52,8 @@ func (m *RequestManager) StartRequest(chatID int64) context.CancelFunc {
 	return cancel
 }
 
-// CancelPreviousRequest cancels any existing request for the given chat
-func (m *RequestManager) CancelPreviousRequest(chatID int64) {
+// cancelPreviousRequest cancels any existing request for the given chat
+func (m *RequestManager) cancelPreviousRequest(chatID int64) {
 	if state, exists := m.requests[chatID]; exists {
 		state.cancel()
 		delete(m.requests, chatID)

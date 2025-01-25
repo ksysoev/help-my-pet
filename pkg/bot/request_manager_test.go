@@ -89,7 +89,9 @@ func TestRequestManager_CancelPreviousRequest(t *testing.T) {
 		rm.mu.RUnlock()
 
 		// Cancel request
-		rm.CancelPreviousRequest(chatID)
+		rm.mu.Lock()
+		rm.cancelPreviousRequest(chatID)
+		rm.mu.Unlock()
 
 		// Wait for cleanup goroutine
 		time.Sleep(10 * time.Millisecond)
@@ -107,7 +109,7 @@ func TestRequestManager_CancelPreviousRequest(t *testing.T) {
 		chatID := int64(123)
 
 		// Should not panic
-		rm.CancelPreviousRequest(chatID)
+		rm.cancelPreviousRequest(chatID)
 
 		rm.mu.RLock()
 		assert.Len(t, rm.requests, 0)
