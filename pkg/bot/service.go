@@ -2,6 +2,7 @@ package bot
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"sync"
@@ -15,6 +16,14 @@ import (
 const (
 	requestTimeout = 30 * time.Second
 )
+
+// BotAPI interface represents the Telegram bot API capabilities we use
+type BotAPI interface {
+	Send(c tgbotapi.Chattable) (tgbotapi.Message, error)
+	Request(c tgbotapi.Chattable) (*tgbotapi.APIResponse, error)
+	StopReceivingUpdates()
+	GetUpdatesChan(config tgbotapi.UpdateConfig) tgbotapi.UpdatesChannel
+}
 
 type AIProvider interface {
 	GetPetAdvice(ctx context.Context, request *core.PetAdviceRequest) (*core.PetAdviceResponse, error)
@@ -57,9 +66,6 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
-	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
-
 	// Send typing action
 	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
 	if _, err := s.Bot.Request(typing); err != nil {
@@ -72,7 +78,14 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	// Handle message with middleware
 	handler := s.setupHandler()
 	msgConfig, err := handler(ctx, message)
-	if err != nil {
+
+	if errors.Is(err, context.Canceled) {
+		slog.Info("Request cancelled",
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+
+		return
+	} else if err != nil {
 		slog.Error("Unexpected error",
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),
@@ -116,8 +129,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 			go func() {
 				defer wg.Done()
 
-				reqCtx, cancel := context.WithTimeout(context.Background(), requestTimeout)
-
+				reqCtx, cancel := context.WithTimeout(ctx, requestTimeout)
 				defer cancel()
 
 				s.processMessage(reqCtx, update.Message)

@@ -197,7 +197,7 @@ func TestService_handleMessage(t *testing.T) {
 					Message: tt.message,
 				}
 				mockAI.EXPECT().
-					GetPetAdvice(context.Background(), expectedRequest).
+					GetPetAdvice(mock.Anything, expectedRequest).
 					Return(tt.aiResponse, tt.aiErr)
 			}
 
