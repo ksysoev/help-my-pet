@@ -128,7 +128,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 		},
 		{
 			name: "context cancelled",
-			ctx:  func() context.Context { ctx, cancel := context.WithCancel(context.Background()); cancel(); return ctx }(),
+			ctx:  context.Background(),
 			message: &tgbotapi.Message{
 				Chat: &tgbotapi.Chat{ID: 123},
 				From: &tgbotapi.User{
