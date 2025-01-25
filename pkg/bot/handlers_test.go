@@ -172,7 +172,6 @@ func TestService_handleMessage(t *testing.T) {
 				Bot:      mockBot,
 				AISvc:    mockAI,
 				Messages: messages,
-				reqMgr:   NewRequestManager(),
 			}
 
 			msg := &tgbotapi.Message{
@@ -198,7 +197,7 @@ func TestService_handleMessage(t *testing.T) {
 					Message: tt.message,
 				}
 				mockAI.EXPECT().
-					GetPetAdvice(context.Background(), expectedRequest).
+					GetPetAdvice(mock.Anything, expectedRequest).
 					Return(tt.aiResponse, tt.aiErr)
 			}
 
@@ -248,7 +247,6 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		Bot:      mockBot,
 		AISvc:    mockAI,
 		Messages: messages,
-		reqMgr:   NewRequestManager(),
 	}
 
 	updates := make(chan tgbotapi.Update)

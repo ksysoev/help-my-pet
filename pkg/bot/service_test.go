@@ -153,7 +153,6 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 				Bot:      mockBot,
 				AISvc:    mockAI,
 				Messages: &i18n.Config{},
-				reqMgr:   NewRequestManager(),
 			}
 
 			tt.setupMocks(mockBot, mockAI)
@@ -175,7 +174,6 @@ func TestServiceImpl_Run(t *testing.T) {
 		Bot:      mockBot,
 		AISvc:    mockAI,
 		Messages: &i18n.Config{},
-		reqMgr:   NewRequestManager(),
 	}
 
 	updates := make(chan tgbotapi.Update)
@@ -195,7 +193,7 @@ func TestServiceImpl_Run(t *testing.T) {
 	// Wait for either completion or timeout
 	select {
 	case <-done:
-		// Test completed successfully
+	// Test completed successfully
 	case <-time.After(200 * time.Millisecond):
 		t.Fatal("Test timed out")
 	}

@@ -24,7 +24,6 @@ type ServiceImpl struct {
 	Bot      BotAPI
 	AISvc    AIProvider
 	Messages *i18n.Config
-	reqMgr   *RequestManager
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -54,24 +53,10 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		Bot:      bot,
 		AISvc:    aiSvc,
 		Messages: cfg.Messages,
-		reqMgr:   NewRequestManager(),
 	}, nil
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
-	baseCtx, baseCancel := context.WithTimeout(ctx, 30*time.Second)
-	defer baseCancel()
-
-	// Create cancel context for this request
-	requestCancel := s.reqMgr.StartRequest(message.Chat.ID)
-	defer requestCancel()
-
-	// Ensure request is cancelled if context ends
-	go func() {
-		<-baseCtx.Done()
-		requestCancel()
-	}()
-
 	// Send typing action
 	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
 	if _, err := s.Bot.Request(typing); err != nil {
@@ -83,7 +68,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	// Handle message with middleware
 	handler := s.setupHandler()
-	msgConfig, err := handler(baseCtx, message)
+	msgConfig, err := handler(ctx, message)
 	if err != nil {
 		if err == context.Canceled {
 			// Request was cancelled by a new message
@@ -136,8 +121,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 			go func() {
 				defer wg.Done()
 
-				reqCtx, cancel := context.WithTimeout(context.Background(), requestTimeout)
-
+				reqCtx, cancel := context.WithTimeout(ctx, requestTimeout)
 				defer cancel()
 
 				s.processMessage(reqCtx, update.Message)

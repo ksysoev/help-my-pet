@@ -18,6 +18,7 @@ type Handler func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.Mess
 func (s *ServiceImpl) setupHandler() Handler {
 	handler := s.handleMessage
 
+	handler = withRequestReducer()(handler)
 	handler = withThrottler(30)(handler)
 	handler = withErrorHandling(s.Messages.GetMessage, handler)
 
