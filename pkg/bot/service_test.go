@@ -72,9 +72,11 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 		message     *tgbotapi.Message
 		name        string
 		expectError bool
+		ctx         context.Context
 	}{
 		{
 			name: "successful message processing",
+			ctx:  context.Background(),
 			message: &tgbotapi.Message{
 				Chat: &tgbotapi.Chat{ID: 123},
 				From: &tgbotapi.User{
@@ -99,7 +101,107 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			expectError: false,
 		},
 		{
+			name: "failed typing action",
+			ctx:  context.Background(),
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				From: &tgbotapi.User{
+					ID:           456,
+					LanguageCode: "en",
+				},
+				Text: "test message",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(nil, assert.AnError)
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+					ChatID:  "123",
+					UserID:  "456",
+					Message: "test message",
+				}).Return(&core.PetAdviceResponse{
+					Message: "AI response",
+				}, nil)
+				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
+					return msg.Text == "AI response"
+				})).Return(tgbotapi.Message{}, nil)
+			},
+			expectError: false,
+		},
+		{
+			name: "context cancelled",
+			ctx:  func() context.Context { ctx, cancel := context.WithCancel(context.Background()); cancel(); return ctx }(),
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				From: &tgbotapi.User{
+					ID:           456,
+					LanguageCode: "en",
+				},
+				Text: "test message",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+					ChatID:  "123",
+					UserID:  "456",
+					Message: "test message",
+				}).Return(nil, context.Canceled)
+				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
+					return msg.ChatID == 123
+				})).Return(tgbotapi.Message{}, nil)
+			},
+			expectError: false,
+		},
+		{
+			name: "failed to send message",
+			ctx:  context.Background(),
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				From: &tgbotapi.User{
+					ID:           456,
+					LanguageCode: "en",
+				},
+				Text: "test message",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+					ChatID:  "123",
+					UserID:  "456",
+					Message: "test message",
+				}).Return(&core.PetAdviceResponse{
+					Message: "AI response",
+				}, nil)
+				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
+					return msg.Text == "AI response"
+				})).Return(tgbotapi.Message{}, assert.AnError)
+			},
+			expectError: false,
+		},
+		{
+			name: "empty response",
+			ctx:  context.Background(),
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+				From: &tgbotapi.User{
+					ID:           456,
+					LanguageCode: "en",
+				},
+				Text: "test message",
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
+					ChatID:  "123",
+					UserID:  "456",
+					Message: "test message",
+				}).Return(&core.PetAdviceResponse{
+					Message: "",
+				}, nil)
+			},
+			expectError: false,
+		},
+		{
 			name: "empty message",
+			ctx:  context.Background(),
 			message: &tgbotapi.Message{
 				Chat: &tgbotapi.Chat{ID: 123},
 				Text: "",
@@ -111,6 +213,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 		},
 		{
 			name: "start command",
+			ctx:  context.Background(),
 			message: &tgbotapi.Message{
 				Chat: &tgbotapi.Chat{ID: 123},
 				From: &tgbotapi.User{
@@ -122,13 +225,14 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
-					return msg.ChatID == 123
+					return msg.ChatID == 123 && msg.Text != ""
 				})).Return(tgbotapi.Message{}, nil)
 			},
 			expectError: false,
 		},
 		{
 			name: "nil From field",
+			ctx:  context.Background(),
 			message: &tgbotapi.Message{
 				Chat: &tgbotapi.Chat{ID: 123},
 				Text: "test message",
@@ -137,7 +241,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
 				// Expect error message to be sent
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
-					return msg.ChatID == 123
+					return msg.ChatID == 123 && msg.Text != ""
 				})).Return(tgbotapi.Message{}, nil)
 			},
 			expectError: false,
@@ -157,8 +261,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 
 			tt.setupMocks(mockBot, mockAI)
 
-			ctx := context.Background()
-			service.processMessage(ctx, tt.message)
+			service.processMessage(tt.ctx, tt.message)
 
 			mockBot.AssertExpectations(t)
 			mockAI.AssertExpectations(t)
