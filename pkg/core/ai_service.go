@@ -64,6 +64,11 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceReq
 	// Add user's question to conversation
 	conversation.AddMessage("user", request.Message)
 
+	// Save conversation immediately after adding user's message
+	if err := s.repo.Save(ctx, conversation); err != nil {
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
+	}
+
 	// Build prompt with conversation context
 	var prompt string
 	if len(conversation.GetContext()) <= 1 {
@@ -140,6 +145,11 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceReq
 func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, answer string) (*PetAdviceResponse, error) {
 	// Add user's answer to conversation
 	conversation.AddMessage("user", answer)
+
+	// Save conversation immediately after adding user's message
+	if err := s.repo.Save(ctx, conversation); err != nil {
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
+	}
 
 	// Store the answer and check if questionnaire is complete
 	isComplete, err := conversation.AddQuestionAnswer(answer)
