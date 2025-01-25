@@ -145,7 +145,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 					Message: "test message",
 				}).Return(nil, context.Canceled)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
-					return msg.ChatID == 123
+					return msg.ChatID == 123 && msg.Text != ""
 				})).Return(tgbotapi.Message{}, nil)
 			},
 			expectError: false,
