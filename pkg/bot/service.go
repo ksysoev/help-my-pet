@@ -2,6 +2,7 @@ package bot
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"sync"
@@ -15,6 +16,14 @@ import (
 const (
 	requestTimeout = 30 * time.Second
 )
+
+// BotAPI interface represents the Telegram bot API capabilities we use
+type BotAPI interface {
+	Send(c tgbotapi.Chattable) (tgbotapi.Message, error)
+	Request(c tgbotapi.Chattable) (*tgbotapi.APIResponse, error)
+	StopReceivingUpdates()
+	GetUpdatesChan(config tgbotapi.UpdateConfig) tgbotapi.UpdatesChannel
+}
 
 type AIProvider interface {
 	GetPetAdvice(ctx context.Context, request *core.PetAdviceRequest) (*core.PetAdviceResponse, error)
@@ -69,15 +78,14 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	// Handle message with middleware
 	handler := s.setupHandler()
 	msgConfig, err := handler(ctx, message)
-	if err != nil {
-		if err == context.Canceled {
-			// Request was cancelled by a new message
-			slog.Info("Request cancelled by new message",
-				slog.Int64("chat_id", message.Chat.ID),
-			)
-			return
-		}
 
+	if errors.Is(err, context.Canceled) {
+		slog.Info("Request cancelled",
+			slog.Int64("chat_id", message.Chat.ID),
+		)
+
+		return
+	} else if err != nil {
 		slog.Error("Unexpected error",
 			slog.Any("error", err),
 			slog.Int64("chat_id", message.Chat.ID),

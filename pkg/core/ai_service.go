@@ -84,9 +84,6 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceReq
 
 	response, err := s.llm.Call(ctx, prompt)
 	if err != nil {
-		if err == context.Canceled || err == context.DeadlineExceeded {
-			return nil, fmt.Errorf("failed to get AI response: context cancelled")
-		}
 		return nil, fmt.Errorf("failed to get AI response: %w", err)
 	}
 
@@ -173,9 +170,6 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversatio
 		// Get final response from LLM
 		response, err := s.llm.Call(ctx, prompt)
 		if err != nil {
-			if err == context.Canceled || err == context.DeadlineExceeded {
-				return nil, fmt.Errorf("failed to get AI response: context cancelled")
-			}
 			return nil, fmt.Errorf("failed to get AI response: %w", err)
 		}
 
