@@ -2,6 +2,7 @@ package anthropic
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -44,7 +45,6 @@ func TestNew(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.NotNil(t, provider)
-				assert.Equal(t, tt.config.Model, provider.model)
 				assert.Equal(t, tt.config.MaxTokens, provider.config.MaxTokens)
 			}
 		})
@@ -80,15 +80,16 @@ func TestProvider_Call(t *testing.T) {
 			},
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
-					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
-
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
+				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
+
+				mockModel.EXPECT().Call(ctx, fullPrompt, mock.Anything).
+					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
+
 				return &Provider{
 					llm:    mockModel,
-					model:  config.Model,
 					config: config,
 					parser: parser,
 				}
@@ -101,15 +102,16 @@ func TestProvider_Call(t *testing.T) {
 			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
-					Return("test response", nil)
-
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
+				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
+
+				mockModel.EXPECT().Call(ctx, fullPrompt, mock.Anything).
+					Return("test response", nil)
+
 				return &Provider{
 					llm:    mockModel,
-					model:  config.Model,
 					config: config,
 					parser: parser,
 				}
@@ -122,15 +124,16 @@ func TestProvider_Call(t *testing.T) {
 			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
-					Return("", assert.AnError)
-
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
+				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
+
+				mockModel.EXPECT().Call(ctx, fullPrompt, mock.Anything).
+					Return("", assert.AnError)
+
 				return &Provider{
 					llm:    mockModel,
-					model:  config.Model,
 					config: config,
 					parser: parser,
 				}
