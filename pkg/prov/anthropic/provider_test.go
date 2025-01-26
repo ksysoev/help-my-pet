@@ -2,7 +2,6 @@ package anthropic
 
 import (
 	"context"
-	"strings"
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -82,9 +81,9 @@ func TestProvider_Call(t *testing.T) {
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
-				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
+				formatInstructions := parser.FormatInstructions()
 
-				mockModel.EXPECT().Call(ctx, fullPrompt).
+				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
 					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
 
 				return &Provider{
@@ -104,9 +103,9 @@ func TestProvider_Call(t *testing.T) {
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
-				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
+				formatInstructions := parser.FormatInstructions()
 
-				mockModel.EXPECT().Call(ctx, fullPrompt).
+				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
 					Return("test response", nil)
 
 				return &Provider{
@@ -126,9 +125,9 @@ func TestProvider_Call(t *testing.T) {
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
-				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
+				formatInstructions := parser.FormatInstructions()
 
-				mockModel.EXPECT().Call(ctx, fullPrompt).
+				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
 					Return("", assert.AnError)
 
 				return &Provider{

@@ -3,6 +3,7 @@ package anthropic
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -10,7 +11,10 @@ import (
 
 // Model defines the interface for LLM interactions
 type Model interface {
-	Call(ctx context.Context, prompt string) (string, error)
+	// Call sends a request to the LLM with a user question and format instructions
+	// formatInstructions contain system-level prompting and formatting guidelines
+	// question is the user's actual querys
+	Call(ctx context.Context, formatInstructions string, question string) (string, error)
 }
 
 const systemPrompt = `You are a helpful veterinary AI assistant. You MUST detect the language of the user's question and respond in the SAME language. You are only allowed to answer questions related to the following topics:
@@ -40,39 +44,41 @@ Please provide accurate, helpful, and compassionate advice while following these
 
 // anthropicModel adapts the Anthropic API to the Model interface
 type anthropicModel struct {
-	client     *anthropic.Client
-	modelID    string
-	systemText string
-	maxTokens  int
+	client    *anthropic.Client
+	modelID   string
+	maxTokens int
 }
 
-func newAnthropicModel(apiKey string, modelID string, maxTokens int, systemPrompt string) (*anthropicModel, error) {
+func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropicModel, error) {
 	client := anthropic.NewClient(option.WithAPIKey(apiKey))
 	if client == nil {
 		return nil, fmt.Errorf("failed to create Anthropic client")
 	}
 
 	return &anthropicModel{
-		client:     client,
-		modelID:    modelID,
-		maxTokens:  maxTokens,
-		systemText: systemPrompt,
+		client:    client,
+		modelID:   modelID,
+		maxTokens: maxTokens,
 	}, nil
 }
 
-func (m *anthropicModel) Call(ctx context.Context, prompt string) (string, error) {
+func (m *anthropicModel) Call(ctx context.Context, formatInstructions string, question string) (string, error) {
+	slog.Debug("Anthropic LLM call", slog.String("format_instructions", formatInstructions), slog.String("question", question))
+
 	message, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:     anthropic.F(m.modelID),
 		MaxTokens: anthropic.F(int64(m.maxTokens)),
 		System: anthropic.F([]anthropic.TextBlockParam{
 			anthropic.NewTextBlock(systemPrompt),
+			anthropic.NewTextBlock(formatInstructions),
 		}),
 		Messages: anthropic.F([]anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(prompt)),
+			anthropic.NewUserMessage(anthropic.NewTextBlock(question)),
 		}),
 	})
+
 	if err != nil {
-		return "", fmt.Errorf("failed to call Anthropsic API: %w", err)
+		return "", fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
 	if len(message.Content) == 0 {

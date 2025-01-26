@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"strings"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
 )
@@ -29,14 +28,12 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("API key is required")
 	}
 
-	// Get formatted system prompt with parser instructions
 	parser, err := NewResponseParser()
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize response parser: %w", err)
 	}
-	formattedSystemPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1)
 
-	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens, formattedSystemPrompt)
+	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic model: %w", err)
 	}
@@ -50,11 +47,13 @@ func New(cfg Config) (*Provider, error) {
 
 // Call sends a message to the Anthropic API and returns the structured response
 func (p *Provider) Call(ctx context.Context, prompt string) (*core.Response, error) {
-	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", p.parser.FormatInstructions(), prompt)
+	formatInstructions := p.parser.FormatInstructions()
 
-	slog.Debug("Anthropic LLM full prompt", slog.String("prompt", fullPrompt))
+	slog.Debug("Anthropic LLM call",
+		slog.String("format_instructions", formatInstructions),
+		slog.String("question", prompt))
 
-	response, err := p.llm.Call(ctx, fullPrompt)
+	response, err := p.llm.Call(ctx, formatInstructions, prompt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
