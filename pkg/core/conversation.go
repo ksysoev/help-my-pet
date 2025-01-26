@@ -9,6 +9,8 @@ import (
 type ConversationState string
 
 const (
+	MaxMessageHistory = 5 // Maximum number of messages to keep in history
+
 	StateNormal      ConversationState = "normal"
 	StateQuestioning ConversationState = "questioning"
 )
@@ -52,6 +54,11 @@ func (c *Conversation) AddMessage(role, content string) {
 		Content:   content,
 		Timestamp: time.Now(),
 	})
+
+	// Keep only the last N messages
+	if len(c.Messages) > MaxMessageHistory {
+		c.Messages = c.Messages[len(c.Messages)-MaxMessageHistory:]
+	}
 }
 
 // GetContext returns all messages in the conversation as context.
