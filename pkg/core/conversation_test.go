@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -20,19 +21,32 @@ func TestNewConversation(t *testing.T) {
 
 func TestConversation_AddMessage(t *testing.T) {
 	tests := []struct {
-		name    string
-		role    string
-		content string
+		name           string
+		role           string
+		content        string
+		messageCount   int
+		expectedLength int
 	}{
 		{
-			name:    "add user message",
-			role:    "user",
-			content: "Hello",
+			name:           "add user message",
+			role:           "user",
+			content:        "Hello",
+			messageCount:   1,
+			expectedLength: 1,
 		},
 		{
-			name:    "add assistant message",
-			role:    "assistant",
-			content: "Hi there!",
+			name:           "add assistant message",
+			role:           "assistant",
+			content:        "Hi there!",
+			messageCount:   1,
+			expectedLength: 1,
+		},
+		{
+			name:           "exceed max history",
+			role:           "user",
+			content:        "Message",
+			messageCount:   MaxMessageHistory + 2,
+			expectedLength: MaxMessageHistory,
 		},
 	}
 
@@ -42,14 +56,23 @@ func TestConversation_AddMessage(t *testing.T) {
 			beforeAdd := time.Now()
 			time.Sleep(time.Millisecond) // Ensure time difference
 
-			conv.AddMessage(tt.role, tt.content)
+			if tt.name == "exceed max history" {
+				// For max history test, add messages sequentially
+				for i := 0; i < tt.messageCount; i++ {
+					conv.AddMessage(tt.role, fmt.Sprintf("Message %d", i))
+				}
+				// Check if the first message in the history is the correct one
+				assert.Equal(t, fmt.Sprintf("Message %d", tt.messageCount-MaxMessageHistory), conv.Messages[0].Content)
+			} else {
+				// For other tests, just add one message
+				conv.AddMessage(tt.role, tt.content)
+				assert.Equal(t, tt.content, conv.Messages[0].Content)
+			}
 
-			assert.Len(t, conv.Messages, 1)
-			msg := conv.Messages[0]
-			assert.Equal(t, tt.role, msg.Role)
-			assert.Equal(t, tt.content, msg.Content)
-			assert.NotZero(t, msg.Timestamp)
-			assert.True(t, msg.Timestamp.After(beforeAdd))
+			assert.Len(t, conv.Messages, tt.expectedLength)
+			assert.Equal(t, tt.role, conv.Messages[0].Role)
+			assert.NotZero(t, conv.Messages[0].Timestamp)
+			assert.True(t, conv.Messages[0].Timestamp.After(beforeAdd))
 		})
 	}
 }
@@ -96,6 +119,23 @@ func TestConversation_StartQuestionnaire(t *testing.T) {
 	assert.Len(t, conv.Questionnaire.Answers, len(questions))
 }
 
+func TestConversation_MessageHistory(t *testing.T) {
+	conv := NewConversation("test-id")
+
+	// Add total of 8 messages (0 to 7)
+	for i := 0; i < MaxMessageHistory+3; i++ {
+		conv.AddMessage("user", fmt.Sprintf("Message %d", i))
+	}
+
+	// Should have last 5 messages (3,4,5,6,7)
+	assert.Len(t, conv.Messages, MaxMessageHistory)
+
+	// First message should be 3
+	assert.Equal(t, "Message 3", conv.Messages[0].Content)
+	// Last message should be 7
+	assert.Equal(t, "Message 7", conv.Messages[MaxMessageHistory-1].Content)
+}
+
 func TestConversation_GetCurrentQuestion(t *testing.T) {
 	tests := []struct {
 		setupConv    func() *Conversation
@@ -125,6 +165,31 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 			wantErr:      true,
 			wantQuestion: nil,
 		},
+		{
+			name: "all questions answered",
+			setupConv: func() *Conversation {
+				conv := NewConversation("test-id")
+				questions := []Question{
+					{Text: "What type of pet do you have?"},
+				}
+				conv.StartQuestionnaire("Initial prompt", questions)
+				_, err := conv.AddQuestionAnswer("Dog")
+				require.NoError(t, err)
+				return conv
+			},
+			wantErr:      true,
+			wantQuestion: nil,
+		},
+		{
+			name: "questioning state but nil questionnaire",
+			setupConv: func() *Conversation {
+				conv := NewConversation("test-id")
+				conv.State = StateQuestioning // Set state but don't initialize questionnaire
+				return conv
+			},
+			wantErr:      true,
+			wantQuestion: nil,
+		},
 	}
 
 	for _, tt := range tests {
@@ -138,6 +203,51 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.wantQuestion, question)
+			}
+		})
+	}
+}
+
+func TestConversation_AddQuestionAnswer_AdditionalCases(t *testing.T) {
+	tests := []struct {
+		name      string
+		setupConv func() *Conversation
+		answer    string
+		wantErr   bool
+	}{
+		{
+			name: "attempt to answer after completion",
+			setupConv: func() *Conversation {
+				conv := NewConversation("test-id")
+				questions := []Question{{Text: "What type of pet do you have?"}}
+				conv.StartQuestionnaire("Initial prompt", questions)
+				_, err := conv.AddQuestionAnswer("Dog")
+				require.NoError(t, err)
+				return conv
+			},
+			answer:  "Another answer",
+			wantErr: true,
+		},
+		{
+			name: "attempt to answer with empty questionnaire",
+			setupConv: func() *Conversation {
+				conv := NewConversation("test-id")
+				conv.State = StateQuestioning
+				return conv
+			},
+			answer:  "Answer",
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			conv := tt.setupConv()
+			_, err := conv.AddQuestionAnswer(tt.answer)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
 			}
 		})
 	}
@@ -208,6 +318,65 @@ func TestConversation_AddQuestionAnswer(t *testing.T) {
 				assert.Equal(t, tt.wantState, conv.State)
 				assert.Equal(t, tt.wantNextIndex, conv.Questionnaire.CurrentIndex)
 				assert.Equal(t, tt.answer, conv.Questionnaire.Answers[tt.wantNextIndex-1])
+			}
+		})
+	}
+}
+
+func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
+	tests := []struct {
+		name        string
+		setupConv   func() *Conversation
+		wantErr     bool
+		wantPrompt  string
+		wantAnswers []string
+	}{
+		{
+			name: "partial answers",
+			setupConv: func() *Conversation {
+				conv := NewConversation("test-id")
+				questions := []Question{
+					{Text: "What type of pet do you have?"},
+					{Text: "How old is your pet?"},
+				}
+				conv.StartQuestionnaire("Initial prompt", questions)
+				_, err := conv.AddQuestionAnswer("Dog")
+				require.NoError(t, err)
+				return conv
+			},
+			wantErr:     false,
+			wantPrompt:  "Initial prompt",
+			wantAnswers: []string{"Dog", ""},
+		},
+		{
+			name: "questionnaire exists but no answers",
+			setupConv: func() *Conversation {
+				conv := NewConversation("test-id")
+				questions := []Question{
+					{Text: "What type of pet do you have?"},
+				}
+				conv.StartQuestionnaire("Initial prompt", questions)
+				return conv
+			},
+			wantErr:     false,
+			wantPrompt:  "Initial prompt",
+			wantAnswers: []string{""},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			conv := tt.setupConv()
+			prompt, answers, err := conv.GetQuestionnaireResult()
+
+			if tt.wantErr {
+				assert.Error(t, err)
+				assert.Empty(t, prompt)
+				assert.Nil(t, answers)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.wantPrompt, prompt)
+				assert.Equal(t, tt.wantAnswers, answers)
 			}
 		})
 	}
