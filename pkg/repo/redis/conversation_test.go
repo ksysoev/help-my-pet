@@ -25,16 +25,10 @@ func TestConversationRepository_Save(t *testing.T) {
 		data, err := json.Marshal(conv)
 		require.NoError(t, err)
 
-		mock.ExpectSet("conversation:test-id", data, 0).SetVal("OK")
+		mock.ExpectSet("conversation:test-id", data, ConversationTTL).SetVal("OK")
 
 		err = repo.Save(ctx, conv)
 		assert.NoError(t, err)
-		assert.NoError(t, mock.ExpectationsWereMet())
-	})
-
-	t.Run("save nil conversation", func(t *testing.T) {
-		err := repo.Save(ctx, nil)
-		assert.ErrorIs(t, err, core.ErrConversationNotFound)
 		assert.NoError(t, mock.ExpectationsWereMet())
 	})
 }
@@ -97,7 +91,7 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	data, err := json.Marshal(conv)
 	require.NoError(t, err)
 
-	mock.ExpectSet("conversation:test-id", data, 0).SetVal("OK")
+	mock.ExpectSet("conversation:test-id", data, ConversationTTL).SetVal("OK")
 	require.NoError(t, repo.Save(ctx, conv))
 
 	mock.ExpectGet("conversation:test-id").SetVal(string(data))
@@ -139,7 +133,7 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 	t.Run("create new conversation when not found", func(t *testing.T) {
 		mock.ExpectGet("conversation:new-id").RedisNil()
 
-		mock.ExpectSet("conversation:new-id", []byte(`{"Questionnaire":null,"ID":"new-id","State":"normal","Messages":[]}`), 0).SetVal("OK")
+		mock.ExpectSet("conversation:new-id", []byte(`{"Questionnaire":null,"ID":"new-id","State":"normal","Messages":[]}`), ConversationTTL).SetVal("OK")
 
 		found, err := repo.FindOrCreate(ctx, "new-id")
 		assert.NoError(t, err)

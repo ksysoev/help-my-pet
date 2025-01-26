@@ -68,11 +68,11 @@ func TestNewService(t *testing.T) {
 
 func TestServiceImpl_ProcessMessage(t *testing.T) {
 	tests := []struct {
+		ctx         context.Context
 		setupMocks  func(*MockBotAPI, *MockAIProvider)
 		message     *tgbotapi.Message
 		name        string
 		expectError bool
-		ctx         context.Context
 	}{
 		{
 			name: "successful message processing",
