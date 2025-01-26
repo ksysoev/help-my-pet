@@ -325,11 +325,11 @@ func TestConversation_AddQuestionAnswer(t *testing.T) {
 
 func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 	tests := []struct {
-		name        string
 		setupConv   func() *Conversation
-		wantErr     bool
+		name        string
 		wantPrompt  string
 		wantAnswers []string
+		wantErr     bool
 	}{
 		{
 			name: "partial answers",

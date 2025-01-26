@@ -42,8 +42,8 @@ Please provide accurate, helpful, and compassionate advice while following these
 type anthropicModel struct {
 	client     *anthropic.Client
 	modelID    string
-	maxTokens  int
 	systemText string
+	maxTokens  int
 }
 
 func newAnthropicModel(apiKey string, modelID string, maxTokens int, systemPrompt string) (*anthropicModel, error) {
