@@ -7,7 +7,6 @@ import (
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestNew(t *testing.T) {
@@ -85,7 +84,7 @@ func TestProvider_Call(t *testing.T) {
 
 				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
 
-				mockModel.EXPECT().Call(ctx, fullPrompt, mock.Anything).
+				mockModel.EXPECT().Call(ctx, fullPrompt).
 					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
 
 				return &Provider{
@@ -107,7 +106,7 @@ func TestProvider_Call(t *testing.T) {
 
 				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
 
-				mockModel.EXPECT().Call(ctx, fullPrompt, mock.Anything).
+				mockModel.EXPECT().Call(ctx, fullPrompt).
 					Return("test response", nil)
 
 				return &Provider{
@@ -129,7 +128,7 @@ func TestProvider_Call(t *testing.T) {
 
 				fullPrompt := strings.Replace(systemPrompt, "{format_instructions}", parser.FormatInstructions(), 1) + "\n\nQuestion: test prompt"
 
-				mockModel.EXPECT().Call(ctx, fullPrompt, mock.Anything).
+				mockModel.EXPECT().Call(ctx, fullPrompt).
 					Return("", assert.AnError)
 
 				return &Provider{
