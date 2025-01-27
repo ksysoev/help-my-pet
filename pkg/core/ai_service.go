@@ -145,8 +145,13 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversatio
 			return nil, fmt.Errorf("failed to get questionnaire result: %w", err)
 		}
 
-		// Build prompt with all question-answer pairs
-		prompt := initialPrompt + "\n\nFollow-up information:\n"
+		// Build prompt with conversation history and question-answer pairs
+		prompt := "Previous conversation:\n"
+		for _, msg := range conversation.GetContext() {
+			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
+		}
+
+		prompt += "\n" + initialPrompt + "\n\nFollow-up information:\n"
 		for _, qa := range qaPairs {
 			prompt += fmt.Sprintf("Question: %s\nAnswer: %s\n", qa.Question.Text, qa.Answer)
 		}
