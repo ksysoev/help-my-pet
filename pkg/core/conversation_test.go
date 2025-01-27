@@ -325,11 +325,12 @@ func TestConversation_AddQuestionAnswer(t *testing.T) {
 
 func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 	tests := []struct {
-		setupConv   func() *Conversation
-		name        string
-		wantPrompt  string
-		wantAnswers []string
-		wantErr     bool
+		setupConv     func() *Conversation
+		name          string
+		wantPrompt    string
+		wantAnswers   []string
+		wantQuestions []Question
+		wantErr       bool
 	}{
 		{
 			name: "partial answers",
@@ -347,6 +348,10 @@ func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 			wantErr:     false,
 			wantPrompt:  "Initial prompt",
 			wantAnswers: []string{"Dog", ""},
+			wantQuestions: []Question{
+				{Text: "What type of pet do you have?"},
+				{Text: "How old is your pet?"},
+			},
 		},
 		{
 			name: "questionnaire exists but no answers",
@@ -361,6 +366,9 @@ func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 			wantErr:     false,
 			wantPrompt:  "Initial prompt",
 			wantAnswers: []string{""},
+			wantQuestions: []Question{
+				{Text: "What type of pet do you have?"},
+			},
 		},
 	}
 
@@ -376,7 +384,14 @@ func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.wantPrompt, prompt)
-				assert.Equal(t, tt.wantAnswers, answers)
+				expectedQA := make([]QuestionAnswer, len(tt.wantAnswers))
+				for i, ans := range tt.wantAnswers {
+					expectedQA[i] = QuestionAnswer{
+						Question: tt.wantQuestions[i],
+						Answer:   ans,
+					}
+				}
+				assert.Equal(t, expectedQA, answers)
 			}
 		})
 	}
@@ -428,7 +443,17 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, "Initial prompt", prompt)
-				assert.Equal(t, []string{"Dog", "2 years"}, answers)
+				expectedQA := []QuestionAnswer{
+					{
+						Question: Question{Text: "What type of pet do you have?"},
+						Answer:   "Dog",
+					},
+					{
+						Question: Question{Text: "How old is your pet?"},
+						Answer:   "2 years",
+					},
+				}
+				assert.Equal(t, expectedQA, answers)
 			}
 		})
 	}

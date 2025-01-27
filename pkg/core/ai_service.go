@@ -155,16 +155,16 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversatio
 	}
 
 	if isComplete {
-		// Get all collected answers
-		initialPrompt, answers, err := conversation.GetQuestionnaireResult()
+		// Get all collected question-answer pairs
+		initialPrompt, qaPairs, err := conversation.GetQuestionnaireResult()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get questionnaire result: %w", err)
 		}
 
-		// Build prompt with all answers
+		// Build prompt with all question-answer pairs
 		prompt := initialPrompt + "\n\nFollow-up information:\n"
-		for i, q := range conversation.Questionnaire.Questions {
-			prompt += fmt.Sprintf("%s: %s\n", q.Text, answers[i])
+		for _, qa := range qaPairs {
+			prompt += fmt.Sprintf("Question: %s\nAnswer: %s\n", qa.Question.Text, qa.Answer)
 		}
 
 		// Get final response from LLM

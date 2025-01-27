@@ -15,12 +15,19 @@ const (
 	StateQuestioning ConversationState = "questioning"
 )
 
+// QuestionAnswer pairs a question with its corresponding answer
+type QuestionAnswer struct {
+	Answer   string   `json:"answer"`
+	Question Question `json:"question"`
+}
+
 // QuestionnaireState tracks the state of follow-up questions
 type QuestionnaireState struct {
-	InitialPrompt string
-	Questions     []Question
-	Answers       []string
-	CurrentIndex  int
+	InitialPrompt string           `json:"initial_prompt"`
+	Questions     []Question       `json:"questions"`
+	Answers       []string         `json:"answers"`
+	QAPairs       []QuestionAnswer `json:"qa_pairs"`
+	CurrentIndex  int              `json:"current_index"`
 }
 
 // Conversation represents a chat conversation with its context and messages.
@@ -68,11 +75,20 @@ func (c *Conversation) GetContext() []Message {
 
 // StartQuestionnaire initializes the questioning state with follow-up questions
 func (c *Conversation) StartQuestionnaire(initialPrompt string, questions []Question) {
+	qaPairs := make([]QuestionAnswer, len(questions))
+	for i, q := range questions {
+		qaPairs[i] = QuestionAnswer{
+			Question: q,
+			Answer:   "",
+		}
+	}
+
 	c.State = StateQuestioning
 	c.Questionnaire = &QuestionnaireState{
 		Questions:     questions,
 		CurrentIndex:  0,
 		Answers:       make([]string, len(questions)),
+		QAPairs:       qaPairs,
 		InitialPrompt: initialPrompt,
 	}
 }
@@ -100,8 +116,10 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 		return false, fmt.Errorf("no more questions to answer")
 	}
 
-	// Store the answer
+	// Store the answer in both places for backward compatibility
 	c.Questionnaire.Answers[c.Questionnaire.CurrentIndex] = answer
+	c.Questionnaire.QAPairs[c.Questionnaire.CurrentIndex].Answer = answer
+
 	c.Questionnaire.CurrentIndex++
 
 	// Check if we've collected all answers
@@ -113,11 +131,11 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 	return isComplete, nil
 }
 
-// GetQuestionnaireResult returns the initial prompt and all collected answers
-func (c *Conversation) GetQuestionnaireResult() (string, []string, error) {
+// GetQuestionnaireResult returns the initial prompt and all question-answer pairs
+func (c *Conversation) GetQuestionnaireResult() (string, []QuestionAnswer, error) {
 	if c.Questionnaire == nil {
 		return "", nil, fmt.Errorf("no questionnaire data available")
 	}
 
-	return c.Questionnaire.InitialPrompt, c.Questionnaire.Answers, nil
+	return c.Questionnaire.InitialPrompt, c.Questionnaire.QAPairs, nil
 }

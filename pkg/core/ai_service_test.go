@@ -350,19 +350,14 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				// Setup conversation in questioning state
-				conversation.State = StateQuestioning
-				conversation.Questionnaire = &QuestionnaireState{
-					InitialPrompt: "Cats need a balanced diet...",
-					Questions: []Question{
-						{Text: "How old is your cat?"},
-						{
-							Text:    "Is your cat indoor or outdoor?",
-							Answers: []string{"Indoor", "Outdoor"},
-						},
+				questions := []Question{
+					{Text: "How old is your cat?"},
+					{
+						Text:    "Is your cat indoor or outdoor?",
+						Answers: []string{"Indoor", "Outdoor"},
 					},
-					CurrentIndex: 0,
-					Answers:      make([]string, 2),
 				}
+				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -391,19 +386,16 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				// Setup conversation in questioning state with last question
-				conversation.State = StateQuestioning
-				conversation.Questionnaire = &QuestionnaireState{
-					InitialPrompt: "Cats need a balanced diet...",
-					Questions: []Question{
-						{Text: "How old is your cat?"},
-						{
-							Text:    "Is your cat indoor or outdoor?",
-							Answers: []string{"Indoor", "Outdoor"},
-						},
+				questions := []Question{
+					{Text: "How old is your cat?"},
+					{
+						Text:    "Is your cat indoor or outdoor?",
+						Answers: []string{"Indoor", "Outdoor"},
 					},
-					CurrentIndex: 1,
-					Answers:      []string{"2 years old", ""},
 				}
+				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
+				_, err := conversation.AddQuestionAnswer("2 years old")
+				require.NoError(t, err)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -414,7 +406,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					Save(context.Background(), conversation).
 					Return(nil)
 
-				expectedPrompt := "Cats need a balanced diet...\n\nFollow-up information:\nHow old is your cat?: 2 years old\nIs your cat indoor or outdoor?: Indoor\n"
+				expectedPrompt := "Cats need a balanced diet...\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -437,13 +429,8 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				// Setup conversation in questioning state with no questions
-				conversation.State = StateQuestioning
-				conversation.Questionnaire = &QuestionnaireState{
-					InitialPrompt: "Cats need a balanced diet...",
-					Questions:     []Question{},
-					CurrentIndex:  0,
-					Answers:       []string{},
-				}
+				questions := []Question{}
+				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -464,16 +451,11 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				Message: "2 years old",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
-				conversation.State = StateQuestioning
-				conversation.Questionnaire = &QuestionnaireState{
-					InitialPrompt: "Cats need a balanced diet...",
-					Questions: []Question{
-						{Text: "How old is your cat?"},
-						{Text: "Is your cat indoor or outdoor?"},
-					},
-					CurrentIndex: 0,
-					Answers:      make([]string, 2),
+				questions := []Question{
+					{Text: "How old is your cat?"},
+					{Text: "Is your cat indoor or outdoor?"},
 				}
+				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
