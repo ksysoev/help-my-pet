@@ -24,8 +24,6 @@ type QuestionAnswer struct {
 // QuestionnaireState tracks the state of follow-up questions
 type QuestionnaireState struct {
 	InitialPrompt string           `json:"initial_prompt"`
-	Questions     []Question       `json:"questions"`
-	Answers       []string         `json:"answers"`
 	QAPairs       []QuestionAnswer `json:"qa_pairs"`
 	CurrentIndex  int              `json:"current_index"`
 }
@@ -85,10 +83,8 @@ func (c *Conversation) StartQuestionnaire(initialPrompt string, questions []Ques
 
 	c.State = StateQuestioning
 	c.Questionnaire = &QuestionnaireState{
-		Questions:     questions,
-		CurrentIndex:  0,
-		Answers:       make([]string, len(questions)),
 		QAPairs:       qaPairs,
+		CurrentIndex:  0,
 		InitialPrompt: initialPrompt,
 	}
 }
@@ -99,11 +95,11 @@ func (c *Conversation) GetCurrentQuestion() (*Question, error) {
 		return nil, fmt.Errorf("conversation is not in questioning state")
 	}
 
-	if c.Questionnaire.CurrentIndex >= len(c.Questionnaire.Questions) {
+	if c.Questionnaire.CurrentIndex >= len(c.Questionnaire.QAPairs) {
 		return nil, fmt.Errorf("no more questions available")
 	}
 
-	return &c.Questionnaire.Questions[c.Questionnaire.CurrentIndex], nil
+	return &c.Questionnaire.QAPairs[c.Questionnaire.CurrentIndex].Question, nil
 }
 
 // AddQuestionAnswer adds an answer to the current question and moves to the next one
@@ -112,18 +108,16 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 		return false, fmt.Errorf("conversation is not in questioning state")
 	}
 
-	if c.Questionnaire.CurrentIndex >= len(c.Questionnaire.Questions) {
+	if c.Questionnaire.CurrentIndex >= len(c.Questionnaire.QAPairs) {
 		return false, fmt.Errorf("no more questions to answer")
 	}
 
-	// Store the answer in both places for backward compatibility
-	c.Questionnaire.Answers[c.Questionnaire.CurrentIndex] = answer
+	// Store the answer
 	c.Questionnaire.QAPairs[c.Questionnaire.CurrentIndex].Answer = answer
-
 	c.Questionnaire.CurrentIndex++
 
 	// Check if we've collected all answers
-	isComplete := c.Questionnaire.CurrentIndex >= len(c.Questionnaire.Questions)
+	isComplete := c.Questionnaire.CurrentIndex >= len(c.Questionnaire.QAPairs)
 	if isComplete {
 		c.State = StateNormal
 	}

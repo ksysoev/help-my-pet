@@ -114,9 +114,12 @@ func TestConversation_StartQuestionnaire(t *testing.T) {
 	assert.Equal(t, StateQuestioning, conv.State)
 	assert.NotNil(t, conv.Questionnaire)
 	assert.Equal(t, initialPrompt, conv.Questionnaire.InitialPrompt)
-	assert.Equal(t, questions, conv.Questionnaire.Questions)
+	assert.Len(t, conv.Questionnaire.QAPairs, len(questions))
+	for i, q := range questions {
+		assert.Equal(t, q, conv.Questionnaire.QAPairs[i].Question)
+		assert.Empty(t, conv.Questionnaire.QAPairs[i].Answer)
+	}
 	assert.Equal(t, 0, conv.Questionnaire.CurrentIndex)
-	assert.Len(t, conv.Questionnaire.Answers, len(questions))
 }
 
 func TestConversation_MessageHistory(t *testing.T) {
@@ -317,7 +320,7 @@ func TestConversation_AddQuestionAnswer(t *testing.T) {
 				assert.Equal(t, tt.wantComplete, complete)
 				assert.Equal(t, tt.wantState, conv.State)
 				assert.Equal(t, tt.wantNextIndex, conv.Questionnaire.CurrentIndex)
-				assert.Equal(t, tt.answer, conv.Questionnaire.Answers[tt.wantNextIndex-1])
+				assert.Equal(t, tt.answer, conv.Questionnaire.QAPairs[tt.wantNextIndex-1].Answer)
 			}
 		})
 	}
