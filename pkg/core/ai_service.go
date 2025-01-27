@@ -90,21 +90,8 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceReq
 	// Add AI's response to conversation
 	conversation.AddMessage("assistant", response.Text)
 
-	// Store follow-up questions if any
+	// Handle follow-up questions if any
 	if len(response.Questions) > 0 {
-		// Store questions in a format that can be retrieved later
-		questionsStr := "\nFollow-up questions:"
-		for i, q := range response.Questions {
-			questionsStr += fmt.Sprintf("\n%d. %s", i+1, q.Text)
-			if len(q.Answers) > 0 {
-				questionsStr += "\nOptions:"
-				for _, answer := range q.Answers {
-					questionsStr += fmt.Sprintf("\n- %s", answer)
-				}
-			}
-		}
-		conversation.AddMessage("assistant_questions", questionsStr)
-
 		// Initialize questionnaire
 		conversation.StartQuestionnaire(response.Text, response.Questions)
 
@@ -140,18 +127,15 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceReq
 
 // handleQuestionnaireResponse processes a response to a follow-up question
 func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, answer string) (*PetAdviceResponse, error) {
-	// Add user's answer to conversation
-	conversation.AddMessage("user", answer)
-
-	// Save conversation immediately after adding user's message
-	if err := s.repo.Save(ctx, conversation); err != nil {
-		return nil, fmt.Errorf("failed to save conversation: %w", err)
-	}
-
 	// Store the answer and check if questionnaire is complete
 	isComplete, err := conversation.AddQuestionAnswer(answer)
 	if err != nil {
 		return nil, fmt.Errorf("failed to add question answer: %w", err)
+	}
+
+	// Save conversation after adding answer
+	if err := s.repo.Save(ctx, conversation); err != nil {
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
 	if isComplete {
@@ -173,7 +157,7 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversatio
 			return nil, fmt.Errorf("failed to get AI response: %w", err)
 		}
 
-		// Add AI's final response to conversation
+		// Add AI's response to conversation history
 		conversation.AddMessage("assistant", response.Text)
 
 		// Save conversation state

@@ -119,6 +119,17 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 	// Check if we've collected all answers
 	isComplete := c.Questionnaire.CurrentIndex >= len(c.Questionnaire.QAPairs)
 	if isComplete {
+		// Combine all questions and answers into a single message
+		var combinedContent string
+		combinedContent = fmt.Sprintf("Initial response: %s\n\nQuestionnaire:\n", c.Questionnaire.InitialPrompt)
+		for _, qa := range c.Questionnaire.QAPairs {
+			combinedContent += fmt.Sprintf("Q: %s\nA: %s\n\n", qa.Question.Text, qa.Answer)
+		}
+
+		// Add combined message to conversation history
+		c.AddMessage("questionnaire", combinedContent)
+
+		// Reset state
 		c.State = StateNormal
 	}
 

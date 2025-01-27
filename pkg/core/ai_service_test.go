@@ -307,23 +307,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			require.NoError(t, err)
 			assert.Equal(t, tt.expectedResult, got)
 
-			// Verify questions were stored in conversation if present
-			if tt.response != nil && len(tt.response.Questions) > 0 {
-				messages := conversation.GetContext()
-				var foundQuestions bool
-				for _, msg := range messages {
-					if msg.Role == "assistant_questions" {
-						foundQuestions = true
-						for _, q := range tt.response.Questions {
-							assert.Contains(t, msg.Content, q.Text)
-							for _, answer := range q.Answers {
-								assert.Contains(t, msg.Content, answer)
-							}
-						}
-					}
-				}
-				assert.True(t, foundQuestions, "Questions should be stored in conversation")
-			}
+			// No need to verify questions storage since they're now stored in Questionnaire struct
 		})
 	}
 }
@@ -435,10 +419,6 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
-				// Expect save after adding user message
-				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
-					Return(nil)
 			},
 			wantErr:       true,
 			errorContains: "failed to add question answer: no more questions to answer",
