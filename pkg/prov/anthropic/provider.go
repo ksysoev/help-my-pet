@@ -4,57 +4,28 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"strings"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
-	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/llms/anthropic"
 )
 
-const systemPrompt = `You are a helpful veterinary AI assistant. You MUST detect the language of the user's question and respond in the SAME language. You are only allowed to answer questions related to the following topics:
-
-• Pet health and behavior questions
-• Diet and nutrition advice
-• Training tips and techniques
-• General pet care guidance
-
-Core Guidelines:
-1. Never make assumptions or guess when information is insufficient:
-   - Ask specific follow-up questions to gather necessary details
-   - For health issues, ask about symptoms, duration, pet's age, breed, and relevant history
-   - For behavior questions, ask about the context, frequency, and environmental factors
-   - For diet questions, ask about the pet's age, weight, activity level, and any health conditions
-
-2. Topic Boundaries:
-   - If a question is not related to the allowed topics, politely decline and explain your limitations
-   - Stay focused on pet care within your defined scope
-
-3. Health Safety Protocol:
-   - If symptoms could indicate a serious health issue, recommend veterinary care
-   - When discussing health topics, recomend professional veterinary consultation
-   - Do not attempt to diagnose without sufficient information
-
-{format_instructions}
-
-Please provide accurate, helpful, and compassionate advice while following these guidelines strictly.`
-
+// Config holds the configuration for the Anthropic provider
 type Config struct {
 	APIKey    string `mapstructure:"api_key"`
 	Model     string `mapstructure:"model"`
 	MaxTokens int    `mapstructure:"max_tokens"`
 }
 
+// Provider implements the core.LLM interface
 type Provider struct {
 	llm    Model
 	parser *ResponseParser
-	model  string
 	config Config
 }
 
+// New creates a new Anthropic provider instance
 func New(cfg Config) (*Provider, error) {
-	llm, err := anthropic.New(anthropic.WithToken(cfg.APIKey))
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize Anthropic LLM: %w", err)
+	if cfg.APIKey == "" {
+		return nil, fmt.Errorf("API key is required")
 	}
 
 	parser, err := NewResponseParser()
@@ -62,28 +33,29 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("failed to initialize response parser: %w", err)
 	}
 
+	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize Anthropic model: %w", err)
+	}
+
 	return &Provider{
 		llm:    llm,
-		model:  cfg.Model,
 		config: cfg,
 		parser: parser,
 	}, nil
 }
 
-func (p *Provider) Call(ctx context.Context, prompt string, options ...llms.CallOption) (*core.Response, error) {
-	defaultOptions := []llms.CallOption{
-		llms.WithModel(p.model),
-		llms.WithMaxTokens(p.config.MaxTokens),
-	}
-	options = append(defaultOptions, options...)
+// Call sends a message to the Anthropic API and returns the structured response
+func (p *Provider) Call(ctx context.Context, prompt string) (*core.Response, error) {
+	formatInstructions := p.parser.FormatInstructions()
 
-	// Replace format instructions placeholder with actual instructions
-	formattedSystemPrompt := strings.Replace(systemPrompt, "{format_instructions}", p.parser.FormatInstructions(), 1)
-	fullPrompt := fmt.Sprintf("%s\n\nQuestion: %s", formattedSystemPrompt, prompt)
+	slog.Debug("Anthropic LLM call",
+		slog.String("format_instructions", formatInstructions),
+		slog.String("question", prompt))
 
-	response, err := p.llm.Call(ctx, fullPrompt, options...)
+	response, err := p.llm.Call(ctx, formatInstructions, prompt)
 	if err != nil {
-		return nil, fmt.Errorf("failed to call Anthropic LLM: %w", err)
+		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
 	structuredResponse, err := p.parser.Parse(response)

@@ -102,8 +102,8 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	assert.Equal(t, conv.State, found.State)
 	assert.Equal(t, conv.Messages[0].Content, found.Messages[0].Content)
 	assert.Equal(t, conv.Questionnaire.InitialPrompt, found.Questionnaire.InitialPrompt)
-	assert.Equal(t, len(conv.Questionnaire.Questions), len(found.Questionnaire.Questions))
-	assert.Equal(t, conv.Questionnaire.Questions[0].Text, found.Questionnaire.Questions[0].Text)
+	assert.Equal(t, len(conv.Questionnaire.QAPairs), len(found.Questionnaire.QAPairs))
+	assert.Equal(t, conv.Questionnaire.QAPairs[0].Question.Text, found.Questionnaire.QAPairs[0].Question.Text)
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
 

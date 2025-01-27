@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
-	"github.com/tmc/langchaingo/outputparser"
 )
 
 var (
@@ -17,50 +16,52 @@ var (
 )
 
 // ResponseParser is a custom output parser for our Response type
-type ResponseParser struct {
-	parser outputparser.Structured
-}
+type ResponseParser struct{}
 
 // NewResponseParser creates a new ResponseParser instance
 func NewResponseParser() (*ResponseParser, error) {
-	// Define the schema for our response
-	schema := []outputparser.ResponseSchema{
-		{
-			Name:        "text",
-			Description: "The main response text providing pet care advice",
-		},
-		{
-			Name: "questions",
-			Description: `Array of follow-up questions. Each question should be an object with the following structure:
-{
-  "text": "The question text (required)",
-  "answers": ["array", "of", "predefined", "answer", "options"] (optional)
-}
-Example:
-[
-  {
-    "text": "How old is your cat?",
-    "answers": []
-  },
-  {
-    "text": "Is your cat indoor or outdoor?",
-    "answers": ["Indoor", "Outdoor"]
-  }
-]`,
-		},
-	}
-
-	// Initialize the Structured parser with our schema
-	parser := outputparser.NewStructured(schema)
-
-	return &ResponseParser{
-		parser: parser,
-	}, nil
+	return &ResponseParser{}, nil
 }
 
 // FormatInstructions returns the format instructions for the LLM
 func (p *ResponseParser) FormatInstructions() string {
-	return p.parser.GetFormatInstructions()
+	return `Return your response in JSON format with this structure:
+{
+  "text": "The main response text providing pet care advice",
+  "questions": [
+    {
+      "text": "Any follow-up questions to gather more information",
+      "answers": ["Optional", "Array", "Of", "Predefined", "Answers"]
+    }
+  ]
+}
+
+Note:
+- The "text" field is required and must contain your main advice or response
+- The "questions" array is optional and can be empty if no follow-up questions are needed
+- Each question must have a "text" field
+- The "answers" field in questions is optional
+
+Example with no questions:
+{
+  "text": "Based on the symptoms described, it sounds like your cat may have hairballs. Try brushing them daily and consider specialized hairball control food.",
+  "questions": []
+}
+
+Example with questions:
+{
+  "text": "To provide proper advice for your dog's anxiety, I need some more information.",
+  "questions": [
+    {
+      "text": "How often does your dog show these symptoms?",
+      "answers": ["Daily", "Weekly", "Only in specific situations"]
+    },
+    {
+      "text": "Have you noticed any specific triggers?",
+      "answers": []
+    }
+  ]
+}`
 }
 
 // sanitizeJSONStringLiterals processes a JSON string, escaping newlines only within string literals

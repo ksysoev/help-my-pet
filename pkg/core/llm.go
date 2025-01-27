@@ -2,8 +2,6 @@ package core
 
 import (
 	"context"
-
-	"github.com/tmc/langchaingo/llms"
 )
 
 // Question represents a follow-up question with optional predefined answers
@@ -21,5 +19,5 @@ type Response struct {
 // LLM interface represents the language model capabilities
 type LLM interface {
 	// Call sends a prompt to the LLM and returns a structured response
-	Call(ctx context.Context, prompt string, options ...llms.CallOption) (*Response, error)
+	Call(ctx context.Context, prompt string) (*Response, error)
 }

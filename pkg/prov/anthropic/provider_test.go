@@ -6,7 +6,6 @@ import (
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestNew(t *testing.T) {
@@ -44,7 +43,6 @@ func TestNew(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.NotNil(t, provider)
-				assert.Equal(t, tt.config.Model, provider.model)
 				assert.Equal(t, tt.config.MaxTokens, provider.config.MaxTokens)
 			}
 		})
@@ -80,15 +78,16 @@ func TestProvider_Call(t *testing.T) {
 			},
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
-					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
-
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
+				formatInstructions := parser.FormatInstructions()
+
+				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
+					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
+
 				return &Provider{
 					llm:    mockModel,
-					model:  config.Model,
 					config: config,
 					parser: parser,
 				}
@@ -101,15 +100,16 @@ func TestProvider_Call(t *testing.T) {
 			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
-					Return("test response", nil)
-
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
+				formatInstructions := parser.FormatInstructions()
+
+				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
+					Return("test response", nil)
+
 				return &Provider{
 					llm:    mockModel,
-					model:  config.Model,
 					config: config,
 					parser: parser,
 				}
@@ -122,15 +122,16 @@ func TestProvider_Call(t *testing.T) {
 			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				mockModel.EXPECT().Call(ctx, mock.Anything, mock.Anything, mock.Anything).
-					Return("", assert.AnError)
-
 				parser, err := NewResponseParser()
 				assert.NoError(t, err)
 
+				formatInstructions := parser.FormatInstructions()
+
+				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
+					Return("", assert.AnError)
+
 				return &Provider{
 					llm:    mockModel,
-					model:  config.Model,
 					config: config,
 					parser: parser,
 				}
