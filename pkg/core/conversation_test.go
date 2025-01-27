@@ -330,7 +330,6 @@ func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 	tests := []struct {
 		setupConv     func() *Conversation
 		name          string
-		wantPrompt    string
 		wantAnswers   []string
 		wantQuestions []Question
 		wantErr       bool
@@ -349,7 +348,6 @@ func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 				return conv
 			},
 			wantErr:     false,
-			wantPrompt:  "Initial prompt",
 			wantAnswers: []string{"Dog", ""},
 			wantQuestions: []Question{
 				{Text: "What type of pet do you have?"},
@@ -367,7 +365,6 @@ func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 				return conv
 			},
 			wantErr:     false,
-			wantPrompt:  "Initial prompt",
 			wantAnswers: []string{""},
 			wantQuestions: []Question{
 				{Text: "What type of pet do you have?"},
@@ -378,15 +375,13 @@ func TestConversation_GetQuestionnaireResult_AdditionalCases(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			conv := tt.setupConv()
-			prompt, answers, err := conv.GetQuestionnaireResult()
+			answers, err := conv.GetQuestionnaireResult()
 
 			if tt.wantErr {
 				assert.Error(t, err)
-				assert.Empty(t, prompt)
 				assert.Nil(t, answers)
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, tt.wantPrompt, prompt)
 				expectedQA := make([]QuestionAnswer, len(tt.wantAnswers))
 				for i, ans := range tt.wantAnswers {
 					expectedQA[i] = QuestionAnswer{
@@ -437,15 +432,13 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			conv := tt.setupConv()
-			prompt, answers, err := conv.GetQuestionnaireResult()
+			answers, err := conv.GetQuestionnaireResult()
 
 			if tt.wantErr {
 				assert.Error(t, err)
-				assert.Empty(t, prompt)
 				assert.Nil(t, answers)
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, "Initial prompt", prompt)
 				expectedQA := []QuestionAnswer{
 					{
 						Question: Question{Text: "What type of pet do you have?"},

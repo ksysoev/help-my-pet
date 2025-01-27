@@ -390,7 +390,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					Save(context.Background(), conversation).
 					Return(nil)
 
-				expectedPrompt := "Previous conversation:\nquestionnaire: Initial response: Cats need a balanced diet...\n\nQuestionnaire:\nQ: How old is your cat?\nA: 2 years old\n\nQ: Is your cat indoor or outdoor?\nA: Indoor\n\n\n\nCats need a balanced diet...\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
+				expectedPrompt := "Previous conversation:\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{

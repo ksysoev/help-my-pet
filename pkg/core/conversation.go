@@ -121,7 +121,6 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 	if isComplete {
 		// Combine all questions and answers into a single message
 		var combinedContent string
-		combinedContent = fmt.Sprintf("Initial response: %s\n\nQuestionnaire:\n", c.Questionnaire.InitialPrompt)
 		for _, qa := range c.Questionnaire.QAPairs {
 			combinedContent += fmt.Sprintf("Q: %s\nA: %s\n\n", qa.Question.Text, qa.Answer)
 		}
@@ -137,10 +136,10 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 }
 
 // GetQuestionnaireResult returns the initial prompt and all question-answer pairs
-func (c *Conversation) GetQuestionnaireResult() (string, []QuestionAnswer, error) {
+func (c *Conversation) GetQuestionnaireResult() ([]QuestionAnswer, error) {
 	if c.Questionnaire == nil {
-		return "", nil, fmt.Errorf("no questionnaire data available")
+		return nil, fmt.Errorf("no questionnaire data available")
 	}
 
-	return c.Questionnaire.InitialPrompt, c.Questionnaire.QAPairs, nil
+	return c.Questionnaire.QAPairs, nil
 }
