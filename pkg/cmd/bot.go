@@ -38,12 +38,6 @@ func (r *BotRunner) WithBotService(service BotService) *BotRunner {
 	return r
 }
 
-// WithLLMProvider sets a custom LLM provider for testing.
-func (r *BotRunner) WithLLMProvider(provider core.LLM) *BotRunner {
-	r.llmProvider = provider
-	return r
-}
-
 // RunBot initializes and runs the Telegram bot with the provided configuration.
 // It sets up the AI provider, creates necessary services, and starts the bot.
 func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
@@ -51,16 +45,9 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		return r.botService.Run(ctx)
 	}
 
-	var llmProvider core.LLM
-	var err error
-
-	if r.llmProvider != nil {
-		llmProvider = r.llmProvider
-	} else {
-		llmProvider, err = anthropic.New(cfg.AI)
-		if err != nil {
-			return fmt.Errorf("failed to initialize Anthropic provider: %w", err)
-		}
+	llmProvider, err := anthropic.New(cfg.AI)
+	if err != nil {
+		return fmt.Errorf("failed to initialize Anthropic provider: %w", err)
 	}
 
 	// Initialize Redis client
@@ -77,15 +64,12 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 	}()
 
-	// Initialize repositories
-	conversationRepo := redisrepo.NewConversationRepository(redisClient)
-	var rateLimiter core.RateLimiter
-	if cfg.Bot.RateLimit != nil {
-		rateLimiter = memory.NewRateLimiter(cfg.Bot.RateLimit)
-	}
-
 	// Create AI service with conversation support and rate limiting
-	aiService := core.NewAIService(llmProvider, conversationRepo, rateLimiter)
+	aiService := core.NewAIService(
+		llmProvider,
+		redisrepo.NewConversationRepository(redisClient),
+		memory.NewRateLimiter(&cfg.RateLimit),
+	)
 
 	serviceImpl, err := r.createService(&cfg.Bot, aiService)
 	if err != nil {

@@ -8,13 +8,15 @@ ai:
   api_key: "" # Set your Anthropic API key here
   max_tokens: 1000 # Maximum number of tokens in the response
 
+rate_limit:
+  user_hourly_limit: 5  # Maximum number of requests per hour per user
+  user_daily_limit: 15  # Maximum number of requests per day per user
+  global_daily_limit: 1000  # Maximum total requests per day across all users
+  whitelist_ids: [] # List of user IDs exempt from rate limiting
+
 bot:
   telegram_token: "" # Set your Telegram bot token here
-  rate_limit:
-    user_hourly_limit: 5  # Maximum number of requests per hour per user
-    user_daily_limit: 15  # Maximum number of requests per day per user
-    global_daily_limit: 1000  # Maximum total requests per day across all users
-    whitelist_ids: [] # List of user IDs exempt from rate limiting
+
   messages:
     languages:
       en:

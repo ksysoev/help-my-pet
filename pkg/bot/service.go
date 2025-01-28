@@ -29,6 +29,12 @@ type AIProvider interface {
 	GetPetAdvice(ctx context.Context, request *core.PetAdviceRequest) (*core.PetAdviceResponse, error)
 }
 
+// Config holds the configuration for the Telegram bot
+type Config struct {
+	Messages      *i18n.Config `mapstructure:"messages"`
+	TelegramToken string       `mapstructure:"telegram_token"`
+}
+
 type ServiceImpl struct {
 	Bot      BotAPI
 	AISvc    AIProvider
