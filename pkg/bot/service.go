@@ -134,8 +134,11 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 				defer wg.Done()
 
 				reqCtx, cancel := context.WithTimeout(ctx, requestTimeout)
+
+				// nolint:staticcheck // don't want to have dependecy on cmd package here for now
 				reqCtx = context.WithValue(reqCtx, "req_id", uuid.New().String())
-				reqCtx = context.WithValue(reqCtx, "chat_id", update.Message.Chat.ID)
+				// nolint:staticcheck // don't want to have dependecy on cmd package here for now
+				reqCtx = context.WithValue(reqCtx, "chat_id", fmt.Sprintf("%d", update.Message.Chat.ID))
 
 				defer cancel()
 
