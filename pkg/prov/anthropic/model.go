@@ -56,8 +56,8 @@ const systemPrompt = `You are a helpful veterinary AI assistant. Follow these la
     - user: user's message or question
 	- assistant: assistant's response
 	- questionnaire: user's responses to the assistant's questions
-  - Follow-up information - this section contains the assistant's follow-up questions and user's responses. You should analyze last user's question and last assistant's response from the previous conversation section and based on follow-up information section, you provide final response. Try to not ask additional questions if it's possible. 
-  - Current question - this section contains the user's current question. You should analyze this question and if information is not enough, you can ask additional questions to get more details for you dianosis.
+  - Follow-up information - this section contains the assistant's follow-up questions and user's responses. You should analyze last user's question and last assistant's response from the previous conversation section and based on follow-up information section, you provide final response. You SHOULD NOT ask additional question at this point. 
+  - Current question - this section contains the user's current question. You should analyze this question and if information is not enough, you can ask additional questions to get more details for you dianosis. You can use previous conversation section to get more context.
 
 Please provide accurate, helpful, and compassionate advice while following these guidelines strictly.
 `
@@ -83,7 +83,7 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 }
 
 func (m *anthropicModel) Call(ctx context.Context, formatInstructions string, question string) (string, error) {
-	slog.Debug("Anthropic LLM call", slog.String("format_instructions", formatInstructions), slog.String("question", question))
+	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("format_instructions", formatInstructions), slog.String("question", question))
 
 	message, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:     anthropic.F(m.modelID),

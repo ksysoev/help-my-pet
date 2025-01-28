@@ -28,7 +28,7 @@ func NewAIService(llm LLM, repo ConversationRepository, rateLimiter RateLimiter)
 }
 
 func (s *AIService) GetPetAdvice(ctx context.Context, request *PetAdviceRequest) (*PetAdviceResponse, error) {
-	slog.Info("getting pet advice", "user_id", request.UserID, "chat_id", request.ChatID, "input", request.Message)
+	slog.DebugContext(ctx, "getting pet advice", "input", request.Message)
 
 	conversation, err := s.repo.FindOrCreate(ctx, request.ChatID)
 	if err != nil {

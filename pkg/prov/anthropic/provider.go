@@ -49,7 +49,7 @@ func New(cfg Config) (*Provider, error) {
 func (p *Provider) Call(ctx context.Context, prompt string) (*core.Response, error) {
 	formatInstructions := p.parser.FormatInstructions()
 
-	slog.Debug("Anthropic LLM call",
+	slog.DebugContext(ctx, "Anthropic LLM call",
 		slog.String("format_instructions", formatInstructions),
 		slog.String("question", prompt))
 

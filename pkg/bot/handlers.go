@@ -20,16 +20,14 @@ func (s *ServiceImpl) setupHandler() Handler {
 
 	handler = withRequestReducer()(handler)
 	handler = withThrottler(30)(handler)
+	handler = withREDMetrics()(handler)
 	handler = withErrorHandling(s.Messages.GetMessage, handler)
 
 	return handler
 }
 
 func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
-	slog.Info("Received message",
-		slog.Int64("chat_id", message.Chat.ID),
-		slog.String("text", message.Text),
-	)
+	slog.DebugContext(ctx, "Received message", slog.String("text", message.Text))
 
 	if message.Text == "" {
 		return tgbotapi.MessageConfig{}, nil
