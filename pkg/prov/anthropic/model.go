@@ -83,7 +83,7 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 }
 
 func (m *anthropicModel) Call(ctx context.Context, formatInstructions string, question string) (string, error) {
-	slog.Debug("Anthropic LLM call", slog.String("format_instructions", formatInstructions), slog.String("question", question))
+	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("format_instructions", formatInstructions), slog.String("question", question))
 
 	message, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:     anthropic.F(m.modelID),

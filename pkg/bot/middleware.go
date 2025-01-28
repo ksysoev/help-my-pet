@@ -28,10 +28,7 @@ func withErrorHandling(getMessage func(lang string, msgType i18n.Message) string
 				chatID = message.Chat.ID
 			}
 
-			slog.Error("Failed to handle message",
-				slog.Any("error", err),
-				slog.Int64("chat_id", chatID),
-			)
+			slog.ErrorContext(ctx, "Failed to handle message", slog.Any("error", err))
 
 			// Get language code safely
 			var langCode string

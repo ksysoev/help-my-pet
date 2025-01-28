@@ -9,12 +9,18 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/core"
 )
 
+// RateLimitConfig holds configuration for rate limiting
+type RateLimitConfig struct {
+	WhitelistIDs     []int64 `mapstructure:"whitelist_ids"`
+	UserHourlyLimit  int     `mapstructure:"user_hourly_limit"`
+	UserDailyLimit   int     `mapstructure:"user_daily_limit"`
+	GlobalDailyLimit int     `mapstructure:"global_daily_limit"`
+}
+
 // UserRequests stores request timestamps for a user
 type UserRequests struct {
 	Timestamps []time.Time
 }
-
-var _ core.RateLimiter = (*RateLimiter)(nil)
 
 // RateLimiter implements core.RateLimiter interface using in-memory storage
 type RateLimiter struct {

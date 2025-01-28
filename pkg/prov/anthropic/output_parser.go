@@ -159,8 +159,7 @@ func (p *ResponseParser) Parse(text string) (*core.Response, error) {
 	if err := decoder.Decode(&response); err != nil {
 		slog.Error("failed to parse response",
 			slog.Any("error", err),
-			slog.String("original", text),
-			slog.String("sanitized", sanitized))
+			slog.String("original", text))
 		return nil, fmt.Errorf("%w: %v", ErrInvalidJSON, err)
 	}
 
