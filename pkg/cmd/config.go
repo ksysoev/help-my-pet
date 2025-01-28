@@ -7,6 +7,7 @@ import (
 
 	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
+	"github.com/ksysoev/help-my-pet/pkg/repo/memory"
 	"github.com/spf13/viper"
 )
 
@@ -18,9 +19,10 @@ type RedisConfig struct {
 }
 
 type Config struct {
-	Bot   bot.Config       `mapstructure:"bot"`
-	AI    anthropic.Config `mapstructure:"ai"`
-	Redis RedisConfig      `mapstructure:"redis"`
+	Bot       bot.Config             `mapstructure:"bot"`
+	AI        anthropic.Config       `mapstructure:"ai"`
+	Redis     RedisConfig            `mapstructure:"redis"`
+	RateLimit memory.RateLimitConfig `mapstructure:"rate_limit"`
 }
 
 // initConfig initializes the configuration by reading from the specified config file.

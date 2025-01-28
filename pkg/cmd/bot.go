@@ -77,15 +77,12 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 		}
 	}()
 
-	// Initialize repositories
-	conversationRepo := redisrepo.NewConversationRepository(redisClient)
-	var rateLimiter core.RateLimiter
-	if cfg.Bot.RateLimit != nil {
-		rateLimiter = memory.NewRateLimiter(cfg.Bot.RateLimit)
-	}
-
 	// Create AI service with conversation support and rate limiting
-	aiService := core.NewAIService(llmProvider, conversationRepo, rateLimiter)
+	aiService := core.NewAIService(
+		llmProvider,
+		redisrepo.NewConversationRepository(redisClient),
+		memory.NewRateLimiter(&cfg.RateLimit),
+	)
 
 	serviceImpl, err := r.createService(&cfg.Bot, aiService)
 	if err != nil {
