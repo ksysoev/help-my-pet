@@ -1,9 +1,25 @@
 package cmd
 
 import (
+	"context"
 	"log/slog"
 	"os"
 )
+
+type ContextHandler struct {
+	slog.Handler
+}
+
+func (h *ContextHandler) Handle(ctx context.Context, r slog.Record) error {
+	if requestID, ok := ctx.Value("req_id").(string); ok {
+		r.AddAttrs(slog.String("req_id", requestID))
+	}
+	if userID, ok := ctx.Value("chat_id").(string); ok {
+		r.AddAttrs(slog.String("chat_id", userID))
+	}
+
+	return h.Handler.Handle(ctx, r)
+}
 
 // initLogger initializes the default logger for the application using slog.
 func initLogger(arg *args) error {
@@ -23,7 +39,9 @@ func initLogger(arg *args) error {
 		logHandler = slog.NewJSONHandler(os.Stdout, options)
 	}
 
-	logger := slog.New(logHandler).With(
+	ctxHandler := &ContextHandler{Handler: logHandler}
+
+	logger := slog.New(ctxHandler).With(
 		slog.String("ver", arg.version),
 		slog.String("app", "help-my-pet"),
 	)

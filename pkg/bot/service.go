@@ -9,6 +9,7 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/google/uuid"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
@@ -75,9 +76,8 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	// Send typing action
 	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
 	if _, err := s.Bot.Request(typing); err != nil {
-		slog.Error("Failed to send typing action",
+		slog.ErrorContext(ctx, "Failed to send typing action",
 			slog.Any("error", err),
-			slog.Int64("chat_id", message.Chat.ID),
 		)
 	}
 
@@ -86,15 +86,14 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	msgConfig, err := handler(ctx, message)
 
 	if errors.Is(err, context.Canceled) {
-		slog.Info("Request cancelled",
+		slog.InfoContext(ctx, "Request cancelled",
 			slog.Int64("chat_id", message.Chat.ID),
 		)
 
 		return
 	} else if err != nil {
-		slog.Error("Unexpected error",
+		slog.ErrorContext(ctx, "Unexpected error",
 			slog.Any("error", err),
-			slog.Int64("chat_id", message.Chat.ID),
 		)
 		return
 	}
@@ -106,15 +105,14 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	// Send response
 	if _, err := s.Bot.Send(msgConfig); err != nil {
-		slog.Error("Failed to send message",
+		slog.ErrorContext(ctx, "Failed to send message",
 			slog.Any("error", err),
-			slog.Int64("chat_id", message.Chat.ID),
 		)
 	}
 }
 
 func (s *ServiceImpl) Run(ctx context.Context) error {
-	slog.Info("Starting Telegram bot")
+	slog.InfoContext(ctx, "Starting Telegram bot")
 
 	updateConfig := tgbotapi.NewUpdate(0)
 	updateConfig.Timeout = 30
@@ -136,6 +134,9 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 				defer wg.Done()
 
 				reqCtx, cancel := context.WithTimeout(ctx, requestTimeout)
+				reqCtx = context.WithValue(reqCtx, "req_id", uuid.New().String())
+				reqCtx = context.WithValue(reqCtx, "chat_id", update.Message.Chat.ID)
+
 				defer cancel()
 
 				s.processMessage(reqCtx, update.Message)
@@ -154,7 +155,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 			select {
 			case <-done:
-				slog.Info("Graceful shutdown completed")
+				slog.InfoContext(ctx, "Graceful shutdown completed")
 			case <-time.After(requestTimeout):
 				slog.Warn("Graceful shutdown timed out after 30 seconds")
 			}
