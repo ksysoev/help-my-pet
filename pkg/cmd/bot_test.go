@@ -8,7 +8,6 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot"
-	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/stretchr/testify/assert"
 	mock "github.com/stretchr/testify/mock"
@@ -29,16 +28,6 @@ func TestBotRunner_WithBotService(t *testing.T) {
 	result := runner.WithBotService(mockService)
 
 	assert.Equal(t, mockService, runner.botService)
-	assert.Equal(t, runner, result)
-}
-
-func TestBotRunner_WithLLMProvider(t *testing.T) {
-	runner := NewBotRunner()
-	mockProvider := core.NewMockLLM(t)
-
-	result := runner.WithLLMProvider(mockProvider)
-
-	assert.Equal(t, mockProvider, runner.llmProvider)
 	assert.Equal(t, runner, result)
 }
 
@@ -64,7 +53,6 @@ func TestBotRunner_RunBot(t *testing.T) {
 		{
 			name: "success with custom LLM provider",
 			setupRunner: func() *BotRunner {
-				mockLLMProvider := core.NewMockLLM(t)
 				mockBotAPI := bot.NewMockBotAPI(t)
 				ch := make(chan tgbotapi.Update)
 				close(ch)
@@ -79,25 +67,30 @@ func TestBotRunner_RunBot(t *testing.T) {
 					}
 					return svc, nil
 				}
-				return runner.WithLLMProvider(mockLLMProvider)
+				return runner
 			},
 			cfg: &Config{
 				Bot: bot.Config{},
-				AI:  anthropic.Config{},
+				AI: anthropic.Config{
+					APIKey: "test",
+				},
 			},
 			wantErr: false,
 		},
 		{
 			name: "error creating bot service",
 			setupRunner: func() *BotRunner {
-				mockLLMProvider := core.NewMockLLM(t)
 				runner := NewBotRunner()
 				runner.createService = func(cfg *bot.Config, aiSvc bot.AIProvider) (*bot.ServiceImpl, error) {
 					return nil, errors.New("service creation error")
 				}
-				return runner.WithLLMProvider(mockLLMProvider)
+				return runner
 			},
-			cfg:     &Config{},
+			cfg: &Config{
+				AI: anthropic.Config{
+					APIKey: "test",
+				},
+			},
 			wantErr: true,
 			errMsg:  "failed to create bot service: service creation error",
 		},
