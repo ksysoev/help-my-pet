@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"sync"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
@@ -113,6 +114,20 @@ func withRequestReducer() Middleware {
 			}()
 
 			return next(reqCtx, message)
+		}
+	}
+}
+
+// withREDMetrics wraps a Handler to measure and log request duration and error occurrence for performance monitoring.
+func withREDMetrics() Middleware {
+	return func(next Handler) Handler {
+		return func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+			start := time.Now()
+			resp, err := next(ctx, message)
+
+			slog.InfoContext(ctx, "Message processing time", slog.Duration("duration", time.Since(start)), slog.Bool("error", err != nil))
+
+			return resp, err
 		}
 	}
 }

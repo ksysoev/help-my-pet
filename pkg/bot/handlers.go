@@ -20,6 +20,7 @@ func (s *ServiceImpl) setupHandler() Handler {
 
 	handler = withRequestReducer()(handler)
 	handler = withThrottler(30)(handler)
+	handler = withREDMetrics()(handler)
 	handler = withErrorHandling(s.Messages.GetMessage, handler)
 
 	return handler
