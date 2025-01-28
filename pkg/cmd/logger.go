@@ -8,9 +8,11 @@ import (
 
 type ContextHandler struct {
 	slog.Handler
+	ver string
+	app string
 }
 
-func (h *ContextHandler) Handle(ctx context.Context, r slog.Record) error {
+func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
 	if requestID, ok := ctx.Value("req_id").(string); ok {
 		r.AddAttrs(slog.String("req_id", requestID))
 	}
@@ -18,6 +20,7 @@ func (h *ContextHandler) Handle(ctx context.Context, r slog.Record) error {
 		r.AddAttrs(slog.String("chat_id", userID))
 	}
 
+	r.AddAttrs(slog.String("app", h.app), slog.String("ver", h.ver))
 	return h.Handler.Handle(ctx, r)
 }
 
@@ -39,12 +42,13 @@ func initLogger(arg *args) error {
 		logHandler = slog.NewJSONHandler(os.Stdout, options)
 	}
 
-	ctxHandler := &ContextHandler{Handler: logHandler}
+	ctxHandler := &ContextHandler{
+		Handler: logHandler,
+		ver:     arg.version,
+		app:     "help-my-pet",
+	}
 
-	logger := slog.New(ctxHandler).With(
-		slog.String("ver", arg.version),
-		slog.String("app", "help-my-pet"),
-	)
+	logger := slog.New(ctxHandler)
 
 	slog.SetDefault(logger)
 
