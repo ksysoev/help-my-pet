@@ -8,7 +8,10 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-// WithThrottler creates a middleware that limits the number of concurrent message processing
+// WithThrottler limits the number of concurrent handler executions by ensuring no more than maxConcurrent routines run.
+// It uses a buffered channel as a semaphore to manage concurrency, blocking excess requests until a slot is available.
+// Accepts maxConcurrent, the maximum number of concurrent executions allowed.
+// Returns a Middleware that enforces the concurrency limit and an error if context is cancelled or message is nil.
 func WithThrottler(maxConcurrent int) Middleware {
 	// Create a buffered channel with capacity of maxConcurrent to act as a semaphore
 	throttler := make(chan struct{}, maxConcurrent)

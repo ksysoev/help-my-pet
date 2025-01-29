@@ -9,7 +9,11 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
-// WithErrorHandling middleware handles errors from the message handler
+// WithErrorHandling wraps a Handler to provide error handling and user-friendly messages.
+// It intercepts errors from the wrapped handler and generates a localized error response using the provided getMessage function.
+// getMessage is a function that retrieves localized error messages based on language and message type.
+// Returns a Middleware that produces a modified Handler with integrated error handling functionality.
+// Errors occur if the input message is nil or if the wrapped handler returns an error.
 func WithErrorHandling(getMessage func(lang string, msgType i18n.Message) string) Middleware {
 	return func(next Handler) Handler {
 		return HandlerFunc(func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {

@@ -8,12 +8,16 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+// requestState holds the context cancel function and message ID for a specific request to manage concurrency.
 type requestState struct {
 	cancel    context.CancelFunc
 	messageID int
 }
 
-// WithRequestReducer creates middleware that reduces multiple concurrent requests from the same chat to a single active request
+// WithRequestReducer limits concurrent message handling per chat by canceling previous requests for the same chat.
+// It ensures only the latest request for a given chat ID is processed, canceling any prior requests automatically.
+// Returns a Middleware that wraps a Handler to provide this functionality.
+// It returns an error if nil message is passed to the Handler.
 func WithRequestReducer() Middleware {
 	var mu sync.RWMutex
 	activeRequests := make(map[int64]requestState)
