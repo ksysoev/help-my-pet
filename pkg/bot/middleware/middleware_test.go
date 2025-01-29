@@ -1,4 +1,4 @@
-package bot
+package middleware
 
 import (
 	"context"
@@ -8,6 +8,7 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/bot"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +16,7 @@ import (
 func TestWithErrorHandling(t *testing.T) {
 	tests := []struct {
 		expectedError error
-		handler       Handler
+		handler       bot.Handler
 		getMessage    func(lang string, msgType i18n.Message) string
 		message       *tgbotapi.Message
 		checkLang     func(t *testing.T, lang string)

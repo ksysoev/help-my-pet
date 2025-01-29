@@ -7,26 +7,30 @@ import (
 	"log/slog"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/bot/middleware"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 // Handler represents a function that handles a Telegram message
-type Handler func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error)
+type Handler interface {
+	Handle(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error)
+}
 
 // setupHandler sets up the message handler with all middleware
 func (s *ServiceImpl) setupHandler() Handler {
-	handler := s.handleMessage
+	h := middleware.Use(
+		s,
+		middleware.WithRequestReducer(),
+		middleware.WithThrottler(30),
+		middleware.WithREDMetrics(),
+		middleware.WithErrorHandling(s.Messages.GetMessage),
+	)
 
-	handler = WithRequestReducer()(handler)
-	handler = WithThrottler(30)(handler)
-	handler = withREDMetrics()(handler)
-	handler = WithErrorHandling(s.Messages.GetMessage, handler)
-
-	return handler
+	return h
 }
 
-func (s *ServiceImpl) handleMessage(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+func (s *ServiceImpl) Handle(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	slog.DebugContext(ctx, "Received message", slog.String("text", message.Text))
 
 	if message.Text == "" {

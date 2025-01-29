@@ -83,7 +83,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	// Handle message with middleware
 	handler := s.setupHandler()
-	msgConfig, err := handler(ctx, message)
+	msgConfig, err := handler.Handle(ctx, message)
 
 	if errors.Is(err, context.Canceled) {
 		slog.InfoContext(ctx, "Request cancelled",
