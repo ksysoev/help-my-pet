@@ -17,7 +17,7 @@ func WithMetrics() Middleware {
 			start := time.Now()
 			resp, err := next.Handle(ctx, message)
 
-			slog.InfoContext(ctx, "Text processing time", slog.Duration("duration", time.Since(start)), slog.Bool("error", err != nil))
+			slog.InfoContext(ctx, "Message processing time", slog.Duration("duration", time.Since(start)), slog.Bool("error", err != nil))
 
 			return resp, err
 		})
