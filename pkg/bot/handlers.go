@@ -33,15 +33,6 @@ func (s *ServiceImpl) setupHandler() Handler {
 func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	slog.DebugContext(ctx, "Received msg", slog.String("text", msg.Text))
 
-	if msg.Text == "" {
-		return tgbotapi.MessageConfig{}, nil
-	}
-
-	// Handle /start command
-	if msg.Text == "/start" {
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.StartMessage)), nil
-	}
-
 	if msg.From == nil {
 		return tgbotapi.MessageConfig{}, fmt.Errorf("msg from is nil")
 	}
@@ -49,6 +40,15 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	// Validate if message contains unsupported media type like images, videos, etc.
 	if msg.Photo != nil || msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
 		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.UnsupportedMediaType)), nil
+	}
+
+	if msg.Text == "" {
+		return tgbotapi.MessageConfig{}, nil
+	}
+
+	// Handle /start command
+	if msg.Text == "/start" {
+		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.StartMessage)), nil
 	}
 
 	request, err := core.NewUserMessage(

@@ -204,6 +204,10 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			ctx:  context.Background(),
 			message: &tgbotapi.Message{
 				Chat: &tgbotapi.Chat{ID: 123},
+				From: &tgbotapi.User{
+					ID:           456,
+					LanguageCode: "en",
+				},
 				Text: "",
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
