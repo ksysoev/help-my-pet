@@ -53,7 +53,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, message *tgbotapi.Message) (tg
 	)
 
 	if errors.Is(err, core.ErrTextTooLong) {
-		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage)), nil
+		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.MessageTooLong)), nil
 	} else if err != nil {
 		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage)), nil
 	}
