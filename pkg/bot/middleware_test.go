@@ -147,7 +147,7 @@ func TestWithErrorHandling(t *testing.T) {
 				return tt.getMessage(lang, msgType)
 			}
 
-			handler := withErrorHandling(wrappedGetMessage, tt.handler)
+			handler := WithErrorHandling(wrappedGetMessage, tt.handler)
 			msgConfig, err := handler(context.Background(), tt.message)
 
 			if tt.expectedError != nil {
@@ -189,7 +189,7 @@ func TestWithThrottlerLimitsConcurrentProcessing(t *testing.T) {
 	}
 
 	// Create throttled handler with limit of 5 for testing
-	throttled := withThrottler(5)(handler)
+	throttled := WithThrottler(5)(handler)
 
 	// Send 10 concurrent requests
 	for i := 0; i < 10; i++ {
@@ -214,7 +214,7 @@ func TestWithThrottlerHandlesContextCancellation(t *testing.T) {
 	}
 
 	// Create throttled handler with limit of 1
-	throttled := withThrottler(1)(handler)
+	throttled := WithThrottler(1)(handler)
 
 	// Fill up the throttler
 	var wg sync.WaitGroup
@@ -245,7 +245,7 @@ func TestWithThrottlerNilMessage(t *testing.T) {
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	throttled := withThrottler(1)(handler)
+	throttled := WithThrottler(1)(handler)
 	_, err := throttled(context.Background(), nil)
 
 	assert.Error(t, err)
@@ -258,7 +258,7 @@ func TestWithThrottlerHandlerError(t *testing.T) {
 		return tgbotapi.MessageConfig{}, expectedErr
 	}
 
-	throttled := withThrottler(1)(handler)
+	throttled := WithThrottler(1)(handler)
 	_, err := throttled(context.Background(), &tgbotapi.Message{})
 
 	assert.Error(t, err)
@@ -270,7 +270,7 @@ func TestWithThrottlerReleasesSlots(t *testing.T) {
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	throttled := withThrottler(1)(handler)
+	throttled := WithThrottler(1)(handler)
 
 	// First call should succeed
 	_, err1 := throttled(context.Background(), &tgbotapi.Message{})
@@ -286,7 +286,7 @@ func TestWithRequestReducerNilMessage(t *testing.T) {
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	middleware := withRequestReducer()
+	middleware := WithRequestReducer()
 	wrapped := middleware(handler)
 
 	_, err := wrapped(context.Background(), nil)
@@ -309,7 +309,7 @@ func TestWithRequestReducerCancelsPreviousRequest(t *testing.T) {
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	middleware := withRequestReducer()
+	middleware := WithRequestReducer()
 	wrapped := middleware(handler)
 
 	// Start first request
@@ -343,7 +343,7 @@ func TestWithRequestReducerAllowsConcurrentRequestsFromDifferentChats(t *testing
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	middleware := withRequestReducer()
+	middleware := WithRequestReducer()
 	wrapped := middleware(handler)
 
 	// Start concurrent requests from different chats
@@ -372,7 +372,7 @@ func TestWithRequestReducerCleansUpAfterCompletion(t *testing.T) {
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	middleware := withRequestReducer()
+	middleware := WithRequestReducer()
 	wrapped := middleware(handler)
 
 	msg := &tgbotapi.Message{Chat: &tgbotapi.Chat{ID: 123}, MessageID: 1}
