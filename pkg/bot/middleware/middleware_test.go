@@ -10,8 +10,8 @@ import (
 )
 
 type testHandler struct {
-	response tgbotapi.MessageConfig
 	err      error
+	response tgbotapi.MessageConfig
 }
 
 func (h *testHandler) Handle(_ context.Context, _ *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
@@ -20,12 +20,12 @@ func (h *testHandler) Handle(_ context.Context, _ *tgbotapi.Message) (tgbotapi.M
 
 func TestUse(t *testing.T) {
 	type testCase struct {
-		name            string
 		handler         Handler
-		middlewares     []Middleware
-		message         *tgbotapi.Message
-		expectedMessage tgbotapi.MessageConfig
 		expectedErr     error
+		message         *tgbotapi.Message
+		name            string
+		middlewares     []Middleware
+		expectedMessage tgbotapi.MessageConfig
 	}
 
 	tests := []testCase{

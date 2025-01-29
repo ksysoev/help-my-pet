@@ -30,48 +30,53 @@ func (s *ServiceImpl) setupHandler() Handler {
 	return h
 }
 
-func (s *ServiceImpl) Handle(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
-	slog.DebugContext(ctx, "Received message", slog.String("text", message.Text))
+func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+	slog.DebugContext(ctx, "Received msg", slog.String("text", msg.Text))
 
-	if message.Text == "" {
+	if msg.Text == "" {
 		return tgbotapi.MessageConfig{}, nil
 	}
 
 	// Handle /start command
-	if message.Text == "/start" {
-		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.StartMessage)), nil
+	if msg.Text == "/start" {
+		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.StartMessage)), nil
 	}
 
-	if message.From == nil {
-		return tgbotapi.MessageConfig{}, fmt.Errorf("message from is nil")
+	if msg.From == nil {
+		return tgbotapi.MessageConfig{}, fmt.Errorf("msg from is nil")
+	}
+
+	// Validate if message contains unsupported media type like images, videos, etc.
+	if msg.Photo != nil || msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
+		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.UnsupportedMediaType)), nil
 	}
 
 	request, err := core.NewUserMessage(
-		fmt.Sprintf("%d", message.From.ID),
-		fmt.Sprintf("%d", message.Chat.ID),
-		message.Text,
+		fmt.Sprintf("%d", msg.From.ID),
+		fmt.Sprintf("%d", msg.Chat.ID),
+		msg.Text,
 	)
 
 	if errors.Is(err, core.ErrTextTooLong) {
-		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.MessageTooLong)), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.MessageTooLong)), nil
 	} else if err != nil {
-		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage)), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.ErrorMessage)), nil
 	}
 
 	response, err := s.AISvc.GetPetAdvice(ctx, request)
 	if err != nil {
 		switch {
 		case errors.Is(err, core.ErrRateLimit):
-			return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.RateLimitMessage)), nil
+			return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.RateLimitMessage)), nil
 		case errors.Is(err, core.ErrGlobalLimit):
-			return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.GlobalLimitMessage)), nil
+			return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.GlobalLimitMessage)), nil
 		default:
 			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 		}
 	}
 
-	// Create message with buttons if available
-	msg := tgbotapi.NewMessage(message.Chat.ID, response.Message)
+	// Create msg with buttons if available
+	resp := tgbotapi.NewMessage(msg.Chat.ID, response.Message)
 
 	// Handle keyboard markup based on answers
 	if len(response.Answers) > 0 {
@@ -81,17 +86,17 @@ func (s *ServiceImpl) Handle(ctx context.Context, message *tgbotapi.Message) (tg
 				{Text: answer},
 			}
 		}
-		msg.ReplyMarkup = tgbotapi.ReplyKeyboardMarkup{
+		resp.ReplyMarkup = tgbotapi.ReplyKeyboardMarkup{
 			Keyboard:        keyboard,
 			OneTimeKeyboard: true,
 			ResizeKeyboard:  true,
 		}
 	} else {
-		msg.ReplyMarkup = tgbotapi.ReplyKeyboardRemove{
+		resp.ReplyMarkup = tgbotapi.ReplyKeyboardRemove{
 			RemoveKeyboard: true,
 			Selective:      false,
 		}
 	}
 
-	return msg, nil
+	return resp, nil
 }
