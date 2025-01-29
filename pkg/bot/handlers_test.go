@@ -201,7 +201,7 @@ func TestService_handleMessage(t *testing.T) {
 					Return(tt.aiResponse, tt.aiErr)
 			}
 
-			msgConfig, err := svc.handleMessage(context.Background(), msg)
+			msgConfig, err := svc.Handle(context.Background(), msg)
 
 			if tt.expectError {
 				assert.Error(t, err)
