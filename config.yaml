@@ -21,6 +21,7 @@ bot:
     languages:
       en:
         error: "Sorry, I encountered an error while processing your request. Please try again later."
+        unsupported_media: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only."
         message_too_long: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."
         start: |
           Welcome to Help My Pet Bot! 🐾
@@ -40,6 +41,7 @@ bot:
       
       ru:
         error: "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже."
+        unsupported_media: "Извините, я не могу обрабатывать изображения, видео, аудио или документы. Пожалуйста, отправьте ваш вопрос только текстом."
         message_too_long: "Извините, но ваше сообщение слишком длинное для обработки. Пожалуйста, попробуйте сделать его короче и лаконичнее."
         start: |
           Добро пожаловать в Help My Pet Bot! 🐾
@@ -59,6 +61,7 @@ bot:
 
       es:
         error: "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde."
+        unsupported_media: "Lo siento, no puedo procesar imágenes, videos, audio o documentos. Por favor, envía tu pregunta solo como texto."
         message_too_long: "Lo siento, pero tu mensaje es demasiado largo para procesarlo. Por favor, intenta hacerlo más corto y conciso."
         start: |
           ¡Bienvenido a Help My Pet Bot! 🐾
@@ -78,6 +81,7 @@ bot:
 
       fr:
         error: "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard."
+        unsupported_media: "Désolé, je ne peux pas traiter les images, vidéos, audios ou documents. Veuillez envoyer votre question en texte uniquement."
         message_too_long: "Désolé, mais votre message est trop long pour être traité. Veuillez le raccourcir et le rendre plus concis."
         start: |
           Bienvenue sur Help My Pet Bot ! 🐾
@@ -97,6 +101,7 @@ bot:
 
       de:
         error: "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        unsupported_media: "Entschuldigung, ich kann keine Bilder, Videos, Audios oder Dokumente verarbeiten. Bitte senden Sie Ihre Frage nur als Text."
         message_too_long: "Entschuldigung, aber Ihre Nachricht ist zu lang für die Verarbeitung. Bitte versuchen Sie, sie kürzer und präziser zu formulieren."
         start: |
           Willkommen bei Help My Pet Bot! 🐾
@@ -116,6 +121,7 @@ bot:
 
       ko:
         error: "죄송합니다. 요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+        unsupported_media: "죄송합니다. 이미지, 비디오, 오디오 또는 문서를 처리할 수 없습니다. 질문을 텍스트로만 보내주세요."
         message_too_long: "죄송합니다만, 메시지가 너무 길어서 처리할 수 없습니다. 더 짧고 간단하게 작성해 주세요."
         start: |
           Help My Pet Bot에 오신 것을 환영합니다! 🐾
@@ -135,6 +141,7 @@ bot:
 
       tr:
         error: "Üzgünüm, isteğinizi işlerken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+        unsupported_media: "Üzgünüm, resim, video, ses veya belge işleyemiyorum. Lütfen sorunuzu sadece metin olarak gönderin."
         message_too_long: "Üzgünüm, mesajınız işlemek için çok uzun. Lütfen daha kısa ve öz bir şekilde yazmayı deneyin."
         start: |
           Help My Pet Bot'a hoş geldiniz! 🐾
@@ -154,6 +161,7 @@ bot:
 
       it:
         error: "Mi dispiace, ho riscontrato un errore durante l'elaborazione della tua richiesta. Per favore riprova più tardi."
+        unsupported_media: "Mi dispiace, non posso elaborare immagini, video, audio o documenti. Per favore, invia la tua domanda solo come testo."
         message_too_long: "Mi dispiace, ma il tuo messaggio è troppo lungo per essere elaborato. Per favore, cerca di renderlo più breve e conciso."
         start: |
           Benvenuto su Help My Pet Bot! 🐾
@@ -173,6 +181,7 @@ bot:
 
       pl:
         error: "Przepraszam, wystąpił błąd podczas przetwarzania Twojego zapytania. Spróbuj ponownie później."
+        unsupported_media: "Przepraszam, nie mogę przetworzyć obrazów, filmów, audio ani dokumentów. Proszę wysłać pytanie tylko w formie tekstu."
         message_too_long: "Przepraszam, ale Twoja wiadomość jest zbyt długa do przetworzenia. Postaraj się ją skrócić i napisać bardziej zwięźle."
         start: |
           Witaj w Help My Pet Bot! 🐾
@@ -192,6 +201,7 @@ bot:
 
       uk:
         error: "Вибачте, під час обробки вашого запиту сталася помилка. Будь ласка, спробуйте пізніше."
+        unsupported_media: "Вибачте, я не можу обробляти зображення, відео, аудіо або документи. Будь ласка, надішліть ваше запитання тільки текстом."
         message_too_long: "Вибачте, але ваше повідомлення занадто довге для обробки. Будь ласка, спробуйте зробити його коротшим і більш лаконічним."
         start: |
           Ласкаво просимо до Help My Pet Bot! 🐾
@@ -211,6 +221,7 @@ bot:
 
       be:
         error: "Прабачце, падчас апрацоўкі вашага запыту адбылася памылка. Калі ласка, паспрабуйце пазней."
+        unsupported_media: "Прабачце, я не магу апрацоўваць выявы, відэа, аўдыё або дакументы. Калі ласка, дашліце ваша пытанне толькі тэкстам."
         message_too_long: "Прабачце, але ваша паведамленне занадта доўгае для апрацоўкі. Калі ласка, паспрабуйце зрабіць яго карацейшым і больш лаканічным."
         start: |
           Сардэчна запрашаем у Help My Pet Bot! 🐾
@@ -230,6 +241,7 @@ bot:
 
       nl:
         error: "Sorry, er is een fout opgetreden bij het verwerken van uw verzoek. Probeer het later opnieuw."
+        unsupported_media: "Sorry, ik kan geen afbeeldingen, video's, audio of documenten verwerken. Stuur uw vraag alstublieft alleen als tekst."
         message_too_long: "Sorry, maar uw bericht is te lang om te verwerken. Probeer het korter en bondiger te maken."
         start: |
           Welkom bij Help My Pet Bot! 🐾
@@ -249,6 +261,7 @@ bot:
 
       ms:
         error: "Maaf, saya mengalami ralat semasa memproses permintaan anda. Sila cuba lagi kemudian."
+        unsupported_media: "Maaf, saya tidak dapat memproses gambar, video, audio, atau dokumen. Sila hantar soalan anda dalam bentuk teks sahaja."
         message_too_long: "Maaf, tetapi mesej anda terlalu panjang untuk diproses. Sila cuba membuatnya lebih pendek dan ringkas."
         start: |
           Selamat datang ke Help My Pet Bot! 🐾
@@ -268,6 +281,7 @@ bot:
 
       pt:
         error: "Desculpe, encontrei um erro ao processar seu pedido. Por favor, tente novamente mais tarde."
+        unsupported_media: "Desculpe, não posso processar imagens, vídeos, áudio ou documentos. Por favor, envie sua pergunta apenas como texto."
         message_too_long: "Desculpe, mas sua mensagem é muito longa para ser processada. Por favor, tente torná-la mais curta e concisa."
         start: |
           Bem-vindo ao Help My Pet Bot! 🐾
@@ -287,6 +301,7 @@ bot:
 
       ca:
         error: "Ho sento, he trobat un error en processar la teva sol·licitud. Si us plau, torna-ho a provar més tard."
+        unsupported_media: "Ho sento, no puc processar imatges, vídeos, àudio o documents. Si us plau, envia la teva pregunta només com a text."
         message_too_long: "Ho sento, però el teu missatge és massa llarg per processar-lo. Si us plau, intenta fer-lo més curt i concís."
         start: |
           Benvingut a Help My Pet Bot! 🐾

@@ -3,6 +3,7 @@ package bot
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -24,6 +25,7 @@ func TestService_handleMessage(t *testing.T) {
 		userID       int64
 		expectError  bool
 		isStart      bool
+		hasPhoto     bool
 	}{
 		{
 			name:         "successful response with keyboard",
@@ -126,6 +128,27 @@ func TestService_handleMessage(t *testing.T) {
 			langCode:     "en",
 			expectedText: "",
 		},
+		{
+			name:         "message with photo",
+			message:      "",
+			hasPhoto:     true,
+			aiResponse:   nil,
+			aiErr:        nil,
+			expectError:  false,
+			userID:       123,
+			langCode:     "en",
+			expectedText: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+		},
+		{
+			name:         "message too long",
+			message:      "What food is good for cats? " + strings.Repeat("Very long message. ", 1000),
+			aiResponse:   nil,
+			aiErr:        nil,
+			expectError:  false,
+			userID:       123,
+			langCode:     "en",
+			expectedText: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
+		},
 	}
 
 	for _, tt := range tests {
@@ -136,34 +159,44 @@ func TestService_handleMessage(t *testing.T) {
 			messages := &i18n.Config{
 				Languages: map[string]i18n.Messages{
 					"en": {
-						Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
-						Start:       "Welcome to Help My Pet Bot!",
-						RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
-						GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+						Error:            "Sorry, I encountered an error while processing your request. Please try again later.",
+						Start:            "Welcome to Help My Pet Bot!",
+						RateLimit:        "You have reached the maximum number of requests per hour. Please try again later.",
+						GlobalLimit:      "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+						UnsupportedMedia: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+						MessageTooLong:   "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
 					},
 					"ru": {
-						Error:       "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.",
-						Start:       "Добро пожаловать в Help My Pet Bot!",
-						RateLimit:   "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
-						GlobalLimit: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
+						Error:            "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.",
+						Start:            "Добро пожаловать в Help My Pet Bot!",
+						RateLimit:        "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
+						GlobalLimit:      "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
+						UnsupportedMedia: "Извините, я не могу обрабатывать изображения, видео, аудио или документы. Пожалуйста, отправьте ваш вопрос только текстом.",
+						MessageTooLong:   "Извините, но ваше сообщение слишком длинное для обработки. Пожалуйста, попробуйте сделать его короче и лаконичнее.",
 					},
 					"es": {
-						Error:       "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde.",
-						Start:       "¡Bienvenido a Help My Pet Bot!",
-						RateLimit:   "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde.",
-						GlobalLimit: "Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vuelve mañana cuando nuestro presupuesto se haya renovado.",
+						Error:            "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde.",
+						Start:            "¡Bienvenido a Help My Pet Bot!",
+						RateLimit:        "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde.",
+						GlobalLimit:      "Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vuelve mañana cuando nuestro presupuesto se haya renovado.",
+						UnsupportedMedia: "Lo siento, no puedo procesar imágenes, videos, audio o documentos. Por favor, envía tu pregunta solo como texto.",
+						MessageTooLong:   "Lo siento, pero tu mensaje es demasiado largo para procesarlo. Por favor, intenta hacerlo más corto y conciso.",
 					},
 					"fr": {
-						Error:       "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard.",
-						Start:       "Bienvenue sur Help My Pet Bot !",
-						RateLimit:   "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard.",
-						GlobalLimit: "Nous avons atteint notre limite quotidienne de demandes. Veuillez revenir demain lorsque notre budget sera renouvelé.",
+						Error:            "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard.",
+						Start:            "Bienvenue sur Help My Pet Bot !",
+						RateLimit:        "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard.",
+						GlobalLimit:      "Nous avons atteint notre limite quotidienne de demandes. Veuillez revenir demain lorsque notre budget sera renouvelé.",
+						UnsupportedMedia: "Désolé, je ne peux pas traiter les images, vidéos, audios ou documents. Veuillez envoyer votre question en texte uniquement.",
+						MessageTooLong:   "Désolé, mais votre message est trop long pour être traité. Veuillez le raccourcir et le rendre plus concis.",
 					},
 					"de": {
-						Error:       "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
-						Start:       "Willkommen bei Help My Pet Bot!",
-						RateLimit:   "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut.",
-						GlobalLimit: "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
+						Error:            "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+						Start:            "Willkommen bei Help My Pet Bot!",
+						RateLimit:        "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut.",
+						GlobalLimit:      "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
+						UnsupportedMedia: "Entschuldigung, ich kann keine Bilder, Videos, Audios oder Dokumente verarbeiten. Bitte senden Sie Ihre Frage nur als Text.",
+						MessageTooLong:   "Entschuldigung, aber Ihre Nachricht ist zu lang für die Verarbeitung. Bitte versuchen Sie, sie kürzer und präziser zu formulieren.",
 					},
 				},
 			}
@@ -182,6 +215,11 @@ func TestService_handleMessage(t *testing.T) {
 				MessageID: 456,
 			}
 
+			// Set Photo field if hasPhoto is true
+			if tt.hasPhoto {
+				msg.Photo = []tgbotapi.PhotoSize{{FileID: "test-photo"}}
+			}
+
 			// Set From field only if userID is not 0
 			if tt.userID != 0 {
 				msg.From = &tgbotapi.User{
@@ -190,7 +228,7 @@ func TestService_handleMessage(t *testing.T) {
 				}
 			}
 
-			if !tt.isStart && tt.message != "" && msg.From != nil {
+			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !strings.Contains(tt.name, "message too long") {
 				expectedRequest := &core.UserMessage{
 					UserID: "123",
 					ChatID: "123",
@@ -209,7 +247,7 @@ func TestService_handleMessage(t *testing.T) {
 			}
 
 			assert.NoError(t, err)
-			if tt.message == "" {
+			if tt.message == "" && !tt.hasPhoto {
 				assert.Equal(t, tgbotapi.MessageConfig{}, msgConfig)
 				return
 			}
@@ -235,10 +273,12 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 	messages := &i18n.Config{
 		Languages: map[string]i18n.Messages{
 			"en": {
-				Error:       "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:       "Welcome to Help My Pet Bot!",
-				RateLimit:   "You have reached the maximum number of requests per hour. Please try again later.",
-				GlobalLimit: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+				Error:            "Sorry, I encountered an error while processing your request. Please try again later.",
+				Start:            "Welcome to Help My Pet Bot!",
+				RateLimit:        "You have reached the maximum number of requests per hour. Please try again later.",
+				GlobalLimit:      "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+				UnsupportedMedia: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+				MessageTooLong:   "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
 			},
 		},
 	}

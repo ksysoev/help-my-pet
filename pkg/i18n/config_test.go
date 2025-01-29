@@ -272,6 +272,43 @@ func TestConfig_GetMessage(t *testing.T) {
 			msgType:  MessageTooLong,
 			expected: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
 		},
+		{
+			name: "unsupported media in specific language",
+			config: &Config{
+				Languages: map[string]Messages{
+					"es": {
+						Error:            "Error en español",
+						UnsupportedMedia: "No puedo procesar imágenes, videos, audio o documentos. Por favor, envía tu pregunta solo como texto.",
+					},
+				},
+			},
+			lang:     "es",
+			msgType:  UnsupportedMediaType,
+			expected: "No puedo procesar imágenes, videos, audio o documentos. Por favor, envía tu pregunta solo como texto.",
+		},
+		{
+			name: "unsupported media fallback to English",
+			config: &Config{
+				Languages: map[string]Messages{
+					"en": {
+						Error:            "English error",
+						UnsupportedMedia: "I cannot process images, videos, audio, or documents. Please send your question as text only.",
+					},
+				},
+			},
+			lang:     "fr",
+			msgType:  UnsupportedMediaType,
+			expected: "I cannot process images, videos, audio, or documents. Please send your question as text only.",
+		},
+		{
+			name: "unsupported media default message",
+			config: &Config{
+				Languages: map[string]Messages{},
+			},
+			lang:     "en",
+			msgType:  UnsupportedMediaType,
+			expected: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+		},
 	}
 
 	for _, tt := range tests {

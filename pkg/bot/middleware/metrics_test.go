@@ -11,11 +11,11 @@ import (
 
 func TestWithMetrics(t *testing.T) {
 	tests := []struct {
-		name           string
 		handler        Handler
 		message        *tgbotapi.Message
-		expectedError  bool
+		name           string
 		expectedResult tgbotapi.MessageConfig
+		expectedError  bool
 	}{
 		{
 			name: "successful handler execution",
