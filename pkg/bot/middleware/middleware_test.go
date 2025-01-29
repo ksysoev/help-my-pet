@@ -14,7 +14,7 @@ type testHandler struct {
 	err      error
 }
 
-func (h *testHandler) Handle(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+func (h *testHandler) Handle(_ context.Context, _ *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	return h.response, h.err
 }
 
