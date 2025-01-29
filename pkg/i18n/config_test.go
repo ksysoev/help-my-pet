@@ -128,14 +128,14 @@ func TestConfig_GetMessage(t *testing.T) {
 				Languages: map[string]Messages{
 					"fr": {
 						Error:     "Erreur message",
-						Start:     "Message de démarrage",
-						RateLimit: "Message de limite",
+						Start:     "Text de démarrage",
+						RateLimit: "Text de limite",
 					},
 				},
 			},
 			lang:     "fr",
 			msgType:  StartMessage,
-			expected: "Message de démarrage",
+			expected: "Text de démarrage",
 		},
 		{
 			name: "returns all message types in English fallback",
@@ -262,6 +262,15 @@ func TestConfig_GetMessage(t *testing.T) {
 			lang:     "fr",
 			msgType:  GlobalLimitMessage,
 			expected: "Global limit",
+		},
+		{
+			name: "message too long",
+			config: &Config{
+				Languages: map[string]Messages{},
+			},
+			lang:     "en",
+			msgType:  MessageTooLong,
+			expected: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
 		},
 	}
 

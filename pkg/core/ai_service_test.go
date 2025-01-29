@@ -11,7 +11,7 @@ import (
 
 func TestAIService_GetPetAdvice(t *testing.T) {
 	tests := []struct {
-		request        *PetAdviceRequest
+		request        *UserMessage
 		response       *Response
 		expectedResult *PetAdviceResponse
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation)
@@ -21,10 +21,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 	}{
 		{
 			name: "successful response with follow-up questions",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What food is good for cats?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What food is good for cats?",
 			},
 			response: &Response{
 				Text: "Cats need a balanced diet...",
@@ -71,10 +71,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "successful response without questions",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What food is good for cats?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What food is good for cats?",
 			},
 			response: &Response{
 				Text:      "Cats need a balanced diet...",
@@ -109,10 +109,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "empty question",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "",
 			},
 			response: &Response{
 				Text:      "I understand you have a pet-related question...",
@@ -147,10 +147,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "llm error",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What food is good for cats?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
@@ -171,10 +171,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "repository FindOrCreate error",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What food is good for cats?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				mockRepo.EXPECT().
@@ -186,10 +186,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "rate limit exceeded",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What food is good for cats?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				mockRepo.EXPECT().
@@ -202,10 +202,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "rate limit check error",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What food is good for cats?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				mockRepo.EXPECT().
@@ -218,10 +218,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "repository Save error",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What food is good for cats?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
@@ -239,10 +239,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "with conversation history",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "What about dogs?",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "What about dogs?",
 			},
 			response: &Response{
 				Text:      "Dogs need different food...",
@@ -314,7 +314,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 
 func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	tests := []struct {
-		request        *PetAdviceRequest
+		request        *UserMessage
 		expectedResult *PetAdviceResponse
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation)
 		name           string
@@ -323,10 +323,10 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	}{
 		{
 			name: "successful questionnaire response with next question",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "2 years old",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "2 years old",
 			},
 			expectedResult: &PetAdviceResponse{
 				Message: "Is your cat indoor or outdoor?",
@@ -359,10 +359,10 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 		},
 		{
 			name: "successful questionnaire completion",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "Indoor",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "Indoor",
 			},
 			expectedResult: &PetAdviceResponse{
 				Message: "Based on your answers, here's my advice...",
@@ -406,10 +406,10 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 		},
 		{
 			name: "error adding question answer",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "2 years old",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "2 years old",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				// Setup conversation in questioning state with no questions
@@ -425,10 +425,10 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 		},
 		{
 			name: "error saving conversation in questionnaire",
-			request: &PetAdviceRequest{
-				UserID:  "user123",
-				ChatID:  "test-chat",
-				Message: "2 years old",
+			request: &UserMessage{
+				UserID: "user123",
+				ChatID: "test-chat",
+				Text:   "2 years old",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				questions := []Question{
@@ -490,10 +490,10 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 
 	svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
 
-	request := &PetAdviceRequest{
-		UserID:  "user123",
-		ChatID:  "test-chat",
-		Message: "test question",
+	request := &UserMessage{
+		UserID: "user123",
+		ChatID: "test-chat",
+		Text:   "test question",
 	}
 
 	_, err := svc.GetPetAdvice(context.Background(), request)
@@ -530,10 +530,10 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 
 	svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
 
-	request := &PetAdviceRequest{
-		UserID:  "user123",
-		ChatID:  "test-chat",
-		Message: "test question",
+	request := &UserMessage{
+		UserID: "user123",
+		ChatID: "test-chat",
+		Text:   "test question",
 	}
 
 	_, err := svc.GetPetAdvice(ctx, request)

@@ -191,10 +191,10 @@ func TestService_handleMessage(t *testing.T) {
 			}
 
 			if !tt.isStart && tt.message != "" && msg.From != nil {
-				expectedRequest := &core.PetAdviceRequest{
-					UserID:  "123",
-					ChatID:  "123",
-					Message: tt.message,
+				expectedRequest := &core.UserMessage{
+					UserID: "123",
+					ChatID: "123",
+					Text:   tt.message,
 				}
 				mockAI.EXPECT().
 					GetPetAdvice(mock.Anything, expectedRequest).
@@ -264,10 +264,10 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 
 	// Expect AI request
 	mockAI.EXPECT().
-		GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-			UserID:  "123",
-			ChatID:  "123",
-			Message: "test message",
+		GetPetAdvice(mock.Anything, &core.UserMessage{
+			UserID: "123",
+			ChatID: "123",
+			Text:   "test message",
 		}).
 		Return(core.NewPetAdviceResponse("test response", []string{}), nil)
 
