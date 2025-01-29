@@ -46,10 +46,16 @@ func (s *ServiceImpl) Handle(ctx context.Context, message *tgbotapi.Message) (tg
 		return tgbotapi.MessageConfig{}, fmt.Errorf("message from is nil")
 	}
 
-	request := &core.UserMessage{
-		ChatID: fmt.Sprintf("%d", message.Chat.ID),
-		Text:   message.Text,
-		UserID: fmt.Sprintf("%d", message.From.ID),
+	request, err := core.NewUserMessage(
+		fmt.Sprintf("%d", message.From.ID),
+		fmt.Sprintf("%d", message.Chat.ID),
+		message.Text,
+	)
+
+	if errors.Is(err, core.ErrTextTooLong) {
+		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage)), nil
+	} else if err != nil {
+		return tgbotapi.NewMessage(message.Chat.ID, s.Messages.GetMessage(message.From.LanguageCode, i18n.ErrorMessage)), nil
 	}
 
 	response, err := s.AISvc.GetPetAdvice(ctx, request)

@@ -263,6 +263,15 @@ func TestConfig_GetMessage(t *testing.T) {
 			msgType:  GlobalLimitMessage,
 			expected: "Global limit",
 		},
+		{
+			name: "message too long",
+			config: &Config{
+				Languages: map[string]Messages{},
+			},
+			lang:     "en",
+			msgType:  MessageTooLong,
+			expected: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
+		},
 	}
 
 	for _, tt := range tests {
