@@ -8,10 +8,10 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-// WithREDMetrics wraps a Handler to record processing time and error occurrence metrics for each message processed.
+// WithMetrics wraps a Handler to record processing time and error occurrence metrics for each message processed.
 // It logs the duration of message processing and whether an error occurred during execution.
 // Returns a Middleware that measures and logs performance metrics for the wrapped Handler.
-func WithREDMetrics() Middleware {
+func WithMetrics() Middleware {
 	return func(next Handler) Handler {
 		return HandlerFunc(func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 			start := time.Now()

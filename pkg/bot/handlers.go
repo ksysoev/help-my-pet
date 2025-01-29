@@ -23,7 +23,7 @@ func (s *ServiceImpl) setupHandler() Handler {
 		s,
 		middleware.WithRequestReducer(),
 		middleware.WithThrottler(30),
-		middleware.WithREDMetrics(),
+		middleware.WithMetrics(),
 		middleware.WithErrorHandling(s.Messages.GetMessage),
 	)
 
