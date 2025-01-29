@@ -87,10 +87,10 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-					ChatID:  "123",
-					UserID:  "456",
-					Message: "test message",
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+					ChatID: "123",
+					UserID: "456",
+					Text:   "test message",
 				}).Return(&core.PetAdviceResponse{
 					Message: "AI response",
 				}, nil)
@@ -113,10 +113,10 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(nil, assert.AnError)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-					ChatID:  "123",
-					UserID:  "456",
-					Message: "test message",
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+					ChatID: "123",
+					UserID: "456",
+					Text:   "test message",
 				}).Return(&core.PetAdviceResponse{
 					Message: "AI response",
 				}, nil)
@@ -139,10 +139,10 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-					ChatID:  "123",
-					UserID:  "456",
-					Message: "test message",
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+					ChatID: "123",
+					UserID: "456",
+					Text:   "test message",
 				}).Return(nil, context.Canceled)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
 					return msg.ChatID == 123 && msg.Text != ""
@@ -163,10 +163,10 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-					ChatID:  "123",
-					UserID:  "456",
-					Message: "test message",
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+					ChatID: "123",
+					UserID: "456",
+					Text:   "test message",
 				}).Return(&core.PetAdviceResponse{
 					Message: "AI response",
 				}, nil)
@@ -189,10 +189,10 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.PetAdviceRequest{
-					ChatID:  "123",
-					UserID:  "456",
-					Message: "test message",
+				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+					ChatID: "123",
+					UserID: "456",
+					Text:   "test message",
 				}).Return(&core.PetAdviceResponse{
 					Message: "",
 				}, nil)

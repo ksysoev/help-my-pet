@@ -44,7 +44,7 @@ func TestConversation_AddMessage(t *testing.T) {
 		{
 			name:           "exceed max history",
 			role:           "user",
-			content:        "Message",
+			content:        "Text",
 			messageCount:   MaxMessageHistory + 2,
 			expectedLength: MaxMessageHistory,
 		},
@@ -59,10 +59,10 @@ func TestConversation_AddMessage(t *testing.T) {
 			if tt.name == "exceed max history" {
 				// For max history test, add messages sequentially
 				for i := 0; i < tt.messageCount; i++ {
-					conv.AddMessage(tt.role, fmt.Sprintf("Message %d", i))
+					conv.AddMessage(tt.role, fmt.Sprintf("Text %d", i))
 				}
 				// Check if the first message in the history is the correct one
-				assert.Equal(t, fmt.Sprintf("Message %d", tt.messageCount-MaxMessageHistory), conv.Messages[0].Content)
+				assert.Equal(t, fmt.Sprintf("Text %d", tt.messageCount-MaxMessageHistory), conv.Messages[0].Content)
 			} else {
 				// For other tests, just add one message
 				conv.AddMessage(tt.role, tt.content)
@@ -127,16 +127,16 @@ func TestConversation_MessageHistory(t *testing.T) {
 
 	// Add total of 8 messages (0 to 7)
 	for i := 0; i < MaxMessageHistory+3; i++ {
-		conv.AddMessage("user", fmt.Sprintf("Message %d", i))
+		conv.AddMessage("user", fmt.Sprintf("Text %d", i))
 	}
 
 	// Should have last 5 messages (3,4,5,6,7)
 	assert.Len(t, conv.Messages, MaxMessageHistory)
 
 	// First message should be 3
-	assert.Equal(t, "Message 3", conv.Messages[0].Content)
+	assert.Equal(t, "Text 3", conv.Messages[0].Content)
 	// Last message should be 7
-	assert.Equal(t, "Message 7", conv.Messages[MaxMessageHistory-1].Content)
+	assert.Equal(t, "Text 7", conv.Messages[MaxMessageHistory-1].Content)
 }
 
 func TestConversation_GetCurrentQuestion(t *testing.T) {

@@ -6,13 +6,6 @@ import (
 	"log/slog"
 )
 
-// PetAdviceRequest represents a request for pet advice
-type PetAdviceRequest struct {
-	UserID  string
-	ChatID  string
-	Message string
-}
-
 type AIService struct {
 	llm         LLM
 	repo        ConversationRepository
@@ -27,8 +20,8 @@ func NewAIService(llm LLM, repo ConversationRepository, rateLimiter RateLimiter)
 	}
 }
 
-func (s *AIService) GetPetAdvice(ctx context.Context, request *PetAdviceRequest) (*PetAdviceResponse, error) {
-	slog.DebugContext(ctx, "getting pet advice", "input", request.Message)
+func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*PetAdviceResponse, error) {
+	slog.DebugContext(ctx, "getting pet advice", "input", request.Text)
 
 	conversation, err := s.repo.FindOrCreate(ctx, request.ChatID)
 	if err != nil {
@@ -37,7 +30,7 @@ func (s *AIService) GetPetAdvice(ctx context.Context, request *PetAdviceRequest)
 
 	// Handle questionnaire state if active
 	if conversation.State == StateQuestioning {
-		return s.handleQuestionnaireResponse(ctx, conversation, request.Message)
+		return s.handleQuestionnaireResponse(ctx, conversation, request.Text)
 	}
 
 	// Handle new question flow
@@ -45,7 +38,7 @@ func (s *AIService) GetPetAdvice(ctx context.Context, request *PetAdviceRequest)
 }
 
 // handleNewQuestion processes a new question from the user
-func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceRequest, conversation *Conversation) (*PetAdviceResponse, error) {
+func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage, conversation *Conversation) (*PetAdviceResponse, error) {
 	// Check rate limit for new questions
 	if s.rateLimiter != nil {
 		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, request.UserID)
@@ -62,7 +55,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceReq
 	}
 
 	// Add user's question to conversation
-	conversation.AddMessage("user", request.Message)
+	conversation.AddMessage("user", request.Text)
 
 	// Save conversation immediately after adding user's message
 	if err := s.repo.Save(ctx, conversation); err != nil {
@@ -72,14 +65,14 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *PetAdviceReq
 	// Build prompt with conversation context
 	var prompt string
 	if len(conversation.GetContext()) <= 1 {
-		prompt = request.Message
+		prompt = request.Text
 	} else {
 		// Include conversation history
 		prompt = "Previous conversation:\n"
 		for _, msg := range conversation.GetContext()[:len(conversation.GetContext())-1] {
 			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 		}
-		prompt += fmt.Sprintf("\nCurrent question: %s", request.Message)
+		prompt += fmt.Sprintf("\nCurrent question: %s", request.Text)
 	}
 
 	response, err := s.llm.Call(ctx, prompt)

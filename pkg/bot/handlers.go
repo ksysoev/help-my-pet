@@ -46,10 +46,10 @@ func (s *ServiceImpl) Handle(ctx context.Context, message *tgbotapi.Message) (tg
 		return tgbotapi.MessageConfig{}, fmt.Errorf("message from is nil")
 	}
 
-	request := &core.PetAdviceRequest{
-		ChatID:  fmt.Sprintf("%d", message.Chat.ID),
-		Message: message.Text,
-		UserID:  fmt.Sprintf("%d", message.From.ID),
+	request := &core.UserMessage{
+		ChatID: fmt.Sprintf("%d", message.Chat.ID),
+		Text:   message.Text,
+		UserID: fmt.Sprintf("%d", message.From.ID),
 	}
 
 	response, err := s.AISvc.GetPetAdvice(ctx, request)
