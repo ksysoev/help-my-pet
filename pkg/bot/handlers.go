@@ -81,7 +81,6 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 
 	// Create msg with buttons if available
 	resp := tgbotapi.NewMessage(msg.Chat.ID, response.Message)
-	resp.ParseMode = "HTML"
 
 	// Handle keyboard markup based on answers
 	if len(response.Answers) > 0 {
