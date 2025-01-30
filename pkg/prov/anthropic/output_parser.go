@@ -41,7 +41,7 @@ Note:
 - The "questions" array is optional and can be empty if no follow-up questions are needed
 - Each question must have a "text" field
 - The "answers" field in questions is optional
-- The "text" field supports these html tags: <b>bold</b>, <i>italic</i>, <u>underline</u>, <s>strikethrough</s>, and following html entities: &lt;, &gt;, &amp; and &quot;.
+- The "text" field supports formating with ONLY these html tags: <b>bold</b>, <i>italic</i>, <u>underline</u>, <s>strikethrough</s>, and ONLY following html entities: &lt;, &gt;, &amp; and &quot;.
 
 Example with no questions:
 {
