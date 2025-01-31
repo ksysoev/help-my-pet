@@ -9,13 +9,15 @@ import (
 type AIService struct {
 	llm         LLM
 	repo        ConversationRepository
+	profileRepo PetProfileRepository
 	rateLimiter RateLimiter
 }
 
-func NewAIService(llm LLM, repo ConversationRepository, rateLimiter RateLimiter) *AIService {
+func NewAIService(llm LLM, repo ConversationRepository, profileRepo PetProfileRepository, rateLimiter RateLimiter) *AIService {
 	return &AIService{
 		llm:         llm,
 		repo:        repo,
+		profileRepo: profileRepo,
 		rateLimiter: rateLimiter,
 	}
 }
@@ -39,6 +41,12 @@ func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*Pe
 
 // handleNewQuestion processes a new question from the user
 func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage, conversation *Conversation) (*PetAdviceResponse, error) {
+	// Fetch pet profile from repository
+	petProfiles, err := s.profileRepo.GetProfiles(request.UserID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch pet profiles: %w", err)
+	}
+
 	// Check rate limit for new questions
 	if s.rateLimiter != nil {
 		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, request.UserID)
@@ -62,13 +70,13 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	// Build prompt with conversation context
-	var prompt string
+	// Build prompt with pet profiles and conversation context
+	prompt := fmt.Sprintf("Pet profiles: %+v\n\n", petProfiles)
 	if len(conversation.GetContext()) <= 1 {
-		prompt = request.Text
+		prompt += request.Text
 	} else {
 		// Include conversation history
-		prompt = "Previous conversation:\n"
+		prompt += "Previous conversation:\n"
 		for _, msg := range conversation.GetContext()[:len(conversation.GetContext())-1] {
 			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 		}
