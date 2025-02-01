@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 )
@@ -9,13 +10,15 @@ import (
 type AIService struct {
 	llm         LLM
 	repo        ConversationRepository
+	profileRepo PetProfileRepository
 	rateLimiter RateLimiter
 }
 
-func NewAIService(llm LLM, repo ConversationRepository, rateLimiter RateLimiter) *AIService {
+func NewAIService(llm LLM, repo ConversationRepository, profileRepo PetProfileRepository, rateLimiter RateLimiter) *AIService {
 	return &AIService{
 		llm:         llm,
 		repo:        repo,
+		profileRepo: profileRepo,
 		rateLimiter: rateLimiter,
 	}
 }
@@ -30,7 +33,7 @@ func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*Pe
 
 	// Handle questionnaire state if active
 	if conversation.State == StateQuestioning {
-		return s.handleQuestionnaireResponse(ctx, conversation, request.Text)
+		return s.handleQuestionnaireResponse(ctx, conversation, request)
 	}
 
 	// Handle new question flow
@@ -62,13 +65,25 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	// Build prompt with conversation context
+	// Build prompt with pet profiles and conversation context
 	var prompt string
+
+	// Fetch pet profile from repository
+	petProfile, err := s.profileRepo.GetCurrentProfile(ctx, request.UserID)
+	if errors.Is(err, ErrProfileNotFound) {
+		// If no profile found, do not include pet profiles in prompt
+	} else if err != nil {
+		return nil, fmt.Errorf("failed to fetch pet profiles: %w", err)
+	} else {
+		// Include pet profiles in prompt
+		prompt += fmt.Sprintf("%s\n\n", petProfile.String())
+	}
+
 	if len(conversation.GetContext()) <= 1 {
-		prompt = request.Text
+		prompt += request.Text
 	} else {
 		// Include conversation history
-		prompt = "Previous conversation:\n"
+		prompt += "Previous conversation:\n"
 		for _, msg := range conversation.GetContext()[:len(conversation.GetContext())-1] {
 			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 		}
@@ -119,9 +134,9 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 }
 
 // handleQuestionnaireResponse processes a response to a follow-up question
-func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, answer string) (*PetAdviceResponse, error) {
+func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, request *UserMessage) (*PetAdviceResponse, error) {
 	// Store the answer and check if questionnaire is complete
-	isComplete, err := conversation.AddQuestionAnswer(answer)
+	isComplete, err := conversation.AddQuestionAnswer(request.Text)
 	if err != nil {
 		return nil, fmt.Errorf("failed to add question answer: %w", err)
 	}
@@ -139,10 +154,23 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversatio
 		}
 
 		// Build prompt with conversation history and question-answer pairs
-		prompt := "Previous conversation:\n"
+		var prompt string
+
+		// Fetch pet profile from repository
+		petProfile, err := s.profileRepo.GetCurrentProfile(ctx, request.UserID)
+		if errors.Is(err, ErrProfileNotFound) {
+			// If no profile found, do not include pet profiles in prompt
+		} else if err != nil {
+			return nil, fmt.Errorf("failed to fetch pet profiles: %w", err)
+		} else {
+			// Include pet profiles in prompt
+			prompt += fmt.Sprintf("%s\n\n", petProfile.String())
+		}
+
+		prompt += "Previous conversation:\n"
 		history := conversation.GetContext()
 		for _, msg := range history[:len(history)-1] {
-			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
+			prompt += fmt.Sprintf("%s: %s\n\n", msg.Role, msg.Content)
 		}
 
 		prompt += "\nFollow-up information:\n"

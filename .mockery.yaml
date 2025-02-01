@@ -15,6 +15,7 @@ packages:
       LLM:
       RateLimiter:
       AIService:
+      PetProfileRepository:
   github.com/ksysoev/help-my-pet/pkg/bot:
     interfaces:
       BotAPI:
