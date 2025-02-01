@@ -10,8 +10,6 @@ import (
 )
 
 func TestAIService_GetPetAdvice(t *testing.T) {
-	emptyProfiles := &PetProfiles{Profiles: []PetProfile{}}
-
 	tests := []struct {
 		request        *UserMessage
 		response       *Response
@@ -53,7 +51,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("Pet profiles: %+v\n\nWhat food is good for cats?", emptyProfiles)
+				expectedPrompt := fmt.Sprintf("What food is good for cats?")
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -99,7 +97,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("Pet profiles: %+v\n\nWhat food is good for cats?", emptyProfiles)
+				expectedPrompt := fmt.Sprintf("What food is good for cats?")
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -139,7 +137,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("Pet profiles: %+v\n\n", emptyProfiles)
+				expectedPrompt := fmt.Sprintf("")
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -171,7 +169,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("Pet profiles: %+v\n\nWhat food is good for cats?", emptyProfiles)
+				expectedPrompt := fmt.Sprintf("What food is good for cats?")
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(nil, fmt.Errorf("llm error"))
@@ -187,7 +185,6 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
-				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(nil, fmt.Errorf("db error"))
@@ -203,7 +200,6 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
-				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -220,7 +216,6 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:   "What food is good for cats?",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
-				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -239,7 +234,6 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 				mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(nil)
-				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
@@ -283,7 +277,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Save(context.Background(), conversation).
 					Return(nil)
 
-				expectedPrompt := fmt.Sprintf("Pet profiles: %+v\n\nPrevious conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?", emptyProfiles)
+				expectedPrompt := fmt.Sprintf("Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?")
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -329,8 +323,6 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 }
 
 func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
-	emptyProfiles := &PetProfiles{Profiles: []PetProfile{}}
-
 	tests := []struct {
 		request        *UserMessage
 		expectedResult *PetAdviceResponse
@@ -408,7 +400,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					Save(context.Background(), conversation).
 					Return(nil)
 
-				expectedPrompt := fmt.Sprintf("Pet profiles: %+v\n\nPrevious conversation:\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n", emptyProfiles)
+				expectedPrompt := fmt.Sprintf("Previous conversation:\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n")
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -501,7 +493,6 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 	mockRateLimiter := NewMockRateLimiter(t)
 	conversation := NewConversation("test-chat")
 
-	mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 	mockRepo.EXPECT().
 		FindOrCreate(context.Background(), "test-chat").
 		Return(conversation, nil)
@@ -536,7 +527,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 	mockRateLimiter := NewMockRateLimiter(t)
 	mockRateLimiter.On("IsNewQuestionAllowed", ctx, "user123").Return(true, nil)
 	mockRateLimiter.On("RecordNewQuestion", ctx, "user123").Return(nil)
-	mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
+	mockProfileRepo.EXPECT().GetCurrentProfile(ctx, "user123").Return(nil, ErrProfileNotFound)
 
 	conversation := NewConversation("test-chat")
 	mockRepo.EXPECT().
