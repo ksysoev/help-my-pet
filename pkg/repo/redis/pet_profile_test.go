@@ -64,7 +64,7 @@ func TestPetProfileRepository_GetProfiles_Empty(t *testing.T) {
 	mock.ExpectHGet(petProfilesKey, "user456").RedisNil()
 
 	result, err := repo.GetCurrentProfile(context.Background(), "user456")
-	assert.ErrorIs(t, err, ErrProfileNotFound)
+	assert.ErrorIs(t, err, core.ErrProfileNotFound)
 	assert.Nil(t, result)
 	assert.NoError(t, mock.ExpectationsWereMet())
 

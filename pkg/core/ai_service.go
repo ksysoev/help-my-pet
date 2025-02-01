@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 )
@@ -41,12 +42,6 @@ func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*Pe
 
 // handleNewQuestion processes a new question from the user
 func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage, conversation *Conversation) (*PetAdviceResponse, error) {
-	// Fetch pet profile from repository
-	petProfiles, err := s.profileRepo.GetProfiles(request.UserID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to fetch pet profiles: %w", err)
-	}
-
 	// Check rate limit for new questions
 	if s.rateLimiter != nil {
 		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, request.UserID)
@@ -71,7 +66,19 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 	}
 
 	// Build prompt with pet profiles and conversation context
-	prompt := fmt.Sprintf("Pet profiles: %+v\n\n", petProfiles)
+	var prompt string
+
+	// Fetch pet profile from repository
+	petProfile, err := s.profileRepo.GetCurrentProfile(ctx, request.UserID)
+	if errors.Is(err, ErrProfileNotFound) {
+		// If no profile found, do not include pet profiles in prompt
+	} else if err != nil {
+		return nil, fmt.Errorf("failed to fetch pet profiles: %w", err)
+	} else {
+		// Include pet profiles in prompt
+		prompt += petProfile.String()
+	}
+
 	if len(conversation.GetContext()) <= 1 {
 		prompt += request.Text
 	} else {

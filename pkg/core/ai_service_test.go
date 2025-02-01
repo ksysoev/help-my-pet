@@ -291,9 +291,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			mockRepo := NewMockConversationRepository(t)
 			conversation := NewConversation("test-chat")
 			mockRateLimiter := NewMockRateLimiter(t)
+			mockProfileRepo := NewMockPetProfileRepository(t)
 
 			tt.setupMocks(t, mockLLM, mockRepo, mockRateLimiter, conversation)
-			svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
+			svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
 			got, err := svc.GetPetAdvice(context.Background(), tt.request)
 			if tt.wantErr {
@@ -456,9 +457,10 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			mockRepo := NewMockConversationRepository(t)
 			conversation := NewConversation("test-chat")
 			mockRateLimiter := NewMockRateLimiter(t)
+			mockProfileRepo := NewMockPetProfileRepository(t)
 
 			tt.setupMocks(t, mockLLM, mockRepo, mockRateLimiter, conversation)
-			svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
+			svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
 			got, err := svc.GetPetAdvice(context.Background(), tt.request)
 			if tt.wantErr {
@@ -479,6 +481,7 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 	mockLLM := NewMockLLM(t)
 	mockRepo := NewMockConversationRepository(t)
 	mockRateLimiter := NewMockRateLimiter(t)
+	mockProfileRepo := NewMockPetProfileRepository(t)
 	conversation := NewConversation("test-chat")
 
 	mockRepo.EXPECT().
@@ -488,7 +491,7 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 	mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 	mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(fmt.Errorf("record error"))
 
-	svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
+	svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
 	request := &UserMessage{
 		UserID: "user123",
@@ -504,6 +507,7 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 	mockLLM := NewMockLLM(t)
 	mockRepo := NewMockConversationRepository(t)
+	mockProfileRepo := NewMockPetProfileRepository(t)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// Cancel context before the call
@@ -528,7 +532,9 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 		Call(ctx, expectedPrompt).
 		Return(nil, context.Canceled)
 
-	svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
+	mockProfileRepo.EXPECT().GetProfiles("user123").Return(nil, nil)
+
+	svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
 	request := &UserMessage{
 		UserID: "user123",
@@ -546,7 +552,8 @@ func TestNewAIService(t *testing.T) {
 		mockLLM := NewMockLLM(t)
 		mockRepo := NewMockConversationRepository(t)
 		mockRateLimiter := NewMockRateLimiter(t)
-		svc := NewAIService(mockLLM, mockRepo, mockRateLimiter)
+		mockProfileRepo := NewMockPetProfileRepository(t)
+		svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 		require.NotNil(t, svc)
 		assert.Equal(t, mockLLM, svc.llm)
 		assert.Equal(t, mockRepo, svc.repo)

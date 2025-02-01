@@ -11,8 +11,6 @@ import (
 
 const petProfilesKey = "pet_profiles"
 
-var ErrProfileNotFound = fmt.Errorf("pet profile not found")
-
 // PetProfileRepository implements core.PetProfileRepository using Redis
 type PetProfileRepository struct {
 	client *redis.Client
@@ -44,7 +42,7 @@ func (r *PetProfileRepository) SaveProfile(ctx context.Context, userID string, p
 func (r *PetProfileRepository) GetCurrentProfile(ctx context.Context, userID string) (*core.PetProfile, error) {
 	data, err := r.client.HGet(ctx, petProfilesKey, userID).Bytes()
 	if err == redis.Nil {
-		return nil, ErrProfileNotFound
+		return nil, core.ErrProfileNotFound
 	}
 	if err != nil {
 		return nil, fmt.Errorf("failed to get pet profiles: %w", err)

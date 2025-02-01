@@ -1,6 +1,12 @@
 package core
 
-import "time"
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+var ErrProfileNotFound = fmt.Errorf("pet profile not found")
 
 // PetProfile represents a pet's profile information
 type PetProfile struct {
@@ -19,6 +25,18 @@ type PetProfiles struct {
 
 // PetProfileRepository defines the interface for pet profile storage operations
 type PetProfileRepository interface {
-	SaveProfiles(userID string, profiles *PetProfiles) error
-	GetProfiles(userID string) (*PetProfiles, error)
+	SaveProfile(ctx context.Context, userID string, profile *PetProfile) error
+	GetCurrentProfile(ctx context.Context, userID string) (*PetProfile, error)
+}
+
+func (p PetProfile) String() string {
+	return fmt.Sprintf(`
+Pet Profile
+Name: %s
+Species: %s
+Breed: %s
+Date of Birth: %s
+Gender: %s
+Weight: %f
+`, p.Name, p.Species, p.Breed, p.DateOfBirth, p.Gender, p.Weight)
 }
