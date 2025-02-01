@@ -51,7 +51,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("What food is good for cats?")
+				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -97,7 +97,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("What food is good for cats?")
+				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -137,7 +137,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("")
+				expectedPrompt := ""
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -169,7 +169,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conversation).
 					Return(nil)
-				expectedPrompt := fmt.Sprintf("What food is good for cats?")
+				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(nil, fmt.Errorf("llm error"))
@@ -277,7 +277,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Save(context.Background(), conversation).
 					Return(nil)
 
-				expectedPrompt := fmt.Sprintf("Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?")
+				expectedPrompt := "Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
@@ -400,7 +400,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					Save(context.Background(), conversation).
 					Return(nil)
 
-				expectedPrompt := fmt.Sprintf("Previous conversation:\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n")
+				expectedPrompt := "Previous conversation:\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&Response{
