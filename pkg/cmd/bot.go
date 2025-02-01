@@ -68,6 +68,7 @@ func (r *BotRunner) RunBot(ctx context.Context, cfg *Config) error {
 	aiService := core.NewAIService(
 		llmProvider,
 		redisrepo.NewConversationRepository(redisClient),
+		redisrepo.NewPetProfileRepository(redisClient),
 		memory.NewRateLimiter(&cfg.RateLimit),
 	)
 

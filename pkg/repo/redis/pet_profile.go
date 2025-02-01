@@ -54,7 +54,7 @@ func (r *PetProfileRepository) GetCurrentProfile(ctx context.Context, userID str
 	}
 
 	if len(profiles.Profiles) == 0 {
-		return nil, ErrProfileNotFound
+		return nil, core.ErrProfileNotFound
 	}
 
 	return &profiles.Profiles[0], nil
