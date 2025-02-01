@@ -11,6 +11,8 @@ import (
 
 const petProfilesKey = "pet_profiles"
 
+var ErrProfileNotFound = fmt.Errorf("pet profile not found")
+
 // PetProfileRepository implements core.PetProfileRepository using Redis
 type PetProfileRepository struct {
 	client *redis.Client
@@ -24,25 +26,25 @@ func NewPetProfileRepository(client *redis.Client) *PetProfileRepository {
 }
 
 // SaveProfiles saves pet profiles for a user
-func (r *PetProfileRepository) SaveProfiles(userID string, profiles *core.PetProfiles) error {
-	data, err := json.Marshal(profiles)
+func (r *PetProfileRepository) SaveProfile(ctx context.Context, userID string, profile *core.PetProfile) error {
+	allProfiles := core.PetProfiles{Profiles: []core.PetProfile{*profile}}
+
+	data, err := json.Marshal(allProfiles)
 	if err != nil {
 		return fmt.Errorf("failed to marshal pet profiles: %w", err)
 	}
 
-	if err := r.client.HSet(context.Background(), petProfilesKey, userID, data).Err(); err != nil {
+	if err := r.client.HSet(ctx, petProfilesKey, userID, data).Err(); err != nil {
 		return fmt.Errorf("failed to save pet profiles: %w", err)
 	}
 
 	return nil
 }
 
-// GetProfiles retrieves pet profiles for a user
-func (r *PetProfileRepository) GetProfiles(userID string) (*core.PetProfiles, error) {
-	data, err := r.client.HGet(context.Background(), petProfilesKey, userID).Bytes()
+func (r *PetProfileRepository) GetCurrentProfile(ctx context.Context, userID string) (*core.PetProfile, error) {
+	data, err := r.client.HGet(ctx, petProfilesKey, userID).Bytes()
 	if err == redis.Nil {
-		// Return empty profiles if not found
-		return &core.PetProfiles{Profiles: make([]core.PetProfile, 0)}, nil
+		return nil, ErrProfileNotFound
 	}
 	if err != nil {
 		return nil, fmt.Errorf("failed to get pet profiles: %w", err)
@@ -53,5 +55,9 @@ func (r *PetProfileRepository) GetProfiles(userID string) (*core.PetProfiles, er
 		return nil, fmt.Errorf("failed to unmarshal pet profiles: %w", err)
 	}
 
-	return &profiles, nil
+	if len(profiles.Profiles) == 0 {
+		return nil, ErrProfileNotFound
+	}
+
+	return &profiles.Profiles[0], nil
 }
