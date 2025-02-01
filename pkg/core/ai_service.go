@@ -33,7 +33,7 @@ func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*Pe
 
 	// Handle questionnaire state if active
 	if conversation.State == StateQuestioning {
-		return s.handleQuestionnaireResponse(ctx, conversation, request.Text)
+		return s.handleQuestionnaireResponse(ctx, conversation, request)
 	}
 
 	// Handle new question flow
@@ -134,7 +134,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 }
 
 // handleQuestionnaireResponse processes a response to a follow-up question
-func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, request UserMessage) (*PetAdviceResponse, error) {
+func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, request *UserMessage) (*PetAdviceResponse, error) {
 	// Store the answer and check if questionnaire is complete
 	isComplete, err := conversation.AddQuestionAnswer(request.Text)
 	if err != nil {

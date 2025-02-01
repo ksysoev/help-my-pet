@@ -391,6 +391,8 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				_, err := conversation.AddQuestionAnswer("2 years old")
 				require.NoError(t, err)
 
+				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
+
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(conversation, nil)
