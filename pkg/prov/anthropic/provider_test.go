@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -72,7 +73,7 @@ func TestProvider_Call(t *testing.T) {
 			prompt:  "test prompt",
 			wantResult: &core.Response{
 				Text: "test response",
-				Questions: []core.Question{
+				Questions: []conversation.Question{
 					{Text: "follow up?"},
 				},
 			},

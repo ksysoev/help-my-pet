@@ -2,18 +2,14 @@ package core
 
 import (
 	"context"
-)
 
-// Question represents a follow-up question with optional predefined answers
-type Question struct {
-	Text    string   `json:"text"`
-	Answers []string `json:"answers,omitempty"`
-}
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+)
 
 // Response represents a structured response from the LLM
 type Response struct {
-	Text      string     `json:"text"`      // Main response text
-	Questions []Question `json:"questions"` // Optional follow-up questions
+	Text      string                  `json:"text"`      // Main response text
+	Questions []conversation.Question `json:"questions"` // Optional follow-up questions
 }
 
 // LLM interface represents the language model capabilities

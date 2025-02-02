@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/redis/go-redis/v9"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -28,7 +29,7 @@ func NewConversationRepository(client *redis.Client) *ConversationRepository {
 }
 
 // Save stores a conversation in Redis with TTL
-func (r *ConversationRepository) Save(ctx context.Context, conversation *core.Conversation) error {
+func (r *ConversationRepository) Save(ctx context.Context, conversation *conversation.Conversation) error {
 	data, err := json.Marshal(conversation)
 	if err != nil {
 		return err
@@ -38,7 +39,7 @@ func (r *ConversationRepository) Save(ctx context.Context, conversation *core.Co
 }
 
 // FindByID retrieves a conversation by its ID
-func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*core.Conversation, error) {
+func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*conversation.Conversation, error) {
 	data, err := r.client.Get(ctx, r.key(id)).Bytes()
 	if err != nil {
 		if err == redis.Nil {
@@ -47,7 +48,7 @@ func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*core
 		return nil, err
 	}
 
-	var conversation core.Conversation
+	var conversation conversation.Conversation
 	if err := json.Unmarshal(data, &conversation); err != nil {
 		return nil, err
 	}
@@ -56,10 +57,10 @@ func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*core
 }
 
 // FindOrCreate retrieves a conversation by ID or creates a new one if it doesn't exist
-func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (*core.Conversation, error) {
+func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (*conversation.Conversation, error) {
 	conversation, err := r.FindByID(ctx, id)
 	if err == core.ErrConversationNotFound {
-		conversation = core.NewConversation(id)
+		conversation = conversation.NewConversation(id)
 		if err := r.Save(ctx, conversation); err != nil {
 			return nil, err
 		}

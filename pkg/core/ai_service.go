@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 )
 
 type AIService struct {
@@ -26,22 +28,22 @@ func NewAIService(llm LLM, repo ConversationRepository, profileRepo PetProfileRe
 func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*PetAdviceResponse, error) {
 	slog.DebugContext(ctx, "getting pet advice", "input", request.Text)
 
-	conversation, err := s.repo.FindOrCreate(ctx, request.ChatID)
+	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get conversation: %w", err)
+		return nil, fmt.Errorf("failed to get conv: %w", err)
 	}
 
 	// Handle questionnaire state if active
-	if conversation.State == StateQuestioning {
-		return s.handleQuestionnaireResponse(ctx, conversation, request)
+	if conv.State == conversation.StateQuestioning {
+		return s.handleQuestionnaireResponse(ctx, conv, request)
 	}
 
 	// Handle new question flow
-	return s.handleNewQuestion(ctx, request, conversation)
+	return s.handleNewQuestion(ctx, request, conv)
 }
 
 // handleNewQuestion processes a new question from the user
-func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage, conversation *Conversation) (*PetAdviceResponse, error) {
+func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage, conv *conversation.Conversation) (*PetAdviceResponse, error) {
 	// Check rate limit for new questions
 	if s.rateLimiter != nil {
 		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, request.UserID)
@@ -57,15 +59,15 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		}
 	}
 
-	// Add user's question to conversation
-	conversation.AddMessage("user", request.Text)
+	// Add user's question to conv
+	conv.AddMessage("user", request.Text)
 
-	// Save conversation immediately after adding user's message
-	if err := s.repo.Save(ctx, conversation); err != nil {
-		return nil, fmt.Errorf("failed to save conversation: %w", err)
+	// Save conv immediately after adding user's message
+	if err := s.repo.Save(ctx, conv); err != nil {
+		return nil, fmt.Errorf("failed to save conv: %w", err)
 	}
 
-	// Build prompt with pet profiles and conversation context
+	// Build prompt with pet profiles and conv context
 	var prompt string
 
 	// Fetch pet profile from repository
@@ -79,12 +81,12 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 	}
 
-	if len(conversation.GetContext()) <= 1 {
+	if len(conv.GetContext()) <= 1 {
 		prompt += request.Text
 	} else {
-		// Include conversation history
-		prompt += "Previous conversation:\n"
-		for _, msg := range conversation.GetContext()[:len(conversation.GetContext())-1] {
+		// Include conv history
+		prompt += "Previous conv:\n"
+		for _, msg := range conv.GetContext()[:len(conv.GetContext())-1] {
 			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 		}
 		prompt += fmt.Sprintf("\nCurrent question: %s", request.Text)
@@ -95,23 +97,23 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		return nil, fmt.Errorf("failed to get AI response: %w", err)
 	}
 
-	// Add AI's response to conversation
-	conversation.AddMessage("assistant", response.Text)
+	// Add AI's response to conv
+	conv.AddMessage("assistant", response.Text)
 
 	// Handle follow-up questions if any
 	if len(response.Questions) > 0 {
 		// Initialize questionnaire
-		conversation.StartQuestionnaire(response.Text, response.Questions)
+		conv.StartQuestionnaire(response.Text, response.Questions)
 
 		// Get the first question
-		currentQuestion, err := conversation.GetCurrentQuestion()
+		currentQuestion, err := conv.GetCurrentQuestion()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get first question: %w", err)
 		}
 
-		// Save conversation state
-		if err := s.repo.Save(ctx, conversation); err != nil {
-			return nil, fmt.Errorf("failed to save conversation: %w", err)
+		// Save conv state
+		if err := s.repo.Save(ctx, conv); err != nil {
+			return nil, fmt.Errorf("failed to save conv: %w", err)
 		}
 
 		// Return response with first question
@@ -125,35 +127,35 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		), nil
 	}
 
-	// Save conversation state
-	if err := s.repo.Save(ctx, conversation); err != nil {
-		return nil, fmt.Errorf("failed to save conversation: %w", err)
+	// Save conv state
+	if err := s.repo.Save(ctx, conv); err != nil {
+		return nil, fmt.Errorf("failed to save conv: %w", err)
 	}
 
 	return NewPetAdviceResponse(response.Text, []string{}), nil
 }
 
 // handleQuestionnaireResponse processes a response to a follow-up question
-func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversation *Conversation, request *UserMessage) (*PetAdviceResponse, error) {
+func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*PetAdviceResponse, error) {
 	// Store the answer and check if questionnaire is complete
-	isComplete, err := conversation.AddQuestionAnswer(request.Text)
+	isComplete, err := conv.AddQuestionAnswer(request.Text)
 	if err != nil {
 		return nil, fmt.Errorf("failed to add question answer: %w", err)
 	}
 
-	// Save conversation after adding answer
-	if err := s.repo.Save(ctx, conversation); err != nil {
-		return nil, fmt.Errorf("failed to save conversation: %w", err)
+	// Save conv after adding answer
+	if err := s.repo.Save(ctx, conv); err != nil {
+		return nil, fmt.Errorf("failed to save conv: %w", err)
 	}
 
 	if isComplete {
 		// Get all collected question-answer pairs
-		qaPairs, err := conversation.GetQuestionnaireResult()
+		qaPairs, err := conv.GetQuestionnaireResult()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get questionnaire result: %w", err)
 		}
 
-		// Build prompt with conversation history and question-answer pairs
+		// Build prompt with conv history and question-answer pairs
 		var prompt string
 
 		// Fetch pet profile from repository
@@ -167,8 +169,8 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversatio
 			prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 		}
 
-		prompt += "Previous conversation:\n"
-		history := conversation.GetContext()
+		prompt += "Previous conv:\n"
+		history := conv.GetContext()
 		for _, msg := range history[:len(history)-1] {
 			prompt += fmt.Sprintf("%s: %s\n\n", msg.Role, msg.Content)
 		}
@@ -184,26 +186,26 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conversatio
 			return nil, fmt.Errorf("failed to get AI response: %w", err)
 		}
 
-		// Add AI's response to conversation history
-		conversation.AddMessage("assistant", response.Text)
+		// Add AI's response to conv history
+		conv.AddMessage("assistant", response.Text)
 
-		// Save conversation state
-		if err := s.repo.Save(ctx, conversation); err != nil {
-			return nil, fmt.Errorf("failed to save conversation: %w", err)
+		// Save conv state
+		if err := s.repo.Save(ctx, conv); err != nil {
+			return nil, fmt.Errorf("failed to save conv: %w", err)
 		}
 
 		return NewPetAdviceResponse(response.Text, []string{}), nil
 	}
 
 	// Get next question
-	currentQuestion, err := conversation.GetCurrentQuestion()
+	currentQuestion, err := conv.GetCurrentQuestion()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get next question: %w", err)
 	}
 
-	// Save conversation state
-	if err := s.repo.Save(ctx, conversation); err != nil {
-		return nil, fmt.Errorf("failed to save conversation: %w", err)
+	// Save conv state
+	if err := s.repo.Save(ctx, conv); err != nil {
+		return nil, fmt.Errorf("failed to save conv: %w", err)
 	}
 
 	return NewPetAdviceResponse(currentQuestion.Text, currentQuestion.Answers), nil

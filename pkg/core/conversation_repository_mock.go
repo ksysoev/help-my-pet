@@ -7,6 +7,7 @@ package core
 import (
 	context "context"
 
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -24,23 +25,23 @@ func (_m *MockConversationRepository) EXPECT() *MockConversationRepository_Expec
 }
 
 // FindByID provides a mock function with given fields: ctx, id
-func (_m *MockConversationRepository) FindByID(ctx context.Context, id string) (*Conversation, error) {
+func (_m *MockConversationRepository) FindByID(ctx context.Context, id string) (*conversation.Conversation, error) {
 	ret := _m.Called(ctx, id)
 
 	if len(ret) == 0 {
 		panic("no return value specified for FindByID")
 	}
 
-	var r0 *Conversation
+	var r0 *conversation.Conversation
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string) (*Conversation, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*conversation.Conversation, error)); ok {
 		return rf(ctx, id)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string) *Conversation); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) *conversation.Conversation); ok {
 		r0 = rf(ctx, id)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*Conversation)
+			r0 = ret.Get(0).(*conversation.Conversation)
 		}
 	}
 
@@ -72,34 +73,34 @@ func (_c *MockConversationRepository_FindByID_Call) Run(run func(ctx context.Con
 	return _c
 }
 
-func (_c *MockConversationRepository_FindByID_Call) Return(_a0 *Conversation, _a1 error) *MockConversationRepository_FindByID_Call {
+func (_c *MockConversationRepository_FindByID_Call) Return(_a0 *conversation.Conversation, _a1 error) *MockConversationRepository_FindByID_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockConversationRepository_FindByID_Call) RunAndReturn(run func(context.Context, string) (*Conversation, error)) *MockConversationRepository_FindByID_Call {
+func (_c *MockConversationRepository_FindByID_Call) RunAndReturn(run func(context.Context, string) (*conversation.Conversation, error)) *MockConversationRepository_FindByID_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // FindOrCreate provides a mock function with given fields: ctx, id
-func (_m *MockConversationRepository) FindOrCreate(ctx context.Context, id string) (*Conversation, error) {
+func (_m *MockConversationRepository) FindOrCreate(ctx context.Context, id string) (*conversation.Conversation, error) {
 	ret := _m.Called(ctx, id)
 
 	if len(ret) == 0 {
 		panic("no return value specified for FindOrCreate")
 	}
 
-	var r0 *Conversation
+	var r0 *conversation.Conversation
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string) (*Conversation, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*conversation.Conversation, error)); ok {
 		return rf(ctx, id)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string) *Conversation); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) *conversation.Conversation); ok {
 		r0 = rf(ctx, id)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*Conversation)
+			r0 = ret.Get(0).(*conversation.Conversation)
 		}
 	}
 
@@ -131,18 +132,18 @@ func (_c *MockConversationRepository_FindOrCreate_Call) Run(run func(ctx context
 	return _c
 }
 
-func (_c *MockConversationRepository_FindOrCreate_Call) Return(_a0 *Conversation, _a1 error) *MockConversationRepository_FindOrCreate_Call {
+func (_c *MockConversationRepository_FindOrCreate_Call) Return(_a0 *conversation.Conversation, _a1 error) *MockConversationRepository_FindOrCreate_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockConversationRepository_FindOrCreate_Call) RunAndReturn(run func(context.Context, string) (*Conversation, error)) *MockConversationRepository_FindOrCreate_Call {
+func (_c *MockConversationRepository_FindOrCreate_Call) RunAndReturn(run func(context.Context, string) (*conversation.Conversation, error)) *MockConversationRepository_FindOrCreate_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // Save provides a mock function with given fields: ctx, conversation
-func (_m *MockConversationRepository) Save(ctx context.Context, conversation *Conversation) error {
+func (_m *MockConversationRepository) Save(ctx context.Context, conversation *conversation.Conversation) error {
 	ret := _m.Called(ctx, conversation)
 
 	if len(ret) == 0 {
@@ -150,7 +151,7 @@ func (_m *MockConversationRepository) Save(ctx context.Context, conversation *Co
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, *Conversation) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *conversation.Conversation) error); ok {
 		r0 = rf(ctx, conversation)
 	} else {
 		r0 = ret.Error(0)
@@ -171,9 +172,9 @@ func (_e *MockConversationRepository_Expecter) Save(ctx interface{}, conversatio
 	return &MockConversationRepository_Save_Call{Call: _e.mock.On("Save", ctx, conversation)}
 }
 
-func (_c *MockConversationRepository_Save_Call) Run(run func(ctx context.Context, conversation *Conversation)) *MockConversationRepository_Save_Call {
+func (_c *MockConversationRepository_Save_Call) Run(run func(ctx context.Context, conversation *conversation.Conversation)) *MockConversationRepository_Save_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*Conversation))
+		run(args[0].(context.Context), args[1].(*conversation.Conversation))
 	})
 	return _c
 }
@@ -183,7 +184,7 @@ func (_c *MockConversationRepository_Save_Call) Return(_a0 error) *MockConversat
 	return _c
 }
 
-func (_c *MockConversationRepository_Save_Call) RunAndReturn(run func(context.Context, *Conversation) error) *MockConversationRepository_Save_Call {
+func (_c *MockConversationRepository_Save_Call) RunAndReturn(run func(context.Context, *conversation.Conversation) error) *MockConversationRepository_Save_Call {
 	_c.Call.Return(run)
 	return _c
 }

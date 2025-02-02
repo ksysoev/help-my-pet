@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/go-redis/redismock/v9"
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -19,7 +20,7 @@ func TestConversationRepository_Save(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("save valid conversation", func(t *testing.T) {
-		conv := core.NewConversation("test-id")
+		conv := conversation.NewConversation("test-id")
 		conv.AddMessage("user", "hello")
 
 		data, err := json.Marshal(conv)
@@ -39,7 +40,7 @@ func TestConversationRepository_FindByID(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("find existing conversation", func(t *testing.T) {
-		conv := core.NewConversation("test-id")
+		conv := conversation.NewConversation("test-id")
 		conv.AddMessage("user", "hello")
 
 		data, err := json.Marshal(conv)
@@ -81,9 +82,9 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	ctx := context.Background()
 
 	// Create a conversation with questionnaire state
-	conv := core.NewConversation("test-id")
+	conv := conversation.NewConversation("test-id")
 	conv.AddMessage("user", "hello")
-	conv.StartQuestionnaire("initial prompt", []core.Question{
+	conv.StartQuestionnaire("initial prompt", []conversation.Question{
 		{Text: "question 1"},
 		{Text: "question 2"},
 	})
@@ -113,7 +114,7 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("find existing conversation", func(t *testing.T) {
-		conv := core.NewConversation("test-id")
+		conv := conversation.NewConversation("test-id")
 		conv.AddMessage("user", "hello")
 
 		data, err := json.Marshal(conv)

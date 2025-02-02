@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/stretchr/testify/assert"
 )
@@ -28,7 +29,7 @@ func TestResponseParser_Parse(t *testing.T) {
 			}`,
 			expected: &core.Response{
 				Text: "Your cat needs regular grooming.",
-				Questions: []core.Question{
+				Questions: []conversation.Question{
 					{
 						Text:    "How often do you brush your cat?",
 						Answers: []string{"Daily", "Weekly", "Monthly"},
@@ -42,7 +43,7 @@ func TestResponseParser_Parse(t *testing.T) {
 			input: "```json\n{\n\t\"text\": \"Feed your cat twice daily.\",\n\t\"questions\": []\n}\n```",
 			expected: &core.Response{
 				Text:      "Feed your cat twice daily.",
-				Questions: []core.Question{},
+				Questions: []conversation.Question{},
 			},
 			wantErr: false,
 		},
@@ -62,7 +63,7 @@ newline", "Normal answer"]
 			}`,
 			expected: &core.Response{
 				Text: "Line 1\nLine 2",
-				Questions: []core.Question{
+				Questions: []conversation.Question{
 					{
 						Text:    "Question with\nnewline",
 						Answers: []string{"Answer with\nnewline", "Normal answer"},
@@ -84,7 +85,7 @@ newline", "Normal answer"]
 			}`,
 			expected: &core.Response{
 				Text: "Tab\there \"quoted\" text\\with\\backslashes",
-				Questions: []core.Question{
+				Questions: []conversation.Question{
 					{
 						Text:    "Question with \"quotes\"",
 						Answers: []string{"Answer with \t tab"},
@@ -120,7 +121,7 @@ newline", "Normal answer"]
 			`,
 			expected: &core.Response{
 				Text: "First line\n\t\t\t\t\tsecond line\n\t\t\t\t\tthird line",
-				Questions: []core.Question{
+				Questions: []conversation.Question{
 					{
 						Text:    "Question spanning\n\t\t\t\t\t\t\tmultiple lines?",
 						Answers: []string{},
@@ -143,7 +144,7 @@ newline", "Normal answer"]
 			}`,
 			expected: &core.Response{
 				Text:      "Simple advice without questions.",
-				Questions: []core.Question{},
+				Questions: []conversation.Question{},
 			},
 			wantErr: false,
 		},
@@ -164,7 +165,7 @@ newline", "Normal answer"]
 			}`,
 			expected: &core.Response{
 				Text: "Here's your pet advice.",
-				Questions: []core.Question{
+				Questions: []conversation.Question{
 					{
 						Text:    "What type of pet do you have?",
 						Answers: []string{"Dog", "Cat", "Bird", "Other"},
@@ -190,7 +191,7 @@ newline", "Normal answer"]
 			}`,
 			expected: &core.Response{
 				Text: "Text with // comment",
-				Questions: []core.Question{
+				Questions: []conversation.Question{
 					{
 						Text:    "Question with /* comment */",
 						Answers: []string{"// Answer with comment"},
