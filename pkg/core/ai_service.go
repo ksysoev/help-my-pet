@@ -25,7 +25,7 @@ func NewAIService(llm LLM, repo ConversationRepository, profileRepo PetProfileRe
 	}
 }
 
-func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*PetAdviceResponse, error) {
+func (s *AIService) ProcessMessage(ctx context.Context, request *UserMessage) (*PetAdviceResponse, error) {
 	slog.DebugContext(ctx, "getting pet advice", "input", request.Text)
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
@@ -34,7 +34,7 @@ func (s *AIService) GetPetAdvice(ctx context.Context, request *UserMessage) (*Pe
 	}
 
 	// Handle questionnaire state if active
-	if conv.State == conversation.StateQuestioning {
+	if conv.State == conversation.StateFollowUpQuestioning {
 		return s.handleQuestionnaireResponse(ctx, conv, request)
 	}
 
@@ -103,7 +103,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 	// Handle follow-up questions if any
 	if len(response.Questions) > 0 {
 		// Initialize questionnaire
-		conv.StartQuestionnaire(response.Text, response.Questions)
+		conv.StartFollowUpQuestionnaire(response.Text, response.Questions)
 
 		// Get the first question
 		currentQuestion, err := conv.GetCurrentQuestion()

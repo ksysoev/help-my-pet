@@ -12,9 +12,27 @@ const (
 	MaxMessageHistory = 5 // Maximum number of messages to keep in history
 
 	StateNormal                ConversationState = "normal"
-	StateQuestioning           ConversationState = "questioning" // Used for LLM questionnaire (backward compatibility)
+	StateFollowUpQuestioning   ConversationState = "questioning" // Used for LLM questionnaire (backward compatibility)
 	StatePetProfileQuestioning ConversationState = "pet_profile_questioning"
 )
+
+// QuestionnaireState represents the interface that all questionnaire states must implement
+type QuestionnaireState interface {
+	// GetCurrentQuestion returns the current question to be asked
+	GetCurrentQuestion() (*Question, error)
+
+	// ProcessAnswer processes the answer for the current question and returns true if questionnaire is complete
+	ProcessAnswer(answer string) (bool, error)
+
+	// GetResults returns the questionnaire results when completed
+	GetResults() ([]QuestionAnswer, error)
+}
+
+// Question represents a follow-up question with optional predefined answers
+type Question struct {
+	Text    string   `json:"text"`
+	Answers []string `json:"answers,omitempty"`
+}
 
 // QuestionAnswer pairs a question with its corresponding answer
 type QuestionAnswer struct {
@@ -22,20 +40,12 @@ type QuestionAnswer struct {
 	Question Question `json:"question"`
 }
 
-// FollowUpQuestionnaireState represents the state for follow-up questions from LLM
-type FollowUpQuestionnaireState struct {
-	InitialPrompt string           `json:"initial_prompt"`
-	QAPairs       []QuestionAnswer `json:"qa_pairs"`
-	CurrentIndex  int              `json:"current_index"`
-}
-
 // Conversation represents a chat conversation with its context and messages.
 type Conversation struct {
-	ID               string
-	State            ConversationState
-	Messages         []Message
-	Questionnaire    *FollowUpQuestionnaireState `json:"questionnaire"` // For backward compatibility with Redis
-	petQuestionnaire BaseQuestionnaireState      // For pet profile questions
+	ID            string
+	State         ConversationState
+	Messages      []Message
+	Questionnaire QuestionnaireState `json:"questionnaire"`
 }
 
 // Message represents a single message in a conversation.
@@ -73,8 +83,16 @@ func (c *Conversation) GetContext() []Message {
 	return c.Messages
 }
 
-// StartQuestionnaire initializes the follow-up questioning state (backward compatible name)
-func (c *Conversation) StartQuestionnaire(initialPrompt string, questions []Question) {
+// StartFollowUpQuestionnaire initializes the follow-up questioning state (backward compatible name)
+func (c *Conversation) StartFollowUpQuestionnaire(initialPrompt string, questions []Question) error {
+	if c.State != StateNormal {
+		return fmt.Errorf("conversation is not in normal state %s", c.State)
+	}
+
+	if len(questions) == 0 {
+		return fmt.Errorf("no follow-up questions provided")
+	}
+
 	qaPairs := make([]QuestionAnswer, len(questions))
 	for i, q := range questions {
 		qaPairs[i] = QuestionAnswer{
@@ -83,38 +101,37 @@ func (c *Conversation) StartQuestionnaire(initialPrompt string, questions []Ques
 		}
 	}
 
-	c.State = StateQuestioning
+	c.State = StateFollowUpQuestioning
 	c.Questionnaire = &FollowUpQuestionnaireState{
 		QAPairs:       qaPairs,
 		CurrentIndex:  0,
 		InitialPrompt: initialPrompt,
 	}
+
+	return nil
 }
 
 // StartPetProfileQuestionnaire initializes the pet profile questionnaire
-func (c *Conversation) StartPetProfileQuestionnaire() {
+func (c *Conversation) StartProfileQuestionnaire() error {
+	if c.State != StateNormal {
+		return fmt.Errorf("conversation is not in normal state %s", c.State)
+	}
+
 	c.State = StatePetProfileQuestioning
-	c.petQuestionnaire = NewPetProfileQuestionnaireState()
+	c.Questionnaire = NewPetProfileQuestionnaireState()
+
+	return nil
 }
 
 // GetCurrentQuestion returns the current question in the active questionnaire
 func (c *Conversation) GetCurrentQuestion() (*Question, error) {
 	switch c.State {
-	case StateQuestioning: // LLM questionnaire
+	case StateFollowUpQuestioning, StatePetProfileQuestioning: // LLM questionnaire
 		if c.Questionnaire == nil {
-			return nil, fmt.Errorf("llm questionnaire not initialized")
+			return nil, fmt.Errorf("questionnaire not initialized")
 		}
-		if c.Questionnaire.CurrentIndex >= len(c.Questionnaire.QAPairs) {
-			return nil, ErrNoMoreQuestions
-		}
-		return &c.Questionnaire.QAPairs[c.Questionnaire.CurrentIndex].Question, nil
 
-	case StatePetProfileQuestioning:
-		if c.petQuestionnaire == nil {
-			return nil, fmt.Errorf("pet profile questionnaire not initialized")
-		}
-		return c.petQuestionnaire.GetCurrentQuestion()
-
+		return c.Questionnaire.GetCurrentQuestion()
 	default:
 		return nil, fmt.Errorf("conversation is not in a questioning state")
 	}
@@ -123,51 +140,16 @@ func (c *Conversation) GetCurrentQuestion() (*Question, error) {
 // AddQuestionAnswer adds an answer to the current question and moves to the next one
 func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 	switch c.State {
-	case StateQuestioning: // LLM questionnaire
+	case StateFollowUpQuestioning, StatePetProfileQuestioning:
 		if c.Questionnaire == nil {
-			return false, fmt.Errorf("llm questionnaire not initialized")
-		}
-		if c.Questionnaire.CurrentIndex >= len(c.Questionnaire.QAPairs) {
-			return false, ErrNoMoreQuestions
-		}
-
-		c.Questionnaire.QAPairs[c.Questionnaire.CurrentIndex].Answer = answer
-		c.Questionnaire.CurrentIndex++
-
-		isComplete := c.Questionnaire.CurrentIndex >= len(c.Questionnaire.QAPairs)
-		if isComplete {
-			var combinedContent string
-			for _, qa := range c.Questionnaire.QAPairs {
-				combinedContent += fmt.Sprintf("Q: %s\nA: %s\n\n", qa.Question.Text, qa.Answer)
-			}
-			c.AddMessage("questionnaire", combinedContent)
-			c.State = StateNormal
-		}
-		return isComplete, nil
-
-	case StatePetProfileQuestioning:
-		if c.petQuestionnaire == nil {
 			return false, fmt.Errorf("pet profile questionnaire not initialized")
 		}
 
-		isComplete, err := c.petQuestionnaire.ProcessAnswer(answer)
+		isComplete, err := c.Questionnaire.ProcessAnswer(answer)
 		if err != nil {
 			return false, fmt.Errorf("failed to process answer: %w", err)
 		}
 
-		if isComplete {
-			results, err := c.petQuestionnaire.GetResults()
-			if err != nil {
-				return true, fmt.Errorf("failed to get questionnaire results: %w", err)
-			}
-
-			var combinedContent string
-			for _, qa := range results {
-				combinedContent += fmt.Sprintf("Q: %s\nA: %s\n\n", qa.Question.Text, qa.Answer)
-			}
-			c.AddMessage("pet-profile", combinedContent)
-			c.State = StateNormal
-		}
 		return isComplete, nil
 
 	default:
@@ -178,37 +160,13 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 // GetQuestionnaireResult returns all question-answer pairs from the active questionnaire
 func (c *Conversation) GetQuestionnaireResult() ([]QuestionAnswer, error) {
 	switch c.State {
-	case StateQuestioning: // LLM questionnaire
+	case StateFollowUpQuestioning, StatePetProfileQuestioning: // LLM questionnair
 		if c.Questionnaire == nil {
-			return nil, fmt.Errorf("llm questionnaire not initialized")
+			return nil, fmt.Errorf("questionnaire not initialized")
 		}
-		return c.Questionnaire.QAPairs, nil
-
-	case StatePetProfileQuestioning:
-		if c.petQuestionnaire == nil {
-			return nil, fmt.Errorf("pet profile questionnaire not initialized")
-		}
-		return c.petQuestionnaire.GetResults()
+		return c.Questionnaire.GetResults()
 
 	default:
 		return nil, fmt.Errorf("conversation is not in a questioning state")
 	}
-}
-
-// GetQuestionnaireType returns the current type of questionnaire being used
-func (c *Conversation) GetQuestionnaireType() string {
-	switch c.State {
-	case StateQuestioning:
-		return "llm"
-	case StatePetProfileQuestioning:
-		return "pet_profile"
-	default:
-		return "none"
-	}
-}
-
-// Question represents a follow-up question with optional predefined answers
-type Question struct {
-	Text    string   `json:"text"`
-	Answers []string `json:"answers,omitempty"`
 }

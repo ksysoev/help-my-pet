@@ -67,7 +67,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.ErrorMessage)), nil
 	}
 
-	response, err := s.AISvc.GetPetAdvice(ctx, request)
+	response, err := s.AISvc.ProcessMessage(ctx, request)
 	if err != nil {
 		switch {
 		case errors.Is(err, core.ErrRateLimit):

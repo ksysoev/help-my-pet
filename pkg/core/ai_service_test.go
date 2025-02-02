@@ -306,7 +306,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			tt.setupMocks(t, mockLLM, mockRepo, mockProfileRepo, mockRateLimiter, conversation)
 			svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
-			got, err := svc.GetPetAdvice(context.Background(), tt.request)
+			got, err := svc.ProcessMessage(context.Background(), tt.request)
 			if tt.wantErr {
 				require.Error(t, err)
 				if tt.errorContains != "" {
@@ -352,7 +352,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -388,7 +388,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
 				_, err := conversation.AddQuestionAnswer("2 years old")
 				require.NoError(t, err)
 
@@ -427,7 +427,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
 				// Setup conversation in questioning state with no questions
 				questions := []conversation.Question{}
-				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -448,7 +448,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					{Text: "How old is your cat?"},
 					{Text: "Is your cat indoor or outdoor?"},
 				}
-				conversation.StartQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -474,7 +474,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			tt.setupMocks(t, mockLLM, mockRepo, mockProfileRepo, mockRateLimiter, conversation)
 			svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
-			got, err := svc.GetPetAdvice(context.Background(), tt.request)
+			got, err := svc.ProcessMessage(context.Background(), tt.request)
 			if tt.wantErr {
 				require.Error(t, err)
 				if tt.errorContains != "" {
@@ -511,7 +511,7 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 		Text:   "test question",
 	}
 
-	_, err := svc.GetPetAdvice(context.Background(), request)
+	_, err := svc.ProcessMessage(context.Background(), request)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to record rate limit")
 }
@@ -553,7 +553,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 		Text:   "test question",
 	}
 
-	_, err := svc.GetPetAdvice(ctx, request)
+	_, err := svc.ProcessMessage(ctx, request)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to get AI response")
 }

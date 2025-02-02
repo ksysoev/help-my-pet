@@ -11,7 +11,7 @@ type PetProfileQuestion struct {
 	ValidateFn func(string) error
 }
 
-// PetProfileStateImpl implements BaseQuestionnaireState
+// PetProfileStateImpl implements QuestionnaireState
 type PetProfileStateImpl struct {
 	questions    []PetProfileQuestion
 	answers      []string
@@ -126,11 +126,8 @@ func validatePetName(name string) error {
 
 func validateSpecies(species string) error {
 	validSpecies := map[string]bool{
-		"dog":   true,
-		"cat":   true,
-		"bird":  true,
-		"fish":  true,
-		"other": true,
+		"dog": true,
+		"cat": true,
 	}
 	if !validSpecies[species] {
 		return NewQuestionnaireError("invalid species type")
@@ -151,7 +148,7 @@ func validateBreed(breed string) error {
 func validateDateOfBirth(dob string) error {
 	_, err := time.Parse("2006-01-02", dob)
 	if err != nil {
-		return NewQuestionnaireError("invalid date format, use YYYY-MM-DD")
+		return NewQuestionnaireError("invalid date format, use DD-MM-YYYY")
 	}
 	return nil
 }

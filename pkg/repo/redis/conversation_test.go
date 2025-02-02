@@ -84,7 +84,7 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	// Create a conversation with questionnaire state
 	conv := conversation.NewConversation("test-id")
 	conv.AddMessage("user", "hello")
-	conv.StartQuestionnaire("initial prompt", []conversation.Question{
+	conv.StartFollowUpQuestionnaire("initial prompt", []conversation.Question{
 		{Text: "question 1"},
 		{Text: "question 2"},
 	})

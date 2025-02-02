@@ -25,11 +25,11 @@ func (_m *MockAIProvider) EXPECT() *MockAIProvider_Expecter {
 }
 
 // GetPetAdvice provides a mock function with given fields: ctx, request
-func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, request *core.UserMessage) (*core.PetAdviceResponse, error) {
+func (_m *MockAIProvider) ProcessMessage(ctx context.Context, request *core.UserMessage) (*core.PetAdviceResponse, error) {
 	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
-		panic("no return value specified for GetPetAdvice")
+		panic("no return value specified for ProcessMessage")
 	}
 
 	var r0 *core.PetAdviceResponse
@@ -54,7 +54,7 @@ func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, request *core.UserMe
 	return r0, r1
 }
 
-// MockAIProvider_GetPetAdvice_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetPetAdvice'
+// MockAIProvider_GetPetAdvice_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ProcessMessage'
 type MockAIProvider_GetPetAdvice_Call struct {
 	*mock.Call
 }
@@ -63,7 +63,7 @@ type MockAIProvider_GetPetAdvice_Call struct {
 //   - ctx context.Context
 //   - request *core.UserMessage
 func (_e *MockAIProvider_Expecter) GetPetAdvice(ctx interface{}, request interface{}) *MockAIProvider_GetPetAdvice_Call {
-	return &MockAIProvider_GetPetAdvice_Call{Call: _e.mock.On("GetPetAdvice", ctx, request)}
+	return &MockAIProvider_GetPetAdvice_Call{Call: _e.mock.On("ProcessMessage", ctx, request)}
 }
 
 func (_c *MockAIProvider_GetPetAdvice_Call) Run(run func(ctx context.Context, request *core.UserMessage)) *MockAIProvider_GetPetAdvice_Call {

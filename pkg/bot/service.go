@@ -27,7 +27,7 @@ type BotAPI interface {
 }
 
 type AIProvider interface {
-	GetPetAdvice(ctx context.Context, request *core.UserMessage) (*core.PetAdviceResponse, error)
+	ProcessMessage(ctx context.Context, request *core.UserMessage) (*core.PetAdviceResponse, error)
 }
 
 // Config holds the configuration for the Telegram bot
