@@ -72,7 +72,37 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 
 	// If questionnaire is complete, return success message
 	if isComplete {
+		result, err := conv.GetQuestionnaireResult()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get questionnaire result: %w", err)
+		}
 
+		var profile PetProfile
+
+		for _, qa := range result {
+			switch qa.Field {
+			case "name":
+				profile.Name = qa.Answer
+			case "species":
+				profile.Species = qa.Answer
+			case "breed":
+				profile.Breed = qa.Answer
+			case "dob":
+				profile.DateOfBirth = qa.Answer
+			case "gender":
+				profile.Gender = qa.Answer
+			case "weight":
+				profile.Weight = qa.Answer
+			default:
+				return nil, fmt.Errorf("unknown field %s", qa.Field)
+			}
+		}
+
+		if err = s.profileRepo.SaveProfile(ctx, request.UserID, &profile); err != nil {
+			return nil, fmt.Errorf("failed to save profile: %w", err)
+		}
+
+		return NewResponse("Pet profile saved successfully", []string{}), nil
 	}
 
 	// Get the next question

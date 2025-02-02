@@ -3,19 +3,18 @@ package core
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 var ErrProfileNotFound = fmt.Errorf("pet profile not found")
 
 // PetProfile represents a pet's profile information
 type PetProfile struct {
-	Name        string    `json:"name"`
-	Species     string    `json:"species"`
-	Breed       string    `json:"breed"`
-	DateOfBirth time.Time `json:"date_of_birth"`
-	Gender      string    `json:"gender"`
-	Weight      float64   `json:"weight"`
+	Name        string `json:"name"`
+	Species     string `json:"species"`
+	Breed       string `json:"breed"`
+	DateOfBirth string `json:"date_of_birth"`
+	Gender      string `json:"gender"`
+	Weight      string `json:"weight"`
 }
 
 // PetProfiles represents a collection of pet profiles for a user

@@ -38,6 +38,7 @@ type Question struct {
 // QuestionAnswer pairs a question with its corresponding answer
 type QuestionAnswer struct {
 	Answer   string   `json:"answer"`
+	Field    string   `json:"field,omitempty"`
 	Question Question `json:"question"`
 }
 
@@ -149,6 +150,10 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 		isComplete, err := c.Questionnaire.ProcessAnswer(answer)
 		if err != nil {
 			return false, fmt.Errorf("failed to process answer: %w", err)
+		}
+
+		if isComplete {
+			c.State = StateNormal
 		}
 
 		return isComplete, nil
