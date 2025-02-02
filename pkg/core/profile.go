@@ -46,7 +46,7 @@ func (s *AIService) ProcessManageProfile(ctx context.Context, request *UserMessa
 	return NewResponse(currentQuestion.Text, answers), nil
 }
 
-func (s *AIService) ProcessManageProfileAnswer(ctx context.Context, request *UserMessage) (*Response, error) {
+func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*Response, error) {
 	slog.DebugContext(ctx, "managing pet profile", "input", request.Text)
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
