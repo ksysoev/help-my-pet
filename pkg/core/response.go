@@ -6,8 +6,8 @@ type Response struct {
 	Answers []string `json:"answers"` // Possible answers for the follow-up question
 }
 
-// NewPetAdviceResponse creates a new Response
-func NewPetAdviceResponse(message string, answers []string) *Response {
+// NewResponse creates a new Response
+func NewResponse(message string, answers []string) *Response {
 	return &Response{
 		Message: message,
 		Answers: answers,

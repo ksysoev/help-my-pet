@@ -30,7 +30,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "successful response with keyboard",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
+			aiResponse:   core.NewResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
 			aiErr:        nil,
 			expectError:  false,
 			userID:       123,
@@ -40,7 +40,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "successful response without keyboard",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
+			aiResponse:   core.NewResponse("Cats need a balanced diet...", []string{}),
 			aiErr:        nil,
 			expectError:  false,
 			userID:       123,
@@ -50,7 +50,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "empty message",
 			message:      "",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   core.NewResponse("", []string{}),
 			aiErr:        nil,
 			expectError:  false,
 			userID:       123,
@@ -60,7 +60,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "ai error",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   core.NewResponse("", []string{}),
 			aiErr:        fmt.Errorf("ai error"),
 			expectError:  true,
 			userID:       123,
@@ -70,7 +70,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "rate limit error",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   core.NewResponse("", []string{}),
 			aiErr:        core.ErrRateLimit,
 			expectError:  false,
 			userID:       123,
@@ -80,7 +80,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "global limit error",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   core.NewResponse("", []string{}),
 			aiErr:        core.ErrGlobalLimit,
 			expectError:  false,
 			userID:       123,
@@ -90,7 +90,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "rate limit error - ru",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   core.NewResponse("", []string{}),
 			aiErr:        core.ErrRateLimit,
 			expectError:  false,
 			userID:       123,
@@ -100,7 +100,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "global limit error - ru",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   core.NewResponse("", []string{}),
 			aiErr:        core.ErrGlobalLimit,
 			expectError:  false,
 			userID:       123,
@@ -110,7 +110,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "start command",
 			message:      "/start",
-			aiResponse:   core.NewPetAdviceResponse("Welcome to Help My Pet Bot!", []string{}),
+			aiResponse:   core.NewResponse("Welcome to Help My Pet Bot!", []string{}),
 			aiErr:        nil,
 			expectError:  false,
 			isStart:      true,
@@ -309,7 +309,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 			ChatID: "123",
 			Text:   "test message",
 		}).
-		Return(core.NewPetAdviceResponse("test response", []string{}), nil)
+		Return(core.NewResponse("test response", []string{}), nil)
 
 	// Expect message send
 	mockBot.EXPECT().

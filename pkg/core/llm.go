@@ -15,5 +15,5 @@ type LLMResult struct {
 // LLM interface represents the language model capabilities
 type LLM interface {
 	// Call sends a prompt to the LLM and returns a structured response
-	Call(ctx context.Context, prompt string) (*Response, error)
+	Call(ctx context.Context, prompt string) (*LLMResult, error)
 }

@@ -39,11 +39,11 @@ func (s *AIService) ProcessManageProfile(ctx context.Context, request *UserMessa
 	}
 
 	// Return response with first question
-	answers := []string{}
+	var answers []string
 	if len(currentQuestion.Answers) > 0 {
 		answers = currentQuestion.Answers
 	}
-	return NewPetAdviceResponse(currentQuestion.Text, answers), nil
+	return NewResponse(currentQuestion.Text, answers), nil
 }
 
 func (s *AIService) ProcessManageProfileAnswer(ctx context.Context, request *UserMessage) (*Response, error) {
@@ -82,9 +82,9 @@ func (s *AIService) ProcessManageProfileAnswer(ctx context.Context, request *Use
 	}
 
 	// Return response with next question
-	answers := []string{}
+	var answers []string
 	if len(currentQuestion.Answers) > 0 {
 		answers = currentQuestion.Answers
 	}
-	return NewPetAdviceResponse(currentQuestion.Text, answers), nil
+	return NewResponse(currentQuestion.Text, answers), nil
 }

@@ -103,7 +103,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 	// Handle follow-up questions if any
 	if len(response.Questions) > 0 {
 		// Initialize questionnaire
-		conv.StartFollowUpQuestions(response.Text, response.Questions)
+		err := conv.StartFollowUpQuestions(response.Text, response.Questions)
 
 		// Get the first question
 		currentQuestion, err := conv.GetCurrentQuestion()
@@ -121,7 +121,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		if len(currentQuestion.Answers) > 0 {
 			answers = currentQuestion.Answers
 		}
-		return NewPetAdviceResponse(
+		return NewResponse(
 			response.Text+"\n\n"+currentQuestion.Text,
 			answers,
 		), nil
@@ -132,7 +132,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 		return nil, fmt.Errorf("failed to save conv: %w", err)
 	}
 
-	return NewPetAdviceResponse(response.Text, []string{}), nil
+	return NewResponse(response.Text, []string{}), nil
 }
 
 // handleQuestionnaireResponse processes a response to a follow-up question
@@ -194,7 +194,7 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conv *conve
 			return nil, fmt.Errorf("failed to save conv: %w", err)
 		}
 
-		return NewPetAdviceResponse(response.Text, []string{}), nil
+		return NewResponse(response.Text, []string{}), nil
 	}
 
 	// Get next question
@@ -208,5 +208,5 @@ func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conv *conve
 		return nil, fmt.Errorf("failed to save conv: %w", err)
 	}
 
-	return NewPetAdviceResponse(currentQuestion.Text, currentQuestion.Answers), nil
+	return NewResponse(currentQuestion.Text, currentQuestion.Answers), nil
 }
