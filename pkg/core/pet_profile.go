@@ -30,7 +30,7 @@ type PetProfileRepository interface {
 
 func (p PetProfile) String() string {
 	return fmt.Sprintf(`
-Pet Profile
+Pet Profile:
 Name: %s
 Species: %s
 Breed: %s

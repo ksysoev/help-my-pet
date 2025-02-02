@@ -65,11 +65,6 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 		return nil, fmt.Errorf("failed to add answer: %w", err)
 	}
 
-	// Save conv state
-	if err := s.repo.Save(ctx, conv); err != nil {
-		return nil, fmt.Errorf("failed to save conv: %w", err)
-	}
-
 	// If questionnaire is complete, return success message
 	if isComplete {
 		result, err := conv.GetQuestionnaireResult()
@@ -96,6 +91,11 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 			default:
 				return nil, fmt.Errorf("unknown field %s", qa.Field)
 			}
+		}
+
+		// Save conv state
+		if err := s.repo.Save(ctx, conv); err != nil {
+			return nil, fmt.Errorf("failed to save conv: %w", err)
 		}
 
 		if err = s.profileRepo.SaveProfile(ctx, request.UserID, &profile); err != nil {

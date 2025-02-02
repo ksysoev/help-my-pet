@@ -197,7 +197,10 @@ func Unmarshal(data []byte) (*Conversation, error) {
 	}
 
 	switch tmpConv.State {
-	case StateNormal:
+	case StateNormal, StateCompleted:
+		// We don't unmarshal completed state as it's not needed, if conversation stuck in completed state,
+		// it means we failed to process questionnaire result, and we just need to reset the state to normal
+
 		return &Conversation{
 			ID:       tmpConv.ID,
 			State:    StateNormal,
