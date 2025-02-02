@@ -9,7 +9,7 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 )
 
-func (s *AIService) ProcessManageProfile(ctx context.Context, request *UserMessage) (*Response, error) {
+func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage) (*Response, error) {
 	slog.DebugContext(ctx, "managing pet profile", "input", request.Text)
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)

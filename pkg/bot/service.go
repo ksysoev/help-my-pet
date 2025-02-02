@@ -28,6 +28,7 @@ type BotAPI interface {
 
 type AIProvider interface {
 	ProcessMessage(ctx context.Context, request *core.UserMessage) (*core.Response, error)
+	ProcessEditProfile(ctx context.Context, request *core.UserMessage) (*core.Response, error)
 }
 
 // Config holds the configuration for the Telegram bot
