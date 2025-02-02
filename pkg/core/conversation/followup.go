@@ -32,14 +32,3 @@ func (f *FollowUpQuestionnaireState) GetResults() ([]QuestionAnswer, error) {
 
 	return f.QAPairs, nil
 }
-
-type QuestionnaireState interface {
-	// GetCurrentQuestion returns the current question to be asked
-	GetCurrentQuestion() (*Question, error)
-
-	// ProcessAnswer processes the answer for the current question and returns true if questionnaire is complete
-	ProcessAnswer(answer string) (bool, error)
-
-	// GetResults returns the questionnaire results when completed
-	GetResults() ([]QuestionAnswer, error)
-}

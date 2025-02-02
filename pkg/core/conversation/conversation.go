@@ -172,7 +172,8 @@ func (c *Conversation) GetQuestionnaireResult() ([]QuestionAnswer, error) {
 	}
 }
 
-func Parse(data string) (*Conversation, error) {
+// Unmarshal parses the JSON-encoded data and returns a new conversation.
+func Unmarshal(data []byte) (*Conversation, error) {
 	var tmpConv struct {
 		ID            string
 		State         ConversationState
@@ -181,7 +182,7 @@ func Parse(data string) (*Conversation, error) {
 	}
 
 	if err := json.Unmarshal(data, &tmpConv); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to unmarshal conversation: %w", err)
 	}
 
 	switch tmpConv.State {
@@ -201,7 +202,7 @@ func Parse(data string) (*Conversation, error) {
 			ID:            tmpConv.ID,
 			State:         StatePetProfileQuestioning,
 			Messages:      tmpConv.Messages,
-			Questionnaire: q,
+			Questionnaire: &q,
 		}, nil
 	case StateFollowUpQuestioning:
 		var q FollowUpQuestionnaireState
@@ -213,7 +214,7 @@ func Parse(data string) (*Conversation, error) {
 			ID:            tmpConv.ID,
 			State:         StateFollowUpQuestioning,
 			Messages:      tmpConv.Messages,
-			Questionnaire: q,
+			Questionnaire: &q,
 		}, nil
 	default:
 		return nil, fmt.Errorf("unknown conversation state: %s", tmpConv.State)
