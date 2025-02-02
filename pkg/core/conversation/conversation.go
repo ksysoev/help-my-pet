@@ -15,6 +15,7 @@ const (
 	StateNormal                ConversationState = "normal"
 	StateFollowUpQuestioning   ConversationState = "questioning" // Used for LLM questionnaire (backward compatibility)
 	StatePetProfileQuestioning ConversationState = "pet_profile_questioning"
+	StateCompleted             ConversationState = "completed"
 )
 
 // QuestionnaireState represents the interface that all questionnaire states must implement
@@ -153,7 +154,7 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 		}
 
 		if isComplete {
-			c.State = StateNormal
+			c.State = StateCompleted
 		}
 
 		return isComplete, nil
@@ -166,14 +167,19 @@ func (c *Conversation) AddQuestionAnswer(answer string) (bool, error) {
 // GetQuestionnaireResult returns all question-answer pairs from the active questionnaire
 func (c *Conversation) GetQuestionnaireResult() ([]QuestionAnswer, error) {
 	switch c.State {
-	case StateFollowUpQuestioning, StatePetProfileQuestioning: // LLM questionnair
+	case StateCompleted: // LLM questionnair
+		c.State = StateNormal
 		if c.Questionnaire == nil {
 			return nil, fmt.Errorf("questionnaire not initialized")
 		}
-		return c.Questionnaire.GetResults()
+
+		q := c.Questionnaire
+		c.Questionnaire = nil
+
+		return q.GetResults()
 
 	default:
-		return nil, fmt.Errorf("conversation is not in a questioning state")
+		return nil, fmt.Errorf("conversation is not in a completed state")
 	}
 }
 
