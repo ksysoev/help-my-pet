@@ -25,7 +25,7 @@ func NewAIService(llm LLM, repo ConversationRepository, profileRepo PetProfileRe
 	}
 }
 
-func (s *AIService) ProcessMessage(ctx context.Context, request *UserMessage) (*PetAdviceResponse, error) {
+func (s *AIService) ProcessMessage(ctx context.Context, request *UserMessage) (*Response, error) {
 	slog.DebugContext(ctx, "getting pet advice", "input", request.Text)
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
@@ -43,7 +43,7 @@ func (s *AIService) ProcessMessage(ctx context.Context, request *UserMessage) (*
 }
 
 // handleNewQuestion processes a new question from the user
-func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage, conv *conversation.Conversation) (*PetAdviceResponse, error) {
+func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage, conv *conversation.Conversation) (*Response, error) {
 	// Check rate limit for new questions
 	if s.rateLimiter != nil {
 		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, request.UserID)
@@ -103,7 +103,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 	// Handle follow-up questions if any
 	if len(response.Questions) > 0 {
 		// Initialize questionnaire
-		conv.StartFollowUpQuestionnaire(response.Text, response.Questions)
+		conv.StartFollowUpQuestions(response.Text, response.Questions)
 
 		// Get the first question
 		currentQuestion, err := conv.GetCurrentQuestion()
@@ -136,7 +136,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, request *UserMessage,
 }
 
 // handleQuestionnaireResponse processes a response to a follow-up question
-func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*PetAdviceResponse, error) {
+func (s *AIService) handleQuestionnaireResponse(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*Response, error) {
 	// Store the answer and check if questionnaire is complete
 	isComplete, err := conv.AddQuestionAnswer(request.Text)
 	if err != nil {

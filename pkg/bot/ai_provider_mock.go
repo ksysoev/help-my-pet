@@ -25,23 +25,23 @@ func (_m *MockAIProvider) EXPECT() *MockAIProvider_Expecter {
 }
 
 // GetPetAdvice provides a mock function with given fields: ctx, request
-func (_m *MockAIProvider) ProcessMessage(ctx context.Context, request *core.UserMessage) (*core.PetAdviceResponse, error) {
+func (_m *MockAIProvider) ProcessMessage(ctx context.Context, request *core.UserMessage) (*core.Response, error) {
 	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ProcessMessage")
 	}
 
-	var r0 *core.PetAdviceResponse
+	var r0 *core.Response
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) (*core.PetAdviceResponse, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) (*core.Response, error)); ok {
 		return rf(ctx, request)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) *core.PetAdviceResponse); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) *core.Response); ok {
 		r0 = rf(ctx, request)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*core.PetAdviceResponse)
+			r0 = ret.Get(0).(*core.Response)
 		}
 	}
 
@@ -73,12 +73,12 @@ func (_c *MockAIProvider_GetPetAdvice_Call) Run(run func(ctx context.Context, re
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) Return(_a0 *core.PetAdviceResponse, _a1 error) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_GetPetAdvice_Call) Return(_a0 *core.Response, _a1 error) *MockAIProvider_GetPetAdvice_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) RunAndReturn(run func(context.Context, *core.UserMessage) (*core.PetAdviceResponse, error)) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_GetPetAdvice_Call) RunAndReturn(run func(context.Context, *core.UserMessage) (*core.Response, error)) *MockAIProvider_GetPetAdvice_Call {
 	_c.Call.Return(run)
 	return _c
 }

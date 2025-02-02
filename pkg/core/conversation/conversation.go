@@ -83,8 +83,8 @@ func (c *Conversation) GetContext() []Message {
 	return c.Messages
 }
 
-// StartFollowUpQuestionnaire initializes the follow-up questioning state (backward compatible name)
-func (c *Conversation) StartFollowUpQuestionnaire(initialPrompt string, questions []Question) error {
+// StartFollowUpQuestions initializes the follow-up questioning state (backward compatible name)
+func (c *Conversation) StartFollowUpQuestions(initialPrompt string, questions []Question) error {
 	if c.State != StateNormal {
 		return fmt.Errorf("conversation is not in normal state %s", c.State)
 	}
@@ -112,7 +112,7 @@ func (c *Conversation) StartFollowUpQuestionnaire(initialPrompt string, question
 }
 
 // StartPetProfileQuestionnaire initializes the pet profile questionnaire
-func (c *Conversation) StartProfileQuestionnaire() error {
+func (c *Conversation) StartProfileQuestions() error {
 	if c.State != StateNormal {
 		return fmt.Errorf("conversation is not in normal state %s", c.State)
 	}

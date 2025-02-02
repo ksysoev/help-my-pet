@@ -58,16 +58,16 @@ func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*conv
 
 // FindOrCreate retrieves a conversation by ID or creates a new one if it doesn't exist
 func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (*conversation.Conversation, error) {
-	conversation, err := r.FindByID(ctx, id)
+	conv, err := r.FindByID(ctx, id)
 	if err == core.ErrConversationNotFound {
-		conversation = conversation.NewConversation(id)
-		if err := r.Save(ctx, conversation); err != nil {
+		conv = conversation.NewConversation(id)
+		if err := r.Save(ctx, conv); err != nil {
 			return nil, err
 		}
 	} else if err != nil {
 		return nil, err
 	}
-	return conversation, nil
+	return conv, nil
 }
 
 // key generates a Redis key for a conversation ID

@@ -6,8 +6,8 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 )
 
-// Response represents a structured response from the LLM
-type Response struct {
+// LLMResult represents a structured response from the LLM
+type LLMResult struct {
 	Text      string                  `json:"text"`      // Main response text
 	Questions []conversation.Question `json:"questions"` // Optional follow-up questions
 }

@@ -16,7 +16,7 @@ import (
 
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
-		aiResponse   *core.PetAdviceResponse
+		aiResponse   *core.Response
 		aiErr        error
 		name         string
 		message      string

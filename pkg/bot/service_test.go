@@ -91,7 +91,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&core.Response{
 					Message: "AI response",
 				}, nil)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
@@ -117,7 +117,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&core.Response{
 					Message: "AI response",
 				}, nil)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
@@ -167,7 +167,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&core.Response{
 					Message: "AI response",
 				}, nil)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
@@ -193,7 +193,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&core.Response{
 					Message: "",
 				}, nil)
 			},

@@ -46,7 +46,7 @@ func New(cfg Config) (*Provider, error) {
 }
 
 // Call sends a message to the Anthropic API and returns the structured response
-func (p *Provider) Call(ctx context.Context, prompt string) (*core.Response, error) {
+func (p *Provider) Call(ctx context.Context, prompt string) (*core.LLMResult, error) {
 	formatInstructions := p.parser.FormatInstructions()
 
 	slog.DebugContext(ctx, "Anthropic LLM call",

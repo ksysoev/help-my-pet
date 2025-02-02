@@ -14,7 +14,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 	tests := []struct {
 		request        *UserMessage
 		response       *Response
-		expectedResult *PetAdviceResponse
+		expectedResult *Response
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation)
 		name           string
 		errorContains  string
@@ -37,7 +37,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: &PetAdviceResponse{
+			expectedResult: &Response{
 				Message: "Cats need a balanced diet...\n\nHow old is your cat?",
 				Answers: []string{},
 			},
@@ -83,7 +83,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:      "Cats need a balanced diet...",
 				Questions: []conversation.Question{},
 			},
-			expectedResult: &PetAdviceResponse{
+			expectedResult: &Response{
 				Message: "Cats need a balanced diet...",
 				Answers: []string{},
 			},
@@ -123,7 +123,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:      "I understand you have a pet-related question...",
 				Questions: []conversation.Question{},
 			},
-			expectedResult: &PetAdviceResponse{
+			expectedResult: &Response{
 				Message: "I understand you have a pet-related question...",
 				Answers: []string{},
 			},
@@ -257,7 +257,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Text:      "Dogs need different food...",
 				Questions: []conversation.Question{},
 			},
-			expectedResult: &PetAdviceResponse{
+			expectedResult: &Response{
 				Message: "Dogs need different food...",
 				Answers: []string{},
 			},
@@ -326,7 +326,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	tests := []struct {
 		request        *UserMessage
-		expectedResult *PetAdviceResponse
+		expectedResult *Response
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation)
 		name           string
 		errorContains  string
@@ -339,7 +339,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "2 years old",
 			},
-			expectedResult: &PetAdviceResponse{
+			expectedResult: &Response{
 				Message: "Is your cat indoor or outdoor?",
 				Answers: []string{"Indoor", "Outdoor"},
 			},
@@ -352,7 +352,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -375,7 +375,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "Indoor",
 			},
-			expectedResult: &PetAdviceResponse{
+			expectedResult: &Response{
 				Message: "Based on your answers, here's my advice...",
 				Answers: []string{},
 			},
@@ -388,7 +388,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
 				_, err := conversation.AddQuestionAnswer("2 years old")
 				require.NoError(t, err)
 
@@ -427,7 +427,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
 				// Setup conversation in questioning state with no questions
 				questions := []conversation.Question{}
-				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -448,7 +448,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					{Text: "How old is your cat?"},
 					{Text: "Is your cat indoor or outdoor?"},
 				}
-				conversation.StartFollowUpQuestionnaire("Cats need a balanced diet...", questions)
+				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
