@@ -46,13 +46,8 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	// Handle /start command
-	if msg.Text == "/start" {
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.StartMessage)), nil
-	} else if msg.Text == "/terms" {
-		msg := tgbotapi.NewMessage(msg.Chat.ID, termsContent)
-		msg.ParseMode = "HTML"
-		return msg, nil
+	if msg.Command() != "" {
+		return s.HandleCommand(ctx, msg)
 	}
 
 	request, err := core.NewUserMessage(

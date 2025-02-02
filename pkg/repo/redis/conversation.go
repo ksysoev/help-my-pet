@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
@@ -48,12 +49,51 @@ func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*conv
 		return nil, err
 	}
 
-	var conversation conversation.Conversation
-	if err := json.Unmarshal(data, &conversation); err != nil {
+	var tmpConv struct {
+		ID            string
+		State         conversation.ConversationState
+		Messages      []conversation.Message
+		Questionnaire json.RawMessage `json:"questionnaire"`
+	}
+
+	if err := json.Unmarshal(data, &tmpConv); err != nil {
 		return nil, err
 	}
 
-	return &conversation, nil
+	switch tmpConv.State {
+	case conversation.StateNormal:
+		return &conversation.Conversation{
+			ID:       tmpConv.ID,
+			State:    conversation.StateNormal,
+			Messages: tmpConv.Messages,
+		}, nil
+	case conversation.StatePetProfileQuestioning:
+		var q conversation.PetProfileStateImpl
+		if err := json.Unmarshal(tmpConv.Questionnaire, &q); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal pet profile questionnaire: %w", err)
+		}
+
+		return &conversation.Conversation{
+			ID:            tmpConv.ID,
+			State:         conversation.StatePetProfileQuestioning,
+			Messages:      tmpConv.Messages,
+			Questionnaire: q,
+		}, nil
+	case conversation.StateFollowUpQuestioning:
+		var q conversation.FollowUpQuestionnaireState
+		if err := json.Unmarshal(tmpConv.Questionnaire, &q); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal follow-up questionnaire: %w", err)
+		}
+
+		return &conversation.Conversation{
+			ID:            tmpConv.ID,
+			State:         conversation.StateFollowUpQuestioning,
+			Messages:      tmpConv.Messages,
+			Questionnaire: q,
+		}, nil
+	default:
+		return nil, fmt.Errorf("unknown conversation state: %s", tmpConv.State)
+	}
 }
 
 // FindOrCreate retrieves a conversation by ID or creates a new one if it doesn't exist
@@ -67,6 +107,7 @@ func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (*
 	} else if err != nil {
 		return nil, err
 	}
+
 	return conv, nil
 }
 

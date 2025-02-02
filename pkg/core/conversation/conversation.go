@@ -1,6 +1,7 @@
 package conversation
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -168,5 +169,53 @@ func (c *Conversation) GetQuestionnaireResult() ([]QuestionAnswer, error) {
 
 	default:
 		return nil, fmt.Errorf("conversation is not in a questioning state")
+	}
+}
+
+func Parse(data string) (*Conversation, error) {
+	var tmpConv struct {
+		ID            string
+		State         ConversationState
+		Messages      []Message
+		Questionnaire json.RawMessage `json:"questionnaire"`
+	}
+
+	if err := json.Unmarshal(data, &tmpConv); err != nil {
+		return nil, err
+	}
+
+	switch tmpConv.State {
+	case StateNormal:
+		return &Conversation{
+			ID:       tmpConv.ID,
+			State:    StateNormal,
+			Messages: tmpConv.Messages,
+		}, nil
+	case StatePetProfileQuestioning:
+		var q PetProfileStateImpl
+		if err := json.Unmarshal(tmpConv.Questionnaire, &q); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal pet profile questionnaire: %w", err)
+		}
+
+		return &Conversation{
+			ID:            tmpConv.ID,
+			State:         StatePetProfileQuestioning,
+			Messages:      tmpConv.Messages,
+			Questionnaire: q,
+		}, nil
+	case StateFollowUpQuestioning:
+		var q FollowUpQuestionnaireState
+		if err := json.Unmarshal(tmpConv.Questionnaire, &q); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal follow-up questionnaire: %w", err)
+		}
+
+		return &Conversation{
+			ID:            tmpConv.ID,
+			State:         StateFollowUpQuestioning,
+			Messages:      tmpConv.Messages,
+			Questionnaire: q,
+		}, nil
+	default:
+		return nil, fmt.Errorf("unknown conversation state: %s", tmpConv.State)
 	}
 }

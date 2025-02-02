@@ -40,6 +40,7 @@ type ServiceImpl struct {
 	Bot      BotAPI
 	AISvc    AIProvider
 	Messages *i18n.Config
+	handler  Handler
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -65,11 +66,15 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
-	return &ServiceImpl{
+	s := &ServiceImpl{
 		Bot:      bot,
 		AISvc:    aiSvc,
 		Messages: cfg.Messages,
-	}, nil
+	}
+
+	s.handler = s.setupHandler()
+
+	return s, nil
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
@@ -82,8 +87,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	}
 
 	// Handle message with middleware
-	handler := s.setupHandler()
-	msgConfig, err := handler.Handle(ctx, message)
+	msgConfig, err := s.handler.Handle(ctx, message)
 
 	if errors.Is(err, context.Canceled) {
 		slog.InfoContext(ctx, "Request cancelled",
