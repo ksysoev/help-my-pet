@@ -2,6 +2,7 @@ package conversation
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 )
@@ -16,6 +17,11 @@ const (
 	StateFollowUpQuestioning   ConversationState = "questioning" // Used for LLM questionnaire (backward compatibility)
 	StatePetProfileQuestioning ConversationState = "pet_profile_questioning"
 	StateCompleted             ConversationState = "completed"
+)
+
+var (
+	ErrNoMoreQuestions         = errors.New("no more questions available")
+	ErrQuestionnaireIncomplete = errors.New("questionnaire is not complete")
 )
 
 // QuestionnaireState represents the interface that all questionnaire states must implement
@@ -105,11 +111,7 @@ func (c *Conversation) StartFollowUpQuestions(initialPrompt string, questions []
 	}
 
 	c.State = StateFollowUpQuestioning
-	c.Questionnaire = &FollowUpQuestionnaireState{
-		QAPairs:       qaPairs,
-		CurrentIndex:  0,
-		InitialPrompt: initialPrompt,
-	}
+	c.Questionnaire = NewFollowUpQuestionnaireState(initialPrompt, questions)
 
 	return nil
 }

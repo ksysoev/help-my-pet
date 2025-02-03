@@ -7,6 +7,22 @@ type FollowUpQuestionnaireState struct {
 	CurrentIndex  int              `json:"current_index"`
 }
 
+func NewFollowUpQuestionnaireState(initPrompt string, questions []Question) *FollowUpQuestionnaireState {
+	qaPairs := make([]QuestionAnswer, len(questions))
+	for i, q := range questions {
+		qaPairs[i] = QuestionAnswer{
+			Question: q,
+			Answer:   "",
+		}
+	}
+
+	return &FollowUpQuestionnaireState{
+		InitialPrompt: initPrompt,
+		QAPairs:       qaPairs,
+		CurrentIndex:  0,
+	}
+}
+
 func (f *FollowUpQuestionnaireState) GetCurrentQuestion() (*Question, error) {
 	if f.CurrentIndex >= len(f.QAPairs) {
 		return nil, ErrNoMoreQuestions
