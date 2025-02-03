@@ -14,7 +14,7 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get conv: %w", err)
+		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
 	// Check if user is in the middle of a conversation
@@ -35,7 +35,7 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage
 
 	// Save conv state
 	if err := s.repo.Save(ctx, conv); err != nil {
-		return nil, fmt.Errorf("failed to save conv: %w", err)
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
 	// Return response with first question
@@ -51,7 +51,7 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get conv: %w", err)
+		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
 	// Check if user is in the middle of a conversation
@@ -95,7 +95,7 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 
 		// Save conv state
 		if err := s.repo.Save(ctx, conv); err != nil {
-			return nil, fmt.Errorf("failed to save conv: %w", err)
+			return nil, fmt.Errorf("failed to save conversation: %w", err)
 		}
 
 		if err = s.profileRepo.SaveProfile(ctx, request.UserID, &profile); err != nil {

@@ -2,7 +2,6 @@ package core
 
 import (
 	"testing"
-	"time"
 )
 
 func TestPetProfile_String(t *testing.T) {
@@ -17,18 +16,18 @@ func TestPetProfile_String(t *testing.T) {
 				Name:        "Buddy",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
-				DateOfBirth: time.Date(2018, 5, 10, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2018-05-10",
 				Gender:      "Male",
-				Weight:      30.5,
+				Weight:      "30.5",
 			},
 			expected: `
-Pet Profile
+Pet Profile:
 Name: Buddy
 Species: Dog
 Breed: Golden Retriever
-Date of Birth: 2018-05-10 00:00:00 +0000 UTC
+Date of Birth: 2018-05-10
 Gender: Male
-Weight: 30.500000
+Weight: 30.5
 `,
 		},
 		{
@@ -37,18 +36,18 @@ Weight: 30.500000
 				Name:        "",
 				Species:     "",
 				Breed:       "",
-				DateOfBirth: time.Time{},
+				DateOfBirth: "",
 				Gender:      "",
-				Weight:      0.0,
+				Weight:      "",
 			},
 			expected: `
-Pet Profile
+Pet Profile:
 Name: 
 Species: 
 Breed: 
-Date of Birth: 0001-01-01 00:00:00 +0000 UTC
+Date of Birth: 
 Gender: 
-Weight: 0.000000
+Weight: 
 `,
 		},
 		{
@@ -56,47 +55,47 @@ Weight: 0.000000
 			profile: PetProfile{
 				Name:    "Whiskers",
 				Species: "Cat",
-				Weight:  4.2,
+				Weight:  "4.2",
 			},
 			expected: `
-Pet Profile
+Pet Profile:
 Name: Whiskers
 Species: Cat
 Breed: 
-Date of Birth: 0001-01-01 00:00:00 +0000 UTC
+Date of Birth: 
 Gender: 
-Weight: 4.200000
+Weight: 4.2
 `,
 		},
 		{
 			name: "Date of birth set alone",
 			profile: PetProfile{
-				DateOfBirth: time.Date(2020, 7, 15, 12, 30, 45, 0, time.UTC),
+				DateOfBirth: "2020-07-15",
 			},
 			expected: `
-Pet Profile
+Pet Profile:
 Name: 
 Species: 
 Breed: 
-Date of Birth: 2020-07-15 12:30:45 +0000 UTC
+Date of Birth: 2020-07-15
 Gender: 
-Weight: 0.000000
+Weight: 
 `,
 		},
 		{
 			name: "Negative weight",
 			profile: PetProfile{
 				Name:   "Tiny",
-				Weight: -1.5,
+				Weight: "-1.5",
 			},
 			expected: `
-Pet Profile
+Pet Profile:
 Name: Tiny
 Species: 
 Breed: 
-Date of Birth: 0001-01-01 00:00:00 +0000 UTC
+Date of Birth: 
 Gender: 
-Weight: -1.500000
+Weight: -1.5
 `,
 		},
 	}

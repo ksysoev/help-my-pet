@@ -17,7 +17,7 @@ func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversatio
 
 	// Save conv after adding answer
 	if err := s.repo.Save(ctx, conv); err != nil {
-		return nil, fmt.Errorf("failed to save conv: %w", err)
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
 	if isComplete {
@@ -41,13 +41,15 @@ func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversatio
 			prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 		}
 
-		prompt += "Previous conv:\n"
-		history := conv.GetContext()
-		for _, msg := range history[:len(history)-1] {
-			prompt += fmt.Sprintf("%s: %s\n\n", msg.Role, msg.Content)
+		if len(conv.GetContext()) > 1 {
+			prompt += "Previous conv:\n"
+			history := conv.GetContext()
+			for _, msg := range history[:len(history)-1] {
+				prompt += fmt.Sprintf("%s: %s\n\n", msg.Role, msg.Content)
+			}
 		}
 
-		prompt += "\nFollow-up information:\n"
+		prompt += "Follow-up information:\n"
 		for _, qa := range qaPairs {
 			prompt += fmt.Sprintf("Question: %s\nAnswer: %s\n", qa.Question.Text, qa.Answer)
 		}
@@ -63,7 +65,7 @@ func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversatio
 
 		// Save conv state
 		if err := s.repo.Save(ctx, conv); err != nil {
-			return nil, fmt.Errorf("failed to save conv: %w", err)
+			return nil, fmt.Errorf("failed to save conversation: %w", err)
 		}
 
 		return NewResponse(response.Text, []string{}), nil
@@ -77,7 +79,7 @@ func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversatio
 
 	// Save conv state
 	if err := s.repo.Save(ctx, conv); err != nil {
-		return nil, fmt.Errorf("failed to save conv: %w", err)
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
 	return NewResponse(currentQuestion.Text, currentQuestion.Answers), nil

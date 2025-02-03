@@ -30,7 +30,7 @@ func (s *AIService) ProcessMessage(ctx context.Context, request *UserMessage) (*
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get conv: %w", err)
+		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
 	switch conv.State {
@@ -67,7 +67,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv *conversation.Co
 
 	// Save conv immediately after adding user's message
 	if err := s.repo.Save(ctx, conv); err != nil {
-		return nil, fmt.Errorf("failed to save conv: %w", err)
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
 	// Build prompt with pet profiles and conv context
@@ -84,12 +84,14 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv *conversation.Co
 		prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 	}
 
-	if len(conv.GetContext()) <= 1 {
+	convCtx := conv.GetContext()
+	fmt.Println(convCtx)
+	if len(convCtx) <= 1 {
 		prompt += request.Text
 	} else {
 		// Include conv history
-		prompt += "Previous conv:\n"
-		for _, msg := range conv.GetContext()[:len(conv.GetContext())-1] {
+		prompt += "Previous conversation:\n"
+		for _, msg := range convCtx[:len(convCtx)-1] {
 			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 		}
 		prompt += fmt.Sprintf("\nCurrent question: %s", request.Text)
@@ -116,7 +118,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv *conversation.Co
 
 		// Save conv state
 		if err := s.repo.Save(ctx, conv); err != nil {
-			return nil, fmt.Errorf("failed to save conv: %w", err)
+			return nil, fmt.Errorf("failed to save conversation: %w", err)
 		}
 
 		// Return response with first question
@@ -132,7 +134,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv *conversation.Co
 
 	// Save conv state
 	if err := s.repo.Save(ctx, conv); err != nil {
-		return nil, fmt.Errorf("failed to save conv: %w", err)
+		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
 	return NewResponse(response.Text, []string{}), nil

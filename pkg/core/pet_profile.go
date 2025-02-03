@@ -36,6 +36,6 @@ Species: %s
 Breed: %s
 Date of Birth: %s
 Gender: %s
-Weight: %f
+Weight: %s
 `, p.Name, p.Species, p.Breed, p.DateOfBirth, p.Gender, p.Weight)
 }

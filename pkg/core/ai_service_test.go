@@ -13,7 +13,7 @@ import (
 func TestAIService_GetPetAdvice(t *testing.T) {
 	tests := []struct {
 		request        *UserMessage
-		response       *Response
+		response       *LLMResult
 		expectedResult *Response
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation)
 		name           string
@@ -27,7 +27,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			response: &Response{
+			response: &LLMResult{
 				Text: "Cats need a balanced diet...",
 				Questions: []conversation.Question{
 					{Text: "How old is your cat?"},
@@ -41,21 +41,21 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "Cats need a balanced diet...\n\nHow old is your cat?",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 				mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(nil)
 				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				// Expect first save after adding user message
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&Response{
+					Return(&LLMResult{
 						Text: "Cats need a balanced diet...",
 						Questions: []conversation.Question{
 							{Text: "How old is your cat?"},
@@ -67,7 +67,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					}, nil)
 				// Expect second save after LLM response
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 			},
 			wantErr: false,
@@ -79,7 +79,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			response: &Response{
+			response: &LLMResult{
 				Text:      "Cats need a balanced diet...",
 				Questions: []conversation.Question{},
 			},
@@ -87,27 +87,27 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "Cats need a balanced diet...",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 				mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(nil)
 				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				// Expect first save after adding user message
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&Response{
+					Return(&LLMResult{
 						Text:      "Cats need a balanced diet...",
 						Questions: []conversation.Question{},
 					}, nil)
 				// Expect second save after LLM response
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 			},
 			wantErr: false,
@@ -119,7 +119,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "",
 			},
-			response: &Response{
+			response: &LLMResult{
 				Text:      "I understand you have a pet-related question...",
 				Questions: []conversation.Question{},
 			},
@@ -127,27 +127,27 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "I understand you have a pet-related question...",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 				mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(nil)
 				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				// Expect first save after adding user message
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 				expectedPrompt := ""
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&Response{
+					Return(&LLMResult{
 						Text:      "I understand you have a pet-related question...",
 						Questions: []conversation.Question{},
 					}, nil)
 				// Expect second save after LLM response
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 			},
 			wantErr: false,
@@ -159,16 +159,16 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 				mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(nil)
 				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				// Expect save after adding user message
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
@@ -185,7 +185,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
 					Return(nil, fmt.Errorf("db error"))
@@ -200,10 +200,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(false, nil)
 			},
 			wantErr:       true,
@@ -216,10 +216,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(false, fmt.Errorf("rate limit check failed"))
 			},
 			wantErr:       true,
@@ -232,15 +232,15 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 				mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(nil)
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				// Expect first save to fail
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(fmt.Errorf("save error"))
 			},
 			wantErr:       true,
@@ -253,7 +253,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "What about dogs?",
 			},
-			response: &Response{
+			response: &LLMResult{
 				Text:      "Dogs need different food...",
 				Questions: []conversation.Question{},
 			},
@@ -261,34 +261,34 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				Message: "Dogs need different food...",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 				mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(nil)
 				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 				// Add previous conversation
-				conversation.AddMessage("user", "What food is good for cats?")
-				conversation.AddMessage("assistant", "Cats need a balanced diet...")
+				conv.AddMessage("user", "What food is good for cats?")
+				conv.AddMessage("assistant", "Cats need a balanced diet...")
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 
 				// Expect first save after adding user message
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 
 				expectedPrompt := "Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&Response{
+					Return(&LLMResult{
 						Text:      "Dogs need different food...",
 						Questions: []conversation.Question{},
 					}, nil)
 
 				// Expect second save after LLM response
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 			},
 			wantErr: false,
@@ -300,10 +300,10 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			mockLLM := NewMockLLM(t)
 			mockRepo := NewMockConversationRepository(t)
 			mockProfileRepo := NewMockPetProfileRepository(t)
-			conversation := conversation.NewConversation("test-chat")
+			conv := conversation.NewConversation("test-chat")
 			mockRateLimiter := NewMockRateLimiter(t)
 
-			tt.setupMocks(t, mockLLM, mockRepo, mockProfileRepo, mockRateLimiter, conversation)
+			tt.setupMocks(t, mockLLM, mockRepo, mockProfileRepo, mockRateLimiter, conv)
 			svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
 			got, err := svc.ProcessMessage(context.Background(), tt.request)
@@ -327,7 +327,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	tests := []struct {
 		request        *UserMessage
 		expectedResult *Response
-		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation)
+		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation)
 		name           string
 		errorContains  string
 		wantErr        bool
@@ -343,7 +343,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				Message: "Is your cat indoor or outdoor?",
 				Answers: []string{"Indoor", "Outdoor"},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				// Setup conversation in questioning state
 				questions := []conversation.Question{
 					{Text: "How old is your cat?"},
@@ -352,18 +352,18 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+				conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				// Expect first save after adding user message
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 				// Expect second save after updating questionnaire state
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 			},
 			wantErr: false,
@@ -379,7 +379,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				Message: "Based on your answers, here's my advice...",
 				Answers: []string{},
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				// Setup conversation in questioning state with last question
 				questions := []conversation.Question{
 					{Text: "How old is your cat?"},
@@ -388,53 +388,34 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
-				_, err := conversation.AddQuestionAnswer("2 years old")
+				conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+				_, err := conv.AddQuestionAnswer("2 years old")
 				require.NoError(t, err)
 
 				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 
 				// Expect first save after adding user message
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 
-				expectedPrompt := "Previous conversation:\n\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
+				expectedPrompt := "Follow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&Response{
+					Return(&LLMResult{
 						Text: "Based on your answers, here's my advice...",
 					}, nil)
 
 				// Expect second save after LLM response
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(nil)
 			},
 			wantErr: false,
-		},
-		{
-			name: "error adding question answer",
-			request: &UserMessage{
-				UserID: "user123",
-				ChatID: "test-chat",
-				Text:   "2 years old",
-			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
-				// Setup conversation in questioning state with no questions
-				questions := []conversation.Question{}
-				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
-
-				mockRepo.EXPECT().
-					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
-			},
-			wantErr:       true,
-			errorContains: "failed to add question answer: no more questions to answer",
 		},
 		{
 			name: "error saving conversation in questionnaire",
@@ -443,19 +424,19 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				ChatID: "test-chat",
 				Text:   "2 years old",
 			},
-			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation) {
+			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				questions := []conversation.Question{
 					{Text: "How old is your cat?"},
 					{Text: "Is your cat indoor or outdoor?"},
 				}
-				conversation.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+				conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
-					Return(conversation, nil)
+					Return(conv, nil)
 				// Expect save after adding user message to fail
 				mockRepo.EXPECT().
-					Save(context.Background(), conversation).
+					Save(context.Background(), conv).
 					Return(fmt.Errorf("save error"))
 			},
 			wantErr:       true,
@@ -468,10 +449,10 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			mockLLM := NewMockLLM(t)
 			mockRepo := NewMockConversationRepository(t)
 			mockProfileRepo := NewMockPetProfileRepository(t)
-			conversation := conversation.NewConversation("test-chat")
+			conv := conversation.NewConversation("test-chat")
 			mockRateLimiter := NewMockRateLimiter(t)
 
-			tt.setupMocks(t, mockLLM, mockRepo, mockProfileRepo, mockRateLimiter, conversation)
+			tt.setupMocks(t, mockLLM, mockRepo, mockProfileRepo, mockRateLimiter, conv)
 			svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
 			got, err := svc.ProcessMessage(context.Background(), tt.request)
@@ -494,11 +475,11 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 	mockRepo := NewMockConversationRepository(t)
 	mockProfileRepo := NewMockPetProfileRepository(t)
 	mockRateLimiter := NewMockRateLimiter(t)
-	conversation := conversation.NewConversation("test-chat")
+	conv := conversation.NewConversation("test-chat")
 
 	mockRepo.EXPECT().
 		FindOrCreate(context.Background(), "test-chat").
-		Return(conversation, nil)
+		Return(conv, nil)
 
 	mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
 	mockRateLimiter.On("RecordNewQuestion", context.Background(), "user123").Return(fmt.Errorf("record error"))
@@ -532,13 +513,13 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 	mockRateLimiter.On("RecordNewQuestion", ctx, "user123").Return(nil)
 	mockProfileRepo.EXPECT().GetCurrentProfile(ctx, "user123").Return(nil, ErrProfileNotFound)
 
-	conversation := conversation.NewConversation("test-chat")
+	conv := conversation.NewConversation("test-chat")
 	mockRepo.EXPECT().
 		FindOrCreate(ctx, "test-chat").
-		Return(conversation, nil)
+		Return(conv, nil)
 	// Expect save after adding user message
 	mockRepo.EXPECT().
-		Save(ctx, conversation).
+		Save(ctx, conv).
 		Return(nil)
 
 	mockLLM.EXPECT().
