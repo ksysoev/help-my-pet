@@ -62,9 +62,6 @@ func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (*
 	conv, err := r.FindByID(ctx, id)
 	if err == core.ErrConversationNotFound {
 		conv = conversation.NewConversation(id)
-		if err := r.Save(ctx, conv); err != nil {
-			return nil, err
-		}
 	} else if err != nil {
 		return nil, err
 	}

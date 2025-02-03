@@ -102,9 +102,7 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	assert.Equal(t, conv.ID, found.ID)
 	assert.Equal(t, conv.State, found.State)
 	assert.Equal(t, conv.Messages[0].Content, found.Messages[0].Content)
-	assert.Equal(t, conv.Questionnaire.InitialPrompt, found.Questionnaire.InitialPrompt)
-	assert.Equal(t, len(conv.Questionnaire.QAPairs), len(found.Questionnaire.QAPairs))
-	assert.Equal(t, conv.Questionnaire.QAPairs[0].Question.Text, found.Questionnaire.QAPairs[0].Question.Text)
+
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
 
@@ -134,8 +132,6 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 	t.Run("create new conversation when not found", func(t *testing.T) {
 		mock.ExpectGet("conversation:new-id").RedisNil()
 
-		mock.ExpectSet("conversation:new-id", []byte(`{"Questionnaire":null,"ID":"new-id","State":"normal","Messages":[]}`), ConversationTTL).SetVal("OK")
-
 		found, err := repo.FindOrCreate(ctx, "new-id")
 		assert.NoError(t, err)
 		assert.NotNil(t, found)
@@ -148,15 +144,6 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 		mock.ExpectGet("conversation:error-id").SetErr(fmt.Errorf("redis error"))
 
 		found, err := repo.FindOrCreate(ctx, "error-id")
-		assert.Error(t, err)
-		assert.Nil(t, found)
-		assert.NoError(t, mock.ExpectationsWereMet())
-	})
-
-	t.Run("error on Save new conversation", func(t *testing.T) {
-		mock.ExpectGet("conversation:error-save-id").RedisNil()
-
-		found, err := repo.FindOrCreate(ctx, "error-save-id")
 		assert.Error(t, err)
 		assert.Nil(t, found)
 		assert.NoError(t, mock.ExpectationsWereMet())

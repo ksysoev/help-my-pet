@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/go-redis/redismock/v9"
 	"github.com/ksysoev/help-my-pet/pkg/core"
@@ -28,9 +27,9 @@ func TestPetProfileRepository_SaveProfiles(t *testing.T) {
 				Name:        "Max",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
-				DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2020-01-01",
 				Gender:      "Male",
-				Weight:      30.5,
+				Weight:      "30.5",
 			},
 			mockSetup: func(mock redismock.ClientMock, userID string, profile *core.PetProfile) []byte {
 				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{*profile}})
@@ -66,9 +65,9 @@ func TestPetProfileRepository_SaveProfiles(t *testing.T) {
 				Name:        "Bella",
 				Species:     "Cat",
 				Breed:       "Siamese",
-				DateOfBirth: time.Date(2022, 6, 15, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2022-06-15",
 				Gender:      "Female",
-				Weight:      4.1,
+				Weight:      "4.1",
 			},
 			mockSetup: func(mock redismock.ClientMock, userID string, profile *core.PetProfile) []byte {
 				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{*profile}})
@@ -118,9 +117,9 @@ func TestPetProfileRepository_GetCurrentProfile(t *testing.T) {
 					Name:        "Max",
 					Species:     "Dog",
 					Breed:       "Golden Retriever",
-					DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+					DateOfBirth: "2020-01-01",
 					Gender:      "Male",
-					Weight:      30.5,
+					Weight:      "30.5",
 				}
 				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{profile}})
 				mock.ExpectHGet(petProfilesKey, userID).SetVal(string(data))
@@ -130,9 +129,9 @@ func TestPetProfileRepository_GetCurrentProfile(t *testing.T) {
 				Name:        "Max",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
-				DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2020-01-01",
 				Gender:      "Male",
-				Weight:      30.5,
+				Weight:      "30.5",
 			},
 			expectedErr: nil,
 		},
@@ -175,17 +174,17 @@ func TestPetProfileRepository_GetCurrentProfile(t *testing.T) {
 					Name:        "Max",
 					Species:     "Dog",
 					Breed:       "Golden Retriever",
-					DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+					DateOfBirth: "2020-01-01",
 					Gender:      "Male",
-					Weight:      30.5,
+					Weight:      "30.5",
 				}
 				profile2 := core.PetProfile{
 					Name:        "Bella",
 					Species:     "Cat",
 					Breed:       "Siamese",
-					DateOfBirth: time.Date(2022, 6, 15, 0, 0, 0, 0, time.UTC),
+					DateOfBirth: "2022-06-15",
 					Gender:      "Female",
-					Weight:      4.0,
+					Weight:      "4.0",
 				}
 				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{profile1, profile2}})
 				mock.ExpectHGet(petProfilesKey, userID).SetVal(string(data))
@@ -195,9 +194,9 @@ func TestPetProfileRepository_GetCurrentProfile(t *testing.T) {
 				Name:        "Max",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
-				DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2020-01-01",
 				Gender:      "Male",
-				Weight:      30.5,
+				Weight:      "30.5",
 			},
 			expectedErr: nil,
 		},
