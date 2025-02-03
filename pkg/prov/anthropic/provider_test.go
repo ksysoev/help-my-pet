@@ -59,7 +59,7 @@ func TestProvider_Call(t *testing.T) {
 	}
 
 	type testCase struct {
-		wantResult *core.Response
+		wantResult *core.LLMResult
 		setupMock  func(t *testing.T) *Provider
 		name       string
 		prompt     string
@@ -71,7 +71,7 @@ func TestProvider_Call(t *testing.T) {
 			wantErr: false,
 			name:    "successful call with valid JSON response",
 			prompt:  "test prompt",
-			wantResult: &core.Response{
+			wantResult: &core.LLMResult{
 				Text: "test response",
 				Questions: []conversation.Question{
 					{Text: "follow up?"},

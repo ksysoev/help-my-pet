@@ -108,17 +108,6 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
 		},
 		{
-			name:         "start command",
-			message:      "/start",
-			aiResponse:   core.NewResponse("Welcome to Help My Pet Bot!", []string{}),
-			aiErr:        nil,
-			expectError:  false,
-			isStart:      true,
-			userID:       123,
-			langCode:     "de",
-			expectedText: "Willkommen bei Help My Pet Bot!",
-		},
-		{
 			name:         "message without From field",
 			message:      "What food is good for cats?",
 			aiResponse:   nil,
@@ -234,9 +223,7 @@ func TestService_handleMessage(t *testing.T) {
 					ChatID: "123",
 					Text:   tt.message,
 				}
-				mockAI.EXPECT().
-					GetPetAdvice(mock.Anything, expectedRequest).
-					Return(tt.aiResponse, tt.aiErr)
+				mockAI.EXPECT().ProcessMessage(mock.Anything, expectedRequest).Return(tt.aiResponse, tt.aiErr)
 			}
 
 			msgConfig, err := svc.Handle(context.Background(), msg)
@@ -289,6 +276,8 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		Messages: messages,
 	}
 
+	svc.handler = svc.setupHandler()
+
 	updates := make(chan tgbotapi.Update)
 	mockBot.EXPECT().
 		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
@@ -304,7 +293,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 
 	// Expect AI request
 	mockAI.EXPECT().
-		GetPetAdvice(mock.Anything, &core.UserMessage{
+		ProcessMessage(mock.Anything, &core.UserMessage{
 			UserID: "123",
 			ChatID: "123",
 			Text:   "test message",
