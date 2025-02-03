@@ -42,7 +42,7 @@ func TestProcessAnswer(t *testing.T) {
 
 func TestProcessAnswer_Complete(t *testing.T) {
 	state := NewPetProfileQuestionnaireState()
-	for _ = range state.QAPairs[:len(state.QAPairs)-1] {
+	for range state.QAPairs[:len(state.QAPairs)-1] {
 		done, _ := state.ProcessAnswer("Answer")
 		assert.False(t, done)
 	}
@@ -63,8 +63,9 @@ func TestProcessAnswer_NoMoreQuestions(t *testing.T) {
 
 func TestGetResults(t *testing.T) {
 	state := NewPetProfileQuestionnaireState()
-	for _ = range state.QAPairs {
-		state.ProcessAnswer("Answer")
+	for range state.QAPairs {
+		_, err := state.ProcessAnswer("Answer")
+		assert.NoError(t, err)
 	}
 
 	results, err := state.GetResults()
