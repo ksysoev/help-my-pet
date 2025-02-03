@@ -108,7 +108,9 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv *conversation.Co
 	// Handle follow-up questions if any
 	if len(response.Questions) > 0 {
 		// Initialize questionnaire
-		err := conv.StartFollowUpQuestions(response.Text, response.Questions)
+		if err := conv.StartFollowUpQuestions(response.Text, response.Questions); err != nil {
+			return nil, fmt.Errorf("failed to start follow-up questions: %w", err)
+		}
 
 		// Get the first question
 		currentQuestion, err := conv.GetCurrentQuestion()

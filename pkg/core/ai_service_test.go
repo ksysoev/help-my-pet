@@ -352,7 +352,8 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+				err := conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+				require.NoError(t, err)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").
@@ -388,8 +389,11 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 						Answers: []string{"Indoor", "Outdoor"},
 					},
 				}
-				conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
-				_, err := conv.AddQuestionAnswer("2 years old")
+
+				err := conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+				require.NoError(t, err)
+
+				_, err = conv.AddQuestionAnswer("2 years old")
 				require.NoError(t, err)
 
 				mockProfileRepo.EXPECT().GetCurrentProfile(context.Background(), "user123").Return(nil, ErrProfileNotFound)
@@ -429,7 +433,9 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					{Text: "How old is your cat?"},
 					{Text: "Is your cat indoor or outdoor?"},
 				}
-				conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+
+				err := conv.StartFollowUpQuestions("Cats need a balanced diet...", questions)
+				require.NoError(t, err)
 
 				mockRepo.EXPECT().
 					FindOrCreate(context.Background(), "test-chat").

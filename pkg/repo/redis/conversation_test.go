@@ -84,10 +84,13 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	// Create a conversation with questionnaire state
 	conv := conversation.NewConversation("test-id")
 	conv.AddMessage("user", "hello")
-	conv.StartFollowUpQuestions("initial prompt", []conversation.Question{
+
+	err := conv.StartFollowUpQuestions("initial prompt", []conversation.Question{
 		{Text: "question 1"},
 		{Text: "question 2"},
 	})
+
+	require.NoError(t, err)
 
 	data, err := json.Marshal(conv)
 	require.NoError(t, err)

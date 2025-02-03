@@ -133,7 +133,10 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 					{Text: "What type of pet do you have?", Answers: []string{"Dog", "Cat"}},
 					{Text: "How old is your pet?"},
 				}
-				conv.StartFollowUpQuestions("Initial prompt", questions)
+
+				err := conv.StartFollowUpQuestions("Initial prompt", questions)
+				require.NoError(t, err)
+
 				return conv
 			},
 			wantErr:      false,
@@ -154,9 +157,13 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 				questions := []Question{
 					{Text: "What type of pet do you have?"},
 				}
-				conv.StartFollowUpQuestions("Initial prompt", questions)
-				_, err := conv.AddQuestionAnswer("Dog")
+
+				err := conv.StartFollowUpQuestions("Initial prompt", questions)
 				require.NoError(t, err)
+
+				_, err = conv.AddQuestionAnswer("Dog")
+				require.NoError(t, err)
+
 				return conv
 			},
 			wantErr:      true,
@@ -202,8 +209,9 @@ func TestConversation_AddQuestionAnswer_AdditionalCases(t *testing.T) {
 			setupConv: func() *Conversation {
 				conv := NewConversation("test-id")
 				questions := []Question{{Text: "What type of pet do you have?"}}
-				conv.StartFollowUpQuestions("Initial prompt", questions)
-				_, err := conv.AddQuestionAnswer("Dog")
+				err := conv.StartFollowUpQuestions("Initial prompt", questions)
+				require.NoError(t, err)
+				_, err = conv.AddQuestionAnswer("Dog")
 				require.NoError(t, err)
 				return conv
 			},
@@ -249,8 +257,11 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 					{Text: "What type of pet do you have?"},
 					{Text: "How old is your pet?"},
 				}
-				conv.StartFollowUpQuestions("Initial prompt", questions)
-				_, err := conv.AddQuestionAnswer("Dog")
+
+				err := conv.StartFollowUpQuestions("Initial prompt", questions)
+				require.NoError(t, err)
+
+				_, err = conv.AddQuestionAnswer("Dog")
 				require.NoError(t, err)
 
 				_, err = conv.AddQuestionAnswer("2 years")

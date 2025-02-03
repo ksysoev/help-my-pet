@@ -49,11 +49,6 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage
 func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*Response, error) {
 	slog.DebugContext(ctx, "managing pet profile", "input", request.Text)
 
-	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get conversation: %w", err)
-	}
-
 	// Check if user is in the middle of a conversation
 	if conv.State != conversation.StatePetProfileQuestioning {
 		return nil, errors.New("cannot manage profile during a conversation")
