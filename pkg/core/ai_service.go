@@ -9,6 +9,39 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 )
 
+// ErrConversationNotFound is returned when a conversation is not found.
+var ErrConversationNotFound = fmt.Errorf("conversation not found")
+
+// ErrRateLimit is returned when the API rate limit is exceeded
+var ErrRateLimit = errors.New("rate limit exceeded")
+
+// ErrGlobalLimit is returned when the global daily request limit is exceeded
+var ErrGlobalLimit = errors.New("global request limit exceeded for today, please try again tomorrow")
+
+// ConversationRepository defines the interface for conversation storage operations.
+type ConversationRepository interface {
+	// Save stores a conversation in the repository.
+	Save(ctx context.Context, conversation *conversation.Conversation) error
+
+	// FindByID retrieves a conversation by its ID.
+	FindByID(ctx context.Context, id string) (*conversation.Conversation, error)
+
+	// FindOrCreate retrieves a conversation by ID or creates a new one if it doesn't exist.
+	FindOrCreate(ctx context.Context, id string) (*conversation.Conversation, error)
+}
+
+// LLMResult represents a structured response from the LLM
+type LLMResult struct {
+	Text      string                  `json:"text"`      // Main response text
+	Questions []conversation.Question `json:"questions"` // Optional follow-up questions
+}
+
+// LLM interface represents the language model capabilities
+type LLM interface {
+	// Call sends a prompt to the LLM and returns a structured response
+	Call(ctx context.Context, prompt string) (*LLMResult, error)
+}
+
 type AIService struct {
 	llm         LLM
 	repo        ConversationRepository

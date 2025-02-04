@@ -1,6 +1,7 @@
 package conversation
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -304,4 +305,143 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestConversationUnmarshal_NormalState(t *testing.T) {
+	data, err := json.Marshal(struct {
+		ID            string
+		State         ConversationState
+		Messages      []Message
+		Questionnaire json.RawMessage `json:"questionnaire"`
+	}{
+		ID:    "test-id",
+		State: StateNormal,
+		Messages: []Message{
+			{Content: "hello"},
+		},
+	})
+	require.NoError(t, err)
+
+	conv, err := Unmarshal(data)
+	assert.NoError(t, err)
+	assert.Equal(t, "test-id", conv.ID)
+	assert.Equal(t, StateNormal, conv.State)
+	assert.Equal(t, 1, len(conv.Messages))
+	assert.Nil(t, conv.Questionnaire)
+}
+
+func TestConversationUnmarshal_CompletedState(t *testing.T) {
+	data, err := json.Marshal(struct {
+		ID            string
+		State         ConversationState
+		Messages      []Message
+		Questionnaire json.RawMessage `json:"questionnaire"`
+	}{
+		ID:    "test-id",
+		State: StateCompleted,
+		Messages: []Message{
+			{Content: "finished"},
+		},
+	})
+	require.NoError(t, err)
+
+	conv, err := Unmarshal(data)
+	assert.NoError(t, err)
+	assert.Equal(t, "test-id", conv.ID)
+	assert.Equal(t, StateNormal, conv.State) // completed falls back to normal
+	assert.Equal(t, 1, len(conv.Messages))
+	assert.Nil(t, conv.Questionnaire)
+}
+
+func TestConversationUnmarshal_ProfileState(t *testing.T) {
+
+	mockQuestionnaire, err := json.Marshal(struct {
+		SomeField string
+	}{
+		SomeField: "test",
+	})
+	require.NoError(t, err)
+
+	data, err := json.Marshal(struct {
+		ID            string
+		State         ConversationState
+		Messages      []Message
+		Questionnaire json.RawMessage `json:"questionnaire"`
+	}{
+		ID:            "test-id",
+		State:         StatePetProfileQuestioning,
+		Messages:      []Message{},
+		Questionnaire: mockQuestionnaire,
+	})
+	require.NoError(t, err)
+
+	conv, err := Unmarshal(data)
+	assert.NoError(t, err)
+	assert.Equal(t, "test-id", conv.ID)
+	assert.Equal(t, StatePetProfileQuestioning, conv.State)
+	assert.NotNil(t, conv.Questionnaire)
+}
+
+func TestConversationUnmarshal_FollowUpState(t *testing.T) {
+	mockQuestionnaire, err := json.Marshal(struct {
+		InitialPrompt string
+		Questions     []Question
+	}{
+		InitialPrompt: "some prompt",
+		Questions: []Question{
+			{Text: "Q1"},
+		},
+	})
+	require.NoError(t, err)
+
+	data, err := json.Marshal(struct {
+		ID            string
+		State         ConversationState
+		Messages      []Message
+		Questionnaire json.RawMessage `json:"questionnaire"`
+	}{
+		ID:            "test-id",
+		State:         StateFollowUpQuestioning,
+		Messages:      []Message{},
+		Questionnaire: mockQuestionnaire,
+	})
+	require.NoError(t, err)
+
+	conv, err := Unmarshal(data)
+	assert.NoError(t, err)
+	assert.Equal(t, "test-id", conv.ID)
+	assert.Equal(t, StateFollowUpQuestioning, conv.State)
+	assert.NotNil(t, conv.Questionnaire)
+}
+
+func TestConversationUnmarshal_InvalidJSON(t *testing.T) {
+	_, err := Unmarshal([]byte("invalid json"))
+	assert.Error(t, err)
+}
+
+func TestConversationUnmarshal_InvalidJSONProfileState(t *testing.T) {
+	_, err := Unmarshal([]byte(`{"id":"test-id","state":"pet_profile_questioning","messages":[],"questionnaire":"invalid json"}`))
+	assert.Error(t, err)
+}
+
+func TestConversationUnmarshal_InvalidJSONFollowUpState(t *testing.T) {
+	_, err := Unmarshal([]byte(`{"id":"test-id","state":"follow_up_questioning","messages":[],"questionnaire":"invalid json"}`))
+	assert.Error(t, err)
+}
+
+func TestConversationUnmarshal_UnknownState(t *testing.T) {
+	data, err := json.Marshal(struct {
+		ID            string
+		State         ConversationState
+		Messages      []Message
+		Questionnaire json.RawMessage `json:"questionnaire"`
+	}{
+		ID:    "test-id",
+		State: "unknown_state",
+	})
+	require.NoError(t, err)
+
+	conv, err := Unmarshal(data)
+	assert.Error(t, err)
+	assert.Nil(t, conv)
 }
