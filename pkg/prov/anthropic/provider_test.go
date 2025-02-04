@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -59,7 +59,7 @@ func TestProvider_Call(t *testing.T) {
 	}
 
 	type testCase struct {
-		wantResult *core.LLMResult
+		wantResult *message.LLMResult
 		setupMock  func(t *testing.T) *Provider
 		name       string
 		prompt     string
@@ -71,7 +71,7 @@ func TestProvider_Call(t *testing.T) {
 			wantErr: false,
 			name:    "successful call with valid JSON response",
 			prompt:  "test prompt",
-			wantResult: &core.LLMResult{
+			wantResult: &message.LLMResult{
 				Text: "test response",
 				Questions: []conversation.Question{
 					{Text: "follow up?"},

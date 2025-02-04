@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -12,14 +13,14 @@ import (
 func TestProcessEditProfile(t *testing.T) {
 	tests := []struct {
 		name          string
-		request       *UserMessage
+		request       *message.UserMessage
 		setupMocks    func(*MockConversationRepository)
 		expectedText  string
 		expectedError string
 	}{
 		{
 			name: "successful profile creation",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				ChatID: "123",
 				Text:   "edit profile",
 			},
@@ -35,7 +36,7 @@ func TestProcessEditProfile(t *testing.T) {
 		},
 		{
 			name: "repository error",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				ChatID: "123",
 				Text:   "edit profile",
 			},
@@ -75,7 +76,7 @@ func TestProcessEditProfile(t *testing.T) {
 func TestProcessProfileAnswer(t *testing.T) {
 	tests := []struct {
 		name          string
-		request       *UserMessage
+		request       *message.UserMessage
 		conv          *conversation.Conversation
 		setupMocks    func(*MockConversationRepository, *MockPetProfileRepository)
 		expectedText  string
@@ -83,7 +84,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 	}{
 		{
 			name: "wrong conversation state",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				ChatID: "123",
 				Text:   "Test",
 			},
@@ -95,7 +96,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 		},
 		{
 			name: "successful answer and complete profile",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				ChatID: "123",
 				UserID: "user1",
 				Text:   "25", // The last answer (weight) that completes the profile
@@ -127,7 +128,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 		},
 		{
 			name: "continue questioning",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				ChatID: "123",
 				Text:   "Rex", // First answer (name)
 			},

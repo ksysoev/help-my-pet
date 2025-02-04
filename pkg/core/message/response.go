@@ -1,4 +1,4 @@
-package core
+package message
 
 // Response represents the structured response from the AI service
 type Response struct {

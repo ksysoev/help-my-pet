@@ -6,15 +6,16 @@ import (
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAIService_GetPetAdvice(t *testing.T) {
 	tests := []struct {
-		request        *UserMessage
-		response       *LLMResult
-		expectedResult *Response
+		request        *message.UserMessage
+		response       *message.LLMResult
+		expectedResult *message.Response
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conversation *conversation.Conversation)
 		name           string
 		errorContains  string
@@ -22,12 +23,12 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 	}{
 		{
 			name: "successful response with follow-up questions",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			response: &LLMResult{
+			response: &message.LLMResult{
 				Text: "Cats need a balanced diet...",
 				Questions: []conversation.Question{
 					{Text: "How old is your cat?"},
@@ -37,9 +38,8 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: &Response{
+			expectedResult: &message.Response{
 				Message: "Cats need a balanced diet...\n\nHow old is your cat?",
-				Answers: []string{},
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				mockRateLimiter.On("IsNewQuestionAllowed", context.Background(), "user123").Return(true, nil)
@@ -55,7 +55,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&LLMResult{
+					Return(&message.LLMResult{
 						Text: "Cats need a balanced diet...",
 						Questions: []conversation.Question{
 							{Text: "How old is your cat?"},
@@ -74,16 +74,16 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "successful response without questions",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
 			},
-			response: &LLMResult{
+			response: &message.LLMResult{
 				Text:      "Cats need a balanced diet...",
 				Questions: []conversation.Question{},
 			},
-			expectedResult: &Response{
+			expectedResult: &message.Response{
 				Message: "Cats need a balanced diet...",
 				Answers: []string{},
 			},
@@ -101,7 +101,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				expectedPrompt := "What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&LLMResult{
+					Return(&message.LLMResult{
 						Text:      "Cats need a balanced diet...",
 						Questions: []conversation.Question{},
 					}, nil)
@@ -114,16 +114,16 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "empty question",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "",
 			},
-			response: &LLMResult{
+			response: &message.LLMResult{
 				Text:      "I understand you have a pet-related question...",
 				Questions: []conversation.Question{},
 			},
-			expectedResult: &Response{
+			expectedResult: &message.Response{
 				Message: "I understand you have a pet-related question...",
 				Answers: []string{},
 			},
@@ -141,7 +141,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				expectedPrompt := ""
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&LLMResult{
+					Return(&message.LLMResult{
 						Text:      "I understand you have a pet-related question...",
 						Questions: []conversation.Question{},
 					}, nil)
@@ -154,7 +154,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "llm error",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
@@ -180,7 +180,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "repository FindOrCreate error",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
@@ -195,7 +195,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "rate limit exceeded",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
@@ -211,7 +211,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "rate limit check error",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
@@ -227,7 +227,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "repository Save error",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What food is good for cats?",
@@ -248,16 +248,16 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 		},
 		{
 			name: "with conversation history",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "What about dogs?",
 			},
-			response: &LLMResult{
+			response: &message.LLMResult{
 				Text:      "Dogs need different food...",
 				Questions: []conversation.Question{},
 			},
-			expectedResult: &Response{
+			expectedResult: &message.Response{
 				Message: "Dogs need different food...",
 				Answers: []string{},
 			},
@@ -281,7 +281,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				expectedPrompt := "Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&LLMResult{
+					Return(&message.LLMResult{
 						Text:      "Dogs need different food...",
 						Questions: []conversation.Question{},
 					}, nil)
@@ -325,8 +325,8 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 
 func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	tests := []struct {
-		request        *UserMessage
-		expectedResult *Response
+		request        *message.UserMessage
+		expectedResult *message.Response
 		setupMocks     func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation)
 		name           string
 		errorContains  string
@@ -334,12 +334,12 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	}{
 		{
 			name: "successful questionnaire response with next question",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "2 years old",
 			},
-			expectedResult: &Response{
+			expectedResult: &message.Response{
 				Message: "Is your cat indoor or outdoor?",
 				Answers: []string{"Indoor", "Outdoor"},
 			},
@@ -371,12 +371,12 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 		},
 		{
 			name: "successful questionnaire completion",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "Indoor",
 			},
-			expectedResult: &Response{
+			expectedResult: &message.Response{
 				Message: "Based on your answers, here's my advice...",
 				Answers: []string{},
 			},
@@ -410,7 +410,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				expectedPrompt := "Follow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
-					Return(&LLMResult{
+					Return(&message.LLMResult{
 						Text: "Based on your answers, here's my advice...",
 					}, nil)
 
@@ -423,7 +423,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 		},
 		{
 			name: "error saving conversation in questionnaire",
-			request: &UserMessage{
+			request: &message.UserMessage{
 				UserID: "user123",
 				ChatID: "test-chat",
 				Text:   "2 years old",
@@ -492,7 +492,7 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 
 	svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
-	request := &UserMessage{
+	request := &message.UserMessage{
 		UserID: "user123",
 		ChatID: "test-chat",
 		Text:   "test question",
@@ -534,7 +534,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 
 	svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)
 
-	request := &UserMessage{
+	request := &message.UserMessage{
 		UserID: "user123",
 		ChatID: "test-chat",
 		Text:   "test question",

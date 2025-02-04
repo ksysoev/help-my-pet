@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
 // Config holds the configuration for the Anthropic provider
@@ -46,7 +46,7 @@ func New(cfg Config) (*Provider, error) {
 }
 
 // Call sends a message to the Anthropic API and returns the structured response
-func (p *Provider) Call(ctx context.Context, prompt string) (*core.LLMResult, error) {
+func (p *Provider) Call(ctx context.Context, prompt string) (*message.LLMResult, error) {
 	formatInstructions := p.parser.FormatInstructions()
 
 	slog.DebugContext(ctx, "Anthropic LLM call",

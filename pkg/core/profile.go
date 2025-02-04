@@ -7,9 +7,10 @@ import (
 	"log/slog"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
-func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage) (*Response, error) {
+func (s *AIService) ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error) {
 	slog.DebugContext(ctx, "managing pet profile", "input", request.Text)
 
 	conv, err := s.repo.FindOrCreate(ctx, request.ChatID)
@@ -33,10 +34,10 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage
 		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	return NewResponse(currentQuestion.Text, currentQuestion.Answers), nil
+	return message.NewResponse(currentQuestion.Text, currentQuestion.Answers), nil
 }
 
-func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*Response, error) {
+func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation.Conversation, request *message.UserMessage) (*message.Response, error) {
 	slog.DebugContext(ctx, "managing pet profile", "input", request.Text)
 
 	// Check if user is in the middle of a conversation
@@ -87,7 +88,7 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 			return nil, fmt.Errorf("failed to save profile: %w", err)
 		}
 
-		return NewResponse("Pet profile saved successfully", []string{}), nil
+		return message.NewResponse("Pet profile saved successfully", []string{}), nil
 	}
 
 	// Get the next question
@@ -106,5 +107,5 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 	if len(currentQuestion.Answers) > 0 {
 		answers = currentQuestion.Answers
 	}
-	return NewResponse(currentQuestion.Text, answers), nil
+	return message.NewResponse(currentQuestion.Text, answers), nil
 }

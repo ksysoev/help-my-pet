@@ -6,9 +6,10 @@ import (
 	"fmt"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
-func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*Response, error) {
+func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversation.Conversation, request *message.UserMessage) (*message.Response, error) {
 	// Store the answer and check if questionnaire is complete
 	isComplete, err := conv.AddQuestionAnswer(request.Text)
 	if err != nil {
@@ -68,7 +69,7 @@ func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversatio
 			return nil, fmt.Errorf("failed to save conversation: %w", err)
 		}
 
-		return NewResponse(response.Text, []string{}), nil
+		return message.NewResponse(response.Text, []string{}), nil
 	}
 
 	// Get next question
@@ -82,5 +83,5 @@ func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversatio
 		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	return NewResponse(currentQuestion.Text, currentQuestion.Answers), nil
+	return message.NewResponse(currentQuestion.Text, currentQuestion.Answers), nil
 }

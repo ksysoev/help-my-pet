@@ -6,7 +6,7 @@ import (
 	"log/slog"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
@@ -19,7 +19,7 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 		msg.ParseMode = "HTML"
 		return msg, nil
 	case "editprofile":
-		req, err := core.NewUserMessage(
+		req, err := message.NewUserMessage(
 			fmt.Sprintf("%d", msg.From.ID),
 			fmt.Sprintf("%d", msg.Chat.ID),
 			msg.Text,

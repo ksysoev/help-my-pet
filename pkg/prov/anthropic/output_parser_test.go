@@ -3,15 +3,15 @@ package anthropic_test
 import (
 	"testing"
 
-	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestResponseParser_Parse(t *testing.T) {
 	tests := []struct {
-		expected *core.LLMResult
+		expected *message.LLMResult
 		name     string
 		input    string
 		wantErr  bool
@@ -27,7 +27,7 @@ func TestResponseParser_Parse(t *testing.T) {
 					}
 				]
 			}`,
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text: "Your cat needs regular grooming.",
 				Questions: []conversation.Question{
 					{
@@ -41,7 +41,7 @@ func TestResponseParser_Parse(t *testing.T) {
 		{
 			name:  "JSON response in markdown code block",
 			input: "```json\n{\n\t\"text\": \"Feed your cat twice daily.\",\n\t\"questions\": []\n}\n```",
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text:      "Feed your cat twice daily.",
 				Questions: []conversation.Question{},
 			},
@@ -61,7 +61,7 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text: "Line 1\nLine 2",
 				Questions: []conversation.Question{
 					{
@@ -83,7 +83,7 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text: "Tab\there \"quoted\" text\\with\\backslashes",
 				Questions: []conversation.Question{
 					{
@@ -119,7 +119,7 @@ newline", "Normal answer"]
 					]
 				}
 			`,
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text: "First line\n\t\t\t\t\tsecond line\n\t\t\t\t\tthird line",
 				Questions: []conversation.Question{
 					{
@@ -142,7 +142,7 @@ newline", "Normal answer"]
 				"text": "Simple advice without questions.",
 				"questions": []
 			}`,
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text:      "Simple advice without questions.",
 				Questions: []conversation.Question{},
 			},
@@ -163,7 +163,7 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text: "Here's your pet advice.",
 				Questions: []conversation.Question{
 					{
@@ -189,7 +189,7 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.LLMResult{
+			expected: &message.LLMResult{
 				Text: "Text with // comment",
 				Questions: []conversation.Question{
 					{

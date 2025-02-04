@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -56,9 +56,9 @@ func TestHandleCommand(t *testing.T) {
 			chatID:       123,
 			userID:       456,
 			mockSetup: func(m *MockAIProvider, msgs *i18n.Config) {
-				m.On("ProcessEditProfile", mock.Anything, mock.MatchedBy(func(req *core.UserMessage) bool {
+				m.On("ProcessEditProfile", mock.Anything, mock.MatchedBy(func(req *message.UserMessage) bool {
 					return req.UserID == "456" && req.ChatID == "123"
-				})).Return(&core.Response{Message: "Profile updated"}, nil)
+				})).Return(&message.Response{Message: "Profile updated"}, nil)
 			},
 			expectedMsg: "Profile updated",
 		},

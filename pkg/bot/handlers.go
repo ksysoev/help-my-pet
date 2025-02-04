@@ -9,6 +9,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot/middleware"
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
@@ -50,13 +51,13 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 		return s.HandleCommand(ctx, msg)
 	}
 
-	request, err := core.NewUserMessage(
+	request, err := message.NewUserMessage(
 		fmt.Sprintf("%d", msg.From.ID),
 		fmt.Sprintf("%d", msg.Chat.ID),
 		msg.Text,
 	)
 
-	if errors.Is(err, core.ErrTextTooLong) {
+	if errors.Is(err, message.ErrTextTooLong) {
 		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.MessageTooLong)), nil
 	} else if err != nil {
 		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.ErrorMessage)), nil

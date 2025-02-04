@@ -10,7 +10,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/google/uuid"
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
@@ -27,8 +27,8 @@ type BotAPI interface {
 }
 
 type AIProvider interface {
-	ProcessMessage(ctx context.Context, request *core.UserMessage) (*core.Response, error)
-	ProcessEditProfile(ctx context.Context, request *core.UserMessage) (*core.Response, error)
+	ProcessMessage(ctx context.Context, request *message.UserMessage) (*message.Response, error)
+	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 }
 
 // Config holds the configuration for the Telegram bot

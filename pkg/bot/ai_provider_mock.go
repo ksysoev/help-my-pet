@@ -7,7 +7,7 @@ package bot
 import (
 	context "context"
 
-	core "github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -25,27 +25,27 @@ func (_m *MockAIProvider) EXPECT() *MockAIProvider_Expecter {
 }
 
 // ProcessEditProfile provides a mock function with given fields: ctx, request
-func (_m *MockAIProvider) ProcessEditProfile(ctx context.Context, request *core.UserMessage) (*core.Response, error) {
+func (_m *MockAIProvider) ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error) {
 	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ProcessEditProfile")
 	}
 
-	var r0 *core.Response
+	var r0 *message.Response
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) (*core.Response, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) (*message.Response, error)); ok {
 		return rf(ctx, request)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) *core.Response); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) *message.Response); ok {
 		r0 = rf(ctx, request)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*core.Response)
+			r0 = ret.Get(0).(*message.Response)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *core.UserMessage) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *message.UserMessage) error); ok {
 		r1 = rf(ctx, request)
 	} else {
 		r1 = ret.Error(1)
@@ -66,45 +66,45 @@ func (_e *MockAIProvider_Expecter) ProcessEditProfile(ctx interface{}, request i
 	return &MockAIProvider_ProcessEditProfile_Call{Call: _e.mock.On("ProcessEditProfile", ctx, request)}
 }
 
-func (_c *MockAIProvider_ProcessEditProfile_Call) Run(run func(ctx context.Context, request *core.UserMessage)) *MockAIProvider_ProcessEditProfile_Call {
+func (_c *MockAIProvider_ProcessEditProfile_Call) Run(run func(ctx context.Context, request *message.UserMessage)) *MockAIProvider_ProcessEditProfile_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*core.UserMessage))
+		run(args[0].(context.Context), args[1].(*message.UserMessage))
 	})
 	return _c
 }
 
-func (_c *MockAIProvider_ProcessEditProfile_Call) Return(_a0 *core.Response, _a1 error) *MockAIProvider_ProcessEditProfile_Call {
+func (_c *MockAIProvider_ProcessEditProfile_Call) Return(_a0 *message.Response, _a1 error) *MockAIProvider_ProcessEditProfile_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockAIProvider_ProcessEditProfile_Call) RunAndReturn(run func(context.Context, *core.UserMessage) (*core.Response, error)) *MockAIProvider_ProcessEditProfile_Call {
+func (_c *MockAIProvider_ProcessEditProfile_Call) RunAndReturn(run func(context.Context, *message.UserMessage) (*message.Response, error)) *MockAIProvider_ProcessEditProfile_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // ProcessMessage provides a mock function with given fields: ctx, request
-func (_m *MockAIProvider) ProcessMessage(ctx context.Context, request *core.UserMessage) (*core.Response, error) {
+func (_m *MockAIProvider) ProcessMessage(ctx context.Context, request *message.UserMessage) (*message.Response, error) {
 	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ProcessMessage")
 	}
 
-	var r0 *core.Response
+	var r0 *message.Response
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) (*core.Response, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) (*message.Response, error)); ok {
 		return rf(ctx, request)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) *core.Response); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) *message.Response); ok {
 		r0 = rf(ctx, request)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*core.Response)
+			r0 = ret.Get(0).(*message.Response)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *core.UserMessage) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *message.UserMessage) error); ok {
 		r1 = rf(ctx, request)
 	} else {
 		r1 = ret.Error(1)
@@ -125,19 +125,19 @@ func (_e *MockAIProvider_Expecter) ProcessMessage(ctx interface{}, request inter
 	return &MockAIProvider_ProcessMessage_Call{Call: _e.mock.On("ProcessMessage", ctx, request)}
 }
 
-func (_c *MockAIProvider_ProcessMessage_Call) Run(run func(ctx context.Context, request *core.UserMessage)) *MockAIProvider_ProcessMessage_Call {
+func (_c *MockAIProvider_ProcessMessage_Call) Run(run func(ctx context.Context, request *message.UserMessage)) *MockAIProvider_ProcessMessage_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*core.UserMessage))
+		run(args[0].(context.Context), args[1].(*message.UserMessage))
 	})
 	return _c
 }
 
-func (_c *MockAIProvider_ProcessMessage_Call) Return(_a0 *core.Response, _a1 error) *MockAIProvider_ProcessMessage_Call {
+func (_c *MockAIProvider_ProcessMessage_Call) Return(_a0 *message.Response, _a1 error) *MockAIProvider_ProcessMessage_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockAIProvider_ProcessMessage_Call) RunAndReturn(run func(context.Context, *core.UserMessage) (*core.Response, error)) *MockAIProvider_ProcessMessage_Call {
+func (_c *MockAIProvider_ProcessMessage_Call) RunAndReturn(run func(context.Context, *message.UserMessage) (*message.Response, error)) *MockAIProvider_ProcessMessage_Call {
 	_c.Call.Return(run)
 	return _c
 }
