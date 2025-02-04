@@ -17,11 +17,6 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage
 		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
-	// Check if user is in the middle of a conversation
-	if conv.State != conversation.StateNormal {
-		return nil, errors.New("cannot manage profile during a conversation")
-	}
-
 	// Start pet profile questionnaire
 	if err := conv.StartProfileQuestions(); err != nil {
 		return nil, fmt.Errorf("failed to start profile questions: %w", err)
@@ -38,12 +33,7 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *UserMessage
 		return nil, fmt.Errorf("failed to save conversation: %w", err)
 	}
 
-	// Return response with first question
-	var answers []string
-	if len(currentQuestion.Answers) > 0 {
-		answers = currentQuestion.Answers
-	}
-	return NewResponse(currentQuestion.Text, answers), nil
+	return NewResponse(currentQuestion.Text, currentQuestion.Answers), nil
 }
 
 func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation.Conversation, request *UserMessage) (*Response, error) {
@@ -104,6 +94,11 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation
 	currentQuestion, err := conv.GetCurrentQuestion()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get next question: %w", err)
+	}
+
+	// Save conversation state after adding answer
+	if err := s.repo.Save(ctx, conv); err != nil {
+		return nil, fmt.Errorf("failed to save conversation state: %w", err)
 	}
 
 	// Return response with next question
