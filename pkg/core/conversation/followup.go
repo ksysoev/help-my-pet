@@ -1,5 +1,7 @@
 package conversation
 
+import "github.com/ksysoev/help-my-pet/pkg/core/message"
+
 // FollowUpQuestionnaireState represents the state for follow-up questions from LLM
 type FollowUpQuestionnaireState struct {
 	InitialPrompt string           `json:"initial_prompt"`
@@ -7,7 +9,7 @@ type FollowUpQuestionnaireState struct {
 	CurrentIndex  int              `json:"current_index"`
 }
 
-func NewFollowUpQuestionnaireState(initPrompt string, questions []Question) *FollowUpQuestionnaireState {
+func NewFollowUpQuestionnaireState(initPrompt string, questions []message.Question) *FollowUpQuestionnaireState {
 	qaPairs := make([]QuestionAnswer, len(questions))
 	for i, q := range questions {
 		qaPairs[i] = QuestionAnswer{
@@ -23,7 +25,7 @@ func NewFollowUpQuestionnaireState(initPrompt string, questions []Question) *Fol
 	}
 }
 
-func (f *FollowUpQuestionnaireState) GetCurrentQuestion() (*Question, error) {
+func (f *FollowUpQuestionnaireState) GetCurrentQuestion() (*message.Question, error) {
 	if f.CurrentIndex >= len(f.QAPairs) {
 		return nil, ErrNoMoreQuestions
 	}

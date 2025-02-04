@@ -1,9 +1,13 @@
 package message
 
-import "github.com/ksysoev/help-my-pet/pkg/core/conversation"
-
 // LLMResult represents a structured response from the LLM
 type LLMResult struct {
-	Text      string                  `json:"text"`      // Main response text
-	Questions []conversation.Question `json:"questions"` // Optional follow-up questions
+	Text      string     `json:"text"`      // Main response text
+	Questions []Question `json:"questions"` // Optional follow-up questions
+}
+
+// Question represents a follow-up question with optional predefined answers
+type Question struct {
+	Text    string   `json:"text"`
+	Answers []string `json:"answers,omitempty"`
 }

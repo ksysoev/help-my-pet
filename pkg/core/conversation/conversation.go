@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
 // ConversationState represents the current state of the conversation
@@ -27,7 +29,7 @@ var (
 // QuestionnaireState represents the interface that all questionnaire states must implement
 type QuestionnaireState interface {
 	// GetCurrentQuestion returns the current question to be asked
-	GetCurrentQuestion() (*Question, error)
+	GetCurrentQuestion() (*message.Question, error)
 
 	// ProcessAnswer processes the answer for the current question and returns true if questionnaire is complete
 	ProcessAnswer(answer string) (bool, error)
@@ -36,17 +38,11 @@ type QuestionnaireState interface {
 	GetResults() ([]QuestionAnswer, error)
 }
 
-// Question represents a follow-up question with optional predefined answers
-type Question struct {
-	Text    string   `json:"text"`
-	Answers []string `json:"answers,omitempty"`
-}
-
 // QuestionAnswer pairs a question with its corresponding answer
 type QuestionAnswer struct {
-	Answer   string   `json:"answer"`
-	Field    string   `json:"field,omitempty"`
-	Question Question `json:"question"`
+	Answer   string           `json:"answer"`
+	Field    string           `json:"field,omitempty"`
+	Question message.Question `json:"question"`
 }
 
 // Conversation represents a chat conversation with its context and messages.
@@ -93,7 +89,7 @@ func (c *Conversation) GetContext() []Message {
 }
 
 // StartFollowUpQuestions initializes the follow-up questioning state (backward compatible name)
-func (c *Conversation) StartFollowUpQuestions(initialPrompt string, questions []Question) error {
+func (c *Conversation) StartFollowUpQuestions(initialPrompt string, questions []message.Question) error {
 	if c.State != StateNormal {
 		return fmt.Errorf("conversation is not in normal state %s", c.State)
 	}
@@ -129,7 +125,7 @@ func (c *Conversation) StartProfileQuestions() error {
 }
 
 // GetCurrentQuestion returns the current question in the active questionnaire
-func (c *Conversation) GetCurrentQuestion() (*Question, error) {
+func (c *Conversation) GetCurrentQuestion() (*message.Question, error) {
 	switch c.State {
 	case StateFollowUpQuestioning, StatePetProfileQuestioning: // LLM questionnaire
 		if c.Questionnaire == nil {

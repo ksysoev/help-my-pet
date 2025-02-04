@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -122,7 +123,7 @@ func TestConversation_MessageHistory(t *testing.T) {
 func TestConversation_GetCurrentQuestion(t *testing.T) {
 	tests := []struct {
 		setupConv    func() *Conversation
-		wantQuestion *Question
+		wantQuestion *message.Question
 		name         string
 		wantErr      bool
 	}{
@@ -130,7 +131,7 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 			name: "get first question",
 			setupConv: func() *Conversation {
 				conv := NewConversation("test-id")
-				questions := []Question{
+				questions := []message.Question{
 					{Text: "What type of pet do you have?", Answers: []string{"Dog", "Cat"}},
 					{Text: "How old is your pet?"},
 				}
@@ -141,7 +142,7 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 				return conv
 			},
 			wantErr:      false,
-			wantQuestion: &Question{Text: "What type of pet do you have?", Answers: []string{"Dog", "Cat"}},
+			wantQuestion: &message.Question{Text: "What type of pet do you have?", Answers: []string{"Dog", "Cat"}},
 		},
 		{
 			name: "no questionnaire started",
@@ -155,7 +156,7 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 			name: "all questions answered",
 			setupConv: func() *Conversation {
 				conv := NewConversation("test-id")
-				questions := []Question{
+				questions := []message.Question{
 					{Text: "What type of pet do you have?"},
 				}
 
@@ -209,7 +210,7 @@ func TestConversation_AddQuestionAnswer_AdditionalCases(t *testing.T) {
 			name: "attempt to answer after completion",
 			setupConv: func() *Conversation {
 				conv := NewConversation("test-id")
-				questions := []Question{{Text: "What type of pet do you have?"}}
+				questions := []message.Question{{Text: "What type of pet do you have?"}}
 				err := conv.StartFollowUpQuestions("Initial prompt", questions)
 				require.NoError(t, err)
 				_, err = conv.AddQuestionAnswer("Dog")
@@ -254,7 +255,7 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 			name: "get complete questionnaire result",
 			setupConv: func() *Conversation {
 				conv := NewConversation("test-id")
-				questions := []Question{
+				questions := []message.Question{
 					{Text: "What type of pet do you have?"},
 					{Text: "How old is your pet?"},
 				}
@@ -293,11 +294,11 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 				assert.NoError(t, err)
 				expectedQA := []QuestionAnswer{
 					{
-						Question: Question{Text: "What type of pet do you have?"},
+						Question: message.Question{Text: "What type of pet do you have?"},
 						Answer:   "Dog",
 					},
 					{
-						Question: Question{Text: "How old is your pet?"},
+						Question: message.Question{Text: "How old is your pet?"},
 						Answer:   "2 years",
 					},
 				}
@@ -385,10 +386,10 @@ func TestConversationUnmarshal_ProfileState(t *testing.T) {
 func TestConversationUnmarshal_FollowUpState(t *testing.T) {
 	mockQuestionnaire, err := json.Marshal(struct {
 		InitialPrompt string
-		Questions     []Question
+		Questions     []message.Question
 	}{
 		InitialPrompt: "some prompt",
-		Questions: []Question{
+		Questions: []message.Question{
 			{Text: "Q1"},
 		},
 	})

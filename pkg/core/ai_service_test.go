@@ -30,7 +30,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			},
 			response: &message.LLMResult{
 				Text: "Cats need a balanced diet...",
-				Questions: []conversation.Question{
+				Questions: []message.Question{
 					{Text: "How old is your cat?"},
 					{
 						Text:    "Is your cat indoor or outdoor?",
@@ -57,7 +57,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
 						Text: "Cats need a balanced diet...",
-						Questions: []conversation.Question{
+						Questions: []message.Question{
 							{Text: "How old is your cat?"},
 							{
 								Text:    "Is your cat indoor or outdoor?",
@@ -81,7 +81,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			},
 			response: &message.LLMResult{
 				Text:      "Cats need a balanced diet...",
-				Questions: []conversation.Question{},
+				Questions: []message.Question{},
 			},
 			expectedResult: &message.Response{
 				Message: "Cats need a balanced diet...",
@@ -103,7 +103,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
 						Text:      "Cats need a balanced diet...",
-						Questions: []conversation.Question{},
+						Questions: []message.Question{},
 					}, nil)
 				// Expect second save after LLM response
 				mockRepo.EXPECT().
@@ -121,7 +121,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			},
 			response: &message.LLMResult{
 				Text:      "I understand you have a pet-related question...",
-				Questions: []conversation.Question{},
+				Questions: []message.Question{},
 			},
 			expectedResult: &message.Response{
 				Message: "I understand you have a pet-related question...",
@@ -143,7 +143,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
 						Text:      "I understand you have a pet-related question...",
-						Questions: []conversation.Question{},
+						Questions: []message.Question{},
 					}, nil)
 				// Expect second save after LLM response
 				mockRepo.EXPECT().
@@ -255,7 +255,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 			},
 			response: &message.LLMResult{
 				Text:      "Dogs need different food...",
-				Questions: []conversation.Question{},
+				Questions: []message.Question{},
 			},
 			expectedResult: &message.Response{
 				Message: "Dogs need different food...",
@@ -283,7 +283,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
 						Text:      "Dogs need different food...",
-						Questions: []conversation.Question{},
+						Questions: []message.Question{},
 					}, nil)
 
 				// Expect second save after LLM response
@@ -345,7 +345,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				// Setup conversation in questioning state
-				questions := []conversation.Question{
+				questions := []message.Question{
 					{Text: "How old is your cat?"},
 					{
 						Text:    "Is your cat indoor or outdoor?",
@@ -382,7 +382,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
 				// Setup conversation in questioning state with last question
-				questions := []conversation.Question{
+				questions := []message.Question{
 					{Text: "How old is your cat?"},
 					{
 						Text:    "Is your cat indoor or outdoor?",
@@ -429,7 +429,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 				Text:   "2 years old",
 			},
 			setupMocks: func(t *testing.T, mockLLM *MockLLM, mockRepo *MockConversationRepository, mockProfileRepo *MockPetProfileRepository, mockRateLimiter *MockRateLimiter, conv *conversation.Conversation) {
-				questions := []conversation.Question{
+				questions := []message.Question{
 					{Text: "How old is your cat?"},
 					{Text: "Is your cat indoor or outdoor?"},
 				}

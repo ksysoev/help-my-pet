@@ -1,5 +1,7 @@
 package conversation
 
+import "github.com/ksysoev/help-my-pet/pkg/core/message"
+
 // PetProfileStateImpl implements QuestionnaireState
 type PetProfileStateImpl struct {
 	QAPairs      []QuestionAnswer `json:"qa_pairs"`
@@ -10,39 +12,39 @@ type PetProfileStateImpl struct {
 func NewPetProfileQuestionnaireState() *PetProfileStateImpl {
 	questions := []QuestionAnswer{
 		{
-			Question: Question{
+			Question: message.Question{
 				Text: "What is your pet's name?",
 			},
 			Field: "name",
 		},
 		{
-			Question: Question{
+			Question: message.Question{
 				Text:    "What type of pet do you have?",
 				Answers: []string{"dog", "cat", "bird", "fish", "other"},
 			},
 			Field: "species",
 		},
 		{
-			Question: Question{
+			Question: message.Question{
 				Text: "What breed is your pet?",
 			},
 			Field: "breed",
 		},
 		{
-			Question: Question{
+			Question: message.Question{
 				Text: "When was your pet born? (YYYY-MM-DD)",
 			},
 			Field: "dob",
 		},
 		{
-			Question: Question{
+			Question: message.Question{
 				Text:    "What is your pet's gender?",
 				Answers: []string{"male", "female"},
 			},
 			Field: "gender",
 		},
 		{
-			Question: Question{
+			Question: message.Question{
 				Text: "How much does your pet weigh? (in kg)",
 			},
 			Field: "weight",
@@ -59,7 +61,7 @@ func NewPetProfileStateImpl(questions []QuestionAnswer) *PetProfileStateImpl {
 	}
 }
 
-func (s *PetProfileStateImpl) GetCurrentQuestion() (*Question, error) {
+func (s *PetProfileStateImpl) GetCurrentQuestion() (*message.Question, error) {
 	if s.CurrentIndex >= len(s.QAPairs) {
 		return nil, ErrNoMoreQuestions
 	}

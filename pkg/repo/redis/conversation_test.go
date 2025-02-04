@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-redis/redismock/v9"
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -85,7 +86,7 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	conv := conversation.NewConversation("test-id")
 	conv.AddMessage("user", "hello")
 
-	err := conv.StartFollowUpQuestions("initial prompt", []conversation.Question{
+	err := conv.StartFollowUpQuestions("initial prompt", []message.Question{
 		{Text: "question 1"},
 		{Text: "question 2"},
 	})

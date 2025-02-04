@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
 )
@@ -73,7 +72,7 @@ func TestProvider_Call(t *testing.T) {
 			prompt:  "test prompt",
 			wantResult: &message.LLMResult{
 				Text: "test response",
-				Questions: []conversation.Question{
+				Questions: []message.Question{
 					{Text: "follow up?"},
 				},
 			},
