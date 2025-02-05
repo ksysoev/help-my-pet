@@ -7,16 +7,21 @@ import (
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	"github.com/ksysoev/help-my-pet/pkg/core/pet"
 )
 
-// ErrConversationNotFound is returned when a conversation is not found.
-var ErrConversationNotFound = fmt.Errorf("conversation not found")
+var (
+	// ErrConversationNotFound is returned when a conversation is not found.
+	ErrConversationNotFound = fmt.Errorf("conversation not found")
 
-// ErrRateLimit is returned when the API rate limit is exceeded
-var ErrRateLimit = errors.New("rate limit exceeded")
+	// ErrRateLimit is returned when the API rate limit is exceeded
+	ErrRateLimit = errors.New("rate limit exceeded")
 
-// ErrGlobalLimit is returned when the global daily request limit is exceeded
-var ErrGlobalLimit = errors.New("global request limit exceeded for today, please try again tomorrow")
+	// ErrGlobalLimit is returned when the global daily request limit is exceeded
+	ErrGlobalLimit = errors.New("global request limit exceeded for today, please try again tomorrow")
+
+	ErrProfileNotFound = fmt.Errorf("pet profile not found")
+)
 
 type Conversation interface {
 	GetID() string
@@ -48,6 +53,12 @@ type RateLimiter interface {
 	IsNewQuestionAllowed(ctx context.Context, userID string) (bool, error)
 	// RecordNewQuestion records that a user has asked a new question
 	RecordNewQuestion(ctx context.Context, userID string) error
+}
+
+// PetProfileRepository defines the interface for pet profile storage operations
+type PetProfileRepository interface {
+	SaveProfile(ctx context.Context, userID string, profile *pet.Profile) error
+	GetCurrentProfile(ctx context.Context, userID string) (*pet.Profile, error)
 }
 
 // LLM interface represents the language model capabilities

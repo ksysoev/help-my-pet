@@ -6,6 +6,7 @@ import (
 	"log/slog"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	"github.com/ksysoev/help-my-pet/pkg/core/pet"
 )
 
 func (s *AIService) ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error) {
@@ -51,7 +52,7 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv Conversation,
 			return nil, fmt.Errorf("failed to get questionnaire result: %w", err)
 		}
 
-		var profile PetProfile
+		var profile pet.Profile
 
 		for _, qa := range result {
 			switch qa.Field {

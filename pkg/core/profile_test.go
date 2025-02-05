@@ -6,6 +6,7 @@ import (
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	"github.com/ksysoev/help-my-pet/pkg/core/pet"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -107,7 +108,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 			setupMocks: func(repo *MockConversationRepository, profileRepo *MockPetProfileRepository) {
 				repo.EXPECT().Save(mock.Anything, mock.Anything).Return(nil)
 
-				profileRepo.EXPECT().SaveProfile(mock.Anything, "user1", mock.MatchedBy(func(p *PetProfile) bool {
+				profileRepo.EXPECT().SaveProfile(mock.Anything, "user1", mock.MatchedBy(func(p *pet.Profile) bool {
 					return p.Name == "Rex" && p.Species == "Dog" && p.Breed == "Labrador" &&
 						p.DateOfBirth == "2020-01-01" && p.Gender == "Male" && p.Weight == "25"
 				})).Return(nil)

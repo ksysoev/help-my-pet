@@ -1,4 +1,4 @@
-package core
+package pet
 
 import (
 	"testing"
@@ -7,12 +7,12 @@ import (
 func TestPetProfile_String(t *testing.T) {
 	tests := []struct {
 		name     string
-		profile  PetProfile
+		profile  Profile
 		expected string
 	}{
 		{
 			name: "All fields set",
-			profile: PetProfile{
+			profile: Profile{
 				Name:        "Buddy",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
@@ -32,7 +32,7 @@ Weight: 30.5
 		},
 		{
 			name: "Empty fields",
-			profile: PetProfile{
+			profile: Profile{
 				Name:        "",
 				Species:     "",
 				Breed:       "",
@@ -52,7 +52,7 @@ Weight:
 		},
 		{
 			name: "Partial fields set",
-			profile: PetProfile{
+			profile: Profile{
 				Name:    "Whiskers",
 				Species: "Cat",
 				Weight:  "4.2",
@@ -69,7 +69,7 @@ Weight: 4.2
 		},
 		{
 			name: "Date of birth set alone",
-			profile: PetProfile{
+			profile: Profile{
 				DateOfBirth: "2020-07-15",
 			},
 			expected: `
@@ -84,7 +84,7 @@ Weight:
 		},
 		{
 			name: "Negative weight",
-			profile: PetProfile{
+			profile: Profile{
 				Name:   "Tiny",
 				Weight: "-1.5",
 			},

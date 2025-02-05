@@ -7,6 +7,7 @@ package core
 import (
 	context "context"
 
+	"github.com/ksysoev/help-my-pet/pkg/core/pet"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -24,23 +25,23 @@ func (_m *MockPetProfileRepository) EXPECT() *MockPetProfileRepository_Expecter 
 }
 
 // GetCurrentProfile provides a mock function with given fields: ctx, userID
-func (_m *MockPetProfileRepository) GetCurrentProfile(ctx context.Context, userID string) (*PetProfile, error) {
+func (_m *MockPetProfileRepository) GetCurrentProfile(ctx context.Context, userID string) (*pet.Profile, error) {
 	ret := _m.Called(ctx, userID)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetCurrentProfile")
 	}
 
-	var r0 *PetProfile
+	var r0 *pet.Profile
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string) (*PetProfile, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*pet.Profile, error)); ok {
 		return rf(ctx, userID)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string) *PetProfile); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) *pet.Profile); ok {
 		r0 = rf(ctx, userID)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*PetProfile)
+			r0 = ret.Get(0).(*pet.Profile)
 		}
 	}
 
@@ -72,18 +73,18 @@ func (_c *MockPetProfileRepository_GetCurrentProfile_Call) Run(run func(ctx cont
 	return _c
 }
 
-func (_c *MockPetProfileRepository_GetCurrentProfile_Call) Return(_a0 *PetProfile, _a1 error) *MockPetProfileRepository_GetCurrentProfile_Call {
+func (_c *MockPetProfileRepository_GetCurrentProfile_Call) Return(_a0 *pet.Profile, _a1 error) *MockPetProfileRepository_GetCurrentProfile_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockPetProfileRepository_GetCurrentProfile_Call) RunAndReturn(run func(context.Context, string) (*PetProfile, error)) *MockPetProfileRepository_GetCurrentProfile_Call {
+func (_c *MockPetProfileRepository_GetCurrentProfile_Call) RunAndReturn(run func(context.Context, string) (*pet.Profile, error)) *MockPetProfileRepository_GetCurrentProfile_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // SaveProfile provides a mock function with given fields: ctx, userID, profile
-func (_m *MockPetProfileRepository) SaveProfile(ctx context.Context, userID string, profile *PetProfile) error {
+func (_m *MockPetProfileRepository) SaveProfile(ctx context.Context, userID string, profile *pet.Profile) error {
 	ret := _m.Called(ctx, userID, profile)
 
 	if len(ret) == 0 {
@@ -91,7 +92,7 @@ func (_m *MockPetProfileRepository) SaveProfile(ctx context.Context, userID stri
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, *PetProfile) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string, *pet.Profile) error); ok {
 		r0 = rf(ctx, userID, profile)
 	} else {
 		r0 = ret.Error(0)
@@ -108,14 +109,14 @@ type MockPetProfileRepository_SaveProfile_Call struct {
 // SaveProfile is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-//   - profile *PetProfile
+//   - profile *Profile
 func (_e *MockPetProfileRepository_Expecter) SaveProfile(ctx interface{}, userID interface{}, profile interface{}) *MockPetProfileRepository_SaveProfile_Call {
 	return &MockPetProfileRepository_SaveProfile_Call{Call: _e.mock.On("SaveProfile", ctx, userID, profile)}
 }
 
-func (_c *MockPetProfileRepository_SaveProfile_Call) Run(run func(ctx context.Context, userID string, profile *PetProfile)) *MockPetProfileRepository_SaveProfile_Call {
+func (_c *MockPetProfileRepository_SaveProfile_Call) Run(run func(ctx context.Context, userID string, profile *pet.Profile)) *MockPetProfileRepository_SaveProfile_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(string), args[2].(*PetProfile))
+		run(args[0].(context.Context), args[1].(string), args[2].(*pet.Profile))
 	})
 	return _c
 }
@@ -125,7 +126,7 @@ func (_c *MockPetProfileRepository_SaveProfile_Call) Return(_a0 error) *MockPetP
 	return _c
 }
 
-func (_c *MockPetProfileRepository_SaveProfile_Call) RunAndReturn(run func(context.Context, string, *PetProfile) error) *MockPetProfileRepository_SaveProfile_Call {
+func (_c *MockPetProfileRepository_SaveProfile_Call) RunAndReturn(run func(context.Context, string, *pet.Profile) error) *MockPetProfileRepository_SaveProfile_Call {
 	_c.Call.Return(run)
 	return _c
 }
