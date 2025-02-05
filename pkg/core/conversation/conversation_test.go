@@ -12,12 +12,12 @@ import (
 )
 
 func TestNewConversation(t *testing.T) {
-	id := "test-id"
+	id := "test-GetID"
 	conv := NewConversation(id)
 
-	assert.Equal(t, id, conv.ID)
+	assert.Equal(t, id, conv.GetID())
 	assert.Empty(t, conv.Messages)
-	assert.Equal(t, StateNormal, conv.State)
+	assert.Equal(t, StateNormal, conv.GetState())
 	assert.Nil(t, conv.Questionnaire)
 }
 
@@ -54,7 +54,7 @@ func TestConversation_AddMessage(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			conv := NewConversation("test-id")
+			conv := NewConversation("test-GetID")
 			beforeAdd := time.Now()
 			time.Sleep(time.Millisecond) // Ensure time difference
 
@@ -80,7 +80,7 @@ func TestConversation_AddMessage(t *testing.T) {
 }
 
 func TestConversation_GetContext(t *testing.T) {
-	conv := NewConversation("test-id")
+	conv := NewConversation("test-GetID")
 	messages := []struct {
 		role    string
 		content string
@@ -94,7 +94,7 @@ func TestConversation_GetContext(t *testing.T) {
 		conv.AddMessage(msg.role, msg.content)
 	}
 
-	context := conv.GetContext()
+	context := conv.History()
 	assert.Len(t, context, len(messages))
 
 	for i, msg := range messages {
@@ -104,7 +104,7 @@ func TestConversation_GetContext(t *testing.T) {
 }
 
 func TestConversation_MessageHistory(t *testing.T) {
-	conv := NewConversation("test-id")
+	conv := NewConversation("test-GetID")
 
 	// Add total of 8 messages (0 to 7)
 	for i := 0; i < MaxMessageHistory+3; i++ {
@@ -130,7 +130,7 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 		{
 			name: "get first question",
 			setupConv: func() *Conversation {
-				conv := NewConversation("test-id")
+				conv := NewConversation("test-GetID")
 				questions := []message.Question{
 					{Text: "What type of pet do you have?", Answers: []string{"Dog", "Cat"}},
 					{Text: "How old is your pet?"},
@@ -147,7 +147,7 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 		{
 			name: "no questionnaire started",
 			setupConv: func() *Conversation {
-				return NewConversation("test-id")
+				return NewConversation("test-GetID")
 			},
 			wantErr:      true,
 			wantQuestion: nil,
@@ -155,7 +155,7 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 		{
 			name: "all questions answered",
 			setupConv: func() *Conversation {
-				conv := NewConversation("test-id")
+				conv := NewConversation("test-GetID")
 				questions := []message.Question{
 					{Text: "What type of pet do you have?"},
 				}
@@ -174,7 +174,7 @@ func TestConversation_GetCurrentQuestion(t *testing.T) {
 		{
 			name: "questioning state but nil questionnaire",
 			setupConv: func() *Conversation {
-				conv := NewConversation("test-id")
+				conv := NewConversation("test-GetID")
 				conv.State = StateFollowUpQuestioning // Set state but don't initialize questionnaire
 				return conv
 			},
@@ -209,7 +209,7 @@ func TestConversation_AddQuestionAnswer_AdditionalCases(t *testing.T) {
 		{
 			name: "attempt to answer after completion",
 			setupConv: func() *Conversation {
-				conv := NewConversation("test-id")
+				conv := NewConversation("test-GetID")
 				questions := []message.Question{{Text: "What type of pet do you have?"}}
 				err := conv.StartFollowUpQuestions("Initial prompt", questions)
 				require.NoError(t, err)
@@ -223,7 +223,7 @@ func TestConversation_AddQuestionAnswer_AdditionalCases(t *testing.T) {
 		{
 			name: "attempt to answer with empty questionnaire",
 			setupConv: func() *Conversation {
-				conv := NewConversation("test-id")
+				conv := NewConversation("test-GetID")
 				conv.State = StateFollowUpQuestioning
 				return conv
 			},
@@ -254,7 +254,7 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 		{
 			name: "get complete questionnaire result",
 			setupConv: func() *Conversation {
-				conv := NewConversation("test-id")
+				conv := NewConversation("test-GetID")
 				questions := []message.Question{
 					{Text: "What type of pet do you have?"},
 					{Text: "How old is your pet?"},
@@ -276,7 +276,7 @@ func TestConversation_GetQuestionnaireResult(t *testing.T) {
 		{
 			name: "no questionnaire data",
 			setupConv: func() *Conversation {
-				return NewConversation("test-id")
+				return NewConversation("test-GetID")
 			},
 			wantErr: true,
 		},
@@ -315,7 +315,7 @@ func TestConversationUnmarshal_NormalState(t *testing.T) {
 		Messages      []Message
 		Questionnaire json.RawMessage `json:"questionnaire"`
 	}{
-		ID:    "test-id",
+		ID:    "test-GetID",
 		State: StateNormal,
 		Messages: []Message{
 			{Content: "hello"},
@@ -325,8 +325,8 @@ func TestConversationUnmarshal_NormalState(t *testing.T) {
 
 	conv, err := Unmarshal(data)
 	assert.NoError(t, err)
-	assert.Equal(t, "test-id", conv.ID)
-	assert.Equal(t, StateNormal, conv.State)
+	assert.Equal(t, "test-GetID", conv.GetID())
+	assert.Equal(t, StateNormal, conv.GetState())
 	assert.Equal(t, 1, len(conv.Messages))
 	assert.Nil(t, conv.Questionnaire)
 }
@@ -338,7 +338,7 @@ func TestConversationUnmarshal_CompletedState(t *testing.T) {
 		Messages      []Message
 		Questionnaire json.RawMessage `json:"questionnaire"`
 	}{
-		ID:    "test-id",
+		ID:    "test-GetID",
 		State: StateCompleted,
 		Messages: []Message{
 			{Content: "finished"},
@@ -348,8 +348,8 @@ func TestConversationUnmarshal_CompletedState(t *testing.T) {
 
 	conv, err := Unmarshal(data)
 	assert.NoError(t, err)
-	assert.Equal(t, "test-id", conv.ID)
-	assert.Equal(t, StateNormal, conv.State) // completed falls back to normal
+	assert.Equal(t, "test-GetID", conv.GetID())
+	assert.Equal(t, StateNormal, conv.GetState()) // completed falls back to normal
 	assert.Equal(t, 1, len(conv.Messages))
 	assert.Nil(t, conv.Questionnaire)
 }
@@ -369,7 +369,7 @@ func TestConversationUnmarshal_ProfileState(t *testing.T) {
 		Messages      []Message
 		Questionnaire json.RawMessage `json:"questionnaire"`
 	}{
-		ID:            "test-id",
+		ID:            "test-GetID",
 		State:         StatePetProfileQuestioning,
 		Messages:      []Message{},
 		Questionnaire: mockQuestionnaire,
@@ -378,8 +378,8 @@ func TestConversationUnmarshal_ProfileState(t *testing.T) {
 
 	conv, err := Unmarshal(data)
 	assert.NoError(t, err)
-	assert.Equal(t, "test-id", conv.ID)
-	assert.Equal(t, StatePetProfileQuestioning, conv.State)
+	assert.Equal(t, "test-GetID", conv.GetID())
+	assert.Equal(t, StatePetProfileQuestioning, conv.GetState())
 	assert.NotNil(t, conv.Questionnaire)
 }
 
@@ -401,7 +401,7 @@ func TestConversationUnmarshal_FollowUpState(t *testing.T) {
 		Messages      []Message
 		Questionnaire json.RawMessage `json:"questionnaire"`
 	}{
-		ID:            "test-id",
+		ID:            "test-GetID",
 		State:         StateFollowUpQuestioning,
 		Messages:      []Message{},
 		Questionnaire: mockQuestionnaire,
@@ -410,8 +410,8 @@ func TestConversationUnmarshal_FollowUpState(t *testing.T) {
 
 	conv, err := Unmarshal(data)
 	assert.NoError(t, err)
-	assert.Equal(t, "test-id", conv.ID)
-	assert.Equal(t, StateFollowUpQuestioning, conv.State)
+	assert.Equal(t, "test-GetID", conv.GetID())
+	assert.Equal(t, StateFollowUpQuestioning, conv.GetState())
 	assert.NotNil(t, conv.Questionnaire)
 }
 
@@ -421,12 +421,12 @@ func TestConversationUnmarshal_InvalidJSON(t *testing.T) {
 }
 
 func TestConversationUnmarshal_InvalidJSONProfileState(t *testing.T) {
-	_, err := Unmarshal([]byte(`{"id":"test-id","state":"pet_profile_questioning","messages":[],"questionnaire":"invalid json"}`))
+	_, err := Unmarshal([]byte(`{"GetID":"test-GetID","state":"pet_profile_questioning","messages":[],"questionnaire":"invalid json"}`))
 	assert.Error(t, err)
 }
 
 func TestConversationUnmarshal_InvalidJSONFollowUpState(t *testing.T) {
-	_, err := Unmarshal([]byte(`{"id":"test-id","state":"follow_up_questioning","messages":[],"questionnaire":"invalid json"}`))
+	_, err := Unmarshal([]byte(`{"GetID":"test-GetID","state":"follow_up_questioning","messages":[],"questionnaire":"invalid json"}`))
 	assert.Error(t, err)
 }
 
@@ -437,7 +437,7 @@ func TestConversationUnmarshal_UnknownState(t *testing.T) {
 		Messages      []Message
 		Questionnaire json.RawMessage `json:"questionnaire"`
 	}{
-		ID:    "test-id",
+		ID:    "test-GetID",
 		State: "unknown_state",
 	})
 	require.NoError(t, err)

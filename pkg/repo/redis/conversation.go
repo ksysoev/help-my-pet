@@ -30,17 +30,17 @@ func NewConversationRepository(client *redis.Client) *ConversationRepository {
 }
 
 // Save stores a conversation in Redis with TTL
-func (r *ConversationRepository) Save(ctx context.Context, conversation *conversation.Conversation) error {
+func (r *ConversationRepository) Save(ctx context.Context, conversation core.Conversation) error {
 	data, err := json.Marshal(conversation)
 	if err != nil {
 		return err
 	}
 
-	return r.client.Set(ctx, r.key(conversation.ID), data, ConversationTTL).Err()
+	return r.client.Set(ctx, r.key(conversation.GetID()), data, ConversationTTL).Err()
 }
 
-// FindByID retrieves a conversation by its ID
-func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*conversation.Conversation, error) {
+// FindByID retrieves a conversation by its id
+func (r *ConversationRepository) FindByID(ctx context.Context, id string) (core.Conversation, error) {
 	data, err := r.client.Get(ctx, r.key(id)).Bytes()
 	if err != nil {
 		if err == redis.Nil {
@@ -57,8 +57,8 @@ func (r *ConversationRepository) FindByID(ctx context.Context, id string) (*conv
 	return conv, nil
 }
 
-// FindOrCreate retrieves a conversation by ID or creates a new one if it doesn't exist
-func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (*conversation.Conversation, error) {
+// FindOrCreate retrieves a conversation by id or creates a new one if it doesn't exist
+func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (core.Conversation, error) {
 	conv, err := r.FindByID(ctx, id)
 	if err == core.ErrConversationNotFound {
 		conv = conversation.NewConversation(id)
@@ -69,7 +69,7 @@ func (r *ConversationRepository) FindOrCreate(ctx context.Context, id string) (*
 	return conv, nil
 }
 
-// key generates a Redis key for a conversation ID
+// key generates a Redis key for a conversation id
 func (r *ConversationRepository) key(id string) string {
 	return "conversation:" + id
 }

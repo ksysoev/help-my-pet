@@ -18,16 +18,28 @@ var ErrRateLimit = errors.New("rate limit exceeded")
 // ErrGlobalLimit is returned when the global daily request limit is exceeded
 var ErrGlobalLimit = errors.New("global request limit exceeded for today, please try again tomorrow")
 
+type Conversation interface {
+	GetID() string
+	GetState() conversation.ConversationState
+	AddMessage(role, content string)
+	History() []conversation.Message
+	StartFollowUpQuestions(initialPrompt string, questions []message.Question) error
+	StartProfileQuestions() error
+	GetCurrentQuestion() (*message.Question, error)
+	AddQuestionAnswer(answer string) (bool, error)
+	GetQuestionnaireResult() ([]conversation.QuestionAnswer, error)
+}
+
 // ConversationRepository defines the interface for conversation storage operations.
 type ConversationRepository interface {
 	// Save stores a conversation in the repository.
-	Save(ctx context.Context, conversation *conversation.Conversation) error
+	Save(ctx context.Context, conversation Conversation) error
 
-	// FindByID retrieves a conversation by its ID.
-	FindByID(ctx context.Context, id string) (*conversation.Conversation, error)
+	// FindByID retrieves a conversation by its id.
+	FindByID(ctx context.Context, id string) (Conversation, error)
 
-	// FindOrCreate retrieves a conversation by ID or creates a new one if it doesn't exist.
-	FindOrCreate(ctx context.Context, id string) (*conversation.Conversation, error)
+	// FindOrCreate retrieves a conversation by id or creates a new one if it doesn't exist.
+	FindOrCreate(ctx context.Context, id string) (Conversation, error)
 }
 
 // RateLimiter defines the interface for rate limiting functionality

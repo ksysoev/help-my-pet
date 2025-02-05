@@ -7,7 +7,7 @@ package core
 import (
 	context "context"
 
-	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	message "github.com/ksysoev/help-my-pet/pkg/core/message"
 	mock "github.com/stretchr/testify/mock"
 )
 

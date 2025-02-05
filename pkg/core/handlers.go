@@ -18,7 +18,7 @@ func (s *AIService) ProcessMessage(ctx context.Context, request *message.UserMes
 		return nil, fmt.Errorf("failed to get conversation: %w", err)
 	}
 
-	switch conv.State {
+	switch conv.GetState() {
 	case conversation.StateNormal:
 		return s.handleNewQuestion(ctx, conv, request)
 	case conversation.StatePetProfileQuestioning:
@@ -26,12 +26,12 @@ func (s *AIService) ProcessMessage(ctx context.Context, request *message.UserMes
 	case conversation.StateFollowUpQuestioning:
 		return s.ProcessFollowUpAnswer(ctx, conv, request)
 	default:
-		return nil, fmt.Errorf("unknown conversation state: %s", conv.State)
+		return nil, fmt.Errorf("unknown conversation state: %s", conv.GetState())
 	}
 }
 
 // handleNewQuestion processes a new question from the user
-func (s *AIService) handleNewQuestion(ctx context.Context, conv *conversation.Conversation, request *message.UserMessage) (*message.Response, error) {
+func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, request *message.UserMessage) (*message.Response, error) {
 	// Check rate limit for new questions
 	if s.rateLimiter != nil {
 		allowed, err := s.rateLimiter.IsNewQuestionAllowed(ctx, request.UserID)
@@ -69,7 +69,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv *conversation.Co
 		prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 	}
 
-	convCtx := conv.GetContext()
+	convCtx := conv.History()
 	fmt.Println(convCtx)
 	if len(convCtx) <= 1 {
 		prompt += request.Text

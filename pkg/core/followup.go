@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
@@ -13,7 +12,7 @@ import (
 // It validates and stores the answer, checks if the questionnaire is complete, and either transitions to the next step
 // or returns the next question. If the follow-up is complete, it generates a concluding response.
 // Returns the response to the current or next question, or an error if validation, state updates, or saving fails.
-func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversation.Conversation, request *message.UserMessage) (*message.Response, error) {
+func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv Conversation, request *message.UserMessage) (*message.Response, error) {
 	// Store the answer and check if questionnaire is complete
 	isComplete, err := conv.AddQuestionAnswer(request.Text)
 	if err != nil {
@@ -47,7 +46,7 @@ func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv *conversatio
 // It constructs a prompt incorporating conversation history and Q&A pairs, fetches a response from the AI model, and appends it to the conversation history.
 // Saves the updated conversation and returns the generated response.
 // Returns an error if prompt preparation, AI response retrieval, or conversation saving fails.
-func (s *AIService) handleCompletedFollowUp(ctx context.Context, conv *conversation.Conversation, request *message.UserMessage) (*message.Response, error) {
+func (s *AIService) handleCompletedFollowUp(ctx context.Context, conv Conversation, request *message.UserMessage) (*message.Response, error) {
 	// Build prompt with conv history and question-answer pairs
 	prompt, err := s.prepareFollowUpPrompt(ctx, conv, request)
 	if err != nil {
@@ -74,7 +73,7 @@ func (s *AIService) handleCompletedFollowUp(ctx context.Context, conv *conversat
 // prepareFollowUpPrompt constructs a detailed prompt for the AI model based on conversation history, pet profiles, and Q&A data.
 // It retrieves any completed Q&A pairs and the relevant pet profile, if available, to enhance the context of the prompt.
 // Returns the prepared prompt string and an error if fetching Q&A pairs, pet profiles, or other context data fails.
-func (s *AIService) prepareFollowUpPrompt(ctx context.Context, conv *conversation.Conversation, request *message.UserMessage) (string, error) {
+func (s *AIService) prepareFollowUpPrompt(ctx context.Context, conv Conversation, request *message.UserMessage) (string, error) {
 	// Get all collected question-answer pairs
 	qaPairs, err := conv.GetQuestionnaireResult()
 	if err != nil {
@@ -94,9 +93,9 @@ func (s *AIService) prepareFollowUpPrompt(ctx context.Context, conv *conversatio
 		prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 	}
 
-	if len(conv.GetContext()) > 1 {
+	if len(conv.History()) > 1 {
 		prompt += "Previous conv:\n"
-		history := conv.GetContext()
+		history := conv.History()
 		for _, msg := range history[:len(history)-1] {
 			prompt += fmt.Sprintf("%s: %s\n\n", msg.Role, msg.Content)
 		}

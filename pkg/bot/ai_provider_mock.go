@@ -7,7 +7,7 @@ package bot
 import (
 	context "context"
 
-	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	message "github.com/ksysoev/help-my-pet/pkg/core/message"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -61,7 +61,7 @@ type MockAIProvider_ProcessEditProfile_Call struct {
 
 // ProcessEditProfile is a helper method to define mock.On call
 //   - ctx context.Context
-//   - request *core.UserMessage
+//   - request *message.UserMessage
 func (_e *MockAIProvider_Expecter) ProcessEditProfile(ctx interface{}, request interface{}) *MockAIProvider_ProcessEditProfile_Call {
 	return &MockAIProvider_ProcessEditProfile_Call{Call: _e.mock.On("ProcessEditProfile", ctx, request)}
 }
@@ -120,7 +120,7 @@ type MockAIProvider_ProcessMessage_Call struct {
 
 // ProcessMessage is a helper method to define mock.On call
 //   - ctx context.Context
-//   - request *core.UserMessage
+//   - request *message.UserMessage
 func (_e *MockAIProvider_Expecter) ProcessMessage(ctx interface{}, request interface{}) *MockAIProvider_ProcessMessage_Call {
 	return &MockAIProvider_ProcessMessage_Call{Call: _e.mock.On("ProcessMessage", ctx, request)}
 }

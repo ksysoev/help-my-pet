@@ -60,13 +60,25 @@ type Message struct {
 	Content   string
 }
 
-// NewConversation creates a new conversation with the given ID.
+// NewConversation creates a new conversation with the given GetID.
 func NewConversation(id string) *Conversation {
 	return &Conversation{
 		ID:       id,
 		Messages: make([]Message, 0),
 		State:    StateNormal,
 	}
+}
+
+// GetState retrieves the current state of the conversation.
+// It returns the state as a ConversationState type.
+func (c *Conversation) GetState() ConversationState {
+	return c.State
+}
+
+// GetID retrieves the unique identifier of the conversation.
+// It returns a string representing the conversation's ID.
+func (c *Conversation) GetID() string {
+	return c.ID
 }
 
 // AddMessage adds a new message to the conversation.
@@ -84,7 +96,7 @@ func (c *Conversation) AddMessage(role, content string) {
 }
 
 // GetContext returns all messages in the conversation as context.
-func (c *Conversation) GetContext() []Message {
+func (c *Conversation) History() []Message {
 	return c.Messages
 }
 

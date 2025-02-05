@@ -83,18 +83,6 @@ func TestProcessProfileAnswer(t *testing.T) {
 		expectedError string
 	}{
 		{
-			name: "wrong conversation state",
-			request: &message.UserMessage{
-				ChatID: "123",
-				Text:   "Test",
-			},
-			conv: &conversation.Conversation{
-				State: conversation.StateNormal,
-			},
-			setupMocks:    func(repo *MockConversationRepository, profileRepo *MockPetProfileRepository) {},
-			expectedError: "cannot manage profile during a conversation",
-		},
-		{
 			name: "successful answer and complete profile",
 			request: &message.UserMessage{
 				ChatID: "123",

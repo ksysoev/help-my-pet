@@ -16,6 +16,7 @@ packages:
       RateLimiter:
       AIService:
       PetProfileRepository:
+      Conversation:
   github.com/ksysoev/help-my-pet/pkg/bot:
     interfaces:
       BotAPI:

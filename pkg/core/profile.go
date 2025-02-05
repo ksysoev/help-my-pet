@@ -2,11 +2,9 @@ package core
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log/slog"
 
-	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
@@ -37,13 +35,8 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *message.Use
 	return message.NewResponse(currentQuestion.Text, currentQuestion.Answers), nil
 }
 
-func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv *conversation.Conversation, request *message.UserMessage) (*message.Response, error) {
+func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv Conversation, request *message.UserMessage) (*message.Response, error) {
 	slog.DebugContext(ctx, "managing pet profile", "input", request.Text)
-
-	// Check if user is in the middle of a conversation
-	if conv.State != conversation.StatePetProfileQuestioning {
-		return nil, errors.New("cannot manage profile during a conversation")
-	}
 
 	// Add answer to the current question
 	isComplete, err := conv.AddQuestionAnswer(request.Text)
