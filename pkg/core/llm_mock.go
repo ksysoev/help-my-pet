@@ -7,6 +7,7 @@ package core
 import (
 	context "context"
 
+	message "github.com/ksysoev/help-my-pet/pkg/core/message"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -24,23 +25,23 @@ func (_m *MockLLM) EXPECT() *MockLLM_Expecter {
 }
 
 // Call provides a mock function with given fields: ctx, prompt
-func (_m *MockLLM) Call(ctx context.Context, prompt string) (*Response, error) {
+func (_m *MockLLM) Call(ctx context.Context, prompt string) (*message.LLMResult, error) {
 	ret := _m.Called(ctx, prompt)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Call")
 	}
 
-	var r0 *Response
+	var r0 *message.LLMResult
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string) (*Response, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*message.LLMResult, error)); ok {
 		return rf(ctx, prompt)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string) *Response); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string) *message.LLMResult); ok {
 		r0 = rf(ctx, prompt)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*Response)
+			r0 = ret.Get(0).(*message.LLMResult)
 		}
 	}
 
@@ -72,12 +73,12 @@ func (_c *MockLLM_Call_Call) Run(run func(ctx context.Context, prompt string)) *
 	return _c
 }
 
-func (_c *MockLLM_Call_Call) Return(_a0 *Response, _a1 error) *MockLLM_Call_Call {
+func (_c *MockLLM_Call_Call) Return(_a0 *message.LLMResult, _a1 error) *MockLLM_Call_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockLLM_Call_Call) RunAndReturn(run func(context.Context, string) (*Response, error)) *MockLLM_Call_Call {
+func (_c *MockLLM_Call_Call) RunAndReturn(run func(context.Context, string) (*message.LLMResult, error)) *MockLLM_Call_Call {
 	_c.Call.Return(run)
 	return _c
 }

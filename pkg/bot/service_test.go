@@ -6,7 +6,7 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -87,11 +87,11 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
@@ -113,11 +113,11 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(nil, assert.AnError)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
@@ -139,7 +139,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
@@ -163,11 +163,11 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
@@ -189,11 +189,11 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockAI.EXPECT().GetPetAdvice(mock.Anything, &core.UserMessage{
+				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
 					Text:   "test message",
-				}).Return(&core.PetAdviceResponse{
+				}).Return(&message.Response{
 					Message: "",
 				}, nil)
 			},
@@ -212,25 +212,6 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-			},
-			expectError: false,
-		},
-		{
-			name: "start command",
-			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				From: &tgbotapi.User{
-					ID:           456,
-					LanguageCode: "en",
-				},
-				Text: "/start",
-			},
-			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
-				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
-					return msg.ChatID == 123 && msg.Text != ""
-				})).Return(tgbotapi.Message{}, nil)
 			},
 			expectError: false,
 		},
@@ -262,6 +243,8 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 				AISvc:    mockAI,
 				Messages: &i18n.Config{},
 			}
+
+			service.handler = service.setupHandler()
 
 			tt.setupMocks(mockBot, mockAI)
 

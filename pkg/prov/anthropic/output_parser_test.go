@@ -3,14 +3,14 @@ package anthropic_test
 import (
 	"testing"
 
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestResponseParser_Parse(t *testing.T) {
 	tests := []struct {
-		expected *core.Response
+		expected *message.LLMResult
 		name     string
 		input    string
 		wantErr  bool
@@ -26,9 +26,9 @@ func TestResponseParser_Parse(t *testing.T) {
 					}
 				]
 			}`,
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text: "Your cat needs regular grooming.",
-				Questions: []core.Question{
+				Questions: []message.Question{
 					{
 						Text:    "How often do you brush your cat?",
 						Answers: []string{"Daily", "Weekly", "Monthly"},
@@ -40,9 +40,9 @@ func TestResponseParser_Parse(t *testing.T) {
 		{
 			name:  "JSON response in markdown code block",
 			input: "```json\n{\n\t\"text\": \"Feed your cat twice daily.\",\n\t\"questions\": []\n}\n```",
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text:      "Feed your cat twice daily.",
-				Questions: []core.Question{},
+				Questions: []message.Question{},
 			},
 			wantErr: false,
 		},
@@ -60,9 +60,9 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text: "Line 1\nLine 2",
-				Questions: []core.Question{
+				Questions: []message.Question{
 					{
 						Text:    "Question with\nnewline",
 						Answers: []string{"Answer with\nnewline", "Normal answer"},
@@ -82,9 +82,9 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text: "Tab\there \"quoted\" text\\with\\backslashes",
-				Questions: []core.Question{
+				Questions: []message.Question{
 					{
 						Text:    "Question with \"quotes\"",
 						Answers: []string{"Answer with \t tab"},
@@ -118,9 +118,9 @@ newline", "Normal answer"]
 					]
 				}
 			`,
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text: "First line\n\t\t\t\t\tsecond line\n\t\t\t\t\tthird line",
-				Questions: []core.Question{
+				Questions: []message.Question{
 					{
 						Text:    "Question spanning\n\t\t\t\t\t\t\tmultiple lines?",
 						Answers: []string{},
@@ -141,9 +141,9 @@ newline", "Normal answer"]
 				"text": "Simple advice without questions.",
 				"questions": []
 			}`,
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text:      "Simple advice without questions.",
-				Questions: []core.Question{},
+				Questions: []message.Question{},
 			},
 			wantErr: false,
 		},
@@ -162,9 +162,9 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text: "Here's your pet advice.",
-				Questions: []core.Question{
+				Questions: []message.Question{
 					{
 						Text:    "What type of pet do you have?",
 						Answers: []string{"Dog", "Cat", "Bird", "Other"},
@@ -188,9 +188,9 @@ newline", "Normal answer"]
 					}
 				]
 			}`,
-			expected: &core.Response{
+			expected: &message.LLMResult{
 				Text: "Text with // comment",
-				Questions: []core.Question{
+				Questions: []message.Question{
 					{
 						Text:    "Question with /* comment */",
 						Answers: []string{"// Answer with comment"},

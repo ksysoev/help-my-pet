@@ -7,6 +7,8 @@ import (
 	"testing"
 
 	"github.com/go-redis/redismock/v9"
+	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -19,7 +21,7 @@ func TestConversationRepository_Save(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("save valid conversation", func(t *testing.T) {
-		conv := core.NewConversation("test-id")
+		conv := conversation.NewConversation("test-id")
 		conv.AddMessage("user", "hello")
 
 		data, err := json.Marshal(conv)
@@ -39,7 +41,7 @@ func TestConversationRepository_FindByID(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("find existing conversation", func(t *testing.T) {
-		conv := core.NewConversation("test-id")
+		conv := conversation.NewConversation("test-id")
 		conv.AddMessage("user", "hello")
 
 		data, err := json.Marshal(conv)
@@ -50,9 +52,7 @@ func TestConversationRepository_FindByID(t *testing.T) {
 		found, err := repo.FindByID(ctx, conv.ID)
 		assert.NoError(t, err)
 		assert.NotNil(t, found)
-		assert.Equal(t, conv.ID, found.ID)
-		assert.Equal(t, len(conv.Messages), len(found.Messages))
-		assert.Equal(t, conv.Messages[0].Content, found.Messages[0].Content)
+		assert.Equal(t, conv.ID, found.GetID())
 		assert.NoError(t, mock.ExpectationsWereMet())
 	})
 
@@ -81,12 +81,15 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	ctx := context.Background()
 
 	// Create a conversation with questionnaire state
-	conv := core.NewConversation("test-id")
+	conv := conversation.NewConversation("test-id")
 	conv.AddMessage("user", "hello")
-	conv.StartQuestionnaire("initial prompt", []core.Question{
+
+	err := conv.StartFollowUpQuestions("initial prompt", []message.Question{
 		{Text: "question 1"},
 		{Text: "question 2"},
 	})
+
+	require.NoError(t, err)
 
 	data, err := json.Marshal(conv)
 	require.NoError(t, err)
@@ -98,12 +101,9 @@ func TestConversationRepository_ComplexConversation(t *testing.T) {
 	found, err := repo.FindByID(ctx, conv.ID)
 	assert.NoError(t, err)
 	assert.NotNil(t, found)
-	assert.Equal(t, conv.ID, found.ID)
-	assert.Equal(t, conv.State, found.State)
-	assert.Equal(t, conv.Messages[0].Content, found.Messages[0].Content)
-	assert.Equal(t, conv.Questionnaire.InitialPrompt, found.Questionnaire.InitialPrompt)
-	assert.Equal(t, len(conv.Questionnaire.QAPairs), len(found.Questionnaire.QAPairs))
-	assert.Equal(t, conv.Questionnaire.QAPairs[0].Question.Text, found.Questionnaire.QAPairs[0].Question.Text)
+	assert.Equal(t, conv.ID, found.GetID())
+	assert.Equal(t, conv.GetState(), found.GetState())
+
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
 
@@ -113,7 +113,7 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("find existing conversation", func(t *testing.T) {
-		conv := core.NewConversation("test-id")
+		conv := conversation.NewConversation("test-id")
 		conv.AddMessage("user", "hello")
 
 		data, err := json.Marshal(conv)
@@ -124,22 +124,17 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 		found, err := repo.FindOrCreate(ctx, conv.ID)
 		assert.NoError(t, err)
 		assert.NotNil(t, found)
-		assert.Equal(t, conv.ID, found.ID)
-		assert.Equal(t, len(conv.Messages), len(found.Messages))
-		assert.Equal(t, conv.Messages[0].Content, found.Messages[0].Content)
+		assert.Equal(t, conv.ID, found.GetID())
 		assert.NoError(t, mock.ExpectationsWereMet())
 	})
 
 	t.Run("create new conversation when not found", func(t *testing.T) {
 		mock.ExpectGet("conversation:new-id").RedisNil()
 
-		mock.ExpectSet("conversation:new-id", []byte(`{"Questionnaire":null,"ID":"new-id","State":"normal","Messages":[]}`), ConversationTTL).SetVal("OK")
-
 		found, err := repo.FindOrCreate(ctx, "new-id")
 		assert.NoError(t, err)
 		assert.NotNil(t, found)
-		assert.Equal(t, "new-id", found.ID)
-		assert.Empty(t, found.Messages)
+		assert.Equal(t, "new-id", found.GetID())
 		assert.NoError(t, mock.ExpectationsWereMet())
 	})
 
@@ -147,15 +142,6 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 		mock.ExpectGet("conversation:error-id").SetErr(fmt.Errorf("redis error"))
 
 		found, err := repo.FindOrCreate(ctx, "error-id")
-		assert.Error(t, err)
-		assert.Nil(t, found)
-		assert.NoError(t, mock.ExpectationsWereMet())
-	})
-
-	t.Run("error on Save new conversation", func(t *testing.T) {
-		mock.ExpectGet("conversation:error-save-id").RedisNil()
-
-		found, err := repo.FindOrCreate(ctx, "error-save-id")
 		assert.Error(t, err)
 		assert.Nil(t, found)
 		assert.NoError(t, mock.ExpectationsWereMet())

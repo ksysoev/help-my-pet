@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/go-redis/redismock/v9"
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/pet"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,24 +16,24 @@ func TestPetProfileRepository_SaveProfiles(t *testing.T) {
 	tests := []struct {
 		name        string
 		userID      string
-		profile     *core.PetProfile
-		mockSetup   func(mock redismock.ClientMock, userID string, profile *core.PetProfile) []byte
+		profile     *pet.Profile
+		mockSetup   func(mock redismock.ClientMock, userID string, profile *pet.Profile) []byte
 		wantErr     bool
 		expectedErr error
 	}{
 		{
 			name:   "success case",
 			userID: "user123",
-			profile: &core.PetProfile{
+			profile: &pet.Profile{
 				Name:        "Max",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
-				DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2020-01-01",
 				Gender:      "Male",
-				Weight:      30.5,
+				Weight:      "30.5",
 			},
-			mockSetup: func(mock redismock.ClientMock, userID string, profile *core.PetProfile) []byte {
-				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{*profile}})
+			mockSetup: func(mock redismock.ClientMock, userID string, profile *pet.Profile) []byte {
+				data, _ := json.Marshal(pet.Profiles{Profiles: []pet.Profile{*profile}})
 				mock.ExpectHSet(petProfilesKey, userID, data).SetVal(1)
 				return data
 			},
@@ -41,10 +41,10 @@ func TestPetProfileRepository_SaveProfiles(t *testing.T) {
 		{
 			name:   "marshaling error",
 			userID: "user123",
-			profile: &core.PetProfile{
+			profile: &pet.Profile{
 				Name: string(make([]byte, 0)), // Simulating invalid data input.
 			},
-			mockSetup: func(mock redismock.ClientMock, userID string, profile *core.PetProfile) []byte {
+			mockSetup: func(mock redismock.ClientMock, userID string, profile *pet.Profile) []byte {
 				return nil
 			},
 			wantErr: true,
@@ -52,9 +52,9 @@ func TestPetProfileRepository_SaveProfiles(t *testing.T) {
 		{
 			name:    "empty profile",
 			userID:  "user123",
-			profile: &core.PetProfile{},
-			mockSetup: func(mock redismock.ClientMock, userID string, profile *core.PetProfile) []byte {
-				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{*profile}})
+			profile: &pet.Profile{},
+			mockSetup: func(mock redismock.ClientMock, userID string, profile *pet.Profile) []byte {
+				data, _ := json.Marshal(pet.Profiles{Profiles: []pet.Profile{*profile}})
 				mock.ExpectHSet(petProfilesKey, userID, data).SetVal(1)
 				return data
 			},
@@ -62,16 +62,16 @@ func TestPetProfileRepository_SaveProfiles(t *testing.T) {
 		{
 			name:   "redis failure",
 			userID: "user456",
-			profile: &core.PetProfile{
+			profile: &pet.Profile{
 				Name:        "Bella",
 				Species:     "Cat",
 				Breed:       "Siamese",
-				DateOfBirth: time.Date(2022, 6, 15, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2022-06-15",
 				Gender:      "Female",
-				Weight:      4.1,
+				Weight:      "4.1",
 			},
-			mockSetup: func(mock redismock.ClientMock, userID string, profile *core.PetProfile) []byte {
-				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{*profile}})
+			mockSetup: func(mock redismock.ClientMock, userID string, profile *pet.Profile) []byte {
+				data, _ := json.Marshal(pet.Profiles{Profiles: []pet.Profile{*profile}})
 				mock.ExpectHSet(petProfilesKey, userID, data).SetErr(fmt.Errorf("redis unavailable"))
 				return data
 			},
@@ -107,32 +107,32 @@ func TestPetProfileRepository_GetCurrentProfile(t *testing.T) {
 		name        string
 		userID      string
 		mockSetup   func(mock redismock.ClientMock, userID string) string
-		expected    *core.PetProfile
+		expected    *pet.Profile
 		expectedErr error
 	}{
 		{
 			name:   "profile exists",
 			userID: "user123",
 			mockSetup: func(mock redismock.ClientMock, userID string) string {
-				profile := core.PetProfile{
+				profile := pet.Profile{
 					Name:        "Max",
 					Species:     "Dog",
 					Breed:       "Golden Retriever",
-					DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+					DateOfBirth: "2020-01-01",
 					Gender:      "Male",
-					Weight:      30.5,
+					Weight:      "30.5",
 				}
-				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{profile}})
+				data, _ := json.Marshal(pet.Profiles{Profiles: []pet.Profile{profile}})
 				mock.ExpectHGet(petProfilesKey, userID).SetVal(string(data))
 				return string(data)
 			},
-			expected: &core.PetProfile{
+			expected: &pet.Profile{
 				Name:        "Max",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
-				DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2020-01-01",
 				Gender:      "Male",
-				Weight:      30.5,
+				Weight:      "30.5",
 			},
 			expectedErr: nil,
 		},
@@ -160,7 +160,7 @@ func TestPetProfileRepository_GetCurrentProfile(t *testing.T) {
 			name:   "empty profile list",
 			userID: "user123",
 			mockSetup: func(mock redismock.ClientMock, userID string) string {
-				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{}})
+				data, _ := json.Marshal(pet.Profiles{Profiles: []pet.Profile{}})
 				mock.ExpectHGet(petProfilesKey, userID).SetVal(string(data))
 				return string(data)
 			},
@@ -171,33 +171,33 @@ func TestPetProfileRepository_GetCurrentProfile(t *testing.T) {
 			name:   "multiple profiles, only first returned",
 			userID: "user789",
 			mockSetup: func(mock redismock.ClientMock, userID string) string {
-				profile1 := core.PetProfile{
+				profile1 := pet.Profile{
 					Name:        "Max",
 					Species:     "Dog",
 					Breed:       "Golden Retriever",
-					DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+					DateOfBirth: "2020-01-01",
 					Gender:      "Male",
-					Weight:      30.5,
+					Weight:      "30.5",
 				}
-				profile2 := core.PetProfile{
+				profile2 := pet.Profile{
 					Name:        "Bella",
 					Species:     "Cat",
 					Breed:       "Siamese",
-					DateOfBirth: time.Date(2022, 6, 15, 0, 0, 0, 0, time.UTC),
+					DateOfBirth: "2022-06-15",
 					Gender:      "Female",
-					Weight:      4.0,
+					Weight:      "4.0",
 				}
-				data, _ := json.Marshal(core.PetProfiles{Profiles: []core.PetProfile{profile1, profile2}})
+				data, _ := json.Marshal(pet.Profiles{Profiles: []pet.Profile{profile1, profile2}})
 				mock.ExpectHGet(petProfilesKey, userID).SetVal(string(data))
 				return string(data)
 			},
-			expected: &core.PetProfile{
+			expected: &pet.Profile{
 				Name:        "Max",
 				Species:     "Dog",
 				Breed:       "Golden Retriever",
-				DateOfBirth: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+				DateOfBirth: "2020-01-01",
 				Gender:      "Male",
-				Weight:      30.5,
+				Weight:      "30.5",
 			},
 			expectedErr: nil,
 		},

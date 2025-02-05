@@ -7,7 +7,7 @@ package bot
 import (
 	context "context"
 
-	core "github.com/ksysoev/help-my-pet/pkg/core"
+	message "github.com/ksysoev/help-my-pet/pkg/core/message"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -24,28 +24,28 @@ func (_m *MockAIProvider) EXPECT() *MockAIProvider_Expecter {
 	return &MockAIProvider_Expecter{mock: &_m.Mock}
 }
 
-// GetPetAdvice provides a mock function with given fields: ctx, request
-func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, request *core.UserMessage) (*core.PetAdviceResponse, error) {
+// ProcessEditProfile provides a mock function with given fields: ctx, request
+func (_m *MockAIProvider) ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error) {
 	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
-		panic("no return value specified for GetPetAdvice")
+		panic("no return value specified for ProcessEditProfile")
 	}
 
-	var r0 *core.PetAdviceResponse
+	var r0 *message.Response
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) (*core.PetAdviceResponse, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) (*message.Response, error)); ok {
 		return rf(ctx, request)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *core.UserMessage) *core.PetAdviceResponse); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) *message.Response); ok {
 		r0 = rf(ctx, request)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*core.PetAdviceResponse)
+			r0 = ret.Get(0).(*message.Response)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *core.UserMessage) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *message.UserMessage) error); ok {
 		r1 = rf(ctx, request)
 	} else {
 		r1 = ret.Error(1)
@@ -54,31 +54,90 @@ func (_m *MockAIProvider) GetPetAdvice(ctx context.Context, request *core.UserMe
 	return r0, r1
 }
 
-// MockAIProvider_GetPetAdvice_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetPetAdvice'
-type MockAIProvider_GetPetAdvice_Call struct {
+// MockAIProvider_ProcessEditProfile_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ProcessEditProfile'
+type MockAIProvider_ProcessEditProfile_Call struct {
 	*mock.Call
 }
 
-// GetPetAdvice is a helper method to define mock.On call
+// ProcessEditProfile is a helper method to define mock.On call
 //   - ctx context.Context
-//   - request *core.UserMessage
-func (_e *MockAIProvider_Expecter) GetPetAdvice(ctx interface{}, request interface{}) *MockAIProvider_GetPetAdvice_Call {
-	return &MockAIProvider_GetPetAdvice_Call{Call: _e.mock.On("GetPetAdvice", ctx, request)}
+//   - request *message.UserMessage
+func (_e *MockAIProvider_Expecter) ProcessEditProfile(ctx interface{}, request interface{}) *MockAIProvider_ProcessEditProfile_Call {
+	return &MockAIProvider_ProcessEditProfile_Call{Call: _e.mock.On("ProcessEditProfile", ctx, request)}
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) Run(run func(ctx context.Context, request *core.UserMessage)) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_ProcessEditProfile_Call) Run(run func(ctx context.Context, request *message.UserMessage)) *MockAIProvider_ProcessEditProfile_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*core.UserMessage))
+		run(args[0].(context.Context), args[1].(*message.UserMessage))
 	})
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) Return(_a0 *core.PetAdviceResponse, _a1 error) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_ProcessEditProfile_Call) Return(_a0 *message.Response, _a1 error) *MockAIProvider_ProcessEditProfile_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockAIProvider_GetPetAdvice_Call) RunAndReturn(run func(context.Context, *core.UserMessage) (*core.PetAdviceResponse, error)) *MockAIProvider_GetPetAdvice_Call {
+func (_c *MockAIProvider_ProcessEditProfile_Call) RunAndReturn(run func(context.Context, *message.UserMessage) (*message.Response, error)) *MockAIProvider_ProcessEditProfile_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ProcessMessage provides a mock function with given fields: ctx, request
+func (_m *MockAIProvider) ProcessMessage(ctx context.Context, request *message.UserMessage) (*message.Response, error) {
+	ret := _m.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ProcessMessage")
+	}
+
+	var r0 *message.Response
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) (*message.Response, error)); ok {
+		return rf(ctx, request)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *message.UserMessage) *message.Response); ok {
+		r0 = rf(ctx, request)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*message.Response)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *message.UserMessage) error); ok {
+		r1 = rf(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockAIProvider_ProcessMessage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ProcessMessage'
+type MockAIProvider_ProcessMessage_Call struct {
+	*mock.Call
+}
+
+// ProcessMessage is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *message.UserMessage
+func (_e *MockAIProvider_Expecter) ProcessMessage(ctx interface{}, request interface{}) *MockAIProvider_ProcessMessage_Call {
+	return &MockAIProvider_ProcessMessage_Call{Call: _e.mock.On("ProcessMessage", ctx, request)}
+}
+
+func (_c *MockAIProvider_ProcessMessage_Call) Run(run func(ctx context.Context, request *message.UserMessage)) *MockAIProvider_ProcessMessage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*message.UserMessage))
+	})
+	return _c
+}
+
+func (_c *MockAIProvider_ProcessMessage_Call) Return(_a0 *message.Response, _a1 error) *MockAIProvider_ProcessMessage_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockAIProvider_ProcessMessage_Call) RunAndReturn(run func(context.Context, *message.UserMessage) (*message.Response, error)) *MockAIProvider_ProcessMessage_Call {
 	_c.Call.Return(run)
 	return _c
 }

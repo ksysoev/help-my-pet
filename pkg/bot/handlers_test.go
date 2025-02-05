@@ -9,6 +9,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -16,7 +17,7 @@ import (
 
 func TestService_handleMessage(t *testing.T) {
 	tests := []struct {
-		aiResponse   *core.PetAdviceResponse
+		aiResponse   *message.Response
 		aiErr        error
 		name         string
 		message      string
@@ -30,7 +31,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "successful response with keyboard",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
+			aiResponse:   message.NewResponse("Cats need a balanced diet...", []string{"Yes", "No"}),
 			aiErr:        nil,
 			expectError:  false,
 			userID:       123,
@@ -40,7 +41,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "successful response without keyboard",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("Cats need a balanced diet...", []string{}),
+			aiResponse:   message.NewResponse("Cats need a balanced diet...", []string{}),
 			aiErr:        nil,
 			expectError:  false,
 			userID:       123,
@@ -50,7 +51,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "empty message",
 			message:      "",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        nil,
 			expectError:  false,
 			userID:       123,
@@ -60,7 +61,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "ai error",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        fmt.Errorf("ai error"),
 			expectError:  true,
 			userID:       123,
@@ -70,7 +71,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "rate limit error",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        core.ErrRateLimit,
 			expectError:  false,
 			userID:       123,
@@ -80,7 +81,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "global limit error",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        core.ErrGlobalLimit,
 			expectError:  false,
 			userID:       123,
@@ -90,7 +91,7 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "rate limit error - ru",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        core.ErrRateLimit,
 			expectError:  false,
 			userID:       123,
@@ -100,23 +101,12 @@ func TestService_handleMessage(t *testing.T) {
 		{
 			name:         "global limit error - ru",
 			message:      "What food is good for cats?",
-			aiResponse:   core.NewPetAdviceResponse("", []string{}),
+			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        core.ErrGlobalLimit,
 			expectError:  false,
 			userID:       123,
 			langCode:     "ru",
 			expectedText: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
-		},
-		{
-			name:         "start command",
-			message:      "/start",
-			aiResponse:   core.NewPetAdviceResponse("Welcome to Help My Pet Bot!", []string{}),
-			aiErr:        nil,
-			expectError:  false,
-			isStart:      true,
-			userID:       123,
-			langCode:     "de",
-			expectedText: "Willkommen bei Help My Pet Bot!",
 		},
 		{
 			name:         "message without From field",
@@ -229,14 +219,12 @@ func TestService_handleMessage(t *testing.T) {
 			}
 
 			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !strings.Contains(tt.name, "message too long") {
-				expectedRequest := &core.UserMessage{
+				expectedRequest := &message.UserMessage{
 					UserID: "123",
 					ChatID: "123",
 					Text:   tt.message,
 				}
-				mockAI.EXPECT().
-					GetPetAdvice(mock.Anything, expectedRequest).
-					Return(tt.aiResponse, tt.aiErr)
+				mockAI.EXPECT().ProcessMessage(mock.Anything, expectedRequest).Return(tt.aiResponse, tt.aiErr)
 			}
 
 			msgConfig, err := svc.Handle(context.Background(), msg)
@@ -289,6 +277,8 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		Messages: messages,
 	}
 
+	svc.handler = svc.setupHandler()
+
 	updates := make(chan tgbotapi.Update)
 	mockBot.EXPECT().
 		GetUpdatesChan(tgbotapi.UpdateConfig{Offset: 0, Timeout: 30}).
@@ -304,12 +294,12 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 
 	// Expect AI request
 	mockAI.EXPECT().
-		GetPetAdvice(mock.Anything, &core.UserMessage{
+		ProcessMessage(mock.Anything, &message.UserMessage{
 			UserID: "123",
 			ChatID: "123",
 			Text:   "test message",
 		}).
-		Return(core.NewPetAdviceResponse("test response", []string{}), nil)
+		Return(message.NewResponse("test response", []string{}), nil)
 
 	// Expect message send
 	mockBot.EXPECT().

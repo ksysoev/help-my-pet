@@ -1,4 +1,4 @@
-package core
+package message
 
 import (
 	"errors"
@@ -6,10 +6,10 @@ import (
 )
 
 var (
-	// ErrEmptyUserID is returned when the user ID is empty
-	ErrEmptyUserID = errors.New("empty user ID")
-	// ErrEmptyChatID is returned when the chat ID is empty
-	ErrEmptyChatID = errors.New("empty chat ID")
+	// ErrEmptyUserID is returned when the user id is empty
+	ErrEmptyUserID = errors.New("empty user id")
+	// ErrEmptyChatID is returned when the chat id is empty
+	ErrEmptyChatID = errors.New("empty chat id")
 	// ErrEmptyText is returned when the text is empty
 	ErrEmptyText = errors.New("empty text")
 	// ErrTextTooLong is returned when the text is too long
@@ -19,7 +19,7 @@ var (
 const MaxTextLength = 2000
 
 // UserMessage represents a message sent by a user in a specific chat context.
-// It includes the ID of the user, the ID of the chat, and the content of the message.
+// It includes the id of the user, the id of the chat, and the content of the message.
 type UserMessage struct {
 	UserID string
 	ChatID string

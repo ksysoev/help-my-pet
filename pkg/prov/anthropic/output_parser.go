@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
 var (
@@ -139,7 +139,7 @@ func extractJSON(text string) string {
 }
 
 // Parse parses the LLM output into our Response struct
-func (p *ResponseParser) Parse(text string) (*core.Response, error) {
+func (p *ResponseParser) Parse(text string) (*message.LLMResult, error) {
 	if text == "" {
 		return nil, ErrEmptyText
 	}
@@ -153,7 +153,7 @@ func (p *ResponseParser) Parse(text string) (*core.Response, error) {
 		return nil, fmt.Errorf("%w: %v", ErrInvalidJSON, err)
 	}
 
-	var response core.Response
+	var response message.LLMResult
 	decoder := json.NewDecoder(strings.NewReader(sanitized))
 	decoder.UseNumber()
 	if err := decoder.Decode(&response); err != nil {

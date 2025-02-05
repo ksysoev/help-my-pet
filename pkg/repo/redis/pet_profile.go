@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/pet"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -24,8 +25,8 @@ func NewPetProfileRepository(client *redis.Client) *PetProfileRepository {
 }
 
 // SaveProfiles saves pet profiles for a user
-func (r *PetProfileRepository) SaveProfile(ctx context.Context, userID string, profile *core.PetProfile) error {
-	allProfiles := core.PetProfiles{Profiles: []core.PetProfile{*profile}}
+func (r *PetProfileRepository) SaveProfile(ctx context.Context, userID string, profile *pet.Profile) error {
+	allProfiles := pet.Profiles{Profiles: []pet.Profile{*profile}}
 
 	data, err := json.Marshal(allProfiles)
 	if err != nil {
@@ -39,7 +40,7 @@ func (r *PetProfileRepository) SaveProfile(ctx context.Context, userID string, p
 	return nil
 }
 
-func (r *PetProfileRepository) GetCurrentProfile(ctx context.Context, userID string) (*core.PetProfile, error) {
+func (r *PetProfileRepository) GetCurrentProfile(ctx context.Context, userID string) (*pet.Profile, error) {
 	data, err := r.client.HGet(ctx, petProfilesKey, userID).Bytes()
 	if err == redis.Nil {
 		return nil, core.ErrProfileNotFound
@@ -48,7 +49,7 @@ func (r *PetProfileRepository) GetCurrentProfile(ctx context.Context, userID str
 		return nil, fmt.Errorf("failed to get pet profiles: %w", err)
 	}
 
-	var profiles core.PetProfiles
+	var profiles pet.Profiles
 	if err := json.Unmarshal(data, &profiles); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal pet profiles: %w", err)
 	}

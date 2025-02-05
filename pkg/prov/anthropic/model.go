@@ -52,6 +52,7 @@ const systemPrompt = `You are a helpful veterinary AI assistant. Follow these la
   - Be empathetic, supportive, and non-judgmental in your responses
 
 5. Request structure:
+  - Pet Profile: This section contains the user's pet profile information, you can use this information to provide more accurate advice
   - Previous conversation - this section contains previous messages of current conversation, this section may contain 3 types of message:
     - user: user's message or question
 	- assistant: assistant's response

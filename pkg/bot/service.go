@@ -10,7 +10,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/google/uuid"
-	"github.com/ksysoev/help-my-pet/pkg/core"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
@@ -27,7 +27,8 @@ type BotAPI interface {
 }
 
 type AIProvider interface {
-	GetPetAdvice(ctx context.Context, request *core.UserMessage) (*core.PetAdviceResponse, error)
+	ProcessMessage(ctx context.Context, request *message.UserMessage) (*message.Response, error)
+	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 }
 
 // Config holds the configuration for the Telegram bot
@@ -40,6 +41,7 @@ type ServiceImpl struct {
 	Bot      BotAPI
 	AISvc    AIProvider
 	Messages *i18n.Config
+	handler  Handler
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -65,11 +67,15 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
-	return &ServiceImpl{
+	s := &ServiceImpl{
 		Bot:      bot,
 		AISvc:    aiSvc,
 		Messages: cfg.Messages,
-	}, nil
+	}
+
+	s.handler = s.setupHandler()
+
+	return s, nil
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
@@ -82,8 +88,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	}
 
 	// Handle message with middleware
-	handler := s.setupHandler()
-	msgConfig, err := handler.Handle(ctx, message)
+	msgConfig, err := s.handler.Handle(ctx, message)
 
 	if errors.Is(err, context.Canceled) {
 		slog.InfoContext(ctx, "Request cancelled",
