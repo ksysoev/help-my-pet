@@ -318,21 +318,19 @@ func (_c *MockConversation_GetState_Call) RunAndReturn(run func() conversation.C
 	return _c
 }
 
-// History provides a mock function with no fields
-func (_m *MockConversation) History() []conversation.Message {
-	ret := _m.Called()
+// History provides a mock function with given fields: skip
+func (_m *MockConversation) History(skip int) string {
+	ret := _m.Called(skip)
 
 	if len(ret) == 0 {
 		panic("no return value specified for History")
 	}
 
-	var r0 []conversation.Message
-	if rf, ok := ret.Get(0).(func() []conversation.Message); ok {
-		r0 = rf()
+	var r0 string
+	if rf, ok := ret.Get(0).(func(int) string); ok {
+		r0 = rf(skip)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]conversation.Message)
-		}
+		r0 = ret.Get(0).(string)
 	}
 
 	return r0
@@ -344,23 +342,24 @@ type MockConversation_History_Call struct {
 }
 
 // History is a helper method to define mock.On call
-func (_e *MockConversation_Expecter) History() *MockConversation_History_Call {
-	return &MockConversation_History_Call{Call: _e.mock.On("History")}
+//   - skip int
+func (_e *MockConversation_Expecter) History(skip interface{}) *MockConversation_History_Call {
+	return &MockConversation_History_Call{Call: _e.mock.On("History", skip)}
 }
 
-func (_c *MockConversation_History_Call) Run(run func()) *MockConversation_History_Call {
+func (_c *MockConversation_History_Call) Run(run func(skip int)) *MockConversation_History_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run()
+		run(args[0].(int))
 	})
 	return _c
 }
 
-func (_c *MockConversation_History_Call) Return(_a0 []conversation.Message) *MockConversation_History_Call {
+func (_c *MockConversation_History_Call) Return(_a0 string) *MockConversation_History_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *MockConversation_History_Call) RunAndReturn(run func() []conversation.Message) *MockConversation_History_Call {
+func (_c *MockConversation_History_Call) RunAndReturn(run func(int) string) *MockConversation_History_Call {
 	_c.Call.Return(run)
 	return _c
 }

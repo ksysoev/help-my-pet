@@ -95,14 +95,17 @@ func (c *Conversation) AddMessage(role, content string) {
 	}
 }
 
-// GetContext returns all messages in the conversation as context.
-func (c *Conversation) History() string {
-	if len(c.Messages) == 0 {
+// History retrieves the conversation history up until the specified number of recent messages to skip.
+// It includes all messages older than the skipped count in the returned history.
+// skip specifies the number of most recent messages to exclude from the history.
+// Returns a string representation of the filtered conversation history.
+func (c *Conversation) History(skip int) string {
+	if len(c.Messages) > skip {
 		return ""
 	}
 
 	history := "Previous conversation:\n"
-	for _, msg := range c.Messages {
+	for _, msg := range c.Messages[:len(c.Messages)-skip] {
 		history += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
 	}
 

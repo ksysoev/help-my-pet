@@ -93,15 +93,7 @@ func (s *AIService) prepareFollowUpPrompt(ctx context.Context, conv Conversation
 		prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 	}
 
-	if len(conv.History()) > 1 {
-		prompt += "Previous conv:\n"
-		history := conv.History()
-		for _, msg := range history[:len(history)-1] {
-			prompt += fmt.Sprintf("%s: %s\n\n", msg.Role, msg.Content)
-		}
-	}
-
-	prompt += "Follow-up information:\n"
+	prompt += fmt.Sprintf("%s\nFollow-up information:\n", conv.History(1))
 	for _, qa := range qaPairs {
 		prompt += fmt.Sprintf("Question: %s\nAnswer: %s\n", qa.Question.Text, qa.Answer)
 	}
