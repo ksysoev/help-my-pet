@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
@@ -53,7 +54,12 @@ func (p *Provider) Call(ctx context.Context, prompt string) (*message.LLMResult,
 		slog.String("format_instructions", formatInstructions),
 		slog.String("question", prompt))
 
-	response, err := p.llm.Call(ctx, formatInstructions, prompt)
+	systemInfo := fmt.Sprintf(
+		"System Information:\n Current date in format YYYY-MM-DD: %s\n\n",
+		time.Now().Format("2006-01-02"),
+	)
+
+	response, err := p.llm.Call(ctx, formatInstructions, systemInfo+prompt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
