@@ -83,14 +83,16 @@ func TestProvider_Call(t *testing.T) {
 
 				formatInstructions := parser.FormatInstructions()
 
-				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
-					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
-
-				return &Provider{
+				p := &Provider{
 					llm:    mockModel,
 					config: config,
 					parser: parser,
 				}
+
+				mockModel.EXPECT().Call(ctx, formatInstructions, p.systemInfo()+"test prompt").
+					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
+
+				return p
 			},
 		},
 		{
@@ -105,14 +107,16 @@ func TestProvider_Call(t *testing.T) {
 
 				formatInstructions := parser.FormatInstructions()
 
-				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
-					Return("test response", nil)
-
-				return &Provider{
+				p := &Provider{
 					llm:    mockModel,
 					config: config,
 					parser: parser,
 				}
+
+				mockModel.EXPECT().Call(ctx, formatInstructions, p.systemInfo()+"test prompt").
+					Return("test response", nil)
+
+				return p
 			},
 		},
 		{
@@ -127,14 +131,16 @@ func TestProvider_Call(t *testing.T) {
 
 				formatInstructions := parser.FormatInstructions()
 
-				mockModel.EXPECT().Call(ctx, formatInstructions, "test prompt").
-					Return("", assert.AnError)
-
-				return &Provider{
+				p := &Provider{
 					llm:    mockModel,
 					config: config,
 					parser: parser,
 				}
+
+				mockModel.EXPECT().Call(ctx, formatInstructions, p.systemInfo()+"test prompt").
+					Return("", assert.AnError)
+
+				return p
 			},
 		},
 	}

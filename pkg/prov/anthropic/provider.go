@@ -68,12 +68,7 @@ func (p *Provider) Call(ctx context.Context, prompt string) (*message.LLMResult,
 		slog.String("format_instructions", formatInstructions),
 		slog.String("question", prompt))
 
-	systemInfo := fmt.Sprintf(
-		"System Information:\n Current date in format YYYY-MM-DD: %s\n\n",
-		p.systemInfo(),
-	)
-
-	response, err := p.llm.Call(ctx, formatInstructions, systemInfo+prompt)
+	response, err := p.llm.Call(ctx, formatInstructions, p.systemInfo()+prompt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
