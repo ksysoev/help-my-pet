@@ -27,7 +27,7 @@ type Conversation interface {
 	GetID() string
 	GetState() conversation.ConversationState
 	AddMessage(role, content string)
-	History() []conversation.Message
+	History() string
 	StartFollowUpQuestions(initialPrompt string, questions []message.Question) error
 	StartProfileQuestions() error
 	GetCurrentQuestion() (*message.Question, error)

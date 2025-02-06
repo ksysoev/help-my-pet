@@ -96,8 +96,17 @@ func (c *Conversation) AddMessage(role, content string) {
 }
 
 // GetContext returns all messages in the conversation as context.
-func (c *Conversation) History() []Message {
-	return c.Messages
+func (c *Conversation) History() string {
+	if len(c.Messages) == 0 {
+		return ""
+	}
+
+	history := "Previous conversation:\n"
+	for _, msg := range c.Messages {
+		history += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
+	}
+
+	return history
 }
 
 // StartFollowUpQuestions initializes the follow-up questioning state (backward compatible name)

@@ -70,9 +70,8 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, re
 	}
 
 	convCtx := conv.History()
-	fmt.Println(convCtx)
 	if len(convCtx) <= 1 {
-		prompt += request.Text
+		prompt += fmt.Sprintf("\nCurrent question: %s", request.Text)
 	} else {
 		// Include conv history
 		prompt += "Previous conversation:\n"
