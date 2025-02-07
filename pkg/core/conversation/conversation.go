@@ -13,7 +13,8 @@ import (
 type ConversationState string
 
 const (
-	MaxMessageHistory = 5 // Maximum number of messages to keep in history
+	MaxMessageHistory = 5   // Maximum number of messages to keep in history
+	MaxAnswerLength   = 200 // Maximum length of an answer
 
 	StateNormal                ConversationState = "normal"
 	StateFollowUpQuestioning   ConversationState = "questioning" // Used for LLM questionnaire (backward compatibility)

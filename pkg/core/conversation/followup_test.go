@@ -217,3 +217,22 @@ func TestFollowUpQuestionnaire_ProcessAnswer(t *testing.T) {
 		})
 	}
 }
+
+func TestFollowUpQuestionnaire_ProcessAnswer_TooLongAnswer(t *testing.T) {
+	lognAnswer := `
+	This is a very long answer that is longer than the maximum allowed length
+	This is a very long answer that is longer than the maximum allowed length
+	This is a very long answer that is longer than the maximum allowed length
+`
+
+	// Arrange
+	state := NewFollowUpQuestionnaireState("Initial Prompt", []message.Question{{Text: "What is your name?"}})
+
+	// Act
+	done, err := state.ProcessAnswer(lognAnswer)
+
+	// Assert
+	assert.ErrorIs(t, err, message.ErrTextTooLong, "error should be ErrTextTooLong")
+	assert.False(t, done, "done should be false")
+	assert.Equal(t, 0, state.CurrentIndex, "current index should not be incremented")
+}
