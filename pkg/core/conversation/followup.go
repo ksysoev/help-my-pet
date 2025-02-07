@@ -1,6 +1,10 @@
 package conversation
 
-import "github.com/ksysoev/help-my-pet/pkg/core/message"
+import (
+	"unicode/utf8"
+
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
+)
 
 // FollowUpQuestionnaireState represents the state for follow-up questions from LLM
 type FollowUpQuestionnaireState struct {
@@ -35,6 +39,10 @@ func (f *FollowUpQuestionnaireState) GetCurrentQuestion() (*message.Question, er
 func (f *FollowUpQuestionnaireState) ProcessAnswer(answer string) (bool, error) {
 	if f.CurrentIndex >= len(f.QAPairs) {
 		return false, ErrNoMoreQuestions
+	}
+
+	if utf8.RuneCountInString(answer) > MaxAnswerLength {
+		return false, message.ErrTextTooLong
 	}
 
 	f.QAPairs[f.CurrentIndex].Answer = answer
