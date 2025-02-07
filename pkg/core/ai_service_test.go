@@ -52,7 +52,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conv).
 					Return(nil)
-				expectedPrompt := "What food is good for cats?"
+				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
@@ -98,7 +98,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conv).
 					Return(nil)
-				expectedPrompt := "What food is good for cats?"
+				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
@@ -138,7 +138,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conv).
 					Return(nil)
-				expectedPrompt := ""
+				expectedPrompt := "\nCurrent question: "
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
@@ -170,7 +170,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 				mockRepo.EXPECT().
 					Save(context.Background(), conv).
 					Return(nil)
-				expectedPrompt := "What food is good for cats?"
+				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(nil, fmt.Errorf("llm error"))
@@ -407,7 +407,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 					Save(context.Background(), conv).
 					Return(nil)
 
-				expectedPrompt := "Follow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
+				expectedPrompt := "\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
 					Call(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
@@ -512,8 +512,6 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 	// Cancel context before the call
 	cancel()
 
-	expectedPrompt := "test question"
-
 	mockRateLimiter := NewMockRateLimiter(t)
 	mockRateLimiter.On("IsNewQuestionAllowed", ctx, "user123").Return(true, nil)
 	mockRateLimiter.On("RecordNewQuestion", ctx, "user123").Return(nil)
@@ -529,7 +527,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 		Return(nil)
 
 	mockLLM.EXPECT().
-		Call(ctx, expectedPrompt).
+		Call(ctx, "\nCurrent question: test question").
 		Return(nil, context.Canceled)
 
 	svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)

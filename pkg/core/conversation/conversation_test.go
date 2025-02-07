@@ -94,13 +94,10 @@ func TestConversation_GetContext(t *testing.T) {
 		conv.AddMessage(msg.role, msg.content)
 	}
 
-	context := conv.History()
-	assert.Len(t, context, len(messages))
+	context := conv.History(0)
 
-	for i, msg := range messages {
-		assert.Equal(t, msg.role, context[i].Role)
-		assert.Equal(t, msg.content, context[i].Content)
-	}
+	// Check if the context contains all messages
+	assert.Equal(t, "Previous conversation:\nuser: Hello\nassistant: Hi there!\nuser: How are you?\n", context)
 }
 
 func TestConversation_MessageHistory(t *testing.T) {

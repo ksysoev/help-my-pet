@@ -100,7 +100,7 @@ func (c *Conversation) AddMessage(role, content string) {
 // skip specifies the number of most recent messages to exclude from the history.
 // Returns a string representation of the filtered conversation history.
 func (c *Conversation) History(skip int) string {
-	if len(c.Messages) > skip {
+	if len(c.Messages) <= skip {
 		return ""
 	}
 
