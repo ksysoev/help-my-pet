@@ -80,26 +80,83 @@ func TestConversation_AddMessage(t *testing.T) {
 }
 
 func TestConversation_GetContext(t *testing.T) {
-	conv := NewConversation("test-GetID")
-	messages := []struct {
-		role    string
-		content string
+	tests := []struct {
+		name     string
+		messages []struct {
+			role    string
+			content string
+		}
+		skip       int
+		wantOutput string
 	}{
-		{"user", "Hello"},
-		{"assistant", "Hi there!"},
-		{"user", "How are you?"},
+		{
+			name: "retrieve full history",
+			messages: []struct {
+				role    string
+				content string
+			}{
+				{"user", "Hello"},
+				{"assistant", "Hi there!"},
+				{"user", "How are you?"},
+			},
+			skip:       0,
+			wantOutput: "Previous conversation:\nuser: Hello\nassistant: Hi there!\nuser: How are you?\n",
+		},
+		{
+			name: "skip one message",
+			messages: []struct {
+				role    string
+				content string
+			}{
+				{"user", "Hello"},
+				{"assistant", "Hi there!"},
+				{"user", "How are you?"},
+			},
+			skip:       1,
+			wantOutput: "Previous conversation:\nuser: Hello\nassistant: Hi there!\n",
+		},
+		{
+			name: "skip all messages",
+			messages: []struct {
+				role    string
+				content string
+			}{
+				{"user", "Hello"},
+				{"assistant", "Hi there!"},
+			},
+			skip:       2,
+			wantOutput: "",
+		},
+		{
+			name:       "no messages",
+			messages:   []struct{ role, content string }{},
+			skip:       0,
+			wantOutput: "",
+		},
+		{
+			name: "skip more messages than exist",
+			messages: []struct {
+				role    string
+				content string
+			}{
+				{"user", "Hello"},
+			},
+			skip:       5,
+			wantOutput: "",
+		},
 	}
 
-	for _, msg := range messages {
-		conv.AddMessage(msg.role, msg.content)
-	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			conv := NewConversation("test-GetID")
 
-	context := conv.History()
-	assert.Len(t, context, len(messages))
+			for _, msg := range tt.messages {
+				conv.AddMessage(msg.role, msg.content)
+			}
 
-	for i, msg := range messages {
-		assert.Equal(t, msg.role, context[i].Role)
-		assert.Equal(t, msg.content, context[i].Content)
+			output := conv.History(tt.skip)
+			assert.Equal(t, tt.wantOutput, output)
+		})
 	}
 }
 

@@ -7,7 +7,7 @@ package core
 import (
 	context "context"
 
-	"github.com/ksysoev/help-my-pet/pkg/core/pet"
+	pet "github.com/ksysoev/help-my-pet/pkg/core/pet"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -109,7 +109,7 @@ type MockPetProfileRepository_SaveProfile_Call struct {
 // SaveProfile is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-//   - profile *Profile
+//   - profile *pet.Profile
 func (_e *MockPetProfileRepository_Expecter) SaveProfile(ctx interface{}, userID interface{}, profile interface{}) *MockPetProfileRepository_SaveProfile_Call {
 	return &MockPetProfileRepository_SaveProfile_Call{Call: _e.mock.On("SaveProfile", ctx, userID, profile)}
 }

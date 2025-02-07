@@ -69,18 +69,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, re
 		prompt += fmt.Sprintf("%s\n\n", petProfile.String())
 	}
 
-	convCtx := conv.History()
-	fmt.Println(convCtx)
-	if len(convCtx) <= 1 {
-		prompt += request.Text
-	} else {
-		// Include conv history
-		prompt += "Previous conversation:\n"
-		for _, msg := range convCtx[:len(convCtx)-1] {
-			prompt += fmt.Sprintf("%s: %s\n", msg.Role, msg.Content)
-		}
-		prompt += fmt.Sprintf("\nCurrent question: %s", request.Text)
-	}
+	prompt += fmt.Sprintf("%s\nCurrent question: %s", conv.History(1), request.Text)
 
 	response, err := s.llm.Call(ctx, prompt)
 	if err != nil {
