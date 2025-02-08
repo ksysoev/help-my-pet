@@ -363,7 +363,7 @@ func TestService_handleProcessingError(t *testing.T) {
 			name:         "text too long error",
 			err:          message.ErrTextTooLong,
 			langCode:     "en",
-			expectedText: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
+			expectedText: "I apologize, but your msg is too long for me to process. Please try to make it shorter and more concise.",
 		},
 		{
 			name:         "future date error",
