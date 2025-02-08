@@ -1,6 +1,16 @@
 package conversation
 
-import "github.com/ksysoev/help-my-pet/pkg/core/message"
+import (
+	"errors"
+	"time"
+
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
+)
+
+var (
+	ErrInvalidDates = errors.New("invalid date format")
+	ErrFutureDate   = errors.New("date is in the future")
+)
 
 // PetProfileStateImpl implements QuestionnaireState
 type PetProfileStateImpl struct {
@@ -22,7 +32,7 @@ func NewPetProfileQuestionnaireState() *PetProfileStateImpl {
 		{
 			Question: message.Question{
 				Text:    "What type of pet do you have?",
-				Answers: []string{"dog", "cat", "bird", "fish", "other"},
+				Answers: []string{"dog", "cat"},
 			},
 			Field: "species",
 		},
@@ -34,7 +44,7 @@ func NewPetProfileQuestionnaireState() *PetProfileStateImpl {
 		},
 		{
 			Question: message.Question{
-				Text: "When was your pet born? (YYYY-MM-DD)",
+				Text: "When was your pet born? in format YYYY-MM-DD, for example 2010-12-31",
 			},
 			Field: "dob",
 		},
@@ -47,7 +57,7 @@ func NewPetProfileQuestionnaireState() *PetProfileStateImpl {
 		},
 		{
 			Question: message.Question{
-				Text: "How much does your pet weigh? (in kg)",
+				Text: "How much does your pet weigh? Enter the weight with unit, for example 5 kg",
 			},
 			Field: "weight",
 		},
@@ -77,7 +87,13 @@ func (s *PetProfileStateImpl) ProcessAnswer(answer string) (bool, error) {
 		return false, ErrNoMoreQuestions
 	}
 
-	s.QAPairs[s.CurrentIndex].Answer = answer
+	qa := &s.QAPairs[s.CurrentIndex]
+
+	if err := validate(qa.Field, answer); err != nil {
+		return false, err
+	}
+
+	qa.Answer = answer
 	s.CurrentIndex++
 
 	return s.CurrentIndex >= len(s.QAPairs), nil
@@ -91,4 +107,41 @@ func (s *PetProfileStateImpl) GetResults() ([]QuestionAnswer, error) {
 	}
 
 	return s.QAPairs, nil
+}
+
+// validate checks the validity of the provided answer for the specified field.
+// It applies field-specific validation such as date format for "dob" and length restrictions for others.
+// Returns error if the answer is invalid or does not meet the field's requirements.
+func validate(field string, answer string) error {
+	switch field {
+	case "dob":
+		return validateDOB(answer)
+	default:
+		return validateLength(answer, 100)
+	}
+}
+
+// validateLength checks if the length of the input string exceeds the specified maximum length.
+// It returns an error if the string is too long.
+func validateLength(answer string, maxLength int) error {
+	if len(answer) > maxLength {
+		return message.ErrTextTooLong
+	}
+	return nil
+}
+
+// validateDOB validates whether the given date string is in the "YYYY-MM-DD" format and represents a valid date.
+// It returns ErrInvalidDates if the format is incorrect or ErrFutureDate if the date is in the future.
+func validateDOB(answer string) error {
+	date, err := time.Parse("2006-01-02", answer)
+
+	if err != nil {
+		return ErrInvalidDates
+	}
+
+	if date.After(time.Now()) {
+		return ErrFutureDate
+	}
+
+	return nil
 }
