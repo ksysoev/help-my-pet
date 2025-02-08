@@ -44,7 +44,7 @@ func NewPetProfileQuestionnaireState() *PetProfileStateImpl {
 		},
 		{
 			Question: message.Question{
-				Text: "When was your pet born? in format YYYY-MM-DD, for example 2010-12-31",
+				Text: "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
 			},
 			Field: "dob",
 		},
@@ -57,7 +57,7 @@ func NewPetProfileQuestionnaireState() *PetProfileStateImpl {
 		},
 		{
 			Question: message.Question{
-				Text: "How much does your pet weigh? Enter the weight with unit, for example 5 kg",
+				Text: "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
 			},
 			Field: "weight",
 		},
