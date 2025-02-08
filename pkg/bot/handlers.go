@@ -70,6 +70,12 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 			return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.RateLimitMessage)), nil
 		case errors.Is(err, core.ErrGlobalLimit):
 			return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.GlobalLimitMessage)), nil
+		case errors.Is(err, message.ErrTextTooLong):
+			return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.MessageTooLong)), nil
+		case errors.Is(err, message.ErrFutureDate):
+			return tgbotapi.NewMessage(msg.Chat.ID, "Provided date cannot be in the future. Please provide a valid date."), nil
+		case errors.Is(err, message.ErrInvalidDates):
+			return tgbotapi.NewMessage(msg.Chat.ID, "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)"), nil
 		default:
 			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 		}
