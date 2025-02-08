@@ -14,6 +14,10 @@ var (
 	ErrEmptyText = errors.New("empty text")
 	// ErrTextTooLong is returned when the text is too long
 	ErrTextTooLong = errors.New("text is too long")
+	// ErrInvalidDates is returned when the date format is invalid
+	ErrInvalidDates = errors.New("invalid date format")
+	// ErrFutureDate is returned when the date is in the future
+	ErrFutureDate = errors.New("date is in the future")
 )
 
 const MaxTextLength = 2000

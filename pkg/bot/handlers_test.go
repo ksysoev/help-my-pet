@@ -339,3 +339,106 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 	err := <-errCh
 	assert.NoError(t, err)
 }
+
+func TestService_handleProcessingError(t *testing.T) {
+	tests := []struct {
+		name         string
+		err          error
+		langCode     string
+		expectedText string
+	}{
+		{
+			name:         "rate limit error",
+			err:          core.ErrRateLimit,
+			langCode:     "en",
+			expectedText: "You have reached the maximum number of requests per hour. Please try again later.",
+		},
+		{
+			name:         "global limit error",
+			err:          core.ErrGlobalLimit,
+			langCode:     "en",
+			expectedText: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+		},
+		{
+			name:         "text too long error",
+			err:          message.ErrTextTooLong,
+			langCode:     "en",
+			expectedText: "I apologize, but your msg is too long for me to process. Please try to make it shorter and more concise.",
+		},
+		{
+			name:         "future date error",
+			err:          message.ErrFutureDate,
+			langCode:     "en",
+			expectedText: "Provided date cannot be in the future. Please provide a valid date.",
+		},
+		{
+			name:         "invalid date error",
+			err:          message.ErrInvalidDates,
+			langCode:     "en",
+			expectedText: "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
+		},
+		{
+			name:         "unhandled error",
+			err:          fmt.Errorf("unknown error"),
+			langCode:     "en",
+			expectedText: "",
+		},
+		{
+			name:         "rate limit error in Russian",
+			err:          core.ErrRateLimit,
+			langCode:     "ru",
+			expectedText: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
+		},
+		{
+			name:         "global limit error in German",
+			err:          core.ErrGlobalLimit,
+			langCode:     "de",
+			expectedText: "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockBot := NewMockBotAPI(t)
+			messages := &i18n.Config{
+				Languages: map[string]i18n.Messages{
+					"en": {
+						RateLimit:      "You have reached the maximum number of requests per hour. Please try again later.",
+						GlobalLimit:    "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+						MessageTooLong: "I apologize, but your msg is too long for me to process. Please try to make it shorter and more concise.",
+					},
+					"ru": {
+						RateLimit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
+					},
+					"de": {
+						GlobalLimit: "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
+					},
+				},
+			}
+
+			svc := &ServiceImpl{
+				Bot:      mockBot,
+				Messages: messages,
+			}
+
+			msg := &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{
+					ID: 123,
+				},
+				From: &tgbotapi.User{
+					LanguageCode: tt.langCode,
+				},
+			}
+
+			msgConfig, err := svc.handleProcessingError(tt.err, msg)
+
+			if tt.name == "unhandled error" {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.expectedText, msgConfig.Text)
+				assert.Equal(t, int64(123), msgConfig.ChatID)
+			}
+		})
+	}
+}
