@@ -34,8 +34,8 @@ func TestValidateDOB(t *testing.T) {
 		wantErr error
 	}{
 		{"valid date", "2010-12-31", nil},
-		{"invalid format", "12-31-2010", ErrInvalidDates},
-		{"future date", "2030-01-01", ErrFutureDate},
+		{"invalid format", "12-31-2010", message.ErrInvalidDates},
+		{"future date", "2030-01-01", message.ErrFutureDate},
 	}
 
 	for _, tt := range tests {
@@ -88,7 +88,7 @@ func TestProcessAnswer(t *testing.T) {
 	// Invalid date
 	state.CurrentIndex = 3 // Set index to DOB question
 	done, err = state.ProcessAnswer("invalid-date")
-	assert.Equal(t, ErrInvalidDates, err)
+	assert.Equal(t, message.ErrInvalidDates, err)
 	assert.False(t, done)
 }
 

@@ -1,15 +1,9 @@
 package conversation
 
 import (
-	"errors"
 	"time"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-)
-
-var (
-	ErrInvalidDates = errors.New("invalid date format")
-	ErrFutureDate   = errors.New("date is in the future")
 )
 
 // PetProfileStateImpl implements QuestionnaireState
@@ -136,11 +130,11 @@ func validateDOB(answer string) error {
 	date, err := time.Parse("2006-01-02", answer)
 
 	if err != nil {
-		return ErrInvalidDates
+		return message.ErrInvalidDates
 	}
 
 	if date.After(time.Now()) {
-		return ErrFutureDate
+		return message.ErrFutureDate
 	}
 
 	return nil
