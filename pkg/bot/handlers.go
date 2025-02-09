@@ -10,6 +10,7 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/bot/middleware"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 // Handler defines the interface for processing and responding to incoming messages in a Telegram bot context.
@@ -56,7 +57,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	if msg.Photo != nil || msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
 		return tgbotapi.NewMessage(
 			msg.Chat.ID,
-			middleware.GetLocalizer(ctx).Sprintf("Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only."),
+			i18n.GetLocale(ctx).Sprintf("Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only."),
 		), nil
 	}
 
@@ -82,7 +83,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	if errors.Is(err, message.ErrTextTooLong) {
 		return tgbotapi.NewMessage(
 			msg.Chat.ID,
-			middleware.GetLocalizer(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."),
+			i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."),
 		), nil
 	} else if err != nil {
 		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
@@ -125,15 +126,15 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 func (s *ServiceImpl) handleProcessingError(ctx context.Context, err error, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	switch {
 	case errors.Is(err, core.ErrRateLimit):
-		return tgbotapi.NewMessage(msg.Chat.ID, middleware.GetLocalizer(ctx).Sprintf("You have reached the maximum number of requests per hour. Please try again later.")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("You have reached the maximum number of requests per hour. Please try again later.")), nil
 	case errors.Is(err, core.ErrGlobalLimit):
-		return tgbotapi.NewMessage(msg.Chat.ID, middleware.GetLocalizer(ctx).Sprintf("We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.")), nil
 	case errors.Is(err, message.ErrTextTooLong):
-		return tgbotapi.NewMessage(msg.Chat.ID, middleware.GetLocalizer(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.")), nil
 	case errors.Is(err, message.ErrFutureDate):
-		return tgbotapi.NewMessage(msg.Chat.ID, middleware.GetLocalizer(ctx).Sprintf("Provided date cannot be in the future. Please provide a valid date.")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Provided date cannot be in the future. Please provide a valid date.")), nil
 	case errors.Is(err, message.ErrInvalidDates):
-		return tgbotapi.NewMessage(msg.Chat.ID, middleware.GetLocalizer(ctx).Sprintf("Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)")), nil
 	default:
 		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 	}

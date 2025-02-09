@@ -6,6 +6,7 @@ import (
 	"log/slog"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 // WithErrorHandling adds error handling middleware to a Handler.
@@ -29,7 +30,7 @@ func WithErrorHandling() Middleware {
 				slog.ErrorContext(ctx, "Failed to handle message", slog.Any("error", err))
 
 				// Return error message to user
-				errMsg := GetLocalizer(ctx).Sprintf("Sorry, I encountered an error while processing your request. Please try again later.")
+				errMsg := i18n.GetLocale(ctx).Sprintf("Sorry, I encountered an error while processing your request. Please try again later.")
 
 				return tgbotapi.NewMessage(chatID, errMsg), nil
 			}

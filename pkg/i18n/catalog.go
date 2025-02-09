@@ -53,109 +53,211 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":              1,
-	"Provided date cannot be in the future. Please provide a valid date.":                  0,
-	"Sorry, I encountered an error while processing your request. Please try again later.": 2,
+	"<b>Terms and Conditions</b>\n<i>Last updated: 30.01.2025</i>\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n<b>1. Nature of the Service</b>\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n<b>2. No Veterinary-Client-Patient Relationship</b>\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n<b>3. Limitation of Liability</b>\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n<b>4. No Warranty</b>\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n<b>5. User Responsibilities</b>\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n<b>6. International Use</b>\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n<b>7. Modifications</b>\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n<b>8. Governing Law and Dispute Resolution</b>\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n<b>9. Acceptance of Terms</b>\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at <i>k.sysoev@me.com</i>.": 1,
+	"I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.": 3,
+	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                                      7,
+	"Provided date cannot be in the future. Please provide a valid date.":                                          6,
+	"Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.":         2,
+	"Sorry, I encountered an error while processing your request. Please try again later.":                         8,
+	"We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.":             5,
+	"Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!": 0,
+	"You have reached the maximum number of requests per hour. Please try again later.": 4,
 }
 
-var be_BYIndex = []uint32{ // 4 elements
+var be_BYIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const be_BYData string = ""
 
-var ca_ESIndex = []uint32{ // 4 elements
+var ca_ESIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const ca_ESData string = ""
 
-var de_DEIndex = []uint32{ // 4 elements
+var de_DEIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const de_DEData string = ""
 
-var en_GBIndex = []uint32{ // 4 elements
-	0x00000000, 0x00000044, 0x0000008c, 0x000000e1,
-} // Size: 40 bytes
+var en_GBIndex = []uint32{ // 10 elements
+	0x00000000, 0x0000024c, 0x00000fe7, 0x0000104c,
+	0x000010b9, 0x0000110b, 0x0000116c, 0x000011b0,
+	0x000011f8, 0x0000124d,
+} // Size: 64 bytes
 
-const en_GBData string = "" + // Size: 225 bytes
-	"\x02Provided date cannot be in the future. Please provide a valid date." +
-	"\x02Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-" +
-	"31)\x02Sorry, I encountered an error while processing your request. Plea" +
-	"se try again later."
+const en_GBData string = "" + // Size: 4685 bytes
+	"\x02Welcome to Help My Pet Bot! 🐾\x0a\x0aI'm your personal pet care assi" +
+	"stant, ready to help you take better care of your furry friend. I can as" +
+	"sist you with:\x0a\x0a• Pet health and behavior questions\x0a• Diet and " +
+	"nutrition advice\x0a• Training tips and techniques\x0a• General pet care" +
+	" guidance\x0a\x0aSimply type your question or concern about your pet, an" +
+	"d I'll provide helpful, informative answers based on reliable veterinary" +
+	" knowledge. Remember, while I can offer guidance, for serious medical co" +
+	"nditions, always consult with a veterinarian.\x0a\x0aTo get started, jus" +
+	"t ask me any question about your pet!\x02<b>Terms and Conditions</b>\x0a" +
+	"<i>Last updated: 30.01.2025</i>\x0a\x0aThank you for using our veterinar" +
+	"y advice chatbot (“the Service”). By accessing or using this Service, yo" +
+	"u agree to be bound by the following terms and conditions (“Terms”). If " +
+	"you do not agree to these Terms, please discontinue use immediately.\x0a" +
+	"\x0a<b>1. Nature of the Service</b>\x0a1.1 The Service provides general " +
+	"information, guidance, and suggestions for pet care, including (but not " +
+	"limited to) diet, behavior, and training.\x0a1.2 The Service is not a su" +
+	"bstitute for professional veterinary diagnosis, treatment, or care. Alwa" +
+	"ys seek the advice of a licensed veterinarian for any questions regardin" +
+	"g your pet’s health.\x0a\x0a<b>2. No Veterinary-Client-Patient Relations" +
+	"hip</b>\x0a2.1 Using the Service or engaging with our AI assistant does " +
+	"not create a veterinarian-client-patient relationship.\x0a2.2 Any advice" +
+	" or guidance provided by the Service is based on limited information and" +
+	" should only be considered general information.\x0a\x0a<b>3. Limitation " +
+	"of Liability</b>\x0a3.1 You acknowledge and agree that use of the Servic" +
+	"e is at your own risk.\x0a3.2 Under no circumstances shall the owners, d" +
+	"evelopers, or licensors of the Service be liable for any direct, indirec" +
+	"t, incidental, special, or consequential damages arising out of or in co" +
+	"nnection with your access to or use of the Service.\x0a3.3 You understan" +
+	"d that decisions regarding your pet’s care and any resulting outcomes ar" +
+	"e your sole responsibility. If you have any doubt about the well-being o" +
+	"f your pet or its health, you should immediately consult a licensed vete" +
+	"rinarian.\x0a\x0a<b>4. No Warranty</b>\x0a4.1 The Service is provided on" +
+	" an “as is” and “as available” basis without warranties of any kind, whe" +
+	"ther express or implied.\x0a4.2 We do not warrant that the Service will " +
+	"be uninterrupted, error-free, secure, or free from viruses.\x0a\x0a<b>5." +
+	" User Responsibilities</b>\x0a5.1 You are responsible for providing accu" +
+	"rate and complete information about your pet when seeking advice.\x0a5.2" +
+	" You must ensure that all questions, descriptions, and data you provide " +
+	"do not violate any third-party rights or local laws.\x0a\x0a<b>6. Intern" +
+	"ational Use</b>\x0a6.1 The Service is intended for global use. You are r" +
+	"esponsible for compliance with all applicable local laws and regulations" +
+	" in your jurisdiction.\x0a6.2 We do not guarantee that the Service or an" +
+	"y of its content is appropriate or permissible in any specific country o" +
+	"r region.\x0a\x0a<b>7. Modifications</b>\x0a7.1 We reserve the right to " +
+	"modify or replace these Terms at any time.\x0a7.2 If we make material ch" +
+	"anges, we will post the updated Terms and indicate the date of the lates" +
+	"t revision at the top of this document.\x0a\x0a<b>8. Governing Law and D" +
+	"ispute Resolution</b>\x0a8.1 These Terms shall be governed by and constr" +
+	"ued in accordance with the laws applicable in the jurisdiction of the Se" +
+	"rvice provider’s principal place of business, without regard to conflict" +
+	"-of-law principles.\x0a8.2 Any dispute arising from or relating to these" +
+	" Terms shall be resolved through amicable negotiation and, if necessary," +
+	" by binding arbitration or litigation in the applicable courts.\x0a\x0a<" +
+	"b>9. Acceptance of Terms</b>\x0a9.1 By continuing to access or use the S" +
+	"ervice, you acknowledge that you have read, understood, and agree to be " +
+	"bound by these Terms.\x0a9.2 If you do not agree, you must cease using t" +
+	"he Service immediately.\x0a\x0aIf you have any questions or concerns reg" +
+	"arding these Terms, or if you need further clarification, please contact" +
+	" at <i>k.sysoev@me.com</i>.\x02Sorry, I cannot process images, videos, a" +
+	"udio, or documents. Please send your question as text only.\x02I apologi" +
+	"ze, but your message is too long for me to process. Please try to make i" +
+	"t shorter and more concise.\x02You have reached the maximum number of re" +
+	"quests per hour. Please try again later.\x02We have reached our daily re" +
+	"quest limit. Please come back tomorrow when our budget is refreshed.\x02" +
+	"Provided date cannot be in the future. Please provide a valid date.\x02P" +
+	"lease provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)" +
+	"\x02Sorry, I encountered an error while processing your request. Please " +
+	"try again later."
 
-var es_ESIndex = []uint32{ // 4 elements
+var es_ESIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const es_ESData string = ""
 
-var fa_IRIndex = []uint32{ // 4 elements
+var fa_IRIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const fa_IRData string = ""
 
-var fr_FRIndex = []uint32{ // 4 elements
+var fr_FRIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const fr_FRData string = ""
 
-var it_ITIndex = []uint32{ // 4 elements
+var it_ITIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const it_ITData string = ""
 
-var ko_KRIndex = []uint32{ // 4 elements
+var ko_KRIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const ko_KRData string = ""
 
-var ms_MYIndex = []uint32{ // 4 elements
+var ms_MYIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const ms_MYData string = ""
 
-var nl_NLIndex = []uint32{ // 4 elements
+var nl_NLIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const nl_NLData string = ""
 
-var pl_PLIndex = []uint32{ // 4 elements
+var pl_PLIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const pl_PLData string = ""
 
-var pt_PTIndex = []uint32{ // 4 elements
+var pt_PTIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const pt_PTData string = ""
 
-var ru_RUIndex = []uint32{ // 4 elements
+var ru_RUIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const ru_RUData string = ""
 
-var tr_TRIndex = []uint32{ // 4 elements
+var tr_TRIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const tr_TRData string = ""
 
-var uk_UAIndex = []uint32{ // 4 elements
+var uk_UAIndex = []uint32{ // 10 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 40 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000,
+} // Size: 64 bytes
 
 const uk_UAData string = ""
 
-// Total table size 865 bytes (0KiB); checksum: F3B653E0
+// Total table size 5709 bytes (5KiB); checksum: CD177D7D

@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/ksysoev/help-my-pet/pkg/bot/middleware"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
@@ -37,7 +37,7 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 }
 
 func (s *ServiceImpl) handleStart(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
-	startMsg := middleware.GetLocalizer(ctx).Sprintf(`Welcome to Help My Pet Bot! 🐾
+	startMsg := i18n.GetLocale(ctx).Sprintf(`Welcome to Help My Pet Bot! 🐾
 
 I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:
 
@@ -54,7 +54,7 @@ To get started, just ask me any question about your pet!`)
 }
 
 func (s *ServiceImpl) handleTermsAndConditions(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
-	m := tgbotapi.NewMessage(msg.Chat.ID, middleware.GetLocalizer(ctx).Sprintf(`<b>Terms and Conditions</b>
+	m := tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf(`<b>Terms and Conditions</b>
 <i>Last updated: 30.01.2025</i>
 
 Thank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.
