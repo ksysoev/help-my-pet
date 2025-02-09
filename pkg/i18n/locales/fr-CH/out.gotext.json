@@ -1,0 +1,15 @@
+{
+    "language": "fr-CH",
+    "messages": [
+        {
+            "id": "Provided date cannot be in the future. Please provide a valid date.",
+            "message": "Provided date cannot be in the future. Please provide a valid date.",
+            "translation": ""
+        },
+        {
+            "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
+            "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
+            "translation": ""
+        }
+    ]
+}

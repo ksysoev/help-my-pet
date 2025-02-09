@@ -11,6 +11,8 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
+	"golang.org/x/text/language"
+	messages "golang.org/x/text/message"
 )
 
 // Handler defines the interface for processing and responding to incoming messages in a Telegram bot context.
@@ -112,6 +114,25 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 // It accepts err, the error encountered during message handling, and msg, the user's incoming message for context.
 // Returns a configured message with an appropriate response and an error if the failure is unrecognized or unexpected.
 func (s *ServiceImpl) handleProcessingError(err error, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+	var lang language.Tag
+
+	// Use language.MustParse() to assign the appropriate language tag
+	// for the locale.
+	switch msg.From.LanguageCode {
+	case "en":
+		lang = language.MustParse("en-GB")
+	case "ru":
+
+		lang = language.MustParse("de-DE")
+	case "fr":
+
+		lang = language.MustParse("fr-CH")
+	default:
+		lang = language.MustParse("en-GB")
+	}
+
+	p := messages.NewPrinter(lang)
+
 	switch {
 	case errors.Is(err, core.ErrRateLimit):
 		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.RateLimitMessage)), nil
@@ -120,9 +141,9 @@ func (s *ServiceImpl) handleProcessingError(err error, msg *tgbotapi.Message) (t
 	case errors.Is(err, message.ErrTextTooLong):
 		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.MessageTooLong)), nil
 	case errors.Is(err, message.ErrFutureDate):
-		return tgbotapi.NewMessage(msg.Chat.ID, "Provided date cannot be in the future. Please provide a valid date."), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, p.Sprintf("Provided date cannot be in the future. Please provide a valid date.")), nil
 	case errors.Is(err, message.ErrInvalidDates):
-		return tgbotapi.NewMessage(msg.Chat.ID, "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)"), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, p.Sprintf("Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)")), nil
 	default:
 		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 	}
