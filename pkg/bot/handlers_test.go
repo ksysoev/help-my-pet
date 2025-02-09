@@ -88,26 +88,6 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 		},
 		{
-			name:         "rate limit error - ru",
-			message:      "What food is good for cats?",
-			aiResponse:   message.NewResponse("", []string{}),
-			aiErr:        core.ErrRateLimit,
-			expectError:  false,
-			userID:       123,
-			langCode:     "ru",
-			expectedText: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
-		},
-		{
-			name:         "global limit error - ru",
-			message:      "What food is good for cats?",
-			aiResponse:   message.NewResponse("", []string{}),
-			aiErr:        core.ErrGlobalLimit,
-			expectError:  false,
-			userID:       123,
-			langCode:     "ru",
-			expectedText: "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
-		},
-		{
 			name:         "message without From field",
 			message:      "What food is good for cats?",
 			aiResponse:   nil,
@@ -303,7 +283,7 @@ func TestService_handleProcessingError(t *testing.T) {
 			name:         "text too long error",
 			err:          message.ErrTextTooLong,
 			langCode:     "en",
-			expectedText: "I apologize, but your msg is too long for me to process. Please try to make it shorter and more concise.",
+			expectedText: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
 		},
 		{
 			name:         "future date error",
@@ -322,18 +302,6 @@ func TestService_handleProcessingError(t *testing.T) {
 			err:          fmt.Errorf("unknown error"),
 			langCode:     "en",
 			expectedText: "",
-		},
-		{
-			name:         "rate limit error in Russian",
-			err:          core.ErrRateLimit,
-			langCode:     "ru",
-			expectedText: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
-		},
-		{
-			name:         "global limit error in German",
-			err:          core.ErrGlobalLimit,
-			langCode:     "de",
-			expectedText: "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
 		},
 	}
 

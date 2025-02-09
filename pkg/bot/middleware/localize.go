@@ -15,7 +15,12 @@ func WithLocalization() Middleware {
 
 	return func(next Handler) Handler {
 		return HandlerFunc(func(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
-			ctx = i18n.SetLocale(ctx, l10n, msg.From.LanguageCode)
+			lang := ""
+			if msg.From != nil {
+				lang = msg.From.LanguageCode
+			}
+
+			ctx = i18n.SetLocale(ctx, l10n, lang)
 
 			return next.Handle(ctx, msg)
 		})
