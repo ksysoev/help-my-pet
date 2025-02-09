@@ -27,9 +27,22 @@ func (d *dictionary) Lookup(key string) (data string, ok bool) {
 
 func init() {
 	dict := map[string]catalog.Dictionary{
+		"be_BY": &dictionary{index: be_BYIndex, data: be_BYData},
+		"ca_ES": &dictionary{index: ca_ESIndex, data: ca_ESData},
 		"de_DE": &dictionary{index: de_DEIndex, data: de_DEData},
 		"en_GB": &dictionary{index: en_GBIndex, data: en_GBData},
-		"fr_CH": &dictionary{index: fr_CHIndex, data: fr_CHData},
+		"es_ES": &dictionary{index: es_ESIndex, data: es_ESData},
+		"fa_IR": &dictionary{index: fa_IRIndex, data: fa_IRData},
+		"fr_FR": &dictionary{index: fr_FRIndex, data: fr_FRData},
+		"it_IT": &dictionary{index: it_ITIndex, data: it_ITData},
+		"ko_KR": &dictionary{index: ko_KRIndex, data: ko_KRData},
+		"ms_MY": &dictionary{index: ms_MYIndex, data: ms_MYData},
+		"nl_NL": &dictionary{index: nl_NLIndex, data: nl_NLData},
+		"pl_PL": &dictionary{index: pl_PLIndex, data: pl_PLData},
+		"pt_PT": &dictionary{index: pt_PTIndex, data: pt_PTData},
+		"ru_RU": &dictionary{index: ru_RUIndex, data: ru_RUData},
+		"tr_TR": &dictionary{index: tr_TRIndex, data: tr_TRData},
+		"uk_UA": &dictionary{index: uk_UAIndex, data: uk_UAData},
 	}
 	fallback := language.MustParse("en-GB")
 	cat, err := catalog.NewFromMap(dict, catalog.Fallback(fallback))
@@ -43,6 +56,18 @@ var messageKeyToIndex = map[string]int{
 	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)": 1,
 	"Provided date cannot be in the future. Please provide a valid date.":     0,
 }
+
+var be_BYIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const be_BYData string = ""
+
+var ca_ESIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const ca_ESData string = ""
 
 var de_DEIndex = []uint32{ // 3 elements
 	0x00000000, 0x00000000, 0x00000000,
@@ -59,10 +84,76 @@ const en_GBData string = "" + // Size: 140 bytes
 	"\x02Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-" +
 	"31)"
 
-var fr_CHIndex = []uint32{ // 3 elements
+var es_ESIndex = []uint32{ // 3 elements
 	0x00000000, 0x00000000, 0x00000000,
 } // Size: 36 bytes
 
-const fr_CHData string = ""
+const es_ESData string = ""
 
-// Total table size 248 bytes (0KiB); checksum: D82415F7
+var fa_IRIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const fa_IRData string = ""
+
+var fr_FRIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const fr_FRData string = ""
+
+var it_ITIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const it_ITData string = ""
+
+var ko_KRIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const ko_KRData string = ""
+
+var ms_MYIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const ms_MYData string = ""
+
+var nl_NLIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const nl_NLData string = ""
+
+var pl_PLIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const pl_PLData string = ""
+
+var pt_PTIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const pt_PTData string = ""
+
+var ru_RUIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const ru_RUData string = ""
+
+var tr_TRIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const tr_TRData string = ""
+
+var uk_UAIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 36 bytes
+
+const uk_UAData string = ""
+
+// Total table size 716 bytes (0KiB); checksum: C0A2DA3
