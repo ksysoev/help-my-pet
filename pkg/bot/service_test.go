@@ -7,7 +7,6 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -29,7 +28,6 @@ func TestNewService(t *testing.T) {
 			name: "empty token",
 			cfg: &Config{
 				TelegramToken: "",
-				Messages:      &i18n.Config{},
 			},
 			aiSvc:   NewMockAIProvider(t),
 			wantErr: true,
@@ -38,7 +36,6 @@ func TestNewService(t *testing.T) {
 			name: "nil AIProvider",
 			cfg: &Config{
 				TelegramToken: "test-token",
-				Messages:      &i18n.Config{},
 			},
 			aiSvc:   nil,
 			wantErr: true,
@@ -47,7 +44,6 @@ func TestNewService(t *testing.T) {
 			name: "nil messages",
 			cfg: &Config{
 				TelegramToken: "test-token",
-				Messages:      nil,
 			},
 			aiSvc:   NewMockAIProvider(t),
 			wantErr: true,
@@ -239,9 +235,8 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			mockAI := NewMockAIProvider(t)
 
 			service := &ServiceImpl{
-				Bot:      mockBot,
-				AISvc:    mockAI,
-				Messages: &i18n.Config{},
+				Bot:   mockBot,
+				AISvc: mockAI,
 			}
 
 			service.handler = service.setupHandler()
@@ -261,9 +256,8 @@ func TestServiceImpl_Run(t *testing.T) {
 	mockAI := NewMockAIProvider(t)
 
 	service := &ServiceImpl{
-		Bot:      mockBot,
-		AISvc:    mockAI,
-		Messages: &i18n.Config{},
+		Bot:   mockBot,
+		AISvc: mockAI,
 	}
 
 	updates := make(chan tgbotapi.Update)

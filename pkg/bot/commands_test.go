@@ -7,7 +7,6 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -19,7 +18,7 @@ func TestHandleCommand(t *testing.T) {
 		languageCode      string
 		chatID            int64
 		userID            int64
-		mockSetup         func(*MockAIProvider, *i18n.Config)
+		mockSetup         func(*MockAIProvider)
 		expectedMsg       string
 		expectedError     error
 		expectedParseMode string
@@ -30,14 +29,8 @@ func TestHandleCommand(t *testing.T) {
 			languageCode: "en",
 			chatID:       123,
 			userID:       456,
-			mockSetup: func(m *MockAIProvider, msgs *i18n.Config) {
-				msgs.Languages = map[string]i18n.Messages{
-					"en": {
-						Start: "Welcome message",
-					},
-				}
-			},
-			expectedMsg: "Welcome message",
+			mockSetup:    func(m *MockAIProvider) {},
+			expectedMsg:  "Welcome message",
 		},
 		{
 			name:              "terms command",
@@ -45,7 +38,7 @@ func TestHandleCommand(t *testing.T) {
 			languageCode:      "en",
 			chatID:            123,
 			userID:            456,
-			mockSetup:         func(m *MockAIProvider, msgs *i18n.Config) {},
+			mockSetup:         func(m *MockAIProvider) {},
 			expectedMsg:       termsContent,
 			expectedParseMode: "HTML",
 		},
@@ -55,7 +48,7 @@ func TestHandleCommand(t *testing.T) {
 			languageCode: "en",
 			chatID:       123,
 			userID:       456,
-			mockSetup: func(m *MockAIProvider, msgs *i18n.Config) {
+			mockSetup: func(m *MockAIProvider) {
 				m.On("ProcessEditProfile", mock.Anything, mock.MatchedBy(func(req *message.UserMessage) bool {
 					return req.UserID == "456" && req.ChatID == "123"
 				})).Return(&message.Response{Message: "Profile updated"}, nil)
@@ -68,12 +61,7 @@ func TestHandleCommand(t *testing.T) {
 			languageCode: "en",
 			chatID:       123,
 			userID:       456,
-			mockSetup: func(m *MockAIProvider, msgs *i18n.Config) {
-				msgs.Languages = map[string]i18n.Messages{
-					"en": {
-						Error: "Error occurred",
-					},
-				}
+			mockSetup: func(m *MockAIProvider) {
 				m.On("ProcessEditProfile", mock.Anything, mock.Anything).
 					Return(nil, fmt.Errorf("processing error"))
 			},
@@ -85,7 +73,7 @@ func TestHandleCommand(t *testing.T) {
 			languageCode: "en",
 			chatID:       123,
 			userID:       456,
-			mockSetup:    func(m *MockAIProvider, msgs *i18n.Config) {},
+			mockSetup:    func(m *MockAIProvider) {},
 			expectedMsg:  "Unknown command",
 		},
 	}
@@ -94,17 +82,13 @@ func TestHandleCommand(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// Setup mocks
 			mockAI := NewMockAIProvider(t)
-			messages := &i18n.Config{
-				Languages: make(map[string]i18n.Messages),
-			}
 
 			// Configure mocks based on test case
-			tt.mockSetup(mockAI, messages)
+			tt.mockSetup(mockAI)
 
 			// Create service instance
 			svc := &ServiceImpl{
-				AISvc:    mockAI,
-				Messages: messages,
+				AISvc: mockAI,
 			}
 
 			// Create message with proper command structure

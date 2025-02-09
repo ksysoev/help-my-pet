@@ -10,7 +10,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-	"github.com/ksysoev/help-my-pet/pkg/i18n"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -146,55 +145,9 @@ func TestService_handleMessage(t *testing.T) {
 			mockAI := NewMockAIProvider(t)
 			mockBot := NewMockBotAPI(t)
 
-			messages := &i18n.Config{
-				Languages: map[string]i18n.Messages{
-					"en": {
-						Error:            "Sorry, I encountered an error while processing your request. Please try again later.",
-						Start:            "Welcome to Help My Pet Bot!",
-						RateLimit:        "You have reached the maximum number of requests per hour. Please try again later.",
-						GlobalLimit:      "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-						UnsupportedMedia: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-						MessageTooLong:   "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-					},
-					"ru": {
-						Error:            "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.",
-						Start:            "Добро пожаловать в Help My Pet Bot!",
-						RateLimit:        "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
-						GlobalLimit:      "Мы достигли дневного лимита запросов. Пожалуйста, возвращайтесь завтра, когда наш бюджет обновится.",
-						UnsupportedMedia: "Извините, я не могу обрабатывать изображения, видео, аудио или документы. Пожалуйста, отправьте ваш вопрос только текстом.",
-						MessageTooLong:   "Извините, но ваше сообщение слишком длинное для обработки. Пожалуйста, попробуйте сделать его короче и лаконичнее.",
-					},
-					"es": {
-						Error:            "Lo siento, encontré un error al procesar tu solicitud. Por favor, inténtalo más tarde.",
-						Start:            "¡Bienvenido a Help My Pet Bot!",
-						RateLimit:        "Has alcanzado el número máximo de solicitudes por hora. Por favor, inténtalo más tarde.",
-						GlobalLimit:      "Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vuelve mañana cuando nuestro presupuesto se haya renovado.",
-						UnsupportedMedia: "Lo siento, no puedo procesar imágenes, videos, audio o documentos. Por favor, envía tu pregunta solo como texto.",
-						MessageTooLong:   "Lo siento, pero tu mensaje es demasiado largo para procesarlo. Por favor, intenta hacerlo más corto y conciso.",
-					},
-					"fr": {
-						Error:            "Désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez réessayer plus tard.",
-						Start:            "Bienvenue sur Help My Pet Bot !",
-						RateLimit:        "Vous avez atteint le nombre maximum de demandes par heure. Veuillez réessayer plus tard.",
-						GlobalLimit:      "Nous avons atteint notre limite quotidienne de demandes. Veuillez revenir demain lorsque notre budget sera renouvelé.",
-						UnsupportedMedia: "Désolé, je ne peux pas traiter les images, vidéos, audios ou documents. Veuillez envoyer votre question en texte uniquement.",
-						MessageTooLong:   "Désolé, mais votre message est trop long pour être traité. Veuillez le raccourcir et le rendre plus concis.",
-					},
-					"de": {
-						Error:            "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
-						Start:            "Willkommen bei Help My Pet Bot!",
-						RateLimit:        "Sie haben die maximale Anzahl an Anfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut.",
-						GlobalLimit:      "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
-						UnsupportedMedia: "Entschuldigung, ich kann keine Bilder, Videos, Audios oder Dokumente verarbeiten. Bitte senden Sie Ihre Frage nur als Text.",
-						MessageTooLong:   "Entschuldigung, aber Ihre Nachricht ist zu lang für die Verarbeitung. Bitte versuchen Sie, sie kürzer und präziser zu formulieren.",
-					},
-				},
-			}
-
 			svc := &ServiceImpl{
-				Bot:      mockBot,
-				AISvc:    mockAI,
-				Messages: messages,
+				Bot:   mockBot,
+				AISvc: mockAI,
 			}
 
 			msg := &tgbotapi.Message{
@@ -258,23 +211,10 @@ func TestService_handleMessage(t *testing.T) {
 func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 	mockAI := NewMockAIProvider(t)
 	mockBot := NewMockBotAPI(t)
-	messages := &i18n.Config{
-		Languages: map[string]i18n.Messages{
-			"en": {
-				Error:            "Sorry, I encountered an error while processing your request. Please try again later.",
-				Start:            "Welcome to Help My Pet Bot!",
-				RateLimit:        "You have reached the maximum number of requests per hour. Please try again later.",
-				GlobalLimit:      "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-				UnsupportedMedia: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-				MessageTooLong:   "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-			},
-		},
-	}
 
 	svc := &ServiceImpl{
-		Bot:      mockBot,
-		AISvc:    mockAI,
-		Messages: messages,
+		Bot:   mockBot,
+		AISvc: mockAI,
 	}
 
 	svc.handler = svc.setupHandler()
@@ -400,25 +340,9 @@ func TestService_handleProcessingError(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mockBot := NewMockBotAPI(t)
-			messages := &i18n.Config{
-				Languages: map[string]i18n.Messages{
-					"en": {
-						RateLimit:      "You have reached the maximum number of requests per hour. Please try again later.",
-						GlobalLimit:    "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-						MessageTooLong: "I apologize, but your msg is too long for me to process. Please try to make it shorter and more concise.",
-					},
-					"ru": {
-						RateLimit: "Вы достигли максимального количества запросов в час. Пожалуйста, попробуйте позже.",
-					},
-					"de": {
-						GlobalLimit: "Wir haben unser tägliches Anfragelimit erreicht. Bitte kommen Sie morgen wieder, wenn unser Budget erneuert wurde.",
-					},
-				},
-			}
 
 			svc := &ServiceImpl{
-				Bot:      mockBot,
-				Messages: messages,
+				Bot: mockBot,
 			}
 
 			msg := &tgbotapi.Message{
@@ -430,7 +354,7 @@ func TestService_handleProcessingError(t *testing.T) {
 				},
 			}
 
-			msgConfig, err := svc.handleProcessingError(tt.err, msg)
+			msgConfig, err := svc.handleProcessingError(context.Background(), tt.err, msg)
 
 			if tt.name == "unhandled error" {
 				assert.Error(t, err)
