@@ -53,107 +53,109 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)": 1,
-	"Provided date cannot be in the future. Please provide a valid date.":     0,
+	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":              1,
+	"Provided date cannot be in the future. Please provide a valid date.":                  0,
+	"Sorry, I encountered an error while processing your request. Please try again later.": 2,
 }
 
-var be_BYIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var be_BYIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const be_BYData string = ""
 
-var ca_ESIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var ca_ESIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const ca_ESData string = ""
 
-var de_DEIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var de_DEIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const de_DEData string = ""
 
-var en_GBIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000044, 0x0000008c,
-} // Size: 36 bytes
+var en_GBIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000044, 0x0000008c, 0x000000e1,
+} // Size: 40 bytes
 
-const en_GBData string = "" + // Size: 140 bytes
+const en_GBData string = "" + // Size: 225 bytes
 	"\x02Provided date cannot be in the future. Please provide a valid date." +
 	"\x02Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-" +
-	"31)"
+	"31)\x02Sorry, I encountered an error while processing your request. Plea" +
+	"se try again later."
 
-var es_ESIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var es_ESIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const es_ESData string = ""
 
-var fa_IRIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var fa_IRIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const fa_IRData string = ""
 
-var fr_FRIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var fr_FRIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const fr_FRData string = ""
 
-var it_ITIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var it_ITIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const it_ITData string = ""
 
-var ko_KRIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var ko_KRIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const ko_KRData string = ""
 
-var ms_MYIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var ms_MYIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const ms_MYData string = ""
 
-var nl_NLIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var nl_NLIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const nl_NLData string = ""
 
-var pl_PLIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var pl_PLIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const pl_PLData string = ""
 
-var pt_PTIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var pt_PTIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const pt_PTData string = ""
 
-var ru_RUIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var ru_RUIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const ru_RUData string = ""
 
-var tr_TRIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var tr_TRIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const tr_TRData string = ""
 
-var uk_UAIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000000, 0x00000000,
-} // Size: 36 bytes
+var uk_UAIndex = []uint32{ // 4 elements
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 40 bytes
 
 const uk_UAData string = ""
 
-// Total table size 716 bytes (0KiB); checksum: C0A2DA3
+// Total table size 865 bytes (0KiB); checksum: F3B653E0

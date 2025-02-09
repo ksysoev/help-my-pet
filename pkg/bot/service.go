@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
+	messages "golang.org/x/text/message"
 )
 
 const (
@@ -31,10 +32,13 @@ type AIProvider interface {
 	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 }
 
+type Localizer interface {
+	GetPrinter(lang string) *messages.Printer
+}
+
 // Config holds the configuration for the Telegram bot
 type Config struct {
-	Messages      *i18n.Config `mapstructure:"messages"`
-	TelegramToken string       `mapstructure:"telegram_token"`
+	TelegramToken string `mapstructure:"telegram_token"`
 }
 
 type ServiceImpl struct {
@@ -42,10 +46,11 @@ type ServiceImpl struct {
 	AISvc    AIProvider
 	Messages *i18n.Config
 	handler  Handler
+	l10n     Localizer
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
-func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
+func NewService(cfg *Config, aiSvc AIProvider, l10n Localizer) (*ServiceImpl, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("config cannot be nil")
 	}
@@ -58,19 +63,15 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		return nil, fmt.Errorf("telegram token cannot be empty")
 	}
 
-	if cfg.Messages == nil {
-		return nil, fmt.Errorf("messages config cannot be nil")
-	}
-
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
 	s := &ServiceImpl{
-		Bot:      bot,
-		AISvc:    aiSvc,
-		Messages: cfg.Messages,
+		Bot:   bot,
+		AISvc: aiSvc,
+		l10n:  l10n,
 	}
 
 	s.handler = s.setupHandler()

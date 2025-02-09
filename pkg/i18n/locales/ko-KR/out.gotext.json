@@ -10,6 +10,11 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": ""
+        },
+        {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": ""
         }
     ]
 }

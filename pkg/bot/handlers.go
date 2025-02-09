@@ -34,7 +34,8 @@ func (s *ServiceImpl) setupHandler() Handler {
 		middleware.WithRequestReducer(),
 		middleware.WithThrottler(30),
 		middleware.WithMetrics(),
-		middleware.WithErrorHandling(s.Messages.GetMessage),
+		middleware.WithErrorHandling(),
+		middleware.WithLocalization(),
 	)
 
 	return h
