@@ -14,37 +14,37 @@
         {
             "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
             "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": ""
+            "translation": "متاسفم، من نمی‌توانم تصاویر، ویدیوها، صداها یا اسناد را پردازش کنم. لطفاً سوال خود را فقط به صورت متن ارسال کنید."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
             "message": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-            "translation": ""
+            "translation": "متاسفم، اما پیام شما برای من خیلی طولانی است تا بتوانم پردازش کنم. لطفاً سعی کنید کوتاه‌تر و مختصرتر کنید."
         },
         {
             "id": "You have reached the maximum number of requests per hour. Please try again later.",
             "message": "You have reached the maximum number of requests per hour. Please try again later.",
-            "translation": ""
+            "translation": "شما به حداکثر تعداد درخواست‌ها در هر ساعت رسیده‌اید. لطفاً بعداً دوباره امتحان کنید."
         },
         {
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-            "translation": ""
+            "translation": "ما به حداکثر تعداد درخواست‌های روزانه خود رسیده‌ایم. لطفاً فردا برگردید وقتی که بودجه‌مان تازه شده است."
         },
         {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
-            "translation": ""
+            "translation": "تاریخ ارائه شده نمی‌تواند در آینده باشد. لطفاً یک تاریخ معتبر ارائه دهید."
         },
         {
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-            "translation": ""
+            "translation": "لطفاً یک تاریخ در قالب معتبر YYYY-MM-DD (مثلاً 2023-12-31) ارائه دهید"
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": ""
+            "translation": "متاسفم، من در حین پردازش درخواست شما با خطا مواجه شدم. لطفاً بعداً دوباره امتحان کنید."
         }
     ]
 }

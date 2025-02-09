@@ -14,37 +14,37 @@
         {
             "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
             "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": ""
+            "translation": "Вибачте, я не можу обробляти зображення, відео, аудіо або документи. Будь ласка, надішліть своє запитання лише у вигляді тексту."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
             "message": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-            "translation": ""
+            "translation": "Вибачте, але ваше повідомлення занадто довге для мене, щоб обробити. Будь ласка, спробуйте зробити його коротшим і більш стислим."
         },
         {
             "id": "You have reached the maximum number of requests per hour. Please try again later.",
             "message": "You have reached the maximum number of requests per hour. Please try again later.",
-            "translation": ""
+            "translation": "Ви досягли максимальної кількості запитів за годину. Будь ласка, спробуйте ще раз пізніше."
         },
         {
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-            "translation": ""
+            "translation": "Ми досягли нашого щоденного ліміту запитів. Будь ласка, повертайтеся завтра, коли оновиться наш бюджет."
         },
         {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
-            "translation": ""
+            "translation": "Наданий дата не може бути у майбутньому. Будь ласка, вкажіть дійсну дату."
         },
         {
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-            "translation": ""
+            "translation": "Будь ласка, вкажіть дату у правильному форматі РРРР-ММ-ДД (наприклад, 2023-12-31)"
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": ""
+            "translation": "Вибачте, я стикнувся з помилкою під час обробки вашого запиту. Будь ласка, спробуйте ще раз пізніше."
         }
     ]
 }

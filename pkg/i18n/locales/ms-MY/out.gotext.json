@@ -14,37 +14,37 @@
         {
             "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
             "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": ""
+            "translation": "Maaf, saya tidak dapat memproses imej, video, audio, atau dokumen. Sila hantar soalan anda dalam bentuk teks sahaja."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
             "message": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-            "translation": ""
+            "translation": "Saya minta maaf, tetapi mesej anda terlalu panjang untuk saya proses. Sila cuba membuatnya lebih pendek dan ringkas."
         },
         {
             "id": "You have reached the maximum number of requests per hour. Please try again later.",
             "message": "You have reached the maximum number of requests per hour. Please try again later.",
-            "translation": ""
+            "translation": "Anda telah mencapai jumlah permintaan maksimum setiap jam. Sila cuba lagi nanti."
         },
         {
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-            "translation": ""
+            "translation": "Kami telah mencapai had permintaan harian kami. Sila kembali esok apabila bajet kami disegarkan."
         },
         {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
-            "translation": ""
+            "translation": "Tarikh yang diberikan tidak boleh di masa hadapan. Sila berikan tarikh yang sah."
         },
         {
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-            "translation": ""
+            "translation": "Sila berikan tarikh dalam format yang sah YYYY-MM-DD (contohnya, 2023-12-31)"
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": ""
+            "translation": "Maaf, saya mengalami ralat semasa memproses permintaan anda. Sila cuba lagi nanti."
         }
     ]
 }

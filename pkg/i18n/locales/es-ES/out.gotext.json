@@ -14,37 +14,37 @@
         {
             "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
             "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": ""
+            "translation": "Lo siento, no puedo procesar imágenes, videos, audio o documentos. Por favor, envíe su pregunta solo como texto."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
             "message": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-            "translation": ""
+            "translation": "Lo siento, pero tu mensaje es demasiado largo para que lo procese. Por favor, intenta hacerlo más corto y conciso."
         },
         {
             "id": "You have reached the maximum number of requests per hour. Please try again later.",
             "message": "You have reached the maximum number of requests per hour. Please try again later.",
-            "translation": ""
+            "translation": "Ha alcanzado el número máximo de solicitudes por hora. Por favor, inténtelo de nuevo más tarde."
         },
         {
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-            "translation": ""
+            "translation": "Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vuelva mañana cuando se actualice nuestro presupuesto."
         },
         {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
-            "translation": ""
+            "translation": "La fecha proporcionada no puede ser en el futuro. Por favor, proporcione una fecha válida."
         },
         {
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-            "translation": ""
+            "translation": "Por favor, proporcione una fecha en el formato válido AAAA-MM-DD (por ejemplo, 2023-12-31)"
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": ""
+            "translation": "Lo siento, encontré un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde."
         }
     ]
 }

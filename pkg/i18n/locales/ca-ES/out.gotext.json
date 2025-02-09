@@ -15,37 +15,37 @@
         {
             "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
             "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": ""
+            "translation": "Ho sento, no puc processar imatges, vídeos, àudio o documents. Si us plau, envia la teva pregunta només com a text."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
             "message": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-            "translation": ""
+            "translation": "Ho sento, però el teu missatge és massa llarg per a mi per processar. Si us plau, intenta fer-lo més curt i concís."
         },
         {
             "id": "You have reached the maximum number of requests per hour. Please try again later.",
             "message": "You have reached the maximum number of requests per hour. Please try again later.",
-            "translation": ""
+            "translation": "Has arribat al nombre màxim de peticions per hora. Si us plau, torna-ho a provar més tard."
         },
         {
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-            "translation": ""
+            "translation": "Hem arribat al nostre límit diari de peticions. Si us plau, torna demà quan el nostre pressupost es refresqui."
         },
         {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
-            "translation": ""
+            "translation": "La data proporcionada no pot ser en el futur. Si us plau, proporciona una data vàlida."
         },
         {
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-            "translation": ""
+            "translation": "Si us plau, proporciona una data en el format vàlid AAAA-MM-DD (per exemple, 2023-12-31)"
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": ""
+            "translation": "Ho sento, he trobat un error mentre processava la teva sol·licitud. Si us plau, torna-ho a provar més tard."
         }
     ]
 }

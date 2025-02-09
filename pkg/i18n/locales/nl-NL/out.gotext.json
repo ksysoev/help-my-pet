@@ -14,37 +14,37 @@
         {
             "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
             "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": ""
+            "translation": "Sorry, ik kan geen afbeeldingen, video's, audio of documenten verwerken. Stuur uw vraag alleen als tekst."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
             "message": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-            "translation": ""
+            "translation": "Het spijt me, maar uw bericht is te lang voor mij om te verwerken. Probeer het korter en beknopter te maken."
         },
         {
             "id": "You have reached the maximum number of requests per hour. Please try again later.",
             "message": "You have reached the maximum number of requests per hour. Please try again later.",
-            "translation": ""
+            "translation": "U heeft het maximale aantal verzoeken per uur bereikt. Probeer het later opnieuw."
         },
         {
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
-            "translation": ""
+            "translation": "We hebben ons dagelijkse verzoeklimiet bereikt. Kom morgen terug wanneer ons budget is vernieuwd."
         },
         {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
-            "translation": ""
+            "translation": "De opgegeven datum kan niet in de toekomst liggen. Geef een geldige datum op."
         },
         {
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-            "translation": ""
+            "translation": "Geef een datum op in het geldige formaat JJJJ-MM-DD (bijv. 2023-12-31)"
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": ""
+            "translation": "Sorry, ik heb een fout aangetroffen bij het verwerken van uw verzoek. Probeer het later opnieuw."
         }
     ]
 }
