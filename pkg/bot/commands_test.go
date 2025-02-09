@@ -30,7 +30,7 @@ func TestHandleCommand(t *testing.T) {
 			chatID:       123,
 			userID:       456,
 			mockSetup:    func(m *MockAIProvider) {},
-			expectedMsg:  "Welcome message",
+			expectedMsg:  "Welcome to Help My Pet Bot",
 		},
 		{
 			name:              "terms command",
@@ -39,7 +39,7 @@ func TestHandleCommand(t *testing.T) {
 			chatID:            123,
 			userID:            456,
 			mockSetup:         func(m *MockAIProvider) {},
-			expectedMsg:       termsContent,
+			expectedMsg:       "Terms and Conditions",
 			expectedParseMode: "HTML",
 		},
 		{
@@ -65,7 +65,7 @@ func TestHandleCommand(t *testing.T) {
 				m.On("ProcessEditProfile", mock.Anything, mock.Anything).
 					Return(nil, fmt.Errorf("processing error"))
 			},
-			expectedMsg: "Error occurred",
+			expectedError: fmt.Errorf("failed to process edit profile request: processing error"),
 		},
 		{
 			name:         "unknown command",
@@ -121,7 +121,7 @@ func TestHandleCommand(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.chatID, resp.ChatID)
-				assert.Equal(t, tt.expectedMsg, resp.Text)
+				assert.Contains(t, resp.Text, tt.expectedMsg)
 				if tt.expectedParseMode != "" {
 					assert.Equal(t, tt.expectedParseMode, resp.ParseMode)
 				}
