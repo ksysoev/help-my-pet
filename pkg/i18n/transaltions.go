@@ -1,11 +1,11 @@
+//go:generate gotext -srclang=en-GB update -out=catalog.go -lang=en-GB,ru-RU,es-ES,fr-FR,de-DE,ko-KR,tr-TR,it-IT,pl-PL,uk-UA,be-BY,nl-NL,ms-MY,pt-PT,ca-ES,fa-IR github.com/ksysoev/help-my-pet/pkg/...
+
 package i18n
 
 import (
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 )
-
-//go:generate gotext -srclang=en-GB update -out=catalog.go -lang=en-GB,ru-RU,es-ES,fr-FR,de-DE,ko-KR,tr-TR,it-IT,pl-PL,uk-UA,be-BY,nl-NL,ms-MY,pt-PT,ca-ES,fa-IR github.com/ksysoev/help-my-pet/pkg/...
 
 const DefaultLanguage = "en"
 

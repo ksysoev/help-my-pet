@@ -11,8 +11,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/google/uuid"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-	"github.com/ksysoev/help-my-pet/pkg/i18n"
-	messages "golang.org/x/text/message"
 )
 
 const (
@@ -32,25 +30,19 @@ type AIProvider interface {
 	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 }
 
-type Localizer interface {
-	GetPrinter(lang string) *messages.Printer
-}
-
 // Config holds the configuration for the Telegram bot
 type Config struct {
 	TelegramToken string `mapstructure:"telegram_token"`
 }
 
 type ServiceImpl struct {
-	Bot      BotAPI
-	AISvc    AIProvider
-	Messages *i18n.Config
-	handler  Handler
-	l10n     Localizer
+	Bot     BotAPI
+	AISvc   AIProvider
+	handler Handler
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
-func NewService(cfg *Config, aiSvc AIProvider, l10n Localizer) (*ServiceImpl, error) {
+func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("config cannot be nil")
 	}
@@ -71,7 +63,6 @@ func NewService(cfg *Config, aiSvc AIProvider, l10n Localizer) (*ServiceImpl, er
 	s := &ServiceImpl{
 		Bot:   bot,
 		AISvc: aiSvc,
-		l10n:  l10n,
 	}
 
 	s.handler = s.setupHandler()
