@@ -11,14 +11,18 @@ type localizerContextKey struct{}
 
 var defaultPrinter = message.NewPrinter(language.MustParse("en-GB"))
 
+// SetLocale injects a language-specific printer into the provided context for localization.
+// It retrieves the printer for the specified language from the Localizer instance.
+// If the language is not supported, it falls back to the default language printer.
+// Returns a new context containing the localized printer.
 func SetLocale(ctx context.Context, l10n *Localizer, lang string) context.Context {
-	ctx = context.WithValue(ctx, localizerContextKey{}, l10n.GetPrinter(lang))
-	return ctx
+	return context.WithValue(ctx, localizerContextKey{}, l10n.GetPrinter(lang))
 }
 
-// GetLocale retrieves the localized message printer from the provided context.
-// It defaults to a preconfigured printer if the context is nil or does not contain a valid localizer.
-// Returns a *message.Printer for message localization.
+// GetLocale retrieves the localized message printer associated with the provided context.
+// It uses the localizer stored in the context for localized messages or defaults to the English printer if unavailable.
+// Accepts ctx, the request context that may contain localization details.
+// Returns the *message.Printer for localized message formatting.
 func GetLocale(ctx context.Context) *message.Printer {
 	if ctx == nil {
 		return defaultPrinter
