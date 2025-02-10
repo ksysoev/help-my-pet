@@ -45,6 +45,56 @@
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translation": "متاسفم، من در حین پردازش درخواست شما با خطا مواجه شدم. لطفاً بعداً دوباره امتحان کنید."
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "نام حیوان خانگی شما چیست؟"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "چه نوع حیوان خانگی دارید؟"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "سگ"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "گربه"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "نژاد حیوان خانگی شما چیست؟"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "حیوان خانگی شما چه زمانی متولد شده است؟ لطفاً تاریخ را به صورت YYYY-MM-DD (مثلاً 2010-12-31) وارد کنید."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "جنسیت حیوان خانگی شما چیست؟"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "نر"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "ماده"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "وزن حیوان خانگی شما چیست؟ لطفاً وزن را به همراه واحد مشخص کنید، مثلاً 5 کیلوگرم"
         }
     ]
 }

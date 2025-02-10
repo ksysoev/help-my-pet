@@ -61,16 +61,28 @@ var messageKeyToIndex = map[string]int{
 	"Sorry, I encountered an error while processing your request. Please try again later.":                         8,
 	"We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.":             5,
 	"Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!": 0,
-	"You have reached the maximum number of requests per hour. Please try again later.": 4,
+	"What breed is your pet?":    13,
+	"What is your pet's gender?": 15,
+	"What is your pet's name?":   9,
+	"What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg": 18,
+	"What type of pet do you have?": 10,
+	"When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).": 14,
+	"You have reached the maximum number of requests per hour. Please try again later.":          4,
+	"cat":    12,
+	"dog":    11,
+	"female": 17,
+	"male":   16,
 }
 
-var be_BYIndex = []uint32{ // 10 elements
+var be_BYIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004eb, 0x00001e72, 0x00001f57,
 	0x00002044, 0x000020f6, 0x000021ae, 0x0000225f,
-	0x000022f3, 0x000023a1,
-} // Size: 64 bytes
+	0x000022f3, 0x000023a1, 0x000023e1, 0x0000240d,
+	0x0000241a, 0x00002421, 0x00002455, 0x0000250b,
+	0x0000253c, 0x0000254f, 0x0000255c, 0x0000260b,
+} // Size: 104 bytes
 
-const be_BYData string = "" + // Size: 9121 bytes
+const be_BYData string = "" + // Size: 9739 bytes
 	"\x02Сардэчна запрашаем у Help My Pet Bot! 🐾\x0a\x0aЯ ваш асабісты памочн" +
 	"ік па догляду за хатнімі жывёламі, гатовы дапамагчы вам лепш клапаціцца" +
 	" пра вашага пухнатага сябра. Я магу дапамагчы вам з:\x0a\x0a• Пытанні зд" +
@@ -145,15 +157,22 @@ const be_BYData string = "" + // Size: 9121 bytes
 	"дату ў дапушчальным фармаце.\x02Калі ласка, прадастаўце дату ў дапушчал" +
 	"ьным фармаце ГГГГ-ММ-ДД (напрыклад, 2023-12-31)\x02Прабачце, я ўзнёс па" +
 	"мылку пры апрацоўцы вашага запыту. Калі ласка, паспрабуйце яшчэ раз паз" +
-	"ней."
+	"ней.\x02Як зваліце вашага пухнатага сябра?\x02Якога тыпу жывёлу у вас?" +
+	"\x02сабака\x02кот\x02Якой расы ваш пухнаты сябар?\x02Калі нарадзіўся ваш" +
+	" пухнаты сябар? Калі ласка, увядзіце дату ў фармаце ГГГГ-ММ-ДД (напрыкла" +
+	"д, 2010-12-31).\x02Якога ваш пухнатага сябра?\x02мужчынскі\x02жаночы" +
+	"\x02Які вага вашага пухнатага сябра? Калі ласка, пазначце вагу, наступна" +
+	"е за адзінка, напрыклад, 5 кг"
 
-var ca_ESIndex = []uint32{ // 10 elements
+var ca_ESIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002c1, 0x000010ce, 0x00001145,
 	0x000011bd, 0x0000121a, 0x0000128b, 0x000012e3,
-	0x0000133d, 0x000013ab,
-} // Size: 64 bytes
+	0x0000133d, 0x000013ab, 0x000013cf, 0x000013eb,
+	0x000013ef, 0x000013f3, 0x00001414, 0x00001487,
+	0x000014af, 0x000014b6, 0x000014be, 0x00001527,
+} // Size: 104 bytes
 
-const ca_ESData string = "" + // Size: 5035 bytes
+const ca_ESData string = "" + // Size: 5415 bytes
 	"\x02Benvingut a Help My Pet Bot! 🐾\x0a\x0aSóc el teu assistent personal " +
 	"de cura de mascotes, preparat per ajudar-te a cuidar millor del teu amic" +
 	" pelut. Puc ajudar-te amb:\x0a\x0a• Preguntes sobre salut i comportament" +
@@ -225,15 +244,22 @@ const ca_ESData string = "" + // Size: 5035 bytes
 	"ona una data vàlida.\x02Si us plau, proporciona una data en el format và" +
 	"lid AAAA-MM-DD (per exemple, 2023-12-31)\x02Ho sento, he trobat un error" +
 	" mentre processava la teva sol·licitud. Si us plau, torna-ho a provar mé" +
-	"s tard."
+	"s tard.\x02Quin és el nom de la teva mascota?\x02Quin tipus de mascota t" +
+	"ens?\x02gos\x02gat\x02Quina raça és la teva mascota?\x02Quan va néixer l" +
+	"a teva mascota? Si us plau, introdueix la data en el format AAAA-MM-DD (" +
+	"per exemple, 2010-12-31).\x02Quin és el gènere de la teva mascota?\x02ma" +
+	"scle\x02femella\x02Quin és el pes de la teva mascota? Si us plau, especi" +
+	"fica el pes seguit de la unitat, per exemple, 5 kg"
 
-var de_DEIndex = []uint32{ // 10 elements
+var de_DEIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002f7, 0x00001293, 0x00001315,
 	0x000013a7, 0x0000140e, 0x00001482, 0x000014e1,
-	0x00001530, 0x000015a6,
-} // Size: 64 bytes
+	0x00001530, 0x000015a6, 0x000015bf, 0x000015e2,
+	0x000015e7, 0x000015ed, 0x0000160c, 0x00001674,
+	0x0000169d, 0x000016a7, 0x000016b0, 0x00001710,
+} // Size: 104 bytes
 
-const de_DEData string = "" + // Size: 5542 bytes
+const de_DEData string = "" + // Size: 5904 bytes
 	"\x02Willkommen bei Help My Pet Bot! 🐾\x0a\x0aIch bin Ihr persönlicher As" +
 	"sistent für die Pflege Ihres Haustieres und helfe Ihnen, sich besser um " +
 	"Ihren pelzigen Freund zu kümmern. Ich kann Ihnen bei folgenden Themen he" +
@@ -312,15 +338,22 @@ const de_DEData string = "" + // Size: 5542 bytes
 	"liegen. Bitte geben Sie ein gültiges Datum an.\x02Bitte geben Sie ein Da" +
 	"tum im gültigen Format JJJJ-MM-TT an (z. B. 2023-12-31)\x02Entschuldigun" +
 	"g, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte " +
-	"versuchen Sie es später erneut."
+	"versuchen Sie es später erneut.\x02Wie heißt Ihr Haustier?\x02Welche Art" +
+	" von Haustier haben Sie?\x02Hund\x02Katze\x02Welche Rasse hat Ihr Hausti" +
+	"er?\x02Wann wurde Ihr Haustier geboren? Bitte geben Sie das Datum im For" +
+	"mat JJJJ-MM-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihres H" +
+	"austieres?\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bitte" +
+	" geben Sie das Gewicht gefolgt von der Einheit an, z. B. 5 kg"
 
-var en_GBIndex = []uint32{ // 10 elements
+var en_GBIndex = []uint32{ // 20 elements
 	0x00000000, 0x0000024c, 0x00000fe7, 0x0000104c,
 	0x000010b9, 0x0000110b, 0x0000116c, 0x000011b0,
-	0x000011f8, 0x0000124d,
-} // Size: 64 bytes
+	0x000011f8, 0x0000124d, 0x00001266, 0x00001284,
+	0x00001288, 0x0000128c, 0x000012a4, 0x000012ff,
+	0x0000131a, 0x0000131f, 0x00001326, 0x0000137c,
+} // Size: 104 bytes
 
-const en_GBData string = "" + // Size: 4685 bytes
+const en_GBData string = "" + // Size: 4988 bytes
 	"\x02Welcome to Help My Pet Bot! 🐾\x0a\x0aI'm your personal pet care assi" +
 	"stant, ready to help you take better care of your furry friend. I can as" +
 	"sist you with:\x0a\x0a• Pet health and behavior questions\x0a• Diet and " +
@@ -388,15 +421,21 @@ const en_GBData string = "" + // Size: 4685 bytes
 	"Provided date cannot be in the future. Please provide a valid date.\x02P" +
 	"lease provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)" +
 	"\x02Sorry, I encountered an error while processing your request. Please " +
-	"try again later."
+	"try again later.\x02What is your pet's name?\x02What type of pet do you " +
+	"have?\x02dog\x02cat\x02What breed is your pet?\x02When was your pet born" +
+	"? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).\x02" +
+	"What is your pet's gender?\x02male\x02female\x02What is your pet's weigh" +
+	"t? Please specify the weight followed by the unit, e.g., 5 kg"
 
-var es_ESIndex = []uint32{ // 10 elements
+var es_ESIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002c2, 0x0000118f, 0x00001202,
 	0x00001276, 0x000012da, 0x00001354, 0x000013b0,
-	0x0000140c, 0x0000146f,
-} // Size: 64 bytes
+	0x0000140c, 0x0000146f, 0x00001493, 0x000014b2,
+	0x000014b8, 0x000014bd, 0x000014d8, 0x00001547,
+	0x0000156c, 0x00001572, 0x00001579, 0x000015e1,
+} // Size: 104 bytes
 
-const es_ESData string = "" + // Size: 5231 bytes
+const es_ESData string = "" + // Size: 5601 bytes
 	"\x02¡Bienvenido a Help My Pet Bot! 🐾\x0a\x0aSoy tu asistente personal de" +
 	" cuidado de mascotas, listo para ayudarte a cuidar mejor a tu amigo pelu" +
 	"do. Puedo asistirte con:\x0a\x0a• Preguntas sobre salud y comportamiento" +
@@ -470,15 +509,23 @@ const es_ESData string = "" + // Size: 5231 bytes
 	"echa proporcionada no puede ser en el futuro. Por favor, proporcione una" +
 	" fecha válida.\x02Por favor, proporcione una fecha en el formato válido " +
 	"AAAA-MM-DD (por ejemplo, 2023-12-31)\x02Lo siento, encontré un error al " +
-	"procesar su solicitud. Por favor, inténtelo de nuevo más tarde."
+	"procesar su solicitud. Por favor, inténtelo de nuevo más tarde.\x02¿Cuál" +
+	" es el nombre de tu mascota?\x02¿Qué tipo de mascota tienes?\x02perro" +
+	"\x02gato\x02¿Qué raza es tu mascota?\x02¿Cuándo nació tu mascota? Por fa" +
+	"vor, introduce la fecha en el formato AAAA-MM-DD (por ejemplo, 2010-12-3" +
+	"1).\x02¿Cuál es el género de tu mascota?\x02macho\x02hembra\x02¿Cuál es " +
+	"el peso de tu mascota? Por favor, especifica el peso seguido de la unida" +
+	"d, por ejemplo, 5 kg"
 
-var fa_IRIndex = []uint32{ // 10 elements
+var fa_IRIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004d5, 0x000019da, 0x00001aa8,
 	0x00001b69, 0x00001c05, 0x00001cc5, 0x00001d4b,
-	0x00001db6, 0x00001e52,
-} // Size: 64 bytes
+	0x00001db6, 0x00001e52, 0x00001e81, 0x00001eb0,
+	0x00001eb5, 0x00001ebe, 0x00001eef, 0x00001f96,
+	0x00001fc9, 0x00001fce, 0x00001fd7, 0x00002066,
+} // Size: 104 bytes
 
-const fa_IRData string = "" + // Size: 7762 bytes
+const fa_IRData string = "" + // Size: 8294 bytes
 	"\x02به ربات کمک به حیوان خانگی من خوش آمدید! 🐾\x0a\x0aمن دستیار شخصی شما" +
 	" در مراقبت از حیوان خانگی هستم و آماده\u200cام تا به شما کمک کنم تا بهتر" +
 	" از دوست پشمالوی خود مراقبت کنید. من می\u200cتوانم به شما در موارد زیر ک" +
@@ -546,15 +593,22 @@ const fa_IRData string = "" + // Size: 7762 bytes
 	"زه شده است.\x02تاریخ ارائه شده نمی\u200cتواند در آینده باشد. لطفاً یک ت" +
 	"اریخ معتبر ارائه دهید.\x02لطفاً یک تاریخ در قالب معتبر YYYY-MM-DD (مثلا" +
 	"ً 2023-12-31) ارائه دهید\x02متاسفم، من در حین پردازش درخواست شما با خطا" +
-	" مواجه شدم. لطفاً بعداً دوباره امتحان کنید."
+	" مواجه شدم. لطفاً بعداً دوباره امتحان کنید.\x02نام حیوان خانگی شما چیست؟" +
+	"\x02چه نوع حیوان خانگی دارید؟\x02سگ\x02گربه\x02نژاد حیوان خانگی شما چیست" +
+	"؟\x02حیوان خانگی شما چه زمانی متولد شده است؟ لطفاً تاریخ را به صورت YYY" +
+	"Y-MM-DD (مثلاً 2010-12-31) وارد کنید.\x02جنسیت حیوان خانگی شما چیست؟\x02" +
+	"نر\x02ماده\x02وزن حیوان خانگی شما چیست؟ لطفاً وزن را به همراه واحد مشخص" +
+	" کنید، مثلاً 5 کیلوگرم"
 
-var fr_FRIndex = []uint32{ // 10 elements
+var fr_FRIndex = []uint32{ // 20 elements
 	0x00000000, 0x0000031d, 0x000012a9, 0x00001333,
 	0x000013b6, 0x00001411, 0x00001480, 0x000014d3,
-	0x00001523, 0x0000158c,
-} // Size: 64 bytes
+	0x00001523, 0x0000158c, 0x000015bb, 0x000015e7,
+	0x000015ed, 0x000015f2, 0x00001624, 0x00001696,
+	0x000016c6, 0x000016cc, 0x000016d4, 0x00001746,
+} // Size: 104 bytes
 
-const fr_FRData string = "" + // Size: 5516 bytes
+const fr_FRData string = "" + // Size: 5958 bytes
 	"\x02Bienvenue sur Help My Pet Bot! 🐾\x0a\x0aJe suis votre assistant pers" +
 	"onnel pour les soins des animaux de compagnie, prêt à vous aider à mieux" +
 	" prendre soin de votre ami à fourrure. Je peux vous aider avec :\x0a\x0a" +
@@ -632,15 +686,23 @@ const fr_FRData string = "" + // Size: 5516 bytes
 	" être dans le futur. Veuillez fournir une date valide.\x02Veuillez fourn" +
 	"ir une date au format valide AAAA-MM-JJ (par exemple, 2023-12-31)\x02Dés" +
 	"olé, j'ai rencontré une erreur lors du traitement de votre demande. Veui" +
-	"llez réessayer plus tard."
+	"llez réessayer plus tard.\x02Quel est le nom de votre animal de compagni" +
+	"e ?\x02Quel type d'animal de compagnie avez-vous ?\x02chien\x02chat\x02Q" +
+	"uelle est la race de votre animal de compagnie ?\x02Quand est né votre a" +
+	"nimal de compagnie ? Veuillez entrer la date au format AAAA-MM-JJ (par e" +
+	"xemple, 2010-12-31).\x02Quel est le sexe de votre animal de compagnie ?" +
+	"\x02mâle\x02femelle\x02Quel est le poids de votre animal de compagnie ? " +
+	"Veuillez spécifier le poids suivi de l'unité, par exemple 5 kg"
 
-var it_ITIndex = []uint32{ // 10 elements
+var it_ITIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002d8, 0x00001151, 0x000011db,
 	0x00001252, 0x0000129c, 0x00001310, 0x00001361,
-	0x000013b5, 0x00001419,
-} // Size: 64 bytes
+	0x000013b5, 0x00001419, 0x00001444, 0x00001467,
+	0x0000146c, 0x00001472, 0x0000149b, 0x00001512,
+	0x0000153e, 0x00001546, 0x0000154e, 0x000015bf,
+} // Size: 104 bytes
 
-const it_ITData string = "" + // Size: 5145 bytes
+const it_ITData string = "" + // Size: 5567 bytes
 	"\x02Benvenuto su Help My Pet Bot! 🐾\x0a\x0aSono il tuo assistente person" +
 	"ale per la cura degli animali domestici, pronto ad aiutarti a prenderti " +
 	"cura meglio del tuo amico peloso. Posso assisterti con:\x0a\x0a• Domande" +
@@ -714,15 +776,23 @@ const it_ITData string = "" + // Size: 5145 bytes
 	"ò essere nel futuro. Si prega di fornire una data valida.\x02Si prega d" +
 	"i fornire una data nel formato valido AAAA-MM-GG (ad esempio, 2023-12-31" +
 	")\x02Spiacente, ho riscontrato un errore durante l'elaborazione della tu" +
-	"a richiesta. Riprova più tardi."
+	"a richiesta. Riprova più tardi.\x02Qual è il nome del tuo animale domest" +
+	"ico?\x02Che tipo di animale domestico hai?\x02cane\x02gatto\x02Quale raz" +
+	"za è il tuo animale domestico?\x02Quando è nato il tuo animale domestico" +
+	"? Si prega di inserire la data nel formato AAAA-MM-GG (ad esempio, 2010-" +
+	"12-31).\x02Qual è il sesso del tuo animale domestico?\x02maschio\x02femm" +
+	"ina\x02Qual è il peso del tuo animale domestico? Si prega di specificare" +
+	" il peso seguito dall'unità, ad esempio, 5 kg"
 
-var ko_KRIndex = []uint32{ // 10 elements
+var ko_KRIndex = []uint32{ // 20 elements
 	0x00000000, 0x0000032e, 0x000012ba, 0x0000134d,
 	0x000013a9, 0x00001405, 0x00001461, 0x000014ba,
-	0x0000150c, 0x00001573,
-} // Size: 64 bytes
+	0x0000150c, 0x00001573, 0x0000159e, 0x000015d7,
+	0x000015db, 0x000015e5, 0x00001610, 0x0000168d,
+	0x000016b8, 0x000016bf, 0x000016c6, 0x00001734,
+} // Size: 104 bytes
 
-const ko_KRData string = "" + // Size: 5491 bytes
+const ko_KRData string = "" + // Size: 5940 bytes
 	"\x02Help My Pet Bot에 오신 것을 환영합니다! 🐾\x0a\x0a저는 당신의 개인 반려동물 관리 도우미로, 당신의 털" +
 	"복숭이 친구를 더 잘 돌볼 수 있도록 도와드리겠습니다. 저는 다음과 같은 도움을 드릴 수 있습니다:\x0a\x0a• 반려동물 " +
 	"건강 및 행동 질문\x0a• 식단 및 영양 조언\x0a• 훈련 팁 및 기법\x0a• 일반적인 반려동물 관리 지침\x0a\x0a" +
@@ -759,15 +829,20 @@ const ko_KRData string = "" + // Size: 5491 bytes
 	"요.\x02죄송합니다만, 메시지가 너무 깁니다. 짧고 간결하게 작성해 주세요.\x02시간당 요청 횟수 제한에 도달했습니다. 나" +
 	"중에 다시 시도해 주세요.\x02일일 요청 한도에 도달했습니다. 예산이 갱신되는 내일 다시 오세요.\x02제공된 날짜는 미래일" +
 	" 수 없습니다. 유효한 날짜를 제공해 주세요.\x02유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 " +
-	"주세요.\x02죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+	"주세요.\x02죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.\x02애완동물의 이름은 무엇입니까?" +
+	"\x02어떤 종류의 애완동물을 가지고 계십니까?\x02개\x02고양이\x02애완동물의 품종은 무엇입니까?\x02애완동물이 태어난 " +
+	"날짜는 언제입니까? YYYY-MM-DD(예: 2010-12-31) 형식으로 날짜를 입력해 주세요.\x02애완동물의 성별은 무엇" +
+	"입니까?\x02수컷\x02암컷\x02애완동물의 몸무게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예: 5 kg"
 
-var ms_MYIndex = []uint32{ // 10 elements
+var ms_MYIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002fc, 0x0000125f, 0x000012d4,
 	0x00001349, 0x0000139a, 0x000013fb, 0x0000144c,
-	0x00001499, 0x000014ec,
-} // Size: 64 bytes
+	0x00001499, 0x000014ec, 0x00001510, 0x0000153e,
+	0x00001545, 0x0000154c, 0x00001572, 0x000015e0,
+	0x00001607, 0x0000160e, 0x00001618, 0x00001679,
+} // Size: 104 bytes
 
-const ms_MYData string = "" + // Size: 5356 bytes
+const ms_MYData string = "" + // Size: 5753 bytes
 	"\x02Selamat datang ke Help My Pet Bot! 🐾\x0a\x0aSaya adalah pembantu pen" +
 	"jagaan haiwan peliharaan peribadi anda, sedia membantu anda menjaga raka" +
 	"n berbulu anda dengan lebih baik. Saya boleh membantu anda dengan:\x0a" +
@@ -844,15 +919,23 @@ const ms_MYData string = "" + // Size: 5356 bytes
 	"bajet kami disegarkan.\x02Tarikh yang diberikan tidak boleh di masa hada" +
 	"pan. Sila berikan tarikh yang sah.\x02Sila berikan tarikh dalam format y" +
 	"ang sah YYYY-MM-DD (contohnya, 2023-12-31)\x02Maaf, saya mengalami ralat" +
-	" semasa memproses permintaan anda. Sila cuba lagi nanti."
+	" semasa memproses permintaan anda. Sila cuba lagi nanti.\x02Apakah nama " +
+	"haiwan peliharaan anda?\x02Jenis haiwan peliharaan apa yang anda miliki?" +
+	"\x02anjing\x02kucing\x02Apakah bangsa haiwan peliharaan anda?\x02Bila ha" +
+	"iwan peliharaan anda dilahirkan? Sila masukkan tarikh dalam format YYYY-" +
+	"MM-DD (contohnya, 2010-12-31).\x02Apakah jantina haiwan peliharaan anda?" +
+	"\x02lelaki\x02perempuan\x02Berapakah berat haiwan peliharaan anda? Sila " +
+	"nyatakan berat diikuti dengan unit, contohnya, 5 kg"
 
-var nl_NLIndex = []uint32{ // 10 elements
+var nl_NLIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002ac, 0x000011dd, 0x00001247,
 	0x000012b4, 0x00001306, 0x00001368, 0x000013b6,
-	0x000013fd, 0x0000145e,
-} // Size: 64 bytes
+	0x000013fd, 0x0000145e, 0x0000147e, 0x0000149e,
+	0x000014a3, 0x000014a7, 0x000014c0, 0x0000151f,
+	0x00001544, 0x0000154e, 0x00001559, 0x000015bd,
+} // Size: 104 bytes
 
-const nl_NLData string = "" + // Size: 5214 bytes
+const nl_NLData string = "" + // Size: 5565 bytes
 	"\x02Welkom bij Help My Pet Bot! 🐾\x0a\x0aIk ben je persoonlijke assisten" +
 	"t voor huisdierverzorging, klaar om je te helpen beter voor je harige vr" +
 	"iend te zorgen. Ik kan je helpen met:\x0a\x0a• Vragen over de gezondheid" +
@@ -927,15 +1010,22 @@ const nl_NLData string = "" + // Size: 5214 bytes
 	"vernieuwd.\x02De opgegeven datum kan niet in de toekomst liggen. Geef ee" +
 	"n geldige datum op.\x02Geef een datum op in het geldige formaat JJJJ-MM-" +
 	"DD (bijv. 2023-12-31)\x02Sorry, ik heb een fout aangetroffen bij het ver" +
-	"werken van uw verzoek. Probeer het later opnieuw."
+	"werken van uw verzoek. Probeer het later opnieuw.\x02Wat is de naam van " +
+	"je huisdier?\x02Wat voor soort huisdier heb je?\x02hond\x02kat\x02Welk r" +
+	"as is je huisdier?\x02Wanneer is je huisdier geboren? Voer de datum in h" +
+	"et formaat JJJJ-MM-DD in (bijv. 2010-12-31).\x02Wat is het geslacht van " +
+	"je huisdier?\x02mannelijk\x02vrouwelijk\x02Wat is het gewicht van je hui" +
+	"sdier? Geef het gewicht op, gevolgd door de eenheid, bijvoorbeeld 5 kg"
 
-var pl_PLIndex = []uint32{ // 10 elements
+var pl_PLIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002eb, 0x000011e4, 0x00001269,
 	0x000012e5, 0x0000133b, 0x0000139e, 0x000013e9,
-	0x00001429, 0x0000148f,
-} // Size: 64 bytes
+	0x00001429, 0x0000148f, 0x000014b2, 0x000014d9,
+	0x000014de, 0x000014e2, 0x00001506, 0x00001562,
+	0x00001588, 0x0000158f, 0x00001596, 0x000015e9,
+} // Size: 104 bytes
 
-const pl_PLData string = "" + // Size: 5263 bytes
+const pl_PLData string = "" + // Size: 5609 bytes
 	"\x02Witamy w Help My Pet Bot! 🐾\x0a\x0aJestem Twoim osobistym asystentem" +
 	" ds. opieki nad zwierzętami, gotowym pomóc Ci lepiej dbać o Twojego futr" +
 	"zanego przyjaciela. Mogę pomóc w:\x0a\x0a• Pytania dotyczące zdrowia i z" +
@@ -1008,15 +1098,22 @@ const pl_PLData string = "" + // Size: 5263 bytes
 	"ta nie może być w przyszłości. Proszę podaj poprawną datę.\x02Podaj datę" +
 	" w prawidłowym formacie RRRR-MM-DD (np. 2023-12-31)\x02Przepraszam, napo" +
 	"tkałem błąd podczas przetwarzania Twojego żądania. Spróbuj ponownie późn" +
-	"iej."
+	"iej.\x02Jak ma na imię Twoje zwierzątko?\x02Jakiego rodzaju zwierzątko p" +
+	"osiadasz?\x02pies\x02kot\x02Jaka jest rasa Twojego zwierzątka?\x02Kiedy " +
+	"urodziło się Twoje zwierzątko? Podaj datę w formacie RRRR-MM-DD (np. 201" +
+	"0-12-31).\x02Jaka jest płeć Twojego zwierzątka?\x02samiec\x02samica\x02J" +
+	"aka jest waga Twojego zwierzątka? Podaj wagę, a następnie jednostkę, np." +
+	" 5 kg"
 
-var pt_PTIndex = []uint32{ // 10 elements
+var pt_PTIndex = []uint32{ // 20 elements
 	0x00000000, 0x00000309, 0x000011da, 0x00001253,
 	0x000012c9, 0x0000132c, 0x0000139c, 0x000013ee,
-	0x00001443, 0x000014a1,
-} // Size: 64 bytes
+	0x00001443, 0x000014a1, 0x000014ce, 0x000014fb,
+	0x00001500, 0x00001505, 0x00001533, 0x000015a8,
+	0x000015d8, 0x000015de, 0x000015e5, 0x00001656,
+} // Size: 104 bytes
 
-const pt_PTData string = "" + // Size: 5281 bytes
+const pt_PTData string = "" + // Size: 5718 bytes
 	"\x02Bem-vindo ao Help My Pet Bot! 🐾\x0a\x0aSou o seu assistente pessoal " +
 	"de cuidados com animais de estimação, pronto para ajudá-lo a cuidar melh" +
 	"or do seu amigo peludo. Posso ajudá-lo com:\x0a\x0a• Perguntas sobre saú" +
@@ -1090,15 +1187,23 @@ const pt_PTData string = "" + // Size: 5281 bytes
 	"Por favor, forneça uma data válida.\x02Por favor, forneça uma data no fo" +
 	"rmato válido AAAA-MM-DD (por exemplo, 2023-12-31)\x02Desculpe, encontrei" +
 	" um erro ao processar o seu pedido. Por favor, tente novamente mais tard" +
-	"e."
+	"e.\x02Qual é o nome do seu animal de estimação?\x02Que tipo de animal de" +
+	" estimação você tem?\x02cão\x02gato\x02Qual é a raça do seu animal de es" +
+	"timação?\x02Quando nasceu o seu animal de estimação? Por favor, insira a" +
+	" data no formato AAAA-MM-DD (por exemplo, 2010-12-31).\x02Qual é o géner" +
+	"o do seu animal de estimação?\x02macho\x02fêmea\x02Qual é o peso do seu " +
+	"animal de estimação? Por favor, especifique o peso seguido da unidade, p" +
+	"or exemplo, 5 kg"
 
-var ru_RUIndex = []uint32{ // 10 elements
+var ru_RUIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004ac, 0x00001eb4, 0x00001f9e,
 	0x00002060, 0x000020f9, 0x000021c5, 0x00002259,
-	0x000022e0, 0x0000238a,
-} // Size: 64 bytes
+	0x000022e0, 0x0000238a, 0x000023b9, 0x000023f1,
+	0x000023fe, 0x00002409, 0x00002441, 0x000024e5,
+	0x00002517, 0x00002526, 0x00002535, 0x000025dd,
+} // Size: 104 bytes
 
-const ru_RUData string = "" + // Size: 9098 bytes
+const ru_RUData string = "" + // Size: 9693 bytes
 	"\x02Добро пожаловать в Help My Pet Bot! 🐾\x0a\x0aЯ ваш личный помощник п" +
 	"о уходу за домашними животными, готов помочь вам лучше заботиться о ваш" +
 	"ем пушистом друге. Я могу помочь вам с:\x0a\x0a• Вопросами о здоровье и" +
@@ -1172,15 +1277,22 @@ const ru_RUData string = "" + // Size: 9098 bytes
 	"анная дата не может быть в будущем. Пожалуйста, укажите действительную " +
 	"дату.\x02Пожалуйста, укажите дату в допустимом формате ГГГГ-ММ-ДД (напр" +
 	"имер, 2023-12-31)\x02Извините, я столкнулся с ошибкой при обработке ваш" +
-	"его запроса. Пожалуйста, попробуйте позже."
+	"его запроса. Пожалуйста, попробуйте позже.\x02Как зовут вашего питомца?" +
+	"\x02Какое у вас домашнее животное?\x02собака\x02кошка\x02Какая порода у " +
+	"вашего питомца?\x02Когда родился ваш питомец? Пожалуйста, введите дату " +
+	"в формате ГГГГ-ММ-ДД (например, 2010-12-31).\x02Какой пол у вашего пито" +
+	"мца?\x02мужской\x02женский\x02Какой вес у вашего питомца? Укажите вес, " +
+	"за которым следует единица измерения, например, 5 кг"
 
-var tr_TRIndex = []uint32{ // 10 elements
+var tr_TRIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002d3, 0x000011b7, 0x00001232,
 	0x0000129e, 0x000012f1, 0x0000134d, 0x00001391,
-	0x000013ed, 0x00001450,
-} // Size: 64 bytes
+	0x000013ed, 0x00001450, 0x00001472, 0x00001497,
+	0x0000149e, 0x000014a3, 0x000014c6, 0x0000152e,
+	0x00001555, 0x0000155b, 0x00001561, 0x000015cd,
+} // Size: 104 bytes
 
-const tr_TRData string = "" + // Size: 5200 bytes
+const tr_TRData string = "" + // Size: 5581 bytes
 	"\x02Help My Pet Bot'a hoş geldiniz! 🐾\x0a\x0aBen sizin kişisel evcil hay" +
 	"van bakım asistanınızım, tüylü dostunuza daha iyi bakmanıza yardımcı olm" +
 	"aya hazırım. Size şu konularda yardımcı olabilirim:\x0a\x0a• Evcil hayva" +
@@ -1250,15 +1362,22 @@ const tr_TRData string = "" + // Size: 5200 bytes
 	"ecekte olamaz. Lütfen geçerli bir tarih girin.\x02Lütfen geçerli bir biç" +
 	"imde YYYY-AA-GG (örneğin, 2023-12-31) biçiminde bir tarih girin\x02Üzgün" +
 	"üm, isteğinizi işlerken bir hata ile karşılaştım. Lütfen daha sonra tek" +
-	"rar deneyin."
+	"rar deneyin.\x02Evcil hayvanınızın adı nedir?\x02Hangi türde evcil hayva" +
+	"nınız var?\x02köpek\x02kedi\x02Evcil hayvanınızın cinsi nedir?\x02Evcil " +
+	"hayvanınız ne zaman doğdu? Lütfen tarihi YYYY-AA-GG (örneğin, 2010-12-31" +
+	") biçiminde girin.\x02Evcil hayvanınızın cinsiyeti nedir?\x02erkek\x02di" +
+	"şi\x02Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte ağırlı" +
+	"ğı belirtin, örneğin, 5 kg"
 
-var uk_UAIndex = []uint32{ // 10 elements
+var uk_UAIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004fc, 0x00001d3f, 0x00001e28,
 	0x00001f14, 0x00001fba, 0x00002078, 0x000020fd,
-	0x00002187, 0x0000223d,
-} // Size: 64 bytes
+	0x00002187, 0x0000223d, 0x0000226e, 0x000022b6,
+	0x000022c3, 0x000022ca, 0x000022ff, 0x000023ac,
+	0x000023df, 0x000023f0, 0x000023fd, 0x00002498,
+} // Size: 104 bytes
 
-const uk_UAData string = "" + // Size: 8765 bytes
+const uk_UAData string = "" + // Size: 9368 bytes
 	"\x02Ласкаво просимо до Help My Pet Bot! 🐾\x0a\x0aЯ ваш особистий помічни" +
 	"к з догляду за домашніми тваринами, готовий допомогти вам краще піклува" +
 	"тися про вашого пухнастого друга. Я можу допомогти вам з:\x0a\x0a• Пита" +
@@ -1330,6 +1449,11 @@ const uk_UAData string = "" + // Size: 8765 bytes
 	"ти у майбутньому. Будь ласка, вкажіть дійсну дату.\x02Будь ласка, вкажі" +
 	"ть дату у правильному форматі РРРР-ММ-ДД (наприклад, 2023-12-31)\x02Виб" +
 	"ачте, я стикнувся з помилкою під час обробки вашого запиту. Будь ласка," +
-	" спробуйте ще раз пізніше."
+	" спробуйте ще раз пізніше.\x02Як звати вашого улюбленця?\x02Якого типу у" +
+	" вас є домашній улюбленець?\x02собака\x02кіт\x02Яка порода вашого улюбле" +
+	"нця?\x02Коли народився ваш улюбленець? Будь ласка, введіть дату у форма" +
+	"ті РРРР-ММ-ДД (наприклад, 2010-12-31).\x02Яка стать вашого улюбленця?" +
+	"\x02чоловіча\x02жіноча\x02Яка вага вашого улюбленця? Будь ласка, вкажіть" +
+	" вагу, вказавши одиницю, наприклад, 5 кг"
 
-	// Total table size 98729 bytes (96KiB); checksum: EA976B2B
+	// Total table size 106357 bytes (103KiB); checksum: 63A9966D

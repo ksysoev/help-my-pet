@@ -45,6 +45,56 @@
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translation": "죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "애완동물의 이름은 무엇입니까?"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "어떤 종류의 애완동물을 가지고 계십니까?"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "개"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "고양이"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "애완동물의 품종은 무엇입니까?"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "애완동물이 태어난 날짜는 언제입니까? YYYY-MM-DD(예: 2010-12-31) 형식으로 날짜를 입력해 주세요."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "애완동물의 성별은 무엇입니까?"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "수컷"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "암컷"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "애완동물의 몸무게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예: 5 kg"
         }
     ]
 }

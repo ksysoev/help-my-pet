@@ -45,6 +45,56 @@
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translation": "Sorry, ik heb een fout aangetroffen bij het verwerken van uw verzoek. Probeer het later opnieuw."
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "Wat is de naam van je huisdier?"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "Wat voor soort huisdier heb je?"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "hond"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "kat"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "Welk ras is je huisdier?"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "Wanneer is je huisdier geboren? Voer de datum in het formaat JJJJ-MM-DD in (bijv. 2010-12-31)."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "Wat is het geslacht van je huisdier?"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "mannelijk"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "vrouwelijk"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "Wat is het gewicht van je huisdier? Geef het gewicht op, gevolgd door de eenheid, bijvoorbeeld 5 kg"
         }
     ]
 }

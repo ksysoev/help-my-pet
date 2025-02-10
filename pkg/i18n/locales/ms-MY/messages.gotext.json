@@ -45,6 +45,56 @@
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translation": "Maaf, saya mengalami ralat semasa memproses permintaan anda. Sila cuba lagi nanti."
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "Apakah nama haiwan peliharaan anda?"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "Jenis haiwan peliharaan apa yang anda miliki?"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "anjing"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "kucing"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "Apakah bangsa haiwan peliharaan anda?"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "Bila haiwan peliharaan anda dilahirkan? Sila masukkan tarikh dalam format YYYY-MM-DD (contohnya, 2010-12-31)."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "Apakah jantina haiwan peliharaan anda?"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "lelaki"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "perempuan"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "Berapakah berat haiwan peliharaan anda? Sila nyatakan berat diikuti dengan unit, contohnya, 5 kg"
         }
     ]
 }

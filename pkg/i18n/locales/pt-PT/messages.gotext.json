@@ -45,6 +45,56 @@
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translation": "Desculpe, encontrei um erro ao processar o seu pedido. Por favor, tente novamente mais tarde."
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "Qual é o nome do seu animal de estimação?"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "Que tipo de animal de estimação você tem?"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "cão"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "gato"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "Qual é a raça do seu animal de estimação?"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "Quando nasceu o seu animal de estimação? Por favor, insira a data no formato AAAA-MM-DD (por exemplo, 2010-12-31)."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "Qual é o género do seu animal de estimação?"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "macho"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "fêmea"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "Qual é o peso do seu animal de estimação? Por favor, especifique o peso seguido da unidade, por exemplo, 5 kg"
         }
     ]
 }

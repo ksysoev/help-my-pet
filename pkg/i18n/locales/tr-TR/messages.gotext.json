@@ -45,6 +45,56 @@
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translation": "Üzgünüm, isteğinizi işlerken bir hata ile karşılaştım. Lütfen daha sonra tekrar deneyin."
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "Evcil hayvanınızın adı nedir?"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "Hangi türde evcil hayvanınız var?"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "köpek"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "kedi"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "Evcil hayvanınızın cinsi nedir?"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "Evcil hayvanınız ne zaman doğdu? Lütfen tarihi YYYY-AA-GG (örneğin, 2010-12-31) biçiminde girin."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "Evcil hayvanınızın cinsiyeti nedir?"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "erkek"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "dişi"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte ağırlığı belirtin, örneğin, 5 kg"
         }
     ]
 }

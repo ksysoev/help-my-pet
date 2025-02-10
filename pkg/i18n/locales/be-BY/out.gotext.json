@@ -45,6 +45,56 @@
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",
             "message": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translation": "Прабачце, я ўзнёс памылку пры апрацоўцы вашага запыту. Калі ласка, паспрабуйце яшчэ раз пазней."
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "Як зваліце вашага пухнатага сябра?"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "Якога тыпу жывёлу у вас?"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "сабака"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "кот"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "Якой расы ваш пухнаты сябар?"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "Калі нарадзіўся ваш пухнаты сябар? Калі ласка, увядзіце дату ў фармаце ГГГГ-ММ-ДД (напрыклад, 2010-12-31)."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "Якога ваш пухнатага сябра?"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "мужчынскі"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "жаночы"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "Які вага вашага пухнатага сябра? Калі ласка, пазначце вагу, наступнае за адзінка, напрыклад, 5 кг"
         }
     ]
 }

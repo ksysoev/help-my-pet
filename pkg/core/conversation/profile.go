@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 // PetProfileStateImpl implements QuestionnaireState
@@ -20,39 +21,39 @@ func NewPetProfileQuestionnaireState(ctx context.Context) *PetProfileStateImpl {
 	questions := []QuestionAnswer{
 		{
 			Question: message.Question{
-				Text: "What is your pet's name?",
+				Text: i18n.GetLocale(ctx).Sprintf("What is your pet's name?"),
 			},
 			Field: "name",
 		},
 		{
 			Question: message.Question{
-				Text:    "What type of pet do you have?",
-				Answers: []string{"dog", "cat"},
+				Text:    i18n.GetLocale(ctx).Sprintf("What type of pet do you have?"),
+				Answers: []string{i18n.GetLocale(ctx).Sprintf("dog"), i18n.GetLocale(ctx).Sprintf("cat")},
 			},
 			Field: "species",
 		},
 		{
 			Question: message.Question{
-				Text: "What breed is your pet?",
+				Text: i18n.GetLocale(ctx).Sprintf("What breed is your pet?"),
 			},
 			Field: "breed",
 		},
 		{
 			Question: message.Question{
-				Text: "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+				Text: i18n.GetLocale(ctx).Sprintf("When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31)."),
 			},
 			Field: "dob",
 		},
 		{
 			Question: message.Question{
-				Text:    "What is your pet's gender?",
-				Answers: []string{"male", "female"},
+				Text:    i18n.GetLocale(ctx).Sprintf("What is your pet's gender?"),
+				Answers: []string{i18n.GetLocale(ctx).Sprintf("male"), i18n.GetLocale(ctx).Sprintf("female")},
 			},
 			Field: "gender",
 		},
 		{
 			Question: message.Question{
-				Text: "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+				Text: i18n.GetLocale(ctx).Sprintf("What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg"),
 			},
 			Field: "weight",
 		},
