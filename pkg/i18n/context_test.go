@@ -54,6 +54,7 @@ func TestGetLocale_ContextWithoutPrinter(t *testing.T) {
 }
 
 func TestGetLocale_NilContext(t *testing.T) {
+	//nolint:staticcheck // Ignore SA1019: nil context is expected
 	printer := GetLocale(nil)
 	assert.NotNil(t, printer)
 	assert.Equal(t, defaultPrinter, printer)
