@@ -1,6 +1,7 @@
 package conversation
 
 import (
+	"context"
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
@@ -47,14 +48,14 @@ func TestValidateDOB(t *testing.T) {
 }
 
 func TestNewPetProfileQuestionnaireState(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 	assert.NotNil(t, state)
 	assert.Equal(t, 6, len(state.QAPairs))
 	assert.Equal(t, 0, state.CurrentIndex)
 }
 
 func TestGetCurrentQuestion(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 
 	question, err := state.GetCurrentQuestion()
 	assert.NoError(t, err)
@@ -62,7 +63,7 @@ func TestGetCurrentQuestion(t *testing.T) {
 }
 
 func TestGetCurrentQuestion_NoMoreQuestions(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 	state.CurrentIndex = len(state.QAPairs)
 
 	question, err := state.GetCurrentQuestion()
@@ -71,7 +72,7 @@ func TestGetCurrentQuestion_NoMoreQuestions(t *testing.T) {
 }
 
 func TestProcessAnswer(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 
 	// Valid answer
 	done, err := state.ProcessAnswer("Buddy")
@@ -93,7 +94,7 @@ func TestProcessAnswer(t *testing.T) {
 }
 
 func TestProcessAnswer_Complete(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 	for range state.QAPairs[:len(state.QAPairs)-1] {
 		done, _ := state.ProcessAnswer("2000-01-01")
 		assert.False(t, done)
@@ -105,7 +106,7 @@ func TestProcessAnswer_Complete(t *testing.T) {
 }
 
 func TestProcessAnswer_NoMoreQuestions(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 	state.CurrentIndex = len(state.QAPairs)
 
 	done, err := state.ProcessAnswer("Answer")
@@ -114,7 +115,7 @@ func TestProcessAnswer_NoMoreQuestions(t *testing.T) {
 }
 
 func TestGetResults(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 	for range state.QAPairs {
 		_, err := state.ProcessAnswer("2000-01-01")
 		assert.NoError(t, err)
@@ -126,7 +127,7 @@ func TestGetResults(t *testing.T) {
 }
 
 func TestGetResults_Incomplete(t *testing.T) {
-	state := NewPetProfileQuestionnaireState()
+	state := NewPetProfileQuestionnaireState(context.Background())
 
 	results, err := state.GetResults()
 	assert.Nil(t, results)

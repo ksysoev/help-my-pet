@@ -92,7 +92,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 			},
 			conv: func() *conversation.Conversation {
 				conv := conversation.NewConversation("123")
-				if err := conv.StartProfileQuestions(); err != nil {
+				if err := conv.StartProfileQuestions(context.Background()); err != nil {
 					panic(err)
 				}
 
@@ -123,7 +123,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 			},
 			conv: func() *conversation.Conversation {
 				conv := conversation.NewConversation("123")
-				if err := conv.StartProfileQuestions(); err != nil {
+				if err := conv.StartProfileQuestions(context.Background()); err != nil {
 					panic(err)
 				}
 				return conv

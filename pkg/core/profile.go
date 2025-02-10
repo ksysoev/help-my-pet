@@ -22,7 +22,7 @@ func (s *AIService) ProcessEditProfile(ctx context.Context, request *message.Use
 	}
 
 	// Start pet profile questionnaire
-	if err := conv.StartProfileQuestions(); err != nil {
+	if err := conv.StartProfileQuestions(ctx); err != nil {
 		return nil, fmt.Errorf("failed to start profile questions: %w", err)
 	}
 

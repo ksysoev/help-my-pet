@@ -1,6 +1,7 @@
 package conversation
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -138,13 +139,13 @@ func (c *Conversation) StartFollowUpQuestions(initialPrompt string, questions []
 }
 
 // StartPetProfileQuestionnaire initializes the pet profile questionnaire
-func (c *Conversation) StartProfileQuestions() error {
+func (c *Conversation) StartProfileQuestions(ctx context.Context) error {
 	if c.State != StateNormal {
 		return fmt.Errorf("conversation is not in normal state %s", c.State)
 	}
 
 	c.State = StatePetProfileQuestioning
-	c.Questionnaire = NewPetProfileQuestionnaireState()
+	c.Questionnaire = NewPetProfileQuestionnaireState(ctx)
 
 	return nil
 }

@@ -1,6 +1,7 @@
 package conversation
 
 import (
+	"context"
 	"time"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
@@ -15,7 +16,7 @@ type PetProfileStateImpl struct {
 // NewPetProfileQuestionnaireState initializes a new pet profile questionnaire state with predefined questions and indexes.
 // It creates a list of questions about the pet's profile, such as name, species, breed, birthdate, gender, and weight.
 // Returns a pointer to a PetProfileStateImpl instance with the questions and initial index set to 0.
-func NewPetProfileQuestionnaireState() *PetProfileStateImpl {
+func NewPetProfileQuestionnaireState(ctx context.Context) *PetProfileStateImpl {
 	questions := []QuestionAnswer{
 		{
 			Question: message.Question{
