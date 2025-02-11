@@ -2,6 +2,11 @@
     "language": "es-ES",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Comando desconocido"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "¡Bienvenido a Help My Pet Bot! 🐾\n\nSoy tu asistente personal de cuidado de mascotas, listo para ayudarte a cuidar mejor a tu amigo peludo. Puedo asistirte con:\n\n• Preguntas sobre salud y comportamiento de mascotas\n• Consejos sobre dieta y nutrición\n• Consejos y técnicas de entrenamiento\n• Orientación general sobre el cuidado de mascotas\n\nSimplemente escribe tu pregunta o preocupación sobre tu mascota, y te proporcionaré respuestas útiles e informativas basadas en conocimientos veterinarios confiables. Recuerda, aunque puedo ofrecer orientación, para condiciones médicas graves, siempre consulta con un veterinario.\n\nPara comenzar, solo pregúntame cualquier cosa sobre tu mascota."
@@ -32,6 +37,11 @@
             "translation": "Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vuelva mañana cuando se actualice nuestro presupuesto."
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "Lo siento, encontré un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde."
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "La fecha proporcionada no puede ser en el futuro. Por favor, proporcione una fecha válida."
@@ -42,9 +52,9 @@
             "translation": "Por favor, proporcione una fecha en el formato válido AAAA-MM-DD (por ejemplo, 2023-12-31)"
         },
         {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "Lo siento, encontré un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde."
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Perfil de mascota guardado con éxito"
         },
         {
             "id": "What is your pet's name?",

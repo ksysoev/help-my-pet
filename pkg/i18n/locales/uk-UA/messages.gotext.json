@@ -2,6 +2,11 @@
     "language": "uk-UA",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Невідома команда"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "Ласкаво просимо до Help My Pet Bot! 🐾\n\nЯ ваш особистий помічник з догляду за домашніми тваринами, готовий допомогти вам краще піклуватися про вашого пухнастого друга. Я можу допомогти вам з:\n\n• Питаннями щодо здоров'я та поведінки тварин\n• Порадами щодо дієти та харчування\n• Порадами та техніками тренування\n• Загальними рекомендаціями по догляду за тваринами\n\nПросто напишіть своє запитання або занепокоєння щодо вашого улюбленця, і я надам корисні, інформативні відповіді на основі надійних ветеринарних знань. Пам'ятайте, що хоча я можу надати рекомендації, для серйозних медичних станів завжди консультуйтеся з ветеринаром.\n\nЩоб почати, просто задайте мені будь-яке питання про вашого улюбленця!"
@@ -32,6 +37,11 @@
             "translation": "Ми досягли нашого щоденного ліміту запитів. Будь ласка, повертайтеся завтра, коли оновиться наш бюджет."
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "Вибачте, я стикнувся з помилкою під час обробки вашого запиту. Будь ласка, спробуйте ще раз пізніше."
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "Наданий дата не може бути у майбутньому. Будь ласка, вкажіть дійсну дату."
@@ -42,9 +52,9 @@
             "translation": "Будь ласка, вкажіть дату у правильному форматі РРРР-ММ-ДД (наприклад, 2023-12-31)"
         },
         {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "Вибачте, я стикнувся з помилкою під час обробки вашого запиту. Будь ласка, спробуйте ще раз пізніше."
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Профіль улюбленця успішно збережено"
         },
         {
             "id": "What is your pet's name?",

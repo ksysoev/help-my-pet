@@ -32,7 +32,7 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 
 		return tgbotapi.NewMessage(msg.Chat.ID, resp.Message), nil
 	default:
-		return tgbotapi.NewMessage(msg.Chat.ID, "Unknown command"), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Unknown command")), nil
 	}
 }
 

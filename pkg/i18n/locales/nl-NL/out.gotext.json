@@ -2,6 +2,11 @@
     "language": "nl-NL",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Onbekend commando"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "Welkom bij Help My Pet Bot! 🐾\n\nIk ben je persoonlijke assistent voor huisdierverzorging, klaar om je te helpen beter voor je harige vriend te zorgen. Ik kan je helpen met:\n\n• Vragen over de gezondheid en het gedrag van huisdieren\n• Advies over dieet en voeding\n• Trainingstips en -technieken\n• Algemene begeleiding bij de verzorging van huisdieren\n\nTyp gewoon je vraag of zorg over je huisdier, en ik zal nuttige, informatieve antwoorden geven op basis van betrouwbare veterinaire kennis. Onthoud dat, hoewel ik begeleiding kan bieden, je bij ernstige medische aandoeningen altijd een dierenarts moet raadplegen.\n\nOm te beginnen, stel me gewoon een vraag over je huisdier!"
@@ -45,6 +50,11 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "Geef een datum op in het geldige formaat JJJJ-MM-DD (bijv. 2023-12-31)"
+        },
+        {
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Huisdierprofiel succesvol opgeslagen"
         },
         {
             "id": "What is your pet's name?",

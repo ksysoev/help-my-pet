@@ -2,6 +2,11 @@
     "language": "fa-IR",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "دستور نامعلوم"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "به ربات کمک به حیوان خانگی من خوش آمدید! 🐾\n\nمن دستیار شخصی شما در مراقبت از حیوان خانگی هستم و آماده‌ام تا به شما کمک کنم تا بهتر از دوست پشمالوی خود مراقبت کنید. من می‌توانم به شما در موارد زیر کمک کنم:\n\n• سوالات مربوط به سلامت و رفتار حیوانات خانگی\n• مشاوره در مورد رژیم غذایی و تغذیه\n• نکات و تکنیک‌های آموزشی\n• راهنمایی‌های عمومی در مورد مراقبت از حیوانات خانگی\n\nبه سادگی سوال یا نگرانی خود را در مورد حیوان خانگی خود تایپ کنید و من پاسخ‌های مفید و اطلاعاتی بر اساس دانش معتبر دامپزشکی ارائه خواهم داد. به یاد داشته باشید، در حالی که من می‌توانم راهنمایی ارائه دهم، برای شرایط پزشکی جدی همیشه با یک دامپزشک مشورت کنید.\n\nبرای شروع، فقط هر سوالی در مورد حیوان خانگی خود دارید بپرسید!"
@@ -32,6 +37,11 @@
             "translation": "ما به حداکثر تعداد درخواست‌های روزانه خود رسیده‌ایم. لطفاً فردا برگردید وقتی که بودجه‌مان تازه شده است."
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "متاسفم، من در حین پردازش درخواست شما با خطا مواجه شدم. لطفاً بعداً دوباره امتحان کنید."
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "تاریخ ارائه شده نمی‌تواند در آینده باشد. لطفاً یک تاریخ معتبر ارائه دهید."
@@ -42,9 +52,9 @@
             "translation": "لطفاً یک تاریخ در قالب معتبر YYYY-MM-DD (مثلاً 2023-12-31) ارائه دهید"
         },
         {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "متاسفم، من در حین پردازش درخواست شما با خطا مواجه شدم. لطفاً بعداً دوباره امتحان کنید."
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "پروفایل حیوان خانگی با موفقیت ذخیره شد"
         },
         {
             "id": "What is your pet's name?",

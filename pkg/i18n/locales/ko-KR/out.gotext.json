@@ -2,6 +2,11 @@
     "language": "ko-KR",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "알 수 없는 명령"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "Help My Pet Bot에 오신 것을 환영합니다! 🐾\n\n저는 당신의 개인 반려동물 관리 도우미로, 당신의 털복숭이 친구를 더 잘 돌볼 수 있도록 도와드리겠습니다. 저는 다음과 같은 도움을 드릴 수 있습니다:\n\n• 반려동물 건강 및 행동 질문\n• 식단 및 영양 조언\n• 훈련 팁 및 기법\n• 일반적인 반려동물 관리 지침\n\n반려동물에 대한 질문이나 걱정을 간단히 입력해 주세요. 신뢰할 수 있는 수의학 지식을 바탕으로 유용하고 정보가 풍부한 답변을 제공하겠습니다. 기억하세요, 제가 안내를 제공할 수는 있지만, 심각한 의학적 상태에 대해서는 항상 수의사와 상담해야 합니다.\n\n시작하려면 반려동물에 대한 질문을 해주세요!"
@@ -45,6 +50,11 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 주세요."
+        },
+        {
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "애완동물 프로필이 성공적으로 저장되었습니다"
         },
         {
             "id": "What is your pet's name?",

@@ -2,6 +2,11 @@
     "language": "tr-TR",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Bilinmeyen komut"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "Help My Pet Bot'a hoş geldiniz! 🐾\n\nBen sizin kişisel evcil hayvan bakım asistanınızım, tüylü dostunuza daha iyi bakmanıza yardımcı olmaya hazırım. Size şu konularda yardımcı olabilirim:\n\n• Evcil hayvan sağlığı ve davranış soruları\n• Diyet ve beslenme tavsiyeleri\n• Eğitim ipuçları ve teknikleri\n• Genel evcil hayvan bakımı rehberliği\n\nEvcil hayvanınızla ilgili sorularınızı veya endişelerinizi yazmanız yeterli, ben de güvenilir veteriner bilgilerine dayalı olarak yardımcı, bilgilendirici cevaplar sağlayacağım. Unutmayın, ciddi tıbbi durumlar için her zaman bir veterinerle danışın.\n\nBaşlamak için, evcil hayvanınızla ilgili herhangi bir soruyu bana sorun!"
@@ -45,6 +50,11 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "Lütfen geçerli bir biçimde YYYY-AA-GG (örneğin, 2023-12-31) biçiminde bir tarih girin"
+        },
+        {
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Evcil hayvan profili başarıyla kaydedildi"
         },
         {
             "id": "What is your pet's name?",

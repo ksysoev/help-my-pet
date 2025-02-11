@@ -2,6 +2,11 @@
     "language": "ms-MY",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Perintah tidak dikenali"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "Selamat datang ke Help My Pet Bot! 🐾\n\nSaya adalah pembantu penjagaan haiwan peliharaan peribadi anda, sedia membantu anda menjaga rakan berbulu anda dengan lebih baik. Saya boleh membantu anda dengan:\n\n• Soalan kesihatan dan tingkah laku haiwan peliharaan\n• Nasihat diet dan pemakanan\n• Petua dan teknik latihan\n• Panduan penjagaan haiwan peliharaan umum\n\nCuma taip soalan atau kebimbangan anda tentang haiwan peliharaan anda, dan saya akan memberikan jawapan yang berguna dan bermaklumat berdasarkan pengetahuan veterinar yang boleh dipercayai. Ingat, walaupun saya boleh memberikan panduan, untuk keadaan perubatan yang serius, sentiasa berunding dengan doktor haiwan.\n\nUntuk memulakan, cuma tanya saya sebarang soalan tentang haiwan peliharaan anda!"
@@ -45,6 +50,11 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "Sila berikan tarikh dalam format yang sah YYYY-MM-DD (contohnya, 2023-12-31)"
+        },
+        {
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Profil haiwan peliharaan berjaya disimpan"
         },
         {
             "id": "What is your pet's name?",

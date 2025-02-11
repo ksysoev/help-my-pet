@@ -2,6 +2,11 @@
     "language": "be-BY",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Невядомая каманда"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "Сардэчна запрашаем у Help My Pet Bot! 🐾\n\nЯ ваш асабісты памочнік па догляду за хатнімі жывёламі, гатовы дапамагчы вам лепш клапаціцца пра вашага пухнатага сябра. Я магу дапамагчы вам з:\n\n• Пытанні здароўя і паводзін хатніх жывёл\n• Рэкамендацыі па харчаванні і дыетах\n• Парады і метады дрэсіроўкі\n• Агульныя рэкамендацыі па догляду за хатнімі жывёламі\n\nПроста напішыце сваё пытанне або праблему, звязаную з вашым хатнім жывёлам, і я дам карысныя, інфарматыўныя адказы на аснове надзейных ведаў ветэрынараў. Памятайце, што, хоць я магу даць парады, у выпадку сур'ёзных медыцынскіх праблем заўсёды звяртайцеся да ветэрынара.\n\nКаб пачаць, проста задайце мне любое пытанне пра вашага хатняга жывёлу!"
@@ -45,6 +50,11 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "Калі ласка, прадастаўце дату ў дапушчальным фармаце ГГГГ-ММ-ДД (напрыклад, 2023-12-31)"
+        },
+        {
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Профіль пухнатага сябра паспяхова захаваны"
         },
         {
             "id": "What is your pet's name?",

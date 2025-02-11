@@ -2,6 +2,11 @@
     "language": "ca-ES",
     "messages": [
         {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Ordre desconeguda"
+        },
+        {
             "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
             "translation": "Benvingut a Help My Pet Bot! 🐾\n\nSóc el teu assistent personal de cura de mascotes, preparat per ajudar-te a cuidar millor del teu amic pelut. Puc ajudar-te amb:\n\n• Preguntes sobre salut i comportament de mascotes\n• Consells sobre dieta i nutrició\n• Consells i tècniques d'entrenament\n• Orientació general sobre la cura de mascotes\n\nSimplement escriu la teva pregunta o preocupació sobre la teva mascota, i et proporcionaré respostes útils i informatives basades en coneixements veterinaris fiables. Recorda, mentre puc oferir orientació, per a condicions mèdiques greus, sempre consulta amb un veterinari.\n\nPer començar, només has de fer-me qualsevol pregunta sobre la teva mascota!"
@@ -32,6 +37,11 @@
             "translation": "Hem arribat al nostre límit diari de peticions. Si us plau, torna demà quan el nostre pressupost es refresqui."
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "Ho sento, he trobat un error mentre processava la teva sol·licitud. Si us plau, torna-ho a provar més tard."
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "La data proporcionada no pot ser en el futur. Si us plau, proporciona una data vàlida."
@@ -42,9 +52,9 @@
             "translation": "Si us plau, proporciona una data en el format vàlid AAAA-MM-DD (per exemple, 2023-12-31)"
         },
         {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "Ho sento, he trobat un error mentre processava la teva sol·licitud. Si us plau, torna-ho a provar més tard."
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Perfil de mascota guardat correctament"
         },
         {
             "id": "What is your pet's name?",

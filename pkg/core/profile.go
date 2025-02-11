@@ -104,7 +104,7 @@ func (s *AIService) handleCompletedProfile(ctx context.Context, conv Conversatio
 		return nil, fmt.Errorf("failed to save profile: %w", err)
 	}
 
-	return message.NewResponse("Pet profile saved successfully", []string{}), nil
+	return message.NewResponse(i18n.GetLocale(ctx).Sprintf("Pet profile saved successfully"), []string{}), nil
 }
 
 // createProfile generates a pet profile from a slice of QuestionAnswer results.
