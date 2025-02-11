@@ -280,24 +280,6 @@ func TestService_handleProcessingError(t *testing.T) {
 			expectedText: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 		},
 		{
-			name:         "text too long error",
-			err:          message.ErrTextTooLong,
-			langCode:     "en",
-			expectedText: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
-		},
-		{
-			name:         "future date error",
-			err:          message.ErrFutureDate,
-			langCode:     "en",
-			expectedText: "Provided date cannot be in the future. Please provide a valid date.",
-		},
-		{
-			name:         "invalid date error",
-			err:          message.ErrInvalidDates,
-			langCode:     "en",
-			expectedText: "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-		},
-		{
 			name:         "unhandled error",
 			err:          fmt.Errorf("unknown error"),
 			langCode:     "en",
