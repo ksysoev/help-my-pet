@@ -44,6 +44,13 @@
             "fuzzy": true
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "Provided date cannot be in the future. Please provide a valid date.",
@@ -54,13 +61,6 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "Sorry, I encountered an error while processing your request. Please try again later.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

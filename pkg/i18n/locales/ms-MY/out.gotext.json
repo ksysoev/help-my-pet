@@ -32,6 +32,11 @@
             "translation": "Kami telah mencapai had permintaan harian kami. Sila kembali esok apabila bajet kami disegarkan."
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "Maaf, saya mengalami ralat semasa memproses permintaan anda. Sila cuba lagi nanti."
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "Tarikh yang diberikan tidak boleh di masa hadapan. Sila berikan tarikh yang sah."
@@ -40,11 +45,6 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "Sila berikan tarikh dalam format yang sah YYYY-MM-DD (contohnya, 2023-12-31)"
-        },
-        {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "Maaf, saya mengalami ralat semasa memproses permintaan anda. Sila cuba lagi nanti."
         },
         {
             "id": "What is your pet's name?",

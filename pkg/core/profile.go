@@ -2,12 +2,14 @@ package core
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/core/pet"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 // ProcessEditProfile initiates a pet profile questionnaire for a user in a conversation context.
@@ -49,8 +51,15 @@ func (s *AIService) ProcessProfileAnswer(ctx context.Context, conv Conversation,
 
 	// Add answer to the current question
 	isComplete, err := conv.AddQuestionAnswer(request.Text)
-	if err != nil {
-		return nil, fmt.Errorf("failed to add answer: %w", err)
+	switch {
+	case errors.Is(err, message.ErrTextTooLong):
+		return message.NewResponse(i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."), nil), nil
+	case errors.Is(err, message.ErrFutureDate):
+		return message.NewResponse(i18n.GetLocale(ctx).Sprintf("Provided date cannot be in the future. Please provide a valid date."), nil), nil
+	case errors.Is(err, message.ErrInvalidDates):
+		return message.NewResponse(i18n.GetLocale(ctx).Sprintf("Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)"), nil), nil
+	case err != nil:
+		return nil, fmt.Errorf("failed to add question answer: %w", err)
 	}
 
 	// If questionnaire is complete, return success message

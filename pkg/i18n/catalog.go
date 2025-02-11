@@ -55,10 +55,10 @@ func init() {
 var messageKeyToIndex = map[string]int{
 	"<b>Terms and Conditions</b>\n<i>Last updated: 30.01.2025</i>\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n<b>1. Nature of the Service</b>\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n<b>2. No Veterinary-Client-Patient Relationship</b>\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n<b>3. Limitation of Liability</b>\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n<b>4. No Warranty</b>\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n<b>5. User Responsibilities</b>\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n<b>6. International Use</b>\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n<b>7. Modifications</b>\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n<b>8. Governing Law and Dispute Resolution</b>\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n<b>9. Acceptance of Terms</b>\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at <i>k.sysoev@me.com</i>.": 1,
 	"I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.": 3,
-	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                                      7,
-	"Provided date cannot be in the future. Please provide a valid date.":                                          6,
+	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                                      8,
+	"Provided date cannot be in the future. Please provide a valid date.":                                          7,
 	"Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.":         2,
-	"Sorry, I encountered an error while processing your request. Please try again later.":                         8,
+	"Sorry, I encountered an error while processing your request. Please try again later.":                         6,
 	"We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.":             5,
 	"Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!": 0,
 	"What breed is your pet?":    13,
@@ -76,8 +76,8 @@ var messageKeyToIndex = map[string]int{
 
 var be_BYIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004eb, 0x00001e72, 0x00001f57,
-	0x00002044, 0x000020f6, 0x000021ae, 0x0000225f,
-	0x000022f3, 0x000023a1, 0x000023e1, 0x0000240d,
+	0x00002044, 0x000020f6, 0x000021ae, 0x0000225c,
+	0x0000230d, 0x000023a1, 0x000023e1, 0x0000240d,
 	0x0000241a, 0x00002421, 0x00002455, 0x0000250b,
 	0x0000253c, 0x0000254f, 0x0000255c, 0x0000260b,
 } // Size: 104 bytes
@@ -153,11 +153,11 @@ const be_BYData string = "" + // Size: 9739 bytes
 	"ічным.\x02Вы дасягнулі максімальнай колькасці запытаў на гадзіну. Калі " +
 	"ласка, паспрабуйце яшчэ раз пазней.\x02Мы дасягнулі нашай штодзённай мя" +
 	"жы запытаў. Калі ласка, вярніцеся заўтра, калі наш бюджэт абноўлены." +
-	"\x02Прадстаўленая дата не можа быць у будучыні. Калі ласка, прадастаўце " +
-	"дату ў дапушчальным фармаце.\x02Калі ласка, прадастаўце дату ў дапушчал" +
-	"ьным фармаце ГГГГ-ММ-ДД (напрыклад, 2023-12-31)\x02Прабачце, я ўзнёс па" +
-	"мылку пры апрацоўцы вашага запыту. Калі ласка, паспрабуйце яшчэ раз паз" +
-	"ней.\x02Як зваліце вашага пухнатага сябра?\x02Якога тыпу жывёлу у вас?" +
+	"\x02Прабачце, я ўзнёс памылку пры апрацоўцы вашага запыту. Калі ласка, п" +
+	"аспрабуйце яшчэ раз пазней.\x02Прадстаўленая дата не можа быць у будучы" +
+	"ні. Калі ласка, прадастаўце дату ў дапушчальным фармаце.\x02Калі ласка," +
+	" прадастаўце дату ў дапушчальным фармаце ГГГГ-ММ-ДД (напрыклад, 2023-12-" +
+	"31)\x02Як зваліце вашага пухнатага сябра?\x02Якога тыпу жывёлу у вас?" +
 	"\x02сабака\x02кот\x02Якой расы ваш пухнаты сябар?\x02Калі нарадзіўся ваш" +
 	" пухнаты сябар? Калі ласка, увядзіце дату ў фармаце ГГГГ-ММ-ДД (напрыкла" +
 	"д, 2010-12-31).\x02Якога ваш пухнатага сябра?\x02мужчынскі\x02жаночы" +
@@ -166,8 +166,8 @@ const be_BYData string = "" + // Size: 9739 bytes
 
 var ca_ESIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002c1, 0x000010ce, 0x00001145,
-	0x000011bd, 0x0000121a, 0x0000128b, 0x000012e3,
-	0x0000133d, 0x000013ab, 0x000013cf, 0x000013eb,
+	0x000011bd, 0x0000121a, 0x0000128b, 0x000012f9,
+	0x00001351, 0x000013ab, 0x000013cf, 0x000013eb,
 	0x000013ef, 0x000013f3, 0x00001414, 0x00001487,
 	0x000014af, 0x000014b6, 0x000014be, 0x00001527,
 } // Size: 104 bytes
@@ -240,11 +240,11 @@ const ca_ESData string = "" + // Size: 5415 bytes
 	" i concís.\x02Has arribat al nombre màxim de peticions per hora. Si us p" +
 	"lau, torna-ho a provar més tard.\x02Hem arribat al nostre límit diari de" +
 	" peticions. Si us plau, torna demà quan el nostre pressupost es refresqu" +
-	"i.\x02La data proporcionada no pot ser en el futur. Si us plau, proporci" +
-	"ona una data vàlida.\x02Si us plau, proporciona una data en el format và" +
-	"lid AAAA-MM-DD (per exemple, 2023-12-31)\x02Ho sento, he trobat un error" +
-	" mentre processava la teva sol·licitud. Si us plau, torna-ho a provar mé" +
-	"s tard.\x02Quin és el nom de la teva mascota?\x02Quin tipus de mascota t" +
+	"i.\x02Ho sento, he trobat un error mentre processava la teva sol·licitud" +
+	". Si us plau, torna-ho a provar més tard.\x02La data proporcionada no po" +
+	"t ser en el futur. Si us plau, proporciona una data vàlida.\x02Si us pla" +
+	"u, proporciona una data en el format vàlid AAAA-MM-DD (per exemple, 2023" +
+	"-12-31)\x02Quin és el nom de la teva mascota?\x02Quin tipus de mascota t" +
 	"ens?\x02gos\x02gat\x02Quina raça és la teva mascota?\x02Quan va néixer l" +
 	"a teva mascota? Si us plau, introdueix la data en el format AAAA-MM-DD (" +
 	"per exemple, 2010-12-31).\x02Quin és el gènere de la teva mascota?\x02ma" +
@@ -253,8 +253,8 @@ const ca_ESData string = "" + // Size: 5415 bytes
 
 var de_DEIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002f7, 0x00001293, 0x00001315,
-	0x000013a7, 0x0000140e, 0x00001482, 0x000014e1,
-	0x00001530, 0x000015a6, 0x000015bf, 0x000015e2,
+	0x000013a7, 0x0000140e, 0x00001482, 0x000014f8,
+	0x00001557, 0x000015a6, 0x000015bf, 0x000015e2,
 	0x000015e7, 0x000015ed, 0x0000160c, 0x00001674,
 	0x0000169d, 0x000016a7, 0x000016b0, 0x00001710,
 } // Size: 104 bytes
@@ -334,21 +334,21 @@ const de_DEData string = "" + // Size: 5904 bytes
 	" zu gestalten.\x02Sie haben die maximale Anzahl von Anfragen pro Stunde " +
 	"erreicht. Bitte versuchen Sie es später erneut.\x02Wir haben unser tägli" +
 	"ches Anfrage-Limit erreicht. Bitte kommen Sie morgen wieder, wenn unser " +
-	"Budget erneuert wird.\x02Das angegebene Datum kann nicht in der Zukunft " +
-	"liegen. Bitte geben Sie ein gültiges Datum an.\x02Bitte geben Sie ein Da" +
-	"tum im gültigen Format JJJJ-MM-TT an (z. B. 2023-12-31)\x02Entschuldigun" +
-	"g, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte " +
-	"versuchen Sie es später erneut.\x02Wie heißt Ihr Haustier?\x02Welche Art" +
-	" von Haustier haben Sie?\x02Hund\x02Katze\x02Welche Rasse hat Ihr Hausti" +
-	"er?\x02Wann wurde Ihr Haustier geboren? Bitte geben Sie das Datum im For" +
-	"mat JJJJ-MM-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihres H" +
-	"austieres?\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bitte" +
-	" geben Sie das Gewicht gefolgt von der Einheit an, z. B. 5 kg"
+	"Budget erneuert wird.\x02Entschuldigung, bei der Verarbeitung Ihrer Anfr" +
+	"age ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut." +
+	"\x02Das angegebene Datum kann nicht in der Zukunft liegen. Bitte geben S" +
+	"ie ein gültiges Datum an.\x02Bitte geben Sie ein Datum im gültigen Forma" +
+	"t JJJJ-MM-TT an (z. B. 2023-12-31)\x02Wie heißt Ihr Haustier?\x02Welche " +
+	"Art von Haustier haben Sie?\x02Hund\x02Katze\x02Welche Rasse hat Ihr Hau" +
+	"stier?\x02Wann wurde Ihr Haustier geboren? Bitte geben Sie das Datum im " +
+	"Format JJJJ-MM-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihre" +
+	"s Haustieres?\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bi" +
+	"tte geben Sie das Gewicht gefolgt von der Einheit an, z. B. 5 kg"
 
 var en_GBIndex = []uint32{ // 20 elements
 	0x00000000, 0x0000024c, 0x00000fe7, 0x0000104c,
-	0x000010b9, 0x0000110b, 0x0000116c, 0x000011b0,
-	0x000011f8, 0x0000124d, 0x00001266, 0x00001284,
+	0x000010b9, 0x0000110b, 0x0000116c, 0x000011c1,
+	0x00001205, 0x0000124d, 0x00001266, 0x00001284,
 	0x00001288, 0x0000128c, 0x000012a4, 0x000012ff,
 	0x0000131a, 0x0000131f, 0x00001326, 0x0000137c,
 } // Size: 104 bytes
@@ -418,19 +418,19 @@ const en_GBData string = "" + // Size: 4988 bytes
 	"t shorter and more concise.\x02You have reached the maximum number of re" +
 	"quests per hour. Please try again later.\x02We have reached our daily re" +
 	"quest limit. Please come back tomorrow when our budget is refreshed.\x02" +
-	"Provided date cannot be in the future. Please provide a valid date.\x02P" +
-	"lease provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)" +
-	"\x02Sorry, I encountered an error while processing your request. Please " +
-	"try again later.\x02What is your pet's name?\x02What type of pet do you " +
-	"have?\x02dog\x02cat\x02What breed is your pet?\x02When was your pet born" +
-	"? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).\x02" +
-	"What is your pet's gender?\x02male\x02female\x02What is your pet's weigh" +
-	"t? Please specify the weight followed by the unit, e.g., 5 kg"
+	"Sorry, I encountered an error while processing your request. Please try " +
+	"again later.\x02Provided date cannot be in the future. Please provide a " +
+	"valid date.\x02Please provide a date in the valid format YYYY-MM-DD (e.g" +
+	"., 2023-12-31)\x02What is your pet's name?\x02What type of pet do you ha" +
+	"ve?\x02dog\x02cat\x02What breed is your pet?\x02When was your pet born? " +
+	"Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).\x02Wh" +
+	"at is your pet's gender?\x02male\x02female\x02What is your pet's weight?" +
+	" Please specify the weight followed by the unit, e.g., 5 kg"
 
 var es_ESIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002c2, 0x0000118f, 0x00001202,
-	0x00001276, 0x000012da, 0x00001354, 0x000013b0,
-	0x0000140c, 0x0000146f, 0x00001493, 0x000014b2,
+	0x00001276, 0x000012da, 0x00001354, 0x000013b7,
+	0x00001413, 0x0000146f, 0x00001493, 0x000014b2,
 	0x000014b8, 0x000014bd, 0x000014d8, 0x00001547,
 	0x0000156c, 0x00001572, 0x00001579, 0x000015e1,
 } // Size: 104 bytes
@@ -505,11 +505,11 @@ const es_ESData string = "" + // Size: 5601 bytes
 	"o procese. Por favor, intenta hacerlo más corto y conciso.\x02Ha alcanza" +
 	"do el número máximo de solicitudes por hora. Por favor, inténtelo de nue" +
 	"vo más tarde.\x02Hemos alcanzado nuestro límite diario de solicitudes. P" +
-	"or favor, vuelva mañana cuando se actualice nuestro presupuesto.\x02La f" +
-	"echa proporcionada no puede ser en el futuro. Por favor, proporcione una" +
-	" fecha válida.\x02Por favor, proporcione una fecha en el formato válido " +
-	"AAAA-MM-DD (por ejemplo, 2023-12-31)\x02Lo siento, encontré un error al " +
-	"procesar su solicitud. Por favor, inténtelo de nuevo más tarde.\x02¿Cuál" +
+	"or favor, vuelva mañana cuando se actualice nuestro presupuesto.\x02Lo s" +
+	"iento, encontré un error al procesar su solicitud. Por favor, inténtelo " +
+	"de nuevo más tarde.\x02La fecha proporcionada no puede ser en el futuro." +
+	" Por favor, proporcione una fecha válida.\x02Por favor, proporcione una " +
+	"fecha en el formato válido AAAA-MM-DD (por ejemplo, 2023-12-31)\x02¿Cuál" +
 	" es el nombre de tu mascota?\x02¿Qué tipo de mascota tienes?\x02perro" +
 	"\x02gato\x02¿Qué raza es tu mascota?\x02¿Cuándo nació tu mascota? Por fa" +
 	"vor, introduce la fecha en el formato AAAA-MM-DD (por ejemplo, 2010-12-3" +
@@ -519,8 +519,8 @@ const es_ESData string = "" + // Size: 5601 bytes
 
 var fa_IRIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004d5, 0x000019da, 0x00001aa8,
-	0x00001b69, 0x00001c05, 0x00001cc5, 0x00001d4b,
-	0x00001db6, 0x00001e52, 0x00001e81, 0x00001eb0,
+	0x00001b69, 0x00001c05, 0x00001cc5, 0x00001d61,
+	0x00001de7, 0x00001e52, 0x00001e81, 0x00001eb0,
 	0x00001eb5, 0x00001ebe, 0x00001eef, 0x00001f96,
 	0x00001fc9, 0x00001fce, 0x00001fd7, 0x00002066,
 } // Size: 104 bytes
@@ -590,20 +590,20 @@ const fa_IRData string = "" + // Size: 8294 bytes
 	"کنید.\x02شما به حداکثر تعداد درخواست\u200cها در هر ساعت رسیده\u200cاید." +
 	" لطفاً بعداً دوباره امتحان کنید.\x02ما به حداکثر تعداد درخواست\u200cهای " +
 	"روزانه خود رسیده\u200cایم. لطفاً فردا برگردید وقتی که بودجه\u200cمان تا" +
-	"زه شده است.\x02تاریخ ارائه شده نمی\u200cتواند در آینده باشد. لطفاً یک ت" +
-	"اریخ معتبر ارائه دهید.\x02لطفاً یک تاریخ در قالب معتبر YYYY-MM-DD (مثلا" +
-	"ً 2023-12-31) ارائه دهید\x02متاسفم، من در حین پردازش درخواست شما با خطا" +
-	" مواجه شدم. لطفاً بعداً دوباره امتحان کنید.\x02نام حیوان خانگی شما چیست؟" +
-	"\x02چه نوع حیوان خانگی دارید؟\x02سگ\x02گربه\x02نژاد حیوان خانگی شما چیست" +
-	"؟\x02حیوان خانگی شما چه زمانی متولد شده است؟ لطفاً تاریخ را به صورت YYY" +
-	"Y-MM-DD (مثلاً 2010-12-31) وارد کنید.\x02جنسیت حیوان خانگی شما چیست؟\x02" +
-	"نر\x02ماده\x02وزن حیوان خانگی شما چیست؟ لطفاً وزن را به همراه واحد مشخص" +
-	" کنید، مثلاً 5 کیلوگرم"
+	"زه شده است.\x02متاسفم، من در حین پردازش درخواست شما با خطا مواجه شدم. ل" +
+	"طفاً بعداً دوباره امتحان کنید.\x02تاریخ ارائه شده نمی\u200cتواند در آین" +
+	"ده باشد. لطفاً یک تاریخ معتبر ارائه دهید.\x02لطفاً یک تاریخ در قالب معت" +
+	"بر YYYY-MM-DD (مثلاً 2023-12-31) ارائه دهید\x02نام حیوان خانگی شما چیست" +
+	"؟\x02چه نوع حیوان خانگی دارید؟\x02سگ\x02گربه\x02نژاد حیوان خانگی شما چی" +
+	"ست؟\x02حیوان خانگی شما چه زمانی متولد شده است؟ لطفاً تاریخ را به صورت Y" +
+	"YYY-MM-DD (مثلاً 2010-12-31) وارد کنید.\x02جنسیت حیوان خانگی شما چیست؟" +
+	"\x02نر\x02ماده\x02وزن حیوان خانگی شما چیست؟ لطفاً وزن را به همراه واحد م" +
+	"شخص کنید، مثلاً 5 کیلوگرم"
 
 var fr_FRIndex = []uint32{ // 20 elements
 	0x00000000, 0x0000031d, 0x000012a9, 0x00001333,
-	0x000013b6, 0x00001411, 0x00001480, 0x000014d3,
-	0x00001523, 0x0000158c, 0x000015bb, 0x000015e7,
+	0x000013b6, 0x00001411, 0x00001480, 0x000014e9,
+	0x0000153c, 0x0000158c, 0x000015bb, 0x000015e7,
 	0x000015ed, 0x000015f2, 0x00001624, 0x00001696,
 	0x000016c6, 0x000016cc, 0x000016d4, 0x00001746,
 } // Size: 104 bytes
@@ -682,11 +682,11 @@ const fr_FRData string = "" + // Size: 5958 bytes
 	"yez de le raccourcir et de le rendre plus concis.\x02Vous avez atteint l" +
 	"e nombre maximum de requêtes par heure. Veuillez réessayer plus tard." +
 	"\x02Nous avons atteint notre limite de demandes quotidiennes. Revenez de" +
-	"main lorsque notre budget sera rafraîchi.\x02La date fournie ne peut pas" +
-	" être dans le futur. Veuillez fournir une date valide.\x02Veuillez fourn" +
-	"ir une date au format valide AAAA-MM-JJ (par exemple, 2023-12-31)\x02Dés" +
-	"olé, j'ai rencontré une erreur lors du traitement de votre demande. Veui" +
-	"llez réessayer plus tard.\x02Quel est le nom de votre animal de compagni" +
+	"main lorsque notre budget sera rafraîchi.\x02Désolé, j'ai rencontré une " +
+	"erreur lors du traitement de votre demande. Veuillez réessayer plus tard" +
+	".\x02La date fournie ne peut pas être dans le futur. Veuillez fournir un" +
+	"e date valide.\x02Veuillez fournir une date au format valide AAAA-MM-JJ " +
+	"(par exemple, 2023-12-31)\x02Quel est le nom de votre animal de compagni" +
 	"e ?\x02Quel type d'animal de compagnie avez-vous ?\x02chien\x02chat\x02Q" +
 	"uelle est la race de votre animal de compagnie ?\x02Quand est né votre a" +
 	"nimal de compagnie ? Veuillez entrer la date au format AAAA-MM-JJ (par e" +
@@ -696,8 +696,8 @@ const fr_FRData string = "" + // Size: 5958 bytes
 
 var it_ITIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002d8, 0x00001151, 0x000011db,
-	0x00001252, 0x0000129c, 0x00001310, 0x00001361,
-	0x000013b5, 0x00001419, 0x00001444, 0x00001467,
+	0x00001252, 0x0000129c, 0x00001310, 0x00001374,
+	0x000013c5, 0x00001419, 0x00001444, 0x00001467,
 	0x0000146c, 0x00001472, 0x0000149b, 0x00001512,
 	0x0000153e, 0x00001546, 0x0000154e, 0x000015bf,
 } // Size: 104 bytes
@@ -772,22 +772,22 @@ const it_ITData string = "" + // Size: 5567 bytes
 	"sere elaborato. Per favore, prova a renderlo più breve e conciso.\x02Hai" +
 	" raggiunto il numero massimo di richieste per ora. Riprova più tardi." +
 	"\x02Abbiamo raggiunto il nostro limite giornaliero di richieste. Torna d" +
-	"omani quando il nostro budget sarà aggiornato.\x02La data fornita non pu" +
-	"ò essere nel futuro. Si prega di fornire una data valida.\x02Si prega d" +
-	"i fornire una data nel formato valido AAAA-MM-GG (ad esempio, 2023-12-31" +
-	")\x02Spiacente, ho riscontrato un errore durante l'elaborazione della tu" +
-	"a richiesta. Riprova più tardi.\x02Qual è il nome del tuo animale domest" +
-	"ico?\x02Che tipo di animale domestico hai?\x02cane\x02gatto\x02Quale raz" +
-	"za è il tuo animale domestico?\x02Quando è nato il tuo animale domestico" +
-	"? Si prega di inserire la data nel formato AAAA-MM-GG (ad esempio, 2010-" +
-	"12-31).\x02Qual è il sesso del tuo animale domestico?\x02maschio\x02femm" +
-	"ina\x02Qual è il peso del tuo animale domestico? Si prega di specificare" +
-	" il peso seguito dall'unità, ad esempio, 5 kg"
+	"omani quando il nostro budget sarà aggiornato.\x02Spiacente, ho riscontr" +
+	"ato un errore durante l'elaborazione della tua richiesta. Riprova più ta" +
+	"rdi.\x02La data fornita non può essere nel futuro. Si prega di fornire u" +
+	"na data valida.\x02Si prega di fornire una data nel formato valido AAAA-" +
+	"MM-GG (ad esempio, 2023-12-31)\x02Qual è il nome del tuo animale domesti" +
+	"co?\x02Che tipo di animale domestico hai?\x02cane\x02gatto\x02Quale razz" +
+	"a è il tuo animale domestico?\x02Quando è nato il tuo animale domestico?" +
+	" Si prega di inserire la data nel formato AAAA-MM-GG (ad esempio, 2010-1" +
+	"2-31).\x02Qual è il sesso del tuo animale domestico?\x02maschio\x02femmi" +
+	"na\x02Qual è il peso del tuo animale domestico? Si prega di specificare " +
+	"il peso seguito dall'unità, ad esempio, 5 kg"
 
 var ko_KRIndex = []uint32{ // 20 elements
 	0x00000000, 0x0000032e, 0x000012ba, 0x0000134d,
-	0x000013a9, 0x00001405, 0x00001461, 0x000014ba,
-	0x0000150c, 0x00001573, 0x0000159e, 0x000015d7,
+	0x000013a9, 0x00001405, 0x00001461, 0x000014c8,
+	0x00001521, 0x00001573, 0x0000159e, 0x000015d7,
 	0x000015db, 0x000015e5, 0x00001610, 0x0000168d,
 	0x000016b8, 0x000016bf, 0x000016c6, 0x00001734,
 } // Size: 104 bytes
@@ -827,17 +827,17 @@ const ko_KRData string = "" + // Size: 5940 bytes
 	"\x0a\x0a이 약관에 관한 질문이나 우려 사항이 있거나 추가 설명이 필요하시면 <i>k.sysoev@me.com</i>으로 연" +
 	"락해 주십시오.\x02죄송합니다. 이미지, 비디오, 오디오 또는 문서를 처리할 수 없습니다. 질문을 텍스트 형식으로만 보내주세" +
 	"요.\x02죄송합니다만, 메시지가 너무 깁니다. 짧고 간결하게 작성해 주세요.\x02시간당 요청 횟수 제한에 도달했습니다. 나" +
-	"중에 다시 시도해 주세요.\x02일일 요청 한도에 도달했습니다. 예산이 갱신되는 내일 다시 오세요.\x02제공된 날짜는 미래일" +
-	" 수 없습니다. 유효한 날짜를 제공해 주세요.\x02유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 " +
-	"주세요.\x02죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.\x02애완동물의 이름은 무엇입니까?" +
+	"중에 다시 시도해 주세요.\x02일일 요청 한도에 도달했습니다. 예산이 갱신되는 내일 다시 오세요.\x02죄송합니다. 요청 처" +
+	"리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.\x02제공된 날짜는 미래일 수 없습니다. 유효한 날짜를 제공해 주세요" +
+	".\x02유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 주세요.\x02애완동물의 이름은 무엇입니까?" +
 	"\x02어떤 종류의 애완동물을 가지고 계십니까?\x02개\x02고양이\x02애완동물의 품종은 무엇입니까?\x02애완동물이 태어난 " +
 	"날짜는 언제입니까? YYYY-MM-DD(예: 2010-12-31) 형식으로 날짜를 입력해 주세요.\x02애완동물의 성별은 무엇" +
 	"입니까?\x02수컷\x02암컷\x02애완동물의 몸무게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예: 5 kg"
 
 var ms_MYIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002fc, 0x0000125f, 0x000012d4,
-	0x00001349, 0x0000139a, 0x000013fb, 0x0000144c,
-	0x00001499, 0x000014ec, 0x00001510, 0x0000153e,
+	0x00001349, 0x0000139a, 0x000013fb, 0x0000144e,
+	0x0000149f, 0x000014ec, 0x00001510, 0x0000153e,
 	0x00001545, 0x0000154c, 0x00001572, 0x000015e0,
 	0x00001607, 0x0000160e, 0x00001618, 0x00001679,
 } // Size: 104 bytes
@@ -916,10 +916,10 @@ const ms_MYData string = "" + // Size: 5753 bytes
 	"proses. Sila cuba membuatnya lebih pendek dan ringkas.\x02Anda telah men" +
 	"capai jumlah permintaan maksimum setiap jam. Sila cuba lagi nanti.\x02Ka" +
 	"mi telah mencapai had permintaan harian kami. Sila kembali esok apabila " +
-	"bajet kami disegarkan.\x02Tarikh yang diberikan tidak boleh di masa hada" +
-	"pan. Sila berikan tarikh yang sah.\x02Sila berikan tarikh dalam format y" +
-	"ang sah YYYY-MM-DD (contohnya, 2023-12-31)\x02Maaf, saya mengalami ralat" +
-	" semasa memproses permintaan anda. Sila cuba lagi nanti.\x02Apakah nama " +
+	"bajet kami disegarkan.\x02Maaf, saya mengalami ralat semasa memproses pe" +
+	"rmintaan anda. Sila cuba lagi nanti.\x02Tarikh yang diberikan tidak bole" +
+	"h di masa hadapan. Sila berikan tarikh yang sah.\x02Sila berikan tarikh " +
+	"dalam format yang sah YYYY-MM-DD (contohnya, 2023-12-31)\x02Apakah nama " +
 	"haiwan peliharaan anda?\x02Jenis haiwan peliharaan apa yang anda miliki?" +
 	"\x02anjing\x02kucing\x02Apakah bangsa haiwan peliharaan anda?\x02Bila ha" +
 	"iwan peliharaan anda dilahirkan? Sila masukkan tarikh dalam format YYYY-" +
@@ -929,8 +929,8 @@ const ms_MYData string = "" + // Size: 5753 bytes
 
 var nl_NLIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002ac, 0x000011dd, 0x00001247,
-	0x000012b4, 0x00001306, 0x00001368, 0x000013b6,
-	0x000013fd, 0x0000145e, 0x0000147e, 0x0000149e,
+	0x000012b4, 0x00001306, 0x00001368, 0x000013c9,
+	0x00001417, 0x0000145e, 0x0000147e, 0x0000149e,
 	0x000014a3, 0x000014a7, 0x000014c0, 0x0000151f,
 	0x00001544, 0x0000154e, 0x00001559, 0x000015bd,
 } // Size: 104 bytes
@@ -1007,10 +1007,10 @@ const nl_NLData string = "" + // Size: 5565 bytes
 	"robeer het korter en beknopter te maken.\x02U heeft het maximale aantal " +
 	"verzoeken per uur bereikt. Probeer het later opnieuw.\x02We hebben ons d" +
 	"agelijkse verzoeklimiet bereikt. Kom morgen terug wanneer ons budget is " +
-	"vernieuwd.\x02De opgegeven datum kan niet in de toekomst liggen. Geef ee" +
-	"n geldige datum op.\x02Geef een datum op in het geldige formaat JJJJ-MM-" +
-	"DD (bijv. 2023-12-31)\x02Sorry, ik heb een fout aangetroffen bij het ver" +
-	"werken van uw verzoek. Probeer het later opnieuw.\x02Wat is de naam van " +
+	"vernieuwd.\x02Sorry, ik heb een fout aangetroffen bij het verwerken van " +
+	"uw verzoek. Probeer het later opnieuw.\x02De opgegeven datum kan niet in" +
+	" de toekomst liggen. Geef een geldige datum op.\x02Geef een datum op in " +
+	"het geldige formaat JJJJ-MM-DD (bijv. 2023-12-31)\x02Wat is de naam van " +
 	"je huisdier?\x02Wat voor soort huisdier heb je?\x02hond\x02kat\x02Welk r" +
 	"as is je huisdier?\x02Wanneer is je huisdier geboren? Voer de datum in h" +
 	"et formaat JJJJ-MM-DD in (bijv. 2010-12-31).\x02Wat is het geslacht van " +
@@ -1019,8 +1019,8 @@ const nl_NLData string = "" + // Size: 5565 bytes
 
 var pl_PLIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002eb, 0x000011e4, 0x00001269,
-	0x000012e5, 0x0000133b, 0x0000139e, 0x000013e9,
-	0x00001429, 0x0000148f, 0x000014b2, 0x000014d9,
+	0x000012e5, 0x0000133b, 0x0000139e, 0x00001404,
+	0x0000144f, 0x0000148f, 0x000014b2, 0x000014d9,
 	0x000014de, 0x000014e2, 0x00001506, 0x00001562,
 	0x00001588, 0x0000158f, 0x00001596, 0x000015e9,
 } // Size: 104 bytes
@@ -1094,11 +1094,11 @@ const pl_PLData string = "" + // Size: 5609 bytes
 	"szam, ale Twoja wiadomość jest dla mnie zbyt długa do przetworzenia. Spr" +
 	"óbuj ją skrócić i bardziej zwięźle.\x02Osiągnąłeś maksymalną liczbę żąd" +
 	"ań na godzinę. Spróbuj ponownie później.\x02Osiągnęliśmy nasz dzienny li" +
-	"mit żądań. Wróć jutro, gdy nasz budżet zostanie odświeżony.\x02Podana da" +
-	"ta nie może być w przyszłości. Proszę podaj poprawną datę.\x02Podaj datę" +
-	" w prawidłowym formacie RRRR-MM-DD (np. 2023-12-31)\x02Przepraszam, napo" +
-	"tkałem błąd podczas przetwarzania Twojego żądania. Spróbuj ponownie późn" +
-	"iej.\x02Jak ma na imię Twoje zwierzątko?\x02Jakiego rodzaju zwierzątko p" +
+	"mit żądań. Wróć jutro, gdy nasz budżet zostanie odświeżony.\x02Przeprasz" +
+	"am, napotkałem błąd podczas przetwarzania Twojego żądania. Spróbuj ponow" +
+	"nie później.\x02Podana data nie może być w przyszłości. Proszę podaj pop" +
+	"rawną datę.\x02Podaj datę w prawidłowym formacie RRRR-MM-DD (np. 2023-12" +
+	"-31)\x02Jak ma na imię Twoje zwierzątko?\x02Jakiego rodzaju zwierzątko p" +
 	"osiadasz?\x02pies\x02kot\x02Jaka jest rasa Twojego zwierzątka?\x02Kiedy " +
 	"urodziło się Twoje zwierzątko? Podaj datę w formacie RRRR-MM-DD (np. 201" +
 	"0-12-31).\x02Jaka jest płeć Twojego zwierzątka?\x02samiec\x02samica\x02J" +
@@ -1107,8 +1107,8 @@ const pl_PLData string = "" + // Size: 5609 bytes
 
 var pt_PTIndex = []uint32{ // 20 elements
 	0x00000000, 0x00000309, 0x000011da, 0x00001253,
-	0x000012c9, 0x0000132c, 0x0000139c, 0x000013ee,
-	0x00001443, 0x000014a1, 0x000014ce, 0x000014fb,
+	0x000012c9, 0x0000132c, 0x0000139c, 0x000013fa,
+	0x0000144c, 0x000014a1, 0x000014ce, 0x000014fb,
 	0x00001500, 0x00001505, 0x00001533, 0x000015a8,
 	0x000015d8, 0x000015de, 0x000015e5, 0x00001656,
 } // Size: 104 bytes
@@ -1183,22 +1183,22 @@ const pt_PTData string = "" + // Size: 5718 bytes
 	"e torná-la mais curta e concisa.\x02Você atingiu o número máximo de soli" +
 	"citações por hora. Por favor, tente novamente mais tarde.\x02Atingimos o" +
 	" nosso limite diário de pedidos. Por favor, volte amanhã quando o nosso " +
-	"orçamento for atualizado.\x02A data fornecida não pode estar no futuro. " +
-	"Por favor, forneça uma data válida.\x02Por favor, forneça uma data no fo" +
-	"rmato válido AAAA-MM-DD (por exemplo, 2023-12-31)\x02Desculpe, encontrei" +
-	" um erro ao processar o seu pedido. Por favor, tente novamente mais tard" +
-	"e.\x02Qual é o nome do seu animal de estimação?\x02Que tipo de animal de" +
-	" estimação você tem?\x02cão\x02gato\x02Qual é a raça do seu animal de es" +
-	"timação?\x02Quando nasceu o seu animal de estimação? Por favor, insira a" +
-	" data no formato AAAA-MM-DD (por exemplo, 2010-12-31).\x02Qual é o géner" +
-	"o do seu animal de estimação?\x02macho\x02fêmea\x02Qual é o peso do seu " +
-	"animal de estimação? Por favor, especifique o peso seguido da unidade, p" +
-	"or exemplo, 5 kg"
+	"orçamento for atualizado.\x02Desculpe, encontrei um erro ao processar o " +
+	"seu pedido. Por favor, tente novamente mais tarde.\x02A data fornecida n" +
+	"ão pode estar no futuro. Por favor, forneça uma data válida.\x02Por fav" +
+	"or, forneça uma data no formato válido AAAA-MM-DD (por exemplo, 2023-12-" +
+	"31)\x02Qual é o nome do seu animal de estimação?\x02Que tipo de animal d" +
+	"e estimação você tem?\x02cão\x02gato\x02Qual é a raça do seu animal de e" +
+	"stimação?\x02Quando nasceu o seu animal de estimação? Por favor, insira " +
+	"a data no formato AAAA-MM-DD (por exemplo, 2010-12-31).\x02Qual é o géne" +
+	"ro do seu animal de estimação?\x02macho\x02fêmea\x02Qual é o peso do seu" +
+	" animal de estimação? Por favor, especifique o peso seguido da unidade, " +
+	"por exemplo, 5 kg"
 
 var ru_RUIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004ac, 0x00001eb4, 0x00001f9e,
-	0x00002060, 0x000020f9, 0x000021c5, 0x00002259,
-	0x000022e0, 0x0000238a, 0x000023b9, 0x000023f1,
+	0x00002060, 0x000020f9, 0x000021c5, 0x0000226f,
+	0x00002303, 0x0000238a, 0x000023b9, 0x000023f1,
 	0x000023fe, 0x00002409, 0x00002441, 0x000024e5,
 	0x00002517, 0x00002526, 0x00002535, 0x000025dd,
 } // Size: 104 bytes
@@ -1273,11 +1273,11 @@ const ru_RUData string = "" + // Size: 9693 bytes
 	"слишком длинное для обработки. Попробуйте сделать его более кратким и с" +
 	"жатым.\x02Вы достигли максимального количества запросов в час. Пожалуйс" +
 	"та, попробуйте позже.\x02Мы достигли нашего ежедневного лимита запросов" +
-	". Пожалуйста, вернитесь завтра, когда наш бюджет будет обновлен.\x02Указ" +
-	"анная дата не может быть в будущем. Пожалуйста, укажите действительную " +
-	"дату.\x02Пожалуйста, укажите дату в допустимом формате ГГГГ-ММ-ДД (напр" +
-	"имер, 2023-12-31)\x02Извините, я столкнулся с ошибкой при обработке ваш" +
-	"его запроса. Пожалуйста, попробуйте позже.\x02Как зовут вашего питомца?" +
+	". Пожалуйста, вернитесь завтра, когда наш бюджет будет обновлен.\x02Изви" +
+	"ните, я столкнулся с ошибкой при обработке вашего запроса. Пожалуйста, " +
+	"попробуйте позже.\x02Указанная дата не может быть в будущем. Пожалуйста" +
+	", укажите действительную дату.\x02Пожалуйста, укажите дату в допустимом " +
+	"формате ГГГГ-ММ-ДД (например, 2023-12-31)\x02Как зовут вашего питомца?" +
 	"\x02Какое у вас домашнее животное?\x02собака\x02кошка\x02Какая порода у " +
 	"вашего питомца?\x02Когда родился ваш питомец? Пожалуйста, введите дату " +
 	"в формате ГГГГ-ММ-ДД (например, 2010-12-31).\x02Какой пол у вашего пито" +
@@ -1286,8 +1286,8 @@ const ru_RUData string = "" + // Size: 9693 bytes
 
 var tr_TRIndex = []uint32{ // 20 elements
 	0x00000000, 0x000002d3, 0x000011b7, 0x00001232,
-	0x0000129e, 0x000012f1, 0x0000134d, 0x00001391,
-	0x000013ed, 0x00001450, 0x00001472, 0x00001497,
+	0x0000129e, 0x000012f1, 0x0000134d, 0x000013b0,
+	0x000013f4, 0x00001450, 0x00001472, 0x00001497,
 	0x0000149e, 0x000014a3, 0x000014c6, 0x0000152e,
 	0x00001555, 0x0000155b, 0x00001561, 0x000015cd,
 } // Size: 104 bytes
@@ -1358,21 +1358,21 @@ const tr_TRData string = "" + // Size: 5581 bytes
 	".\x02Özür dilerim, ancak mesajınızı işlemem için çok uzun. Lütfen daha k" +
 	"ısa ve öz olmasını deneyin.\x02Saatlik maksimum istek sayısına ulaştını" +
 	"z. Lütfen daha sonra tekrar deneyin.\x02Günlük istek limitimize ulaştık." +
-	" Lütfen yarın geri gelin, bütçemiz yenilendiğinde.\x02Sağlanan tarih gel" +
-	"ecekte olamaz. Lütfen geçerli bir tarih girin.\x02Lütfen geçerli bir biç" +
-	"imde YYYY-AA-GG (örneğin, 2023-12-31) biçiminde bir tarih girin\x02Üzgün" +
-	"üm, isteğinizi işlerken bir hata ile karşılaştım. Lütfen daha sonra tek" +
-	"rar deneyin.\x02Evcil hayvanınızın adı nedir?\x02Hangi türde evcil hayva" +
-	"nınız var?\x02köpek\x02kedi\x02Evcil hayvanınızın cinsi nedir?\x02Evcil " +
-	"hayvanınız ne zaman doğdu? Lütfen tarihi YYYY-AA-GG (örneğin, 2010-12-31" +
-	") biçiminde girin.\x02Evcil hayvanınızın cinsiyeti nedir?\x02erkek\x02di" +
-	"şi\x02Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte ağırlı" +
+	" Lütfen yarın geri gelin, bütçemiz yenilendiğinde.\x02Üzgünüm, isteğiniz" +
+	"i işlerken bir hata ile karşılaştım. Lütfen daha sonra tekrar deneyin." +
+	"\x02Sağlanan tarih gelecekte olamaz. Lütfen geçerli bir tarih girin.\x02" +
+	"Lütfen geçerli bir biçimde YYYY-AA-GG (örneğin, 2023-12-31) biçiminde bi" +
+	"r tarih girin\x02Evcil hayvanınızın adı nedir?\x02Hangi türde evcil hayv" +
+	"anınız var?\x02köpek\x02kedi\x02Evcil hayvanınızın cinsi nedir?\x02Evcil" +
+	" hayvanınız ne zaman doğdu? Lütfen tarihi YYYY-AA-GG (örneğin, 2010-12-3" +
+	"1) biçiminde girin.\x02Evcil hayvanınızın cinsiyeti nedir?\x02erkek\x02d" +
+	"işi\x02Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte ağırlı" +
 	"ğı belirtin, örneğin, 5 kg"
 
 var uk_UAIndex = []uint32{ // 20 elements
 	0x00000000, 0x000004fc, 0x00001d3f, 0x00001e28,
-	0x00001f14, 0x00001fba, 0x00002078, 0x000020fd,
-	0x00002187, 0x0000223d, 0x0000226e, 0x000022b6,
+	0x00001f14, 0x00001fba, 0x00002078, 0x0000212e,
+	0x000021b3, 0x0000223d, 0x0000226e, 0x000022b6,
 	0x000022c3, 0x000022ca, 0x000022ff, 0x000023ac,
 	0x000023df, 0x000023f0, 0x000023fd, 0x00002498,
 } // Size: 104 bytes
@@ -1445,15 +1445,15 @@ const uk_UAData string = "" + // Size: 9368 bytes
 	"ь ласка, спробуйте зробити його коротшим і більш стислим.\x02Ви досягли" +
 	" максимальної кількості запитів за годину. Будь ласка, спробуйте ще раз " +
 	"пізніше.\x02Ми досягли нашого щоденного ліміту запитів. Будь ласка, пов" +
-	"ертайтеся завтра, коли оновиться наш бюджет.\x02Наданий дата не може бу" +
-	"ти у майбутньому. Будь ласка, вкажіть дійсну дату.\x02Будь ласка, вкажі" +
-	"ть дату у правильному форматі РРРР-ММ-ДД (наприклад, 2023-12-31)\x02Виб" +
-	"ачте, я стикнувся з помилкою під час обробки вашого запиту. Будь ласка," +
-	" спробуйте ще раз пізніше.\x02Як звати вашого улюбленця?\x02Якого типу у" +
-	" вас є домашній улюбленець?\x02собака\x02кіт\x02Яка порода вашого улюбле" +
-	"нця?\x02Коли народився ваш улюбленець? Будь ласка, введіть дату у форма" +
-	"ті РРРР-ММ-ДД (наприклад, 2010-12-31).\x02Яка стать вашого улюбленця?" +
+	"ертайтеся завтра, коли оновиться наш бюджет.\x02Вибачте, я стикнувся з " +
+	"помилкою під час обробки вашого запиту. Будь ласка, спробуйте ще раз пі" +
+	"зніше.\x02Наданий дата не може бути у майбутньому. Будь ласка, вкажіть " +
+	"дійсну дату.\x02Будь ласка, вкажіть дату у правильному форматі РРРР-ММ-" +
+	"ДД (наприклад, 2023-12-31)\x02Як звати вашого улюбленця?\x02Якого типу " +
+	"у вас є домашній улюбленець?\x02собака\x02кіт\x02Яка порода вашого улюб" +
+	"ленця?\x02Коли народився ваш улюбленець? Будь ласка, введіть дату у фор" +
+	"маті РРРР-ММ-ДД (наприклад, 2010-12-31).\x02Яка стать вашого улюбленця?" +
 	"\x02чоловіча\x02жіноча\x02Яка вага вашого улюбленця? Будь ласка, вкажіть" +
 	" вагу, вказавши одиницю, наприклад, 5 кг"
 
-	// Total table size 106357 bytes (103KiB); checksum: 63A9966D
+	// Total table size 106357 bytes (103KiB); checksum: 20677D17

@@ -129,12 +129,6 @@ func (s *ServiceImpl) handleProcessingError(ctx context.Context, err error, msg 
 		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("You have reached the maximum number of requests per hour. Please try again later.")), nil
 	case errors.Is(err, core.ErrGlobalLimit):
 		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.")), nil
-	case errors.Is(err, message.ErrTextTooLong):
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.")), nil
-	case errors.Is(err, message.ErrFutureDate):
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Provided date cannot be in the future. Please provide a valid date.")), nil
-	case errors.Is(err, message.ErrInvalidDates):
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)")), nil
 	default:
 		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 	}

@@ -32,6 +32,11 @@
             "translation": "Osiągnęliśmy nasz dzienny limit żądań. Wróć jutro, gdy nasz budżet zostanie odświeżony."
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "Przepraszam, napotkałem błąd podczas przetwarzania Twojego żądania. Spróbuj ponownie później."
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "Podana data nie może być w przyszłości. Proszę podaj poprawną datę."
@@ -40,11 +45,6 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "Podaj datę w prawidłowym formacie RRRR-MM-DD (np. 2023-12-31)"
-        },
-        {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "Przepraszam, napotkałem błąd podczas przetwarzania Twojego żądania. Spróbuj ponownie później."
         },
         {
             "id": "What is your pet's name?",

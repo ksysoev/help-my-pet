@@ -32,6 +32,11 @@
             "translation": "일일 요청 한도에 도달했습니다. 예산이 갱신되는 내일 다시 오세요."
         },
         {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요."
+        },
+        {
             "id": "Provided date cannot be in the future. Please provide a valid date.",
             "message": "Provided date cannot be in the future. Please provide a valid date.",
             "translation": "제공된 날짜는 미래일 수 없습니다. 유효한 날짜를 제공해 주세요."
@@ -40,11 +45,6 @@
             "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
             "translation": "유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 주세요."
-        },
-        {
-            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
-            "translation": "죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요."
         },
         {
             "id": "What is your pet's name?",
