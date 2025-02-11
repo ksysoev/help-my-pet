@@ -32,7 +32,8 @@ func (s *ServiceImpl) setupHandler() Handler {
 		middleware.WithRequestReducer(),
 		middleware.WithThrottler(30),
 		middleware.WithMetrics(),
-		middleware.WithErrorHandling(s.Messages.GetMessage),
+		middleware.WithErrorHandling(),
+		middleware.WithLocalization(),
 	)
 
 	return h
@@ -54,7 +55,10 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 
 	// Validate if message contains unsupported media type like images, videos, etc.
 	if msg.Photo != nil || msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.UnsupportedMediaType)), nil
+		return tgbotapi.NewMessage(
+			msg.Chat.ID,
+			i18n.GetLocale(ctx).Sprintf("Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only."),
+		), nil
 	}
 
 	if msg.Text == "" {
@@ -62,7 +66,12 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	}
 
 	if msg.Command() != "" {
-		return s.HandleCommand(ctx, msg)
+		resp, err := s.HandleCommand(ctx, msg)
+		if err != nil {
+			return s.handleProcessingError(ctx, err, msg)
+		}
+
+		return resp, nil
 	}
 
 	request, err := message.NewUserMessage(
@@ -72,14 +81,17 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	)
 
 	if errors.Is(err, message.ErrTextTooLong) {
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.MessageTooLong)), nil
+		return tgbotapi.NewMessage(
+			msg.Chat.ID,
+			i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."),
+		), nil
 	} else if err != nil {
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.ErrorMessage)), nil
+		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
 	}
 
 	response, err := s.AISvc.ProcessMessage(ctx, request)
 	if err != nil {
-		return s.handleProcessingError(err, msg)
+		return s.handleProcessingError(ctx, err, msg)
 	}
 
 	// Create msg with buttons if available
@@ -111,18 +123,12 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 // handleProcessingError maps specific processing errors to localized user-facing messages or provides a default error response.
 // It accepts err, the error encountered during message handling, and msg, the user's incoming message for context.
 // Returns a configured message with an appropriate response and an error if the failure is unrecognized or unexpected.
-func (s *ServiceImpl) handleProcessingError(err error, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+func (s *ServiceImpl) handleProcessingError(ctx context.Context, err error, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	switch {
 	case errors.Is(err, core.ErrRateLimit):
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.RateLimitMessage)), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("You have reached the maximum number of requests per hour. Please try again later.")), nil
 	case errors.Is(err, core.ErrGlobalLimit):
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.GlobalLimitMessage)), nil
-	case errors.Is(err, message.ErrTextTooLong):
-		return tgbotapi.NewMessage(msg.Chat.ID, s.Messages.GetMessage(msg.From.LanguageCode, i18n.MessageTooLong)), nil
-	case errors.Is(err, message.ErrFutureDate):
-		return tgbotapi.NewMessage(msg.Chat.ID, "Provided date cannot be in the future. Please provide a valid date."), nil
-	case errors.Is(err, message.ErrInvalidDates):
-		return tgbotapi.NewMessage(msg.Chat.ID, "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)"), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.")), nil
 	default:
 		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 	}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 // ProcessFollowUpAnswer processes a user's answer to a follow-up question during a conversation.
@@ -15,7 +16,11 @@ import (
 func (s *AIService) ProcessFollowUpAnswer(ctx context.Context, conv Conversation, request *message.UserMessage) (*message.Response, error) {
 	// Store the answer and check if questionnaire is complete
 	isComplete, err := conv.AddQuestionAnswer(request.Text)
-	if err != nil {
+
+	switch {
+	case errors.Is(err, message.ErrTextTooLong):
+		return message.NewResponse(i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."), nil), nil
+	case err != nil:
 		return nil, fmt.Errorf("failed to add question answer: %w", err)
 	}
 

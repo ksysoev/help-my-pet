@@ -9,12 +9,11 @@ import (
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
-// WithErrorHandling wraps a Handler to provide error handling and user-friendly messages.
-// It intercepts errors from the wrapped handler and generates a localized error response using the provided getMessage function.
-// getMessage is a function that retrieves localized error messages based on language and message type.
-// Returns a Middleware that produces a modified Handler with integrated error handling functionality.
-// Errors occur if the input message is nil or if the wrapped handler returns an error.
-func WithErrorHandling(getMessage func(lang string, msgType i18n.Message) string) Middleware {
+// WithErrorHandling adds error handling middleware to a Handler.
+// It intercepts errors returned by the next Handler and generates an appropriate error message response for the user.
+// It uses the localized message printer from the context to create user-friendly error messages.
+// Returns a Middleware wrapping the original Handler with error handling logic.
+func WithErrorHandling() Middleware {
 	return func(next Handler) Handler {
 		return HandlerFunc(func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 			if message == nil {
@@ -30,13 +29,10 @@ func WithErrorHandling(getMessage func(lang string, msgType i18n.Message) string
 
 				slog.ErrorContext(ctx, "Failed to handle message", slog.Any("error", err))
 
-				// Get language code safely
-				var langCode string
-				if message.From != nil {
-					langCode = message.From.LanguageCode
-				}
 				// Return error message to user
-				return tgbotapi.NewMessage(chatID, getMessage(langCode, i18n.ErrorMessage)), nil
+				errMsg := i18n.GetLocale(ctx).Sprintf("Sorry, I encountered an error while processing your request. Please try again later.")
+
+				return tgbotapi.NewMessage(chatID, errMsg), nil
 			}
 			return msgConfig, nil
 		})

@@ -29,7 +29,7 @@ type Conversation interface {
 	AddMessage(role, content string)
 	History(skip int) string
 	StartFollowUpQuestions(initialPrompt string, questions []message.Question) error
-	StartProfileQuestions() error
+	StartProfileQuestions(ctx context.Context) error
 	GetCurrentQuestion() (*message.Question, error)
 	AddQuestionAnswer(answer string) (bool, error)
 	GetQuestionnaireResult() ([]conversation.QuestionAnswer, error)

@@ -11,7 +11,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/google/uuid"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
 const (
@@ -33,15 +32,13 @@ type AIProvider interface {
 
 // Config holds the configuration for the Telegram bot
 type Config struct {
-	Messages      *i18n.Config `mapstructure:"messages"`
-	TelegramToken string       `mapstructure:"telegram_token"`
+	TelegramToken string `mapstructure:"telegram_token"`
 }
 
 type ServiceImpl struct {
-	Bot      BotAPI
-	AISvc    AIProvider
-	Messages *i18n.Config
-	handler  Handler
+	Bot     BotAPI
+	AISvc   AIProvider
+	handler Handler
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -58,19 +55,14 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		return nil, fmt.Errorf("telegram token cannot be empty")
 	}
 
-	if cfg.Messages == nil {
-		return nil, fmt.Errorf("messages config cannot be nil")
-	}
-
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Telegram bot: %w", err)
 	}
 
 	s := &ServiceImpl{
-		Bot:      bot,
-		AISvc:    aiSvc,
-		Messages: cfg.Messages,
+		Bot:   bot,
+		AISvc: aiSvc,
 	}
 
 	s.handler = s.setupHandler()

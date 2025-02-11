@@ -3,6 +3,7 @@ package core
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
@@ -92,7 +93,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 			},
 			conv: func() *conversation.Conversation {
 				conv := conversation.NewConversation("123")
-				if err := conv.StartProfileQuestions(); err != nil {
+				if err := conv.StartProfileQuestions(context.Background()); err != nil {
 					panic(err)
 				}
 
@@ -123,7 +124,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 			},
 			conv: func() *conversation.Conversation {
 				conv := conversation.NewConversation("123")
-				if err := conv.StartProfileQuestions(); err != nil {
+				if err := conv.StartProfileQuestions(context.Background()); err != nil {
 					panic(err)
 				}
 				return conv
@@ -135,6 +136,66 @@ func TestProcessProfileAnswer(t *testing.T) {
 				})).Return(nil)
 			},
 			expectedText: "What type of pet do you have?", // Second question after name
+		},
+		{
+			name: "answer too long",
+			request: &message.UserMessage{
+				ChatID: "123",
+				Text: "This is a very long answer that is longer than the maximum allowed length. " +
+					"This is a very long answer that is longer than the maximum allowed length. " +
+					"This is a very long answer that is longer than the maximum allowed length. ",
+			},
+			conv: func() *conversation.Conversation {
+				conv := conversation.NewConversation("123")
+				if err := conv.StartProfileQuestions(context.Background()); err != nil {
+					panic(err)
+				}
+				return conv
+
+			}(),
+			expectedText: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
+		},
+		{
+			name: "answer with future date of birth",
+			request: &message.UserMessage{
+				ChatID: "123",
+				Text:   time.Now().Add(48 * time.Hour).Format("2006-01-02"),
+			},
+			conv: func() *conversation.Conversation {
+				conv := conversation.NewConversation("123")
+				if err := conv.StartProfileQuestions(context.Background()); err != nil {
+					panic(err)
+				}
+
+				// Fill in previous answers to go to the date of birth question
+				_, _ = conv.AddQuestionAnswer("Rex")      // name
+				_, _ = conv.AddQuestionAnswer("Dog")      // species
+				_, _ = conv.AddQuestionAnswer("Labrador") // breed
+
+				return conv
+			}(),
+			expectedText: "Provided date cannot be in the future. Please provide a valid date.",
+		},
+		{
+			name: "answer with invalid date of birth",
+			request: &message.UserMessage{
+				ChatID: "123",
+				Text:   "2020-13-01",
+			},
+			conv: func() *conversation.Conversation {
+				conv := conversation.NewConversation("123")
+				if err := conv.StartProfileQuestions(context.Background()); err != nil {
+					panic(err)
+				}
+
+				// Fill in previous answers to go to the date of birth question
+				_, _ = conv.AddQuestionAnswer("Rex")      // name
+				_, _ = conv.AddQuestionAnswer("Dog")      // species
+				_, _ = conv.AddQuestionAnswer("Labrador") // breed
+
+				return conv
+			}(),
+			expectedText: "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
 		},
 	}
 

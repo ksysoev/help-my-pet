@@ -1,0 +1,110 @@
+{
+    "language": "nl-NL",
+    "messages": [
+        {
+            "id": "Unknown command",
+            "message": "Unknown command",
+            "translation": "Onbekend commando"
+        },
+        {
+            "id": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
+            "message": "Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!",
+            "translation": "Welkom bij Help My Pet Bot! 🐾\n\nIk ben je persoonlijke assistent voor huisdierverzorging, klaar om je te helpen beter voor je harige vriend te zorgen. Ik kan je helpen met:\n\n• Vragen over de gezondheid en het gedrag van huisdieren\n• Advies over dieet en voeding\n• Trainingstips en -technieken\n• Algemene begeleiding bij de verzorging van huisdieren\n\nTyp gewoon je vraag of zorg over je huisdier, en ik zal nuttige, informatieve antwoorden geven op basis van betrouwbare veterinaire kennis. Onthoud dat, hoewel ik begeleiding kan bieden, je bij ernstige medische aandoeningen altijd een dierenarts moet raadplegen.\n\nOm te beginnen, stel me gewoon een vraag over je huisdier!"
+        },
+        {
+            "id": "\u003cb\u003eTerms and Conditions\u003c/b\u003e\n\u003ci\u003eLast updated: 30.01.2025\u003c/i\u003e\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n\u003cb\u003e1. Nature of the Service\u003c/b\u003e\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n\u003cb\u003e2. No Veterinary-Client-Patient Relationship\u003c/b\u003e\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n\u003cb\u003e3. Limitation of Liability\u003c/b\u003e\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n\u003cb\u003e4. No Warranty\u003c/b\u003e\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n\u003cb\u003e5. User Responsibilities\u003c/b\u003e\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n\u003cb\u003e6. International Use\u003c/b\u003e\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n\u003cb\u003e7. Modifications\u003c/b\u003e\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n\u003cb\u003e8. Governing Law and Dispute Resolution\u003c/b\u003e\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n\u003cb\u003e9. Acceptance of Terms\u003c/b\u003e\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at \u003ci\u003ek.sysoev@me.com\u003c/i\u003e.",
+            "message": "\u003cb\u003eTerms and Conditions\u003c/b\u003e\n\u003ci\u003eLast updated: 30.01.2025\u003c/i\u003e\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n\u003cb\u003e1. Nature of the Service\u003c/b\u003e\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n\u003cb\u003e2. No Veterinary-Client-Patient Relationship\u003c/b\u003e\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n\u003cb\u003e3. Limitation of Liability\u003c/b\u003e\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n\u003cb\u003e4. No Warranty\u003c/b\u003e\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n\u003cb\u003e5. User Responsibilities\u003c/b\u003e\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n\u003cb\u003e6. International Use\u003c/b\u003e\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n\u003cb\u003e7. Modifications\u003c/b\u003e\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n\u003cb\u003e8. Governing Law and Dispute Resolution\u003c/b\u003e\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n\u003cb\u003e9. Acceptance of Terms\u003c/b\u003e\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at \u003ci\u003ek.sysoev@me.com\u003c/i\u003e.",
+            "translation": "\u003cb\u003eAlgemene voorwaarden\u003c/b\u003e\n\u003ci\u003eLaatst bijgewerkt: 30.01.2025\u003c/i\u003e\n\nBedankt voor het gebruik van onze chatbot voor veterinaire adviezen (“de Service”). Door toegang te krijgen tot of gebruik te maken van deze Service, gaat u akkoord met de volgende algemene voorwaarden (“Voorwaarden”). Als u niet akkoord gaat met deze Voorwaarden, stop dan onmiddellijk met het gebruik.\n\n\u003cb\u003e1. Aard van de Service\u003c/b\u003e\n1.1 De Service biedt algemene informatie, begeleiding en suggesties voor huisdierverzorging, inclusief (maar niet beperkt tot) dieet, gedrag en training.\n1.2 De Service is geen vervanging voor professionele veterinaire diagnose, behandeling of zorg. Raadpleeg altijd een erkende dierenarts voor vragen over de gezondheid van uw huisdier.\n\n\u003cb\u003e2. Geen Veterinair-Client-Patiënt Relatie\u003c/b\u003e\n2.1 Het gebruik van de Service of interactie met onze AI-assistent creëert geen dierenarts-client-patiënt relatie.\n2.2 Advies of begeleiding verstrekt door de Service is gebaseerd op beperkte informatie en moet alleen als algemene informatie worden beschouwd.\n\n\u003cb\u003e3. Beperking van Aansprakelijkheid\u003c/b\u003e\n3.1 U erkent en gaat ermee akkoord dat het gebruik van de Service op eigen risico is.\n3.2 Onder geen enkele omstandigheid zullen de eigenaren, ontwikkelaars of licentiehouders van de Service aansprakelijk zijn voor enige directe, indirecte, incidentele, speciale of gevolgschade die voortvloeit uit of verband houdt met uw toegang tot of gebruik van de Service.\n3.3 U begrijpt dat beslissingen met betrekking tot de zorg voor uw huisdier en de daaruit voortvloeiende resultaten uw eigen verantwoordelijkheid zijn. Als u twijfelt over het welzijn of de gezondheid van uw huisdier, raadpleeg dan onmiddellijk een erkende dierenarts.\n\n\u003cb\u003e4. Geen Garantie\u003c/b\u003e\n4.1 De Service wordt geleverd op een “as is” en “as available” basis zonder enige vorm van garantie, expliciet of impliciet.\n4.2 Wij garanderen niet dat de Service ononderbroken, foutloos, veilig of vrij van virussen zal zijn.\n\n\u003cb\u003e5. Verantwoordelijkheden van de Gebruiker\u003c/b\u003e\n5.1 U bent verantwoordelijk voor het verstrekken van nauwkeurige en volledige informatie over uw huisdier bij het zoeken naar advies.\n5.2 U moet ervoor zorgen dat alle vragen, beschrijvingen en gegevens die u verstrekt geen inbreuk maken op de rechten van derden of lokale wetten.\n\n\u003cb\u003e6. Internationaal Gebruik\u003c/b\u003e\n6.1 De Service is bedoeld voor wereldwijd gebruik. U bent verantwoordelijk voor naleving van alle toepasselijke lokale wetten en voorschriften in uw rechtsgebied.\n6.2 Wij garanderen niet dat de Service of enige inhoud ervan geschikt of toegestaan is in een specifiek land of regio.\n\n\u003cb\u003e7. Wijzigingen\u003c/b\u003e\n7.1 Wij behouden ons het recht voor om deze Voorwaarden op elk moment te wijzigen of te vervangen.\n7.2 Als we materiële wijzigingen aanbrengen, zullen we de bijgewerkte Voorwaarden plaatsen en de datum van de laatste herziening bovenaan dit document aangeven.\n\n\u003cb\u003e8. Toepasselijk Recht en Geschillenbeslechting\u003c/b\u003e\n8.1 Deze Voorwaarden worden beheerst door en geïnterpreteerd in overeenstemming met de wetten die van toepassing zijn in het rechtsgebied van de hoofdvestiging van de Serviceprovider, zonder rekening te houden met conflicterende rechtsprincipes.\n8.2 Elk geschil dat voortvloeit uit of verband houdt met deze Voorwaarden zal worden opgelost door middel van minnelijke onderhandelingen en, indien nodig, door bindende arbitrage of rechtszaken in de toepasselijke rechtbanken.\n\n\u003cb\u003e9. Aanvaarding van Voorwaarden\u003c/b\u003e\n9.1 Door toegang te blijven krijgen tot of gebruik te maken van de Service, erkent u dat u deze Voorwaarden hebt gelezen, begrepen en ermee akkoord gaat.\n9.2 Als u niet akkoord gaat, moet u onmiddellijk stoppen met het gebruik van de Service.\n\nAls u vragen of opmerkingen heeft over deze Voorwaarden, of als u verdere verduidelijking nodig heeft, neem dan contact op via \u003ci\u003ek.sysoev@me.com\u003c/i\u003e."
+        },
+        {
+            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+            "translation": "Sorry, ik kan geen afbeeldingen, video's, audio of documenten verwerken. Stuur uw vraag alleen als tekst."
+        },
+        {
+            "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
+            "message": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
+            "translation": "Het spijt me, maar uw bericht is te lang voor mij om te verwerken. Probeer het korter en beknopter te maken."
+        },
+        {
+            "id": "You have reached the maximum number of requests per hour. Please try again later.",
+            "message": "You have reached the maximum number of requests per hour. Please try again later.",
+            "translation": "U heeft het maximale aantal verzoeken per uur bereikt. Probeer het later opnieuw."
+        },
+        {
+            "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+            "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
+            "translation": "We hebben ons dagelijkse verzoeklimiet bereikt. Kom morgen terug wanneer ons budget is vernieuwd."
+        },
+        {
+            "id": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "message": "Sorry, I encountered an error while processing your request. Please try again later.",
+            "translation": "Sorry, ik heb een fout aangetroffen bij het verwerken van uw verzoek. Probeer het later opnieuw."
+        },
+        {
+            "id": "Provided date cannot be in the future. Please provide a valid date.",
+            "message": "Provided date cannot be in the future. Please provide a valid date.",
+            "translation": "De opgegeven datum kan niet in de toekomst liggen. Geef een geldige datum op."
+        },
+        {
+            "id": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
+            "message": "Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)",
+            "translation": "Geef een datum op in het geldige formaat JJJJ-MM-DD (bijv. 2023-12-31)"
+        },
+        {
+            "id": "Pet profile saved successfully",
+            "message": "Pet profile saved successfully",
+            "translation": "Huisdierprofiel succesvol opgeslagen"
+        },
+        {
+            "id": "What is your pet's name?",
+            "message": "What is your pet's name?",
+            "translation": "Wat is de naam van je huisdier?"
+        },
+        {
+            "id": "What type of pet do you have?",
+            "message": "What type of pet do you have?",
+            "translation": "Wat voor soort huisdier heb je?"
+        },
+        {
+            "id": "dog",
+            "message": "dog",
+            "translation": "hond"
+        },
+        {
+            "id": "cat",
+            "message": "cat",
+            "translation": "kat"
+        },
+        {
+            "id": "What breed is your pet?",
+            "message": "What breed is your pet?",
+            "translation": "Welk ras is je huisdier?"
+        },
+        {
+            "id": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "message": "When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).",
+            "translation": "Wanneer is je huisdier geboren? Voer de datum in het formaat JJJJ-MM-DD in (bijv. 2010-12-31)."
+        },
+        {
+            "id": "What is your pet's gender?",
+            "message": "What is your pet's gender?",
+            "translation": "Wat is het geslacht van je huisdier?"
+        },
+        {
+            "id": "male",
+            "message": "male",
+            "translation": "mannelijk"
+        },
+        {
+            "id": "female",
+            "message": "female",
+            "translation": "vrouwelijk"
+        },
+        {
+            "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
+            "translation": "Wat is het gewicht van je huisdier? Geef het gewicht op, gevolgd door de eenheid, bijvoorbeeld 5 kg"
+        }
+    ]
+}

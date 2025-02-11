@@ -5,6 +5,8 @@
 package core
 
 import (
+	context "context"
+
 	conversation "github.com/ksysoev/help-my-pet/pkg/core/conversation"
 	message "github.com/ksysoev/help-my-pet/pkg/core/message"
 
@@ -411,17 +413,17 @@ func (_c *MockConversation_StartFollowUpQuestions_Call) RunAndReturn(run func(st
 	return _c
 }
 
-// StartProfileQuestions provides a mock function with no fields
-func (_m *MockConversation) StartProfileQuestions() error {
-	ret := _m.Called()
+// StartProfileQuestions provides a mock function with given fields: ctx
+func (_m *MockConversation) StartProfileQuestions(ctx context.Context) error {
+	ret := _m.Called(ctx)
 
 	if len(ret) == 0 {
 		panic("no return value specified for StartProfileQuestions")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func() error); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(context.Context) error); ok {
+		r0 = rf(ctx)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -435,13 +437,14 @@ type MockConversation_StartProfileQuestions_Call struct {
 }
 
 // StartProfileQuestions is a helper method to define mock.On call
-func (_e *MockConversation_Expecter) StartProfileQuestions() *MockConversation_StartProfileQuestions_Call {
-	return &MockConversation_StartProfileQuestions_Call{Call: _e.mock.On("StartProfileQuestions")}
+//   - ctx context.Context
+func (_e *MockConversation_Expecter) StartProfileQuestions(ctx interface{}) *MockConversation_StartProfileQuestions_Call {
+	return &MockConversation_StartProfileQuestions_Call{Call: _e.mock.On("StartProfileQuestions", ctx)}
 }
 
-func (_c *MockConversation_StartProfileQuestions_Call) Run(run func()) *MockConversation_StartProfileQuestions_Call {
+func (_c *MockConversation_StartProfileQuestions_Call) Run(run func(ctx context.Context)) *MockConversation_StartProfileQuestions_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run()
+		run(args[0].(context.Context))
 	})
 	return _c
 }
@@ -451,7 +454,7 @@ func (_c *MockConversation_StartProfileQuestions_Call) Return(_a0 error) *MockCo
 	return _c
 }
 
-func (_c *MockConversation_StartProfileQuestions_Call) RunAndReturn(run func() error) *MockConversation_StartProfileQuestions_Call {
+func (_c *MockConversation_StartProfileQuestions_Call) RunAndReturn(run func(context.Context) error) *MockConversation_StartProfileQuestions_Call {
 	_c.Call.Return(run)
 	return _c
 }
