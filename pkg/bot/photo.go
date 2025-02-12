@@ -2,12 +2,27 @@ package bot
 
 import (
 	"context"
+	"encoding/base64"
+	"fmt"
+	"io"
 	"log/slog"
+	"net/http"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot/media"
+	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
+
+const (
+	maxAllowedPhotos = 1
+	maxFileSize      = 1024 * 1024
+)
+
+type image struct {
+	mime string
+	data string
+}
 
 // handlePhoto processes a photo sent by the user and responds with a confirmation message.
 // It reduces the photo group using the photoReducer function and logs the media group ID.
@@ -19,7 +34,31 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 		return tgbotapi.MessageConfig{}, nil
 	}
 
-	slog.Debug("Received photo", slog.Any("media_group_id", mediaGroup))
+	if mediaGroup.Text == "" {
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide your question in text format along with image(s)")), nil
+	}
+
+	if len(mediaGroup.PhotoIDs) == 0 {
+		// should be impossible to reach this point in real life
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide at least one image")), nil
+	}
+
+	if len(mediaGroup.PhotoIDs) > maxAllowedPhotos {
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide no more than 1 image")), nil
+	}
+
+	photoData := make([]*image, 0, len(mediaGroup.PhotoIDs))
+
+	for _, photoID := range mediaGroup.PhotoIDs {
+		data, err := s.downloadPhoto(ctx, photoID)
+		if err != nil {
+			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to download photo: %w", err)
+		}
+
+		slog.Debug("Media group ID", slog.String("text", mediaGroup.Text), slog.Any("photo", *data))
+
+		photoData = append(photoData, data)
+	}
 
 	return tgbotapi.NewMessage(msg.Chat.ID, "Photo received"), nil
 }
@@ -53,10 +92,58 @@ func getBestPhotoID(photos []tgbotapi.PhotoSize) string {
 
 	bestPhoto := photos[0]
 	for _, photo := range photos {
+		if photo.FileSize > maxFileSize {
+			continue
+		}
+
 		if photo.FileSize > bestPhoto.FileSize {
 			bestPhoto = photo
 		}
 	}
 
 	return bestPhoto.FileID
+}
+
+// downloadPhoto retrieves an image file from the bot API and downloads it using its file ID.
+// It fetches the file metadata, constructs the download URL, and performs the HTTP request to obtain the photo data.
+// ctx is the context for managing request duration and cancellations.
+// fileID is the unique identifier for the photo file to download.
+// Returns a pointer to an image containing the MIME type and base64-encoded data, or an error if any step fails.
+func (s *ServiceImpl) downloadPhoto(_ context.Context, fileID string) (*image, error) {
+	file, err := s.Bot.GetFile(tgbotapi.FileConfig{FileID: fileID})
+	if err != nil {
+		return nil, err
+	}
+
+	url := file.Link(s.token)
+
+	resp, err := http.Get(url)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to download photo: %w", err)
+	}
+
+	if resp.Body == nil {
+		return nil, fmt.Errorf("failed to download photo: response body is nil")
+	}
+
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to download photo: unexpected status code %d", resp.StatusCode)
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to download photo: %w", err)
+	}
+
+	base64data := base64.StdEncoding.EncodeToString(data)
+
+	img := &image{
+		mime: resp.Header.Get("Content-Type"),
+		data: base64data,
+	}
+
+	return img, nil
 }

@@ -57,7 +57,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	if msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
 		return tgbotapi.NewMessage(
 			msg.Chat.ID,
-			i18n.GetLocale(ctx).Sprintf("Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only."),
+			i18n.GetLocale(ctx).Sprintf("Sorry, I cannot process videos, audio, or documents. Please send your question as text only."),
 		), nil
 	}
 
