@@ -8,6 +8,7 @@ import (
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/ksysoev/help-my-pet/pkg/bot/media"
 	"github.com/ksysoev/help-my-pet/pkg/core"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/stretchr/testify/assert"
@@ -106,7 +107,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectError:  false,
 			userID:       123,
 			langCode:     "en",
-			expectedText: "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+			expectedText: "Photo received",
 		},
 		{
 			name:         "message too long",
@@ -126,8 +127,9 @@ func TestService_handleMessage(t *testing.T) {
 			mockBot := NewMockBotAPI(t)
 
 			svc := &ServiceImpl{
-				Bot:   mockBot,
-				AISvc: mockAI,
+				Bot:       mockBot,
+				AISvc:     mockAI,
+				collector: media.NewCollector(),
 			}
 
 			msg := &tgbotapi.Message{

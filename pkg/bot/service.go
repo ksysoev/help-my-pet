@@ -10,6 +10,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/google/uuid"
+	"github.com/ksysoev/help-my-pet/pkg/bot/media"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
@@ -23,6 +24,7 @@ type BotAPI interface {
 	Request(c tgbotapi.Chattable) (*tgbotapi.APIResponse, error)
 	StopReceivingUpdates()
 	GetUpdatesChan(config tgbotapi.UpdateConfig) tgbotapi.UpdatesChannel
+	GetFile(config tgbotapi.FileConfig) (tgbotapi.File, error)
 }
 
 type AIProvider interface {
@@ -36,9 +38,11 @@ type Config struct {
 }
 
 type ServiceImpl struct {
-	Bot     BotAPI
-	AISvc   AIProvider
-	handler Handler
+	token     string
+	Bot       BotAPI
+	AISvc     AIProvider
+	handler   Handler
+	collector *media.Collector
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -61,8 +65,10 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 	}
 
 	s := &ServiceImpl{
-		Bot:   bot,
-		AISvc: aiSvc,
+		token:     cfg.TelegramToken,
+		Bot:       bot,
+		AISvc:     aiSvc,
+		collector: media.NewCollector(),
 	}
 
 	s.handler = s.setupHandler()
