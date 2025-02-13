@@ -40,7 +40,7 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 	}
 
 	if len(mediaGroup.PhotoIDs) > maxAllowedPhotos {
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide no more than 1 image")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide no more than %d image(s)", maxAllowedPhotos)), nil
 	}
 
 	photoData := make([]*message.Image, 0, len(mediaGroup.PhotoIDs))

@@ -17,9 +17,9 @@
             "translation": "\u003cb\u003eŞartlar ve Koşullar\u003c/b\u003e\n\u003ci\u003eSon güncelleme: 30.01.2025\u003c/i\u003e\n\nVeterinerlik tavsiye chatbotumuzu (“Hizmet”) kullandığınız için teşekkür ederiz. Bu Hizmete erişerek veya kullanarak, aşağıdaki şartlar ve koşullara (“Şartlar”) bağlı kalmayı kabul etmiş olursunuz. Bu Şartları kabul etmiyorsanız, lütfen kullanımı hemen durdurun.\n\n\u003cb\u003e1. Hizmetin Niteliği\u003c/b\u003e\n1.1 Hizmet, evcil hayvan bakımı için genel bilgi, rehberlik ve öneriler sağlar, bunlar (ancak bunlarla sınırlı olmamak üzere) diyet, davranış ve eğitim konularını içerir.\n1.2 Hizmet, profesyonel veteriner teşhisi, tedavisi veya bakımı yerine geçmez. Evcil hayvanınızın sağlığı ile ilgili herhangi bir sorunuz olduğunda her zaman lisanslı bir veterinerin tavsiyesini alın.\n\n\u003cb\u003e2. Veteriner-Müşteri-Hasta İlişkisi Yok\u003c/b\u003e\n2.1 Hizmeti kullanmak veya AI asistanımızla etkileşime geçmek, bir veteriner-müşteri-hasta ilişkisi oluşturmaz.\n2.2 Hizmet tarafından sağlanan herhangi bir tavsiye veya rehberlik, sınırlı bilgilere dayanmaktadır ve yalnızca genel bilgi olarak değerlendirilmelidir.\n\n\u003cb\u003e3. Sorumluluğun Sınırlandırılması\u003c/b\u003e\n3.1 Hizmeti kullanmanın kendi sorumluluğunuzda olduğunu kabul ve beyan edersiniz.\n3.2 Hizmetin sahipleri, geliştiricileri veya lisans verenleri, Hizmete erişiminizden veya Hizmeti kullanımınızdan kaynaklanan doğrudan, dolaylı, tesadüfi, özel veya sonuç olarak ortaya çıkan zararlardan hiçbir koşulda sorumlu tutulamaz.\n3.3 Evcil hayvanınızın bakımı ile ilgili kararlar ve ortaya çıkan sonuçlar tamamen sizin sorumluluğunuzdadır. Evcil hayvanınızın sağlığı veya refahı konusunda herhangi bir şüpheniz varsa, derhal lisanslı bir veterinerle danışmalısınız.\n\n\u003cb\u003e4. Garanti Yok\u003c/b\u003e\n4.1 Hizmet, açık veya zımni herhangi bir garanti olmaksızın “olduğu gibi” ve “mevcut olduğu gibi” sağlanmaktadır.\n4.2 Hizmetin kesintisiz, hatasız, güvenli veya virüslerden arınmış olacağını garanti etmiyoruz.\n\n\u003cb\u003e5. Kullanıcı Sorumlulukları\u003c/b\u003e\n5.1 Tavsiye alırken evcil hayvanınız hakkında doğru ve eksiksiz bilgi sağlamak sizin sorumluluğunuzdadır.\n5.2 Sağladığınız tüm soruların, açıklamaların ve verilerin üçüncü taraf haklarını veya yerel yasaları ihlal etmediğinden emin olmalısınız.\n\n\u003cb\u003e6. Uluslararası Kullanım\u003c/b\u003e\n6.1 Hizmet, küresel kullanım için tasarlanmıştır. Bulunduğunuz yargı alanındaki tüm geçerli yerel yasa ve düzenlemelere uymaktan siz sorumlusunuz.\n6.2 Hizmetin veya içeriğinin herhangi bir belirli ülkede veya bölgede uygun veya izin verilebilir olduğunu garanti etmiyoruz.\n\n\u003cb\u003e7. Değişiklikler\u003c/b\u003e\n7.1 Bu Şartları herhangi bir zamanda değiştirme veya yerine yenisini koyma hakkını saklı tutarız.\n7.2 Önemli değişiklikler yaparsak, güncellenmiş Şartları yayınlayacak ve bu belgenin en üstünde en son revizyon tarihini belirteceğiz.\n\n\u003cb\u003e8. Geçerli Hukuk ve Uyuşmazlık Çözümü\u003c/b\u003e\n8.1 Bu Şartlar, Hizmet sağlayıcısının ana iş yerinin bulunduğu yargı alanında geçerli olan yasalara göre yönetilecek ve yorumlanacaktır, çatışma hukuku ilkelerine bakılmaksızın.\n8.2 Bu Şartlardan kaynaklanan veya bunlarla ilgili herhangi bir uyuşmazlık, dostane müzakere yoluyla ve gerekirse bağlayıcı tahkim veya ilgili mahkemelerde dava yoluyla çözülecektir.\n\n\u003cb\u003e9. Şartların Kabulü\u003c/b\u003e\n9.1 Hizmete erişmeye veya kullanmaya devam ederek, bu Şartları okuduğunuzu, anladığınızı ve bağlı kalmayı kabul ettiğinizi kabul edersiniz.\n9.2 Kabul etmiyorsanız, Hizmeti kullanmayı derhal bırakmalısınız.\n\nBu Şartlarla ilgili herhangi bir sorunuz veya endişeniz varsa veya daha fazla açıklama gerekiyorsa, lütfen \u003ci\u003ek.sysoev@me.com\u003c/i\u003e adresinden iletişime geçin."
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Üzgünüm, resimleri, videoları, sesleri veya belgeleri işleyemem. Lütfen sorununuzu yalnızca metin olarak gönderin."
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Üzgünüm, videoları, sesleri veya belgeleri işleyemem. Lütfen sorunuzu yalnızca metin olarak gönderin."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
@@ -35,6 +35,31 @@
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "Günlük istek limitimize ulaştık. Lütfen yarın geri gelin, bütçemiz yenilendiğinde."
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Lütfen sorunuzu metin formatında ve fotoğraflarla birlikte verin"
+        },
+        {
+            "id": "Please, provide at least one image",
+            "message": "Please, provide at least one image",
+            "translation": "Lütfen en az bir resim sağlayın"
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "translation": "Lütfen {MaxAllowedPhotos} resimden fazlasını sağlamayın",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ]
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",

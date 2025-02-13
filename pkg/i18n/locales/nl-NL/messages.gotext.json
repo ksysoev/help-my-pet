@@ -17,9 +17,9 @@
             "translation": "\u003cb\u003eAlgemene voorwaarden\u003c/b\u003e\n\u003ci\u003eLaatst bijgewerkt: 30.01.2025\u003c/i\u003e\n\nBedankt voor het gebruik van onze chatbot voor veterinaire adviezen (“de Service”). Door toegang te krijgen tot of gebruik te maken van deze Service, gaat u akkoord met de volgende algemene voorwaarden (“Voorwaarden”). Als u niet akkoord gaat met deze Voorwaarden, stop dan onmiddellijk met het gebruik.\n\n\u003cb\u003e1. Aard van de Service\u003c/b\u003e\n1.1 De Service biedt algemene informatie, begeleiding en suggesties voor huisdierverzorging, inclusief (maar niet beperkt tot) dieet, gedrag en training.\n1.2 De Service is geen vervanging voor professionele veterinaire diagnose, behandeling of zorg. Raadpleeg altijd een erkende dierenarts voor vragen over de gezondheid van uw huisdier.\n\n\u003cb\u003e2. Geen Veterinair-Client-Patiënt Relatie\u003c/b\u003e\n2.1 Het gebruik van de Service of interactie met onze AI-assistent creëert geen dierenarts-client-patiënt relatie.\n2.2 Advies of begeleiding verstrekt door de Service is gebaseerd op beperkte informatie en moet alleen als algemene informatie worden beschouwd.\n\n\u003cb\u003e3. Beperking van Aansprakelijkheid\u003c/b\u003e\n3.1 U erkent en gaat ermee akkoord dat het gebruik van de Service op eigen risico is.\n3.2 Onder geen enkele omstandigheid zullen de eigenaren, ontwikkelaars of licentiehouders van de Service aansprakelijk zijn voor enige directe, indirecte, incidentele, speciale of gevolgschade die voortvloeit uit of verband houdt met uw toegang tot of gebruik van de Service.\n3.3 U begrijpt dat beslissingen met betrekking tot de zorg voor uw huisdier en de daaruit voortvloeiende resultaten uw eigen verantwoordelijkheid zijn. Als u twijfelt over het welzijn of de gezondheid van uw huisdier, raadpleeg dan onmiddellijk een erkende dierenarts.\n\n\u003cb\u003e4. Geen Garantie\u003c/b\u003e\n4.1 De Service wordt geleverd op een “as is” en “as available” basis zonder enige vorm van garantie, expliciet of impliciet.\n4.2 Wij garanderen niet dat de Service ononderbroken, foutloos, veilig of vrij van virussen zal zijn.\n\n\u003cb\u003e5. Verantwoordelijkheden van de Gebruiker\u003c/b\u003e\n5.1 U bent verantwoordelijk voor het verstrekken van nauwkeurige en volledige informatie over uw huisdier bij het zoeken naar advies.\n5.2 U moet ervoor zorgen dat alle vragen, beschrijvingen en gegevens die u verstrekt geen inbreuk maken op de rechten van derden of lokale wetten.\n\n\u003cb\u003e6. Internationaal Gebruik\u003c/b\u003e\n6.1 De Service is bedoeld voor wereldwijd gebruik. U bent verantwoordelijk voor naleving van alle toepasselijke lokale wetten en voorschriften in uw rechtsgebied.\n6.2 Wij garanderen niet dat de Service of enige inhoud ervan geschikt of toegestaan is in een specifiek land of regio.\n\n\u003cb\u003e7. Wijzigingen\u003c/b\u003e\n7.1 Wij behouden ons het recht voor om deze Voorwaarden op elk moment te wijzigen of te vervangen.\n7.2 Als we materiële wijzigingen aanbrengen, zullen we de bijgewerkte Voorwaarden plaatsen en de datum van de laatste herziening bovenaan dit document aangeven.\n\n\u003cb\u003e8. Toepasselijk Recht en Geschillenbeslechting\u003c/b\u003e\n8.1 Deze Voorwaarden worden beheerst door en geïnterpreteerd in overeenstemming met de wetten die van toepassing zijn in het rechtsgebied van de hoofdvestiging van de Serviceprovider, zonder rekening te houden met conflicterende rechtsprincipes.\n8.2 Elk geschil dat voortvloeit uit of verband houdt met deze Voorwaarden zal worden opgelost door middel van minnelijke onderhandelingen en, indien nodig, door bindende arbitrage of rechtszaken in de toepasselijke rechtbanken.\n\n\u003cb\u003e9. Aanvaarding van Voorwaarden\u003c/b\u003e\n9.1 Door toegang te blijven krijgen tot of gebruik te maken van de Service, erkent u dat u deze Voorwaarden hebt gelezen, begrepen en ermee akkoord gaat.\n9.2 Als u niet akkoord gaat, moet u onmiddellijk stoppen met het gebruik van de Service.\n\nAls u vragen of opmerkingen heeft over deze Voorwaarden, of als u verdere verduidelijking nodig heeft, neem dan contact op via \u003ci\u003ek.sysoev@me.com\u003c/i\u003e."
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Sorry, ik kan geen afbeeldingen, video's, audio of documenten verwerken. Stuur uw vraag alleen als tekst."
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Sorry, ik kan geen video's, audio of documenten verwerken. Stuur alstublieft alleen uw vraag als tekst."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
@@ -35,6 +35,31 @@
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "We hebben ons dagelijkse verzoeklimiet bereikt. Kom morgen terug wanneer ons budget is vernieuwd."
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Geef alstublieft uw vraag in tekstformaat samen met foto('s)"
+        },
+        {
+            "id": "Please, provide at least one image",
+            "message": "Please, provide at least one image",
+            "translation": "Geef alstublieft minstens één afbeelding"
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "translation": "Geef alstublieft niet meer dan {MaxAllowedPhotos} afbeelding(en)",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ]
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",

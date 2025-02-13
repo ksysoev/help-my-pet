@@ -17,9 +17,9 @@
             "translation": "\u003cb\u003eTerma dan Syarat\u003c/b\u003e\n\u003ci\u003eDikemaskini terakhir: 30.01.2025\u003c/i\u003e\n\nTerima kasih kerana menggunakan chatbot nasihat veterinar kami (“Perkhidmatan”). Dengan mengakses atau menggunakan Perkhidmatan ini, anda bersetuju untuk terikat dengan terma dan syarat berikut (“Terma”). Jika anda tidak bersetuju dengan Terma ini, sila hentikan penggunaan dengan segera.\n\n\u003cb\u003e1. Sifat Perkhidmatan\u003c/b\u003e\n1.1 Perkhidmatan menyediakan maklumat umum, panduan, dan cadangan untuk penjagaan haiwan peliharaan, termasuk (tetapi tidak terhad kepada) diet, tingkah laku, dan latihan.\n1.2 Perkhidmatan ini bukan pengganti untuk diagnosis, rawatan, atau penjagaan veterinar profesional. Sentiasa dapatkan nasihat daripada doktor haiwan berlesen untuk sebarang soalan mengenai kesihatan haiwan peliharaan anda.\n\n\u003cb\u003e2. Tiada Hubungan Veterinar-Pelanggan-Pesakit\u003c/b\u003e\n2.1 Menggunakan Perkhidmatan atau berinteraksi dengan pembantu AI kami tidak mewujudkan hubungan veterinar-pelanggan-pesakit.\n2.2 Sebarang nasihat atau panduan yang diberikan oleh Perkhidmatan adalah berdasarkan maklumat terhad dan hanya boleh dianggap sebagai maklumat umum.\n\n\u003cb\u003e3. Had Tanggungjawab\u003c/b\u003e\n3.1 Anda mengakui dan bersetuju bahawa penggunaan Perkhidmatan adalah atas risiko anda sendiri.\n3.2 Dalam apa jua keadaan, pemilik, pembangun, atau pemberi lesen Perkhidmatan tidak akan bertanggungjawab atas sebarang kerosakan langsung, tidak langsung, sampingan, khas, atau berbangkit yang timbul daripada atau berkaitan dengan akses atau penggunaan Perkhidmatan anda.\n3.3 Anda memahami bahawa keputusan mengenai penjagaan haiwan peliharaan anda dan sebarang hasil yang terhasil adalah tanggungjawab anda sendiri. Jika anda mempunyai sebarang keraguan tentang kesejahteraan atau kesihatan haiwan peliharaan anda, anda harus segera berunding dengan doktor haiwan berlesen.\n\n\u003cb\u003e4. Tiada Jaminan\u003c/b\u003e\n4.1 Perkhidmatan disediakan atas dasar “seadanya” dan “sebagaimana tersedia” tanpa sebarang jaminan, sama ada nyata atau tersirat.\n4.2 Kami tidak menjamin bahawa Perkhidmatan akan tidak terganggu, bebas ralat, selamat, atau bebas daripada virus.\n\n\u003cb\u003e5. Tanggungjawab Pengguna\u003c/b\u003e\n5.1 Anda bertanggungjawab untuk memberikan maklumat yang tepat dan lengkap mengenai haiwan peliharaan anda semasa mendapatkan nasihat.\n5.2 Anda mesti memastikan bahawa semua soalan, penerangan, dan data yang anda berikan tidak melanggar sebarang hak pihak ketiga atau undang-undang tempatan.\n\n\u003cb\u003e6. Penggunaan Antarabangsa\u003c/b\u003e\n6.1 Perkhidmatan ini bertujuan untuk penggunaan global. Anda bertanggungjawab untuk mematuhi semua undang-undang dan peraturan tempatan yang berkenaan di bidang kuasa anda.\n6.2 Kami tidak menjamin bahawa Perkhidmatan atau mana-mana kandungannya sesuai atau dibenarkan di mana-mana negara atau wilayah tertentu.\n\n\u003cb\u003e7. Pengubahsuaian\u003c/b\u003e\n7.1 Kami berhak untuk mengubah atau menggantikan Terma ini pada bila-bila masa.\n7.2 Jika kami membuat perubahan material, kami akan menyiarkan Terma yang dikemas kini dan menunjukkan tarikh semakan terkini di bahagian atas dokumen ini.\n\n\u003cb\u003e8. Undang-undang dan Penyelesaian Pertikaian\u003c/b\u003e\n8.1 Terma ini akan ditadbir oleh dan ditafsirkan mengikut undang-undang yang terpakai di bidang kuasa tempat perniagaan utama penyedia Perkhidmatan, tanpa mengambil kira prinsip konflik undang-undang.\n8.2 Sebarang pertikaian yang timbul daripada atau berkaitan dengan Terma ini akan diselesaikan melalui rundingan secara baik dan, jika perlu, melalui timbang tara atau litigasi yang mengikat di mahkamah yang berkenaan.\n\n\u003cb\u003e9. Penerimaan Terma\u003c/b\u003e\n9.1 Dengan terus mengakses atau menggunakan Perkhidmatan, anda mengakui bahawa anda telah membaca, memahami, dan bersetuju untuk terikat dengan Terma ini.\n9.2 Jika anda tidak bersetuju, anda mesti berhenti menggunakan Perkhidmatan dengan segera.\n\nJika anda mempunyai sebarang soalan atau kebimbangan mengenai Terma ini, atau jika anda memerlukan penjelasan lanjut, sila hubungi di \u003ci\u003ek.sysoev@me.com\u003c/i\u003e."
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Maaf, saya tidak dapat memproses imej, video, audio, atau dokumen. Sila hantar soalan anda dalam bentuk teks sahaja."
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Maaf, saya tidak dapat memproses video, audio, atau dokumen. Sila hantar soalan anda sebagai teks sahaja."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
@@ -35,6 +35,31 @@
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "Kami telah mencapai had permintaan harian kami. Sila kembali esok apabila bajet kami disegarkan."
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Sila berikan soalan anda dalam format teks bersama dengan gambar"
+        },
+        {
+            "id": "Please, provide at least one image",
+            "message": "Please, provide at least one image",
+            "translation": "Sila berikan sekurang-kurangnya satu gambar"
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "translation": "Sila berikan tidak lebih daripada {MaxAllowedPhotos} gambar",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ]
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",

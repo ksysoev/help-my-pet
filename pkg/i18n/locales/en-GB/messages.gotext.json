@@ -23,9 +23,9 @@
             "fuzzy": true
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -48,6 +48,37 @@
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Please, provide your question in text format along with photo(s)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Please, provide at least one image",
+            "message": "Please, provide at least one image",
+            "translation": "Please, provide at least one image",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "translation": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ],
             "fuzzy": true
         },
         {
