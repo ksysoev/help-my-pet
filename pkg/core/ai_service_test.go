@@ -54,7 +54,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt).
+					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text: "Cats need a balanced diet...",
 						Questions: []message.Question{
@@ -100,7 +100,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt).
+					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text:      "Cats need a balanced diet...",
 						Questions: []message.Question{},
@@ -140,7 +140,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: "
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt).
+					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text:      "I understand you have a pet-related question...",
 						Questions: []message.Question{},
@@ -172,7 +172,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt).
+					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(nil, fmt.Errorf("llm error"))
 			},
 			wantErr:       true,
@@ -280,7 +280,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 
 				expectedPrompt := "Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt).
+					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text:      "Dogs need different food...",
 						Questions: []message.Question{},
@@ -409,7 +409,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 
 				expectedPrompt := "\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt).
+					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text: "Based on your answers, here's my advice...",
 					}, nil)
@@ -527,7 +527,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 		Return(nil)
 
 	mockLLM.EXPECT().
-		Call(ctx, "\nCurrent question: test question").
+		Call(ctx, "\nCurrent question: test question", []*message.Image(nil)).
 		Return(nil, context.Canceled)
 
 	svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)

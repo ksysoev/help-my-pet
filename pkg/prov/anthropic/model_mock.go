@@ -7,6 +7,7 @@ package anthropic
 import (
 	context "context"
 
+	message "github.com/ksysoev/help-my-pet/pkg/core/message"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -23,9 +24,9 @@ func (_m *MockModel) EXPECT() *MockModel_Expecter {
 	return &MockModel_Expecter{mock: &_m.Mock}
 }
 
-// Call provides a mock function with given fields: ctx, formatInstructions, question
-func (_m *MockModel) Call(ctx context.Context, formatInstructions string, question string) (string, error) {
-	ret := _m.Called(ctx, formatInstructions, question)
+// Call provides a mock function with given fields: ctx, formatInstructions, question, imgs
+func (_m *MockModel) Call(ctx context.Context, formatInstructions string, question string, imgs []*message.Image) (string, error) {
+	ret := _m.Called(ctx, formatInstructions, question, imgs)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Call")
@@ -33,17 +34,17 @@ func (_m *MockModel) Call(ctx context.Context, formatInstructions string, questi
 
 	var r0 string
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) (string, error)); ok {
-		return rf(ctx, formatInstructions, question)
+	if rf, ok := ret.Get(0).(func(context.Context, string, string, []*message.Image) (string, error)); ok {
+		return rf(ctx, formatInstructions, question, imgs)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) string); ok {
-		r0 = rf(ctx, formatInstructions, question)
+	if rf, ok := ret.Get(0).(func(context.Context, string, string, []*message.Image) string); ok {
+		r0 = rf(ctx, formatInstructions, question, imgs)
 	} else {
 		r0 = ret.Get(0).(string)
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
-		r1 = rf(ctx, formatInstructions, question)
+	if rf, ok := ret.Get(1).(func(context.Context, string, string, []*message.Image) error); ok {
+		r1 = rf(ctx, formatInstructions, question, imgs)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -60,13 +61,14 @@ type MockModel_Call_Call struct {
 //   - ctx context.Context
 //   - formatInstructions string
 //   - question string
-func (_e *MockModel_Expecter) Call(ctx interface{}, formatInstructions interface{}, question interface{}) *MockModel_Call_Call {
-	return &MockModel_Call_Call{Call: _e.mock.On("Call", ctx, formatInstructions, question)}
+//   - imgs []*message.Image
+func (_e *MockModel_Expecter) Call(ctx interface{}, formatInstructions interface{}, question interface{}, imgs interface{}) *MockModel_Call_Call {
+	return &MockModel_Call_Call{Call: _e.mock.On("Call", ctx, formatInstructions, question, imgs)}
 }
 
-func (_c *MockModel_Call_Call) Run(run func(ctx context.Context, formatInstructions string, question string)) *MockModel_Call_Call {
+func (_c *MockModel_Call_Call) Run(run func(ctx context.Context, formatInstructions string, question string, imgs []*message.Image)) *MockModel_Call_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(string), args[2].(string))
+		run(args[0].(context.Context), args[1].(string), args[2].(string), args[3].([]*message.Image))
 	})
 	return _c
 }
@@ -76,7 +78,7 @@ func (_c *MockModel_Call_Call) Return(_a0 string, _a1 error) *MockModel_Call_Cal
 	return _c
 }
 
-func (_c *MockModel_Call_Call) RunAndReturn(run func(context.Context, string, string) (string, error)) *MockModel_Call_Call {
+func (_c *MockModel_Call_Call) RunAndReturn(run func(context.Context, string, string, []*message.Image) (string, error)) *MockModel_Call_Call {
 	_c.Call.Return(run)
 	return _c
 }

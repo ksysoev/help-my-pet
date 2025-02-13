@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	maxAllowedPhotos = 1
+	maxAllowedPhotos = 2
 	maxFileSize      = 1024 * 1024
 )
 
@@ -31,7 +31,7 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 	}
 
 	if mediaGroup.Text == "" {
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide your question in text format along with image(s)")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide your question in text format along with photo(s)")), nil
 	}
 
 	if len(mediaGroup.PhotoIDs) == 0 {

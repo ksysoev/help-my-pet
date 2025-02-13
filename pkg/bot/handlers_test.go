@@ -107,7 +107,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectError:  false,
 			userID:       123,
 			langCode:     "en",
-			expectedText: "Photo received",
+			expectedText: "Please, provide your question in text format along with photo(s)",
 		},
 		{
 			name:         "message too long",
