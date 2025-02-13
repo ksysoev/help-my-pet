@@ -178,7 +178,7 @@ func (s *ServiceImpl) downloadPhoto(_ context.Context, fileID string) (*message.
 	base64data := base64.StdEncoding.EncodeToString(data)
 
 	img := &message.Image{
-		MIME: resp.Header.Get("Content-Type"),
+		MIME: "image/jpeg",
 		Data: base64data,
 	}
 
