@@ -11,6 +11,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/bot/media"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
 )
 
@@ -18,11 +19,6 @@ const (
 	maxAllowedPhotos = 1
 	maxFileSize      = 1024 * 1024
 )
-
-type image struct {
-	mime string
-	data string
-}
 
 // handlePhoto processes a photo sent by the user and responds with a confirmation message.
 // It reduces the photo group using the photoReducer function and logs the media group ID.
@@ -47,7 +43,7 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide no more than 1 image")), nil
 	}
 
-	photoData := make([]*image, 0, len(mediaGroup.PhotoIDs))
+	photoData := make([]*message.Image, 0, len(mediaGroup.PhotoIDs))
 
 	for _, photoID := range mediaGroup.PhotoIDs {
 		data, err := s.downloadPhoto(ctx, photoID)
@@ -60,7 +56,48 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 		photoData = append(photoData, data)
 	}
 
-	return tgbotapi.NewMessage(msg.Chat.ID, "Photo received"), nil
+	usrMsg, err := message.NewUserMessage(
+		fmt.Sprintf("%d", msg.From.ID),
+		fmt.Sprintf("%d", msg.Chat.ID),
+		mediaGroup.Text,
+	)
+
+	usrMsg.Images = photoData
+
+	if err != nil {
+		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
+	}
+
+	response, err := s.AISvc.ProcessMessage(ctx, usrMsg)
+
+	if err != nil {
+		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to process user message: %w", err)
+	}
+
+	// Create msg with buttons if available
+	resp := tgbotapi.NewMessage(msg.Chat.ID, response.Message)
+
+	// Handle keyboard markup based on answers
+	if len(response.Answers) > 0 {
+		keyboard := make([][]tgbotapi.KeyboardButton, len(response.Answers))
+		for i, answer := range response.Answers {
+			keyboard[i] = []tgbotapi.KeyboardButton{
+				{Text: answer},
+			}
+		}
+		resp.ReplyMarkup = tgbotapi.ReplyKeyboardMarkup{
+			Keyboard:        keyboard,
+			OneTimeKeyboard: true,
+			ResizeKeyboard:  true,
+		}
+	} else {
+		resp.ReplyMarkup = tgbotapi.ReplyKeyboardRemove{
+			RemoveKeyboard: true,
+			Selective:      false,
+		}
+	}
+
+	return resp, nil
 }
 
 // photoReducer processes a photo message, aggregates it within a media group, and finalizes the group after a delay.
@@ -109,7 +146,7 @@ func getBestPhotoID(photos []tgbotapi.PhotoSize) string {
 // ctx is the context for managing request duration and cancellations.
 // fileID is the unique identifier for the photo file to download.
 // Returns a pointer to an image containing the MIME type and base64-encoded data, or an error if any step fails.
-func (s *ServiceImpl) downloadPhoto(_ context.Context, fileID string) (*image, error) {
+func (s *ServiceImpl) downloadPhoto(_ context.Context, fileID string) (*message.Image, error) {
 	file, err := s.Bot.GetFile(tgbotapi.FileConfig{FileID: fileID})
 	if err != nil {
 		return nil, err
@@ -140,9 +177,9 @@ func (s *ServiceImpl) downloadPhoto(_ context.Context, fileID string) (*image, e
 
 	base64data := base64.StdEncoding.EncodeToString(data)
 
-	img := &image{
-		mime: resp.Header.Get("Content-Type"),
-		data: base64data,
+	img := &message.Image{
+		MIME: resp.Header.Get("Content-Type"),
+		Data: base64data,
 	}
 
 	return img, nil
