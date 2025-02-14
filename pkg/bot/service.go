@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"sync"
 	"time"
 
@@ -32,17 +33,22 @@ type AIProvider interface {
 	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 }
 
+type httpClient interface {
+	Get(url string) (*http.Response, error)
+}
+
 // Config holds the configuration for the Telegram bot
 type Config struct {
 	TelegramToken string `mapstructure:"telegram_token"`
 }
 
 type ServiceImpl struct {
-	token     string
-	Bot       BotAPI
-	AISvc     AIProvider
-	handler   Handler
-	collector *media.Collector
+	token      string
+	Bot        BotAPI
+	AISvc      AIProvider
+	handler    Handler
+	collector  *media.Collector
+	httpClient httpClient
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -69,6 +75,9 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 		Bot:       bot,
 		AISvc:     aiSvc,
 		collector: media.NewCollector(),
+		httpClient: &http.Client{
+			Timeout: 5 * time.Second,
+		},
 	}
 
 	s.handler = s.setupHandler()

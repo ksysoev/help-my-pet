@@ -154,7 +154,7 @@ func (s *ServiceImpl) downloadPhoto(_ context.Context, fileID string) (*message.
 
 	url := file.Link(s.token)
 
-	resp, err := http.Get(url)
+	resp, err := s.httpClient.Get(url)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to download photo: %w", err)
