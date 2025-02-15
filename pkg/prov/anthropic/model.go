@@ -16,6 +16,7 @@ type Model interface {
 	// formatInstructions contain system-level prompting and formatting guidelines
 	// question is the user's actual querys
 	Call(ctx context.Context, formatInstructions string, question string, imgs []*message.Image) (string, error)
+	DescribeImages(ctx context.Context, imgs []*message.Image) (string, error)
 }
 
 const systemPrompt = `You are a helpful veterinary AI assistant. Follow these language rules strictly:

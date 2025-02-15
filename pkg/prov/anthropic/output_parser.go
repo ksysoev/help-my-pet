@@ -33,7 +33,8 @@ func (p *ResponseParser) FormatInstructions() string {
       "text": "Any follow-up questions to gather more information",
       "answers": ["Optional", "Array", "Of", "Predefined", "Answers"]
     }
-  ]
+  ],
+  "observations": "Optional additional information or context about the response for internal use in future queries"
 }
 
 Note:
@@ -41,11 +42,13 @@ Note:
 - The "questions" array is optional and can be empty if no follow-up questions are needed
 - Each question must have a "text" field
 - The "answers" field in questions is optional
+- The "observations" field is optional and can provide additional context for internal use, for example if images were provide this field can be used for image detailed description for future queries
 
 Example with no questions:
 {
   "text": "Based on the symptoms described, it sounds like your cat may have hairballs. Try brushing them daily and consider specialized hairball control food.",
-  "questions": []
+  "questions": [],
+  "observations": "The user mentioned that the cat has been grooming excessively and has not been eating much."
 }
 
 Example with questions:
@@ -60,7 +63,8 @@ Example with questions:
       "text": "Have you noticed any specific triggers?",
       "answers": []
     }
-  ]
+  ],
+  "observations": "The user mentioned that the dog has been showing signs of anxiety for the past week."
 }`
 }
 

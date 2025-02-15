@@ -100,11 +100,12 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 	return resp, nil
 }
 
-// photoReducer processes a photo message, aggregates it within a media group, and finalizes the group after a delay.
-// It selects the best photo from the provided message using specific criteria, adds it to a media group with a caption,
-// and completes the group after waiting for additional photos or upon context cancellation.
-// Accepts ctx, the request context for lifecycle management, and msg, the Telegram message containing the photo data.
-// Returns a finalized media.Group containing aggregated photo IDs and captions, or an error if the context is cancelled or times out.
+// photoReducer consolidates a Telegram photo message into a media group for processing.
+// It extracts the best quality photo ID, adds it to the collector with the associated group ID and caption,
+// and waits briefly before finalizing the media group if no cancellation occurs.
+// Accepts ctx to manage cancellation or deadlines, and msg, the incoming Telegram message with the photo.
+// Returns a pointer to the finalized media group containing the group's caption and photo IDs,
+// or an error if the context is canceled or other issues arise.
 func (s *ServiceImpl) photoReducer(ctx context.Context, msg *tgbotapi.Message) (*media.Group, error) {
 	photoID := getBestPhotoID(msg.Photo)
 
