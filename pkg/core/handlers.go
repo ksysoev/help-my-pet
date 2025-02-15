@@ -30,6 +30,24 @@ func (s *AIService) ProcessMessage(ctx context.Context, request *message.UserMes
 	}
 }
 
+// ResetConversation resets the conversation state for the given chatID, clearing any prior messages or context.
+// It retrieves or creates the conversation for the chatID, resets it, and saves the updated state to the repository.
+// Returns an error if retrieval or saving of the conversation fails.
+func (s *AIService) ResetConversation(ctx context.Context, chatID string) error {
+	conv, err := s.repo.FindOrCreate(ctx, chatID)
+	if err != nil {
+		return fmt.Errorf("failed to get conversation: %w", err)
+	}
+
+	conv.Reset()
+
+	if err := s.repo.Save(ctx, conv); err != nil {
+		return fmt.Errorf("failed to save conversation: %w", err)
+	}
+
+	return nil
+}
+
 // handleNewQuestion processes a new question from the user
 func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, request *message.UserMessage) (*message.Response, error) {
 	// Check rate limit for new questions

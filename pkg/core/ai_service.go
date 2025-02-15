@@ -33,6 +33,7 @@ type Conversation interface {
 	GetCurrentQuestion() (*message.Question, error)
 	AddQuestionAnswer(answer string) (bool, error)
 	GetQuestionnaireResult() ([]conversation.QuestionAnswer, error)
+	Reset()
 }
 
 // ConversationRepository defines the interface for conversation storage operations.

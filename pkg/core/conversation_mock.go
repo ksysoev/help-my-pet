@@ -366,6 +366,38 @@ func (_c *MockConversation_History_Call) RunAndReturn(run func(int) string) *Moc
 	return _c
 }
 
+// Reset provides a mock function with no fields
+func (_m *MockConversation) Reset() {
+	_m.Called()
+}
+
+// MockConversation_Reset_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Reset'
+type MockConversation_Reset_Call struct {
+	*mock.Call
+}
+
+// Reset is a helper method to define mock.On call
+func (_e *MockConversation_Expecter) Reset() *MockConversation_Reset_Call {
+	return &MockConversation_Reset_Call{Call: _e.mock.On("Reset")}
+}
+
+func (_c *MockConversation_Reset_Call) Run(run func()) *MockConversation_Reset_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockConversation_Reset_Call) Return() *MockConversation_Reset_Call {
+	_c.Call.Return()
+	return _c
+}
+
+func (_c *MockConversation_Reset_Call) RunAndReturn(run func()) *MockConversation_Reset_Call {
+	_c.Run(run)
+	return _c
+}
+
 // StartFollowUpQuestions provides a mock function with given fields: initialPrompt, questions
 func (_m *MockConversation) StartFollowUpQuestions(initialPrompt string, questions []message.Question) error {
 	ret := _m.Called(initialPrompt, questions)

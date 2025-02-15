@@ -503,3 +503,14 @@ func TestConversationUnmarshal_UnknownState(t *testing.T) {
 	assert.Error(t, err)
 	assert.Nil(t, conv)
 }
+
+func TestConversationReset(t *testing.T) {
+	conv := NewConversation("test-GetID")
+	conv.State = StatePetProfileQuestioning
+	conv.Questionnaire = &PetProfileStateImpl{}
+
+	conv.Reset()
+
+	assert.Equal(t, StateNormal, conv.State)
+	assert.Nil(t, conv.Questionnaire)
+}

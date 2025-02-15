@@ -142,6 +142,53 @@ func (_c *MockAIProvider_ProcessMessage_Call) RunAndReturn(run func(context.Cont
 	return _c
 }
 
+// ResetConversation provides a mock function with given fields: ctx, chatID
+func (_m *MockAIProvider) ResetConversation(ctx context.Context, chatID string) error {
+	ret := _m.Called(ctx, chatID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ResetConversation")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = rf(ctx, chatID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockAIProvider_ResetConversation_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ResetConversation'
+type MockAIProvider_ResetConversation_Call struct {
+	*mock.Call
+}
+
+// ResetConversation is a helper method to define mock.On call
+//   - ctx context.Context
+//   - chatID string
+func (_e *MockAIProvider_Expecter) ResetConversation(ctx interface{}, chatID interface{}) *MockAIProvider_ResetConversation_Call {
+	return &MockAIProvider_ResetConversation_Call{Call: _e.mock.On("ResetConversation", ctx, chatID)}
+}
+
+func (_c *MockAIProvider_ResetConversation_Call) Run(run func(ctx context.Context, chatID string)) *MockAIProvider_ResetConversation_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockAIProvider_ResetConversation_Call) Return(_a0 error) *MockAIProvider_ResetConversation_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockAIProvider_ResetConversation_Call) RunAndReturn(run func(context.Context, string) error) *MockAIProvider_ResetConversation_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // NewMockAIProvider creates a new instance of MockAIProvider. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewMockAIProvider(t interface {
