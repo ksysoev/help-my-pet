@@ -28,6 +28,13 @@ type UserMessage struct {
 	UserID string
 	ChatID string
 	Text   string
+	Images []*Image
+}
+
+// Image represents an image with its MIME type and data encoded as a string.
+type Image struct {
+	MIME string
+	Data string
 }
 
 // NewUserMessage creates a new UserMessage instance after validating its fields.

@@ -17,9 +17,9 @@
             "translation": "\u003cb\u003eConditions générales\u003c/b\u003e\n\u003ci\u003eDernière mise à jour : 30.01.2025\u003c/i\u003e\n\nMerci d'utiliser notre chatbot de conseils vétérinaires (« le Service »). En accédant à ce Service ou en l'utilisant, vous acceptez d'être lié par les conditions générales suivantes (« Conditions »). Si vous n'acceptez pas ces Conditions, veuillez cesser immédiatement d'utiliser le Service.\n\n\u003cb\u003e1. Nature du Service\u003c/b\u003e\n1.1 Le Service fournit des informations générales, des conseils et des suggestions pour les soins des animaux de compagnie, y compris (mais sans s'y limiter) l'alimentation, le comportement et le dressage.\n1.2 Le Service ne remplace pas un diagnostic, un traitement ou des soins vétérinaires professionnels. Consultez toujours un vétérinaire agréé pour toute question concernant la santé de votre animal.\n\n\u003cb\u003e2. Absence de relation vétérinaire-client-patient\u003c/b\u003e\n2.1 L'utilisation du Service ou l'interaction avec notre assistant IA ne crée pas de relation vétérinaire-client-patient.\n2.2 Tout conseil ou orientation fourni par le Service est basé sur des informations limitées et doit être considéré uniquement comme des informations générales.\n\n\u003cb\u003e3. Limitation de responsabilité\u003c/b\u003e\n3.1 Vous reconnaissez et acceptez que l'utilisation du Service se fait à vos propres risques.\n3.2 En aucun cas, les propriétaires, développeurs ou concédants de licence du Service ne seront responsables des dommages directs, indirects, accessoires, spéciaux ou consécutifs résultant de ou en relation avec votre accès ou utilisation du Service.\n3.3 Vous comprenez que les décisions concernant les soins de votre animal et les résultats qui en découlent sont de votre seule responsabilité. Si vous avez des doutes sur le bien-être ou la santé de votre animal, vous devez immédiatement consulter un vétérinaire agréé.\n\n\u003cb\u003e4. Absence de garantie\u003c/b\u003e\n4.1 Le Service est fourni « tel quel » et « selon disponibilité » sans garanties d'aucune sorte, qu'elles soient expresses ou implicites.\n4.2 Nous ne garantissons pas que le Service sera ininterrompu, sans erreur, sécurisé ou exempt de virus.\n\n\u003cb\u003e5. Responsabilités de l'utilisateur\u003c/b\u003e\n5.1 Vous êtes responsable de fournir des informations exactes et complètes sur votre animal lorsque vous demandez des conseils.\n5.2 Vous devez vous assurer que toutes les questions, descriptions et données que vous fournissez ne violent aucun droit de tiers ou lois locales.\n\n\u003cb\u003e6. Utilisation internationale\u003c/b\u003e\n6.1 Le Service est destiné à une utilisation mondiale. Vous êtes responsable du respect de toutes les lois et réglementations locales applicables dans votre juridiction.\n6.2 Nous ne garantissons pas que le Service ou son contenu est approprié ou permis dans un pays ou une région spécifique.\n\n\u003cb\u003e7. Modifications\u003c/b\u003e\n7.1 Nous nous réservons le droit de modifier ou de remplacer ces Conditions à tout moment.\n7.2 Si nous apportons des modifications importantes, nous publierons les Conditions mises à jour et indiquerons la date de la dernière révision en haut de ce document.\n\n\u003cb\u003e8. Droit applicable et résolution des litiges\u003c/b\u003e\n8.1 Ces Conditions seront régies et interprétées conformément aux lois applicables dans la juridiction du principal lieu d'affaires du fournisseur de services, sans égard aux principes de conflit de lois.\n8.2 Tout litige découlant de ou lié à ces Conditions sera résolu par une négociation à l'amiable et, si nécessaire, par arbitrage ou litige contraignant devant les tribunaux compétents.\n\n\u003cb\u003e9. Acceptation des Conditions\u003c/b\u003e\n9.1 En continuant d'accéder ou d'utiliser le Service, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions.\n9.2 Si vous n'êtes pas d'accord, vous devez cesser immédiatement d'utiliser le Service.\n\nSi vous avez des questions ou des préoccupations concernant ces Conditions, ou si vous avez besoin de plus amples informations, veuillez contacter à \u003ci\u003ek.sysoev@me.com\u003c/i\u003e."
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Désolé, je ne peux pas traiter les images, vidéos, audio ou documents. Veuillez envoyer votre question uniquement sous forme de texte."
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Désolé, je ne peux pas traiter les vidéos, l'audio ou les documents. Veuillez envoyer votre question sous forme de texte uniquement."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
@@ -35,6 +35,31 @@
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "Nous avons atteint notre limite de demandes quotidiennes. Revenez demain lorsque notre budget sera rafraîchi."
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Veuillez fournir votre question au format texte accompagnée de photo(s)"
+        },
+        {
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Veuillez fournir au moins une photo"
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Veuillez ne pas fournir plus de {MaxAllowedPhotos} photo(s)",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ]
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",

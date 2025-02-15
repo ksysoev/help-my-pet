@@ -54,11 +54,21 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	}
 
 	// Validate if message contains unsupported media type like images, videos, etc.
-	if msg.Photo != nil || msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
+	if msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
 		return tgbotapi.NewMessage(
 			msg.Chat.ID,
-			i18n.GetLocale(ctx).Sprintf("Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only."),
+			i18n.GetLocale(ctx).Sprintf("Sorry, I cannot process videos, audio, or documents. Please send your question as text only."),
 		), nil
+	}
+
+	if len(msg.Photo) > 0 {
+		resp, err := s.handlePhoto(ctx, msg)
+
+		if err != nil {
+			return s.handleProcessingError(ctx, err, msg)
+		}
+
+		return resp, nil
 	}
 
 	if msg.Text == "" {

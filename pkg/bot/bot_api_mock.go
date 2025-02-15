@@ -22,6 +22,62 @@ func (_m *MockBotAPI) EXPECT() *MockBotAPI_Expecter {
 	return &MockBotAPI_Expecter{mock: &_m.Mock}
 }
 
+// GetFile provides a mock function with given fields: config
+func (_m *MockBotAPI) GetFile(config tgbotapi.FileConfig) (tgbotapi.File, error) {
+	ret := _m.Called(config)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetFile")
+	}
+
+	var r0 tgbotapi.File
+	var r1 error
+	if rf, ok := ret.Get(0).(func(tgbotapi.FileConfig) (tgbotapi.File, error)); ok {
+		return rf(config)
+	}
+	if rf, ok := ret.Get(0).(func(tgbotapi.FileConfig) tgbotapi.File); ok {
+		r0 = rf(config)
+	} else {
+		r0 = ret.Get(0).(tgbotapi.File)
+	}
+
+	if rf, ok := ret.Get(1).(func(tgbotapi.FileConfig) error); ok {
+		r1 = rf(config)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockBotAPI_GetFile_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetFile'
+type MockBotAPI_GetFile_Call struct {
+	*mock.Call
+}
+
+// GetFile is a helper method to define mock.On call
+//   - config tgbotapi.FileConfig
+func (_e *MockBotAPI_Expecter) GetFile(config interface{}) *MockBotAPI_GetFile_Call {
+	return &MockBotAPI_GetFile_Call{Call: _e.mock.On("GetFile", config)}
+}
+
+func (_c *MockBotAPI_GetFile_Call) Run(run func(config tgbotapi.FileConfig)) *MockBotAPI_GetFile_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(tgbotapi.FileConfig))
+	})
+	return _c
+}
+
+func (_c *MockBotAPI_GetFile_Call) Return(_a0 tgbotapi.File, _a1 error) *MockBotAPI_GetFile_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockBotAPI_GetFile_Call) RunAndReturn(run func(tgbotapi.FileConfig) (tgbotapi.File, error)) *MockBotAPI_GetFile_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetUpdatesChan provides a mock function with given fields: config
 func (_m *MockBotAPI) GetUpdatesChan(config tgbotapi.UpdateConfig) tgbotapi.UpdatesChannel {
 	ret := _m.Called(config)

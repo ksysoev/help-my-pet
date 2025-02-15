@@ -17,9 +17,9 @@
             "translation": "\u003cb\u003eWarunki korzystania\u003c/b\u003e\n\u003ci\u003eOstatnia aktualizacja: 30.01.2025\u003c/i\u003e\n\nDziękujemy za korzystanie z naszego chatbota doradztwa weterynaryjnego („Usługa”). Korzystając z tej Usługi, zgadzasz się na przestrzeganie następujących warunków („Warunki”). Jeśli nie zgadzasz się z tymi Warunkami, natychmiast przerwij korzystanie.\n\n\u003cb\u003e1. Charakter Usługi\u003c/b\u003e\n1.1 Usługa dostarcza ogólnych informacji, wskazówek i sugestii dotyczących opieki nad zwierzętami, w tym (ale nie tylko) diety, zachowania i szkolenia.\n1.2 Usługa nie zastępuje profesjonalnej diagnozy, leczenia ani opieki weterynaryjnej. Zawsze zasięgaj porady licencjonowanego weterynarza w przypadku pytań dotyczących zdrowia Twojego zwierzaka.\n\n\u003cb\u003e2. Brak relacji weterynarz-klient-pacjent\u003c/b\u003e\n2.1 Korzystanie z Usługi lub interakcja z naszym asystentem AI nie tworzy relacji weterynarz-klient-pacjent.\n2.2 Wszelkie porady lub wskazówki udzielane przez Usługę są oparte na ograniczonych informacjach i powinny być traktowane wyłącznie jako ogólne informacje.\n\n\u003cb\u003e3. Ograniczenie odpowiedzialności\u003c/b\u003e\n3.1 Uznajesz i zgadzasz się, że korzystanie z Usługi odbywa się na własne ryzyko.\n3.2 W żadnym wypadku właściciele, deweloperzy ani licencjodawcy Usługi nie ponoszą odpowiedzialności za jakiekolwiek bezpośrednie, pośrednie, przypadkowe, specjalne lub wynikowe szkody wynikające z dostępu do Usługi lub korzystania z niej.\n3.3 Rozumiesz, że decyzje dotyczące opieki nad Twoim zwierzakiem i wszelkie wynikające z tego konsekwencje są wyłącznie Twoją odpowiedzialnością. Jeśli masz jakiekolwiek wątpliwości co do zdrowia lub samopoczucia Twojego zwierzaka, natychmiast skonsultuj się z licencjonowanym weterynarzem.\n\n\u003cb\u003e4. Brak gwarancji\u003c/b\u003e\n4.1 Usługa jest dostarczana „tak jak jest” i „w miarę dostępności” bez jakichkolwiek gwarancji, wyraźnych ani dorozumianych.\n4.2 Nie gwarantujemy, że Usługa będzie nieprzerwana, wolna od błędów, bezpieczna ani wolna od wirusów.\n\n\u003cb\u003e5. Obowiązki użytkownika\u003c/b\u003e\n5.1 Jesteś odpowiedzialny za dostarczanie dokładnych i kompletnych informacji o swoim zwierzaku podczas korzystania z porad.\n5.2 Musisz upewnić się, że wszystkie pytania, opisy i dane, które podajesz, nie naruszają praw osób trzecich ani lokalnych przepisów.\n\n\u003cb\u003e6. Użycie międzynarodowe\u003c/b\u003e\n6.1 Usługa jest przeznaczona do użytku globalnego. Jesteś odpowiedzialny za przestrzeganie wszystkich obowiązujących lokalnych przepisów i regulacji w Twojej jurysdykcji.\n6.2 Nie gwarantujemy, że Usługa lub jakakolwiek jej zawartość jest odpowiednia lub dozwolona w jakimkolwiek konkretnym kraju lub regionie.\n\n\u003cb\u003e7. Modyfikacje\u003c/b\u003e\n7.1 Zastrzegamy sobie prawo do modyfikowania lub zastępowania tych Warunków w dowolnym czasie.\n7.2 Jeśli wprowadzimy istotne zmiany, opublikujemy zaktualizowane Warunki i wskażemy datę najnowszej rewizji na górze tego dokumentu.\n\n\u003cb\u003e8. Prawo właściwe i rozstrzyganie sporów\u003c/b\u003e\n8.1 Niniejsze Warunki podlegają i są interpretowane zgodnie z prawem obowiązującym w jurysdykcji głównego miejsca prowadzenia działalności dostawcy Usługi, bez względu na zasady kolizji praw.\n8.2 Wszelkie spory wynikające z tych Warunków lub z nimi związane będą rozstrzygane poprzez polubowne negocjacje, a w razie potrzeby przez wiążący arbitraż lub postępowanie sądowe w odpowiednich sądach.\n\n\u003cb\u003e9. Akceptacja Warunków\u003c/b\u003e\n9.1 Kontynuując dostęp do Usługi lub korzystanie z niej, potwierdzasz, że przeczytałeś, zrozumiałeś i zgadzasz się na przestrzeganie tych Warunków.\n9.2 Jeśli się nie zgadzasz, musisz natychmiast przerwać korzystanie z Usługi.\n\nJeśli masz jakiekolwiek pytania lub wątpliwości dotyczące tych Warunków lub potrzebujesz dalszych wyjaśnień, skontaktuj się pod adresem \u003ci\u003ek.sysoev@me.com\u003c/i\u003e."
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Przepraszam, nie mogę przetwarzać obrazów, filmów, dźwięków ani dokumentów. Proszę wysłać swoje pytanie tylko jako tekst."
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Przepraszam, nie mogę przetwarzać wideo, audio ani dokumentów. Wyślij swoje pytanie tylko w formie tekstu."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
@@ -35,6 +35,31 @@
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "Osiągnęliśmy nasz dzienny limit żądań. Wróć jutro, gdy nasz budżet zostanie odświeżony."
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Proszę, podaj swoje pytanie w formacie tekstowym wraz z zdjęciem(-ami)"
+        },
+        {
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Proszę, podaj przynajmniej jedno zdjęcie"
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Proszę, podaj nie więcej niż {MaxAllowedPhotos} zdjęcie(-a)",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ]
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",

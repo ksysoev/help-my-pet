@@ -59,7 +59,7 @@ func (s *AIService) handleCompletedFollowUp(ctx context.Context, conv Conversati
 	}
 
 	// Get final response from LLM
-	response, err := s.llm.Call(ctx, prompt)
+	response, err := s.llm.Call(ctx, prompt, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get AI response: %w", err)
 	}

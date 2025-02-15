@@ -17,9 +17,9 @@
             "translation": "\u003cb\u003eTermos e Condições\u003c/b\u003e\n\u003ci\u003eÚltima atualização: 30.01.2025\u003c/i\u003e\n\nObrigado por usar nosso chatbot de aconselhamento veterinário (“o Serviço”). Ao acessar ou usar este Serviço, você concorda em estar vinculado pelos seguintes termos e condições (“Termos”). Se você não concordar com estes Termos, interrompa o uso imediatamente.\n\n\u003cb\u003e1. Natureza do Serviço\u003c/b\u003e\n1.1 O Serviço fornece informações gerais, orientações e sugestões para cuidados com animais de estimação, incluindo (mas não se limitando a) dieta, comportamento e treinamento.\n1.2 O Serviço não substitui o diagnóstico, tratamento ou cuidado veterinário profissional. Sempre procure o conselho de um veterinário licenciado para quaisquer perguntas sobre a saúde do seu animal de estimação.\n\n\u003cb\u003e2. Nenhuma Relação Veterinário-Cliente-Paciente\u003c/b\u003e\n2.1 Usar o Serviço ou interagir com nosso assistente de IA não cria uma relação veterinário-cliente-paciente.\n2.2 Qualquer conselho ou orientação fornecida pelo Serviço é baseada em informações limitadas e deve ser considerada apenas como informação geral.\n\n\u003cb\u003e3. Limitação de Responsabilidade\u003c/b\u003e\n3.1 Você reconhece e concorda que o uso do Serviço é por sua conta e risco.\n3.2 Em nenhuma circunstância os proprietários, desenvolvedores ou licenciadores do Serviço serão responsáveis por quaisquer danos diretos, indiretos, incidentais, especiais ou consequenciais decorrentes ou relacionados ao seu acesso ou uso do Serviço.\n3.3 Você entende que as decisões sobre o cuidado do seu animal de estimação e quaisquer resultados decorrentes são de sua exclusiva responsabilidade. Se você tiver alguma dúvida sobre o bem-estar ou a saúde do seu animal de estimação, deve consultar imediatamente um veterinário licenciado.\n\n\u003cb\u003e4. Nenhuma Garantia\u003c/b\u003e\n4.1 O Serviço é fornecido “como está” e “conforme disponível” sem garantias de qualquer tipo, expressas ou implícitas.\n4.2 Não garantimos que o Serviço será ininterrupto, livre de erros, seguro ou livre de vírus.\n\n\u003cb\u003e5. Responsabilidades do Usuário\u003c/b\u003e\n5.1 Você é responsável por fornecer informações precisas e completas sobre seu animal de estimação ao buscar aconselhamento.\n5.2 Você deve garantir que todas as perguntas, descrições e dados fornecidos não violem direitos de terceiros ou leis locais.\n\n\u003cb\u003e6. Uso Internacional\u003c/b\u003e\n6.1 O Serviço é destinado ao uso global. Você é responsável pelo cumprimento de todas as leis e regulamentos locais aplicáveis em sua jurisdição.\n6.2 Não garantimos que o Serviço ou qualquer um de seus conteúdos seja apropriado ou permitido em qualquer país ou região específica.\n\n\u003cb\u003e7. Modificações\u003c/b\u003e\n7.1 Reservamo-nos o direito de modificar ou substituir estes Termos a qualquer momento.\n7.2 Se fizermos alterações materiais, publicaremos os Termos atualizados e indicaremos a data da última revisão no topo deste documento.\n\n\u003cb\u003e8. Lei Aplicável e Resolução de Disputas\u003c/b\u003e\n8.1 Estes Termos serão regidos e interpretados de acordo com as leis aplicáveis na jurisdição do principal local de negócios do provedor do Serviço, sem considerar os princípios de conflito de leis.\n8.2 Qualquer disputa decorrente ou relacionada a estes Termos será resolvida por meio de negociação amigável e, se necessário, por arbitragem vinculativa ou litígio nos tribunais aplicáveis.\n\n\u003cb\u003e9. Aceitação dos Termos\u003c/b\u003e\n9.1 Ao continuar a acessar ou usar o Serviço, você reconhece que leu, entendeu e concorda em estar vinculado por estes Termos.\n9.2 Se você não concordar, deve cessar o uso do Serviço imediatamente.\n\nSe você tiver alguma dúvida ou preocupação em relação a estes Termos, ou se precisar de mais esclarecimentos, entre em contato pelo \u003ci\u003ek.sysoev@me.com\u003c/i\u003e."
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Desculpe, não posso processar imagens, vídeos, áudios ou documentos. Por favor, envie sua pergunta apenas como texto."
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Desculpe, não consigo processar vídeos, áudio ou documentos. Por favor, envie a sua pergunta apenas como texto."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
@@ -35,6 +35,31 @@
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "Atingimos o nosso limite diário de pedidos. Por favor, volte amanhã quando o nosso orçamento for atualizado."
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Por favor, forneça a sua pergunta em formato de texto juntamente com foto(s)"
+        },
+        {
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Por favor, forneça pelo menos uma foto"
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Por favor, forneça no máximo {MaxAllowedPhotos} foto(s)",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ]
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",

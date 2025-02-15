@@ -33,7 +33,8 @@ func (p *ResponseParser) FormatInstructions() string {
       "text": "Any follow-up questions to gather more information",
       "answers": ["Optional", "Array", "Of", "Predefined", "Answers"]
     }
-  ]
+  ],
+  "media": "Optional detailed description of any media content provided if provided(photo, video, documents), this information may be used for future queries"
 }
 
 Note:
@@ -41,11 +42,13 @@ Note:
 - The "questions" array is optional and can be empty if no follow-up questions are needed
 - Each question must have a "text" field
 - The "answers" field in questions is optional
+- The "media" field is optional and can be used to save detailed media information for use in future queries. Focus on information for veterinarians and pet owners.
 
 Example with no questions:
 {
   "text": "Based on the symptoms described, it sounds like your cat may have hairballs. Try brushing them daily and consider specialized hairball control food.",
-  "questions": []
+  "questions": [],
+  "media": "Size of hairballs is about 1 inch in diameter. It doesn't contain any blood or foreign objects."'
 }
 
 Example with questions:
@@ -60,7 +63,8 @@ Example with questions:
       "text": "Have you noticed any specific triggers?",
       "answers": []
     }
-  ]
+  ],
+  "media": "Your dog seems to be anxious in new environments or around loud noises."
 }`
 }
 

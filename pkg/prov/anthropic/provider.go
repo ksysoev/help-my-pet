@@ -61,14 +61,14 @@ func New(cfg Config) (*Provider, error) {
 // If the request succeeds, the LLM response is parsed into a structured format.
 // ctx is the request context, prompt is the user's input.
 // Returns a structured LLMResult containing the response and any follow-up questions, or an error if the call fails or the response cannot be parsed.
-func (p *Provider) Call(ctx context.Context, prompt string) (*message.LLMResult, error) {
+func (p *Provider) Call(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error) {
 	formatInstructions := p.parser.FormatInstructions()
 
 	slog.DebugContext(ctx, "Anthropic LLM call",
 		slog.String("format_instructions", formatInstructions),
 		slog.String("question", prompt))
 
-	response, err := p.llm.Call(ctx, formatInstructions, p.systemInfo()+prompt)
+	response, err := p.llm.Call(ctx, formatInstructions, p.systemInfo()+prompt, imgs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}

@@ -5,11 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"sync"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/google/uuid"
+	"github.com/ksysoev/help-my-pet/pkg/bot/media"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
@@ -23,11 +25,16 @@ type BotAPI interface {
 	Request(c tgbotapi.Chattable) (*tgbotapi.APIResponse, error)
 	StopReceivingUpdates()
 	GetUpdatesChan(config tgbotapi.UpdateConfig) tgbotapi.UpdatesChannel
+	GetFile(config tgbotapi.FileConfig) (tgbotapi.File, error)
 }
 
 type AIProvider interface {
 	ProcessMessage(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
+}
+
+type httpClient interface {
+	Get(url string) (*http.Response, error)
 }
 
 // Config holds the configuration for the Telegram bot
@@ -36,9 +43,12 @@ type Config struct {
 }
 
 type ServiceImpl struct {
-	Bot     BotAPI
-	AISvc   AIProvider
-	handler Handler
+	token      string
+	Bot        BotAPI
+	AISvc      AIProvider
+	handler    Handler
+	collector  *media.Collector
+	httpClient httpClient
 }
 
 // NewService creates a new bot service with the given configuration and AI provider
@@ -61,8 +71,13 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 	}
 
 	s := &ServiceImpl{
-		Bot:   bot,
-		AISvc: aiSvc,
+		token:     cfg.TelegramToken,
+		Bot:       bot,
+		AISvc:     aiSvc,
+		collector: media.NewCollector(),
+		httpClient: &http.Client{
+			Timeout: 5 * time.Second,
+		},
 	}
 
 	s.handler = s.setupHandler()

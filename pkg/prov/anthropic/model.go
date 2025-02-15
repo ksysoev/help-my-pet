@@ -7,6 +7,7 @@ import (
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
 // Model defines the interface for LLM interactions
@@ -14,7 +15,7 @@ type Model interface {
 	// Call sends a request to the LLM with a user question and format instructions
 	// formatInstructions contain system-level prompting and formatting guidelines
 	// question is the user's actual querys
-	Call(ctx context.Context, formatInstructions string, question string) (string, error)
+	Call(ctx context.Context, formatInstructions string, question string, imgs []*message.Image) (string, error)
 }
 
 const systemPrompt = `You are a helpful veterinary AI assistant. Follow these language rules strictly:
@@ -58,6 +59,7 @@ const systemPrompt = `You are a helpful veterinary AI assistant. Follow these la
     - user: user's message or question
 	- assistant: assistant's response
 	- questionnaire: user's responses to the assistant's questions
+    - media_description: detailed description of media content provided be user
   - Follow-up information - this section contains the assistant's follow-up questions and user's responses. You should analyze last user's question and last assistant's response from the previous conversation section and based on follow-up information section, you provide final response. You SHOULD NOT ask additional question at this point. 
   - Current question - this section contains the user's current question. You should analyze this question and if information is not enough, you can ask additional questions to get more details for you dianosis. You can use previous conversation section to get more context.
 
@@ -84,28 +86,32 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 	}, nil
 }
 
-func (m *anthropicModel) Call(ctx context.Context, formatInstructions string, question string) (string, error) {
+func (m *anthropicModel) Call(ctx context.Context, formatInstructions string, question string, imgs []*message.Image) (string, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("format_instructions", formatInstructions), slog.String("question", question))
 
-	message, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
+	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(question)}
+
+	for _, img := range imgs {
+		blocks = append(blocks, anthropic.NewImageBlockBase64(img.MIME, img.Data))
+	}
+
+	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:     anthropic.F(m.modelID),
 		MaxTokens: anthropic.F(int64(m.maxTokens)),
 		System: anthropic.F([]anthropic.TextBlockParam{
 			anthropic.NewTextBlock(systemPrompt),
 			anthropic.NewTextBlock(formatInstructions),
 		}),
-		Messages: anthropic.F([]anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(question)),
-		}),
+		Messages: anthropic.F([]anthropic.MessageParam{anthropic.NewUserMessage(blocks...)}),
 	})
 
 	if err != nil {
 		return "", fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
-	if len(message.Content) == 0 {
+	if len(msg.Content) == 0 {
 		return "", fmt.Errorf("empty response from Anthropic API")
 	}
 
-	return message.Content[0].Text, nil
+	return msg.Content[0].Text, nil
 }

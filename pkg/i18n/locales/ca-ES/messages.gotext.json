@@ -17,9 +17,9 @@
             "translation": "\u003cb\u003eTermes i Condicions\u003c/b\u003e\n\u003ci\u003eÚltima actualització: 30.01.2025\u003c/i\u003e\n\nGràcies per utilitzar el nostre chatbot de consells veterinaris (“el Servei”). En accedir o utilitzar aquest Servei, acceptes estar subjecte als següents termes i condicions (“Termes”). Si no estàs d'acord amb aquests Termes, si us plau, deixa d'utilitzar-lo immediatament.\n\n\u003cb\u003e1. Naturalesa del Servei\u003c/b\u003e\n1.1 El Servei proporciona informació general, orientació i suggeriments per a la cura de mascotes, incloent (però no limitat a) dieta, comportament i entrenament.\n1.2 El Servei no és un substitut del diagnòstic, tractament o cura veterinària professional. Sempre busca el consell d'un veterinari llicenciat per a qualsevol pregunta sobre la salut de la teva mascota.\n\n\u003cb\u003e2. No hi ha Relació Veterinari-Client-Pacient\u003c/b\u003e\n2.1 Utilitzar el Servei o interactuar amb el nostre assistent d'IA no crea una relació veterinari-client-pacient.\n2.2 Qualsevol consell o orientació proporcionada pel Servei es basa en informació limitada i només s'ha de considerar com a informació general.\n\n\u003cb\u003e3. Limitació de Responsabilitat\u003c/b\u003e\n3.1 Reconeixes i acceptes que l'ús del Servei és sota el teu propi risc.\n3.2 En cap cas els propietaris, desenvolupadors o llicenciadors del Servei seran responsables de danys directes, indirectes, incidentals, especials o conseqüents derivats de o en connexió amb el teu accés o ús del Servei.\n3.3 Entens que les decisions sobre la cura de la teva mascota i qualsevol resultat resultant són la teva única responsabilitat. Si tens algun dubte sobre el benestar de la teva mascota o la seva salut, hauries de consultar immediatament un veterinari llicenciat.\n\n\u003cb\u003e4. Sense Garantia\u003c/b\u003e\n4.1 El Servei es proporciona “tal com és”, i “segons disponibilitat”, sense garanties de cap tipus, ja siguin expresses o implícites.\n4.2 No garantim que el Servei serà ininterromput, lliure d'errors, segur o lliure de virus.\n\n\u003cb\u003e5. Responsabilitats de l'Usuari\u003c/b\u003e\n5.1 Ets responsable de proporcionar informació precisa i completa sobre la teva mascota quan busquis consell.\n5.2 Has d'assegurar-te que totes les preguntes, descripcions i dades que proporciones no violen cap dret de tercers o lleis locals.\n\n\u003cb\u003e6. Ús Internacional\u003c/b\u003e\n6.1 El Servei està destinat a ús global. Ets responsable de complir amb totes les lleis i regulacions locals aplicables a la teva jurisdicció.\n6.2 No garantim que el Servei o qualsevol del seu contingut sigui apropiat o permès en cap país o regió específica.\n\n\u003cb\u003e7. Modificacions\u003c/b\u003e\n7.1 Ens reservem el dret de modificar o reemplaçar aquests Termes en qualsevol moment.\n7.2 Si fem canvis materials, publicarem els Termes actualitzats i indicarem la data de l'última revisió a la part superior d'aquest document.\n\n\u003cb\u003e8. Llei Aplicable i Resolució de Conflictes\u003c/b\u003e\n8.1 Aquests Termes es regiran i interpretaran d'acord amb les lleis aplicables a la jurisdicció del proveïdor del Servei, sense tenir en compte els principis de conflicte de lleis.\n8.2 Qualsevol disputa derivada de o relacionada amb aquests Termes es resoldrà mitjançant negociació amistosa i, si és necessari, per arbitratge vinculant o litigi als tribunals aplicables.\n\n\u003cb\u003e9. Acceptació dels Termes\u003c/b\u003e\n9.1 En continuar accedint o utilitzant el Servei, reconeixes que has llegit, entès i acceptes estar subjecte a aquests Termes.\n9.2 Si no estàs d'acord, has de deixar d'utilitzar el Servei immediatament.\n\nSi tens alguna pregunta o preocupació sobre aquests Termes, o si necessites més aclariments, si us plau, contacta a \u003ci\u003ek.sysoev@me.com\u003c/i\u003e."
         },
         {
-            "id": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "message": "Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.",
-            "translation": "Ho sento, no puc processar imatges, vídeos, àudio o documents. Si us plau, envia la teva pregunta només com a text."
+            "id": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "message": "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+            "translation": "Ho sento, no puc processar vídeos, àudio o documents. Si us plau, envia la teva pregunta només com a text."
         },
         {
             "id": "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
@@ -35,6 +35,31 @@
             "id": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "message": "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
             "translation": "Hem arribat al nostre límit diari de peticions. Si us plau, torna demà quan el nostre pressupost es refresqui."
+        },
+        {
+            "id": "Please, provide your question in text format along with photo(s)",
+            "message": "Please, provide your question in text format along with photo(s)",
+            "translation": "Si us plau, proporciona la teva pregunta en format de text juntament amb foto(s)"
+        },
+        {
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Si us plau, proporciona com a mínim una foto"
+        },
+        {
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Si us plau, proporciona no més de {MaxAllowedPhotos} foto(s)",
+            "placeholders": [
+                {
+                    "id": "MaxAllowedPhotos",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "maxAllowedPhotos"
+                }
+            ]
         },
         {
             "id": "Sorry, I encountered an error while processing your request. Please try again later.",

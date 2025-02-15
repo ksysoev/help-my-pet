@@ -55,37 +55,41 @@ func init() {
 var messageKeyToIndex = map[string]int{
 	"<b>Terms and Conditions</b>\n<i>Last updated: 30.01.2025</i>\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n<b>1. Nature of the Service</b>\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n<b>2. No Veterinary-Client-Patient Relationship</b>\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n<b>3. Limitation of Liability</b>\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n<b>4. No Warranty</b>\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n<b>5. User Responsibilities</b>\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n<b>6. International Use</b>\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n<b>7. Modifications</b>\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n<b>8. Governing Law and Dispute Resolution</b>\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n<b>9. Acceptance of Terms</b>\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at <i>k.sysoev@me.com</i>.": 2,
 	"I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.": 4,
-	"Pet profile saved successfully":                                                                       10,
-	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                              9,
-	"Provided date cannot be in the future. Please provide a valid date.":                                  8,
-	"Sorry, I cannot process images, videos, audio, or documents. Please send your question as text only.": 3,
-	"Sorry, I encountered an error while processing your request. Please try again later.":                 7,
+	"Pet profile saved successfully":                                                               13,
+	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                      12,
+	"Please, provide at least one photo":                                                           8,
+	"Please, provide no more than %d photo(s)":                                                     9,
+	"Please, provide your question in text format along with photo(s)":                             7,
+	"Provided date cannot be in the future. Please provide a valid date.":                          11,
+	"Sorry, I cannot process videos, audio, or documents. Please send your question as text only.": 3,
+	"Sorry, I encountered an error while processing your request. Please try again later.":         10,
 	"Unknown command": 0,
 	"We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.": 6,
 	"Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!": 1,
-	"What breed is your pet?":    15,
-	"What is your pet's gender?": 17,
-	"What is your pet's name?":   11,
-	"What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg": 20,
-	"What type of pet do you have?": 12,
-	"When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).": 16,
+	"What breed is your pet?":    18,
+	"What is your pet's gender?": 20,
+	"What is your pet's name?":   14,
+	"What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg": 23,
+	"What type of pet do you have?": 15,
+	"When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).": 19,
 	"You have reached the maximum number of requests per hour. Please try again later.":          5,
-	"cat":    14,
-	"dog":    13,
-	"female": 19,
-	"male":   18,
+	"cat":    17,
+	"dog":    16,
+	"female": 22,
+	"male":   21,
 }
 
-var be_BYIndex = []uint32{ // 22 elements
+var be_BYIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000022, 0x0000050d, 0x00001e94,
-	0x00001f79, 0x00002066, 0x00002118, 0x000021d0,
-	0x0000227e, 0x0000232f, 0x000023c3, 0x00002414,
-	0x00002454, 0x00002480, 0x0000248d, 0x00002494,
-	0x000024c8, 0x0000257e, 0x000025af, 0x000025c2,
-	0x000025cf, 0x0000267e,
-} // Size: 112 bytes
+	0x00001f88, 0x00002075, 0x00002127, 0x000021df,
+	0x0000226f, 0x000022d8, 0x00002336, 0x000023e4,
+	0x00002495, 0x00002529, 0x0000257a, 0x000025ba,
+	0x000025e6, 0x000025f3, 0x000025fa, 0x0000262e,
+	0x000026e4, 0x00002715, 0x00002728, 0x00002735,
+	0x000027e4,
+} // Size: 124 bytes
 
-const be_BYData string = "" + // Size: 9854 bytes
+const be_BYData string = "" + // Size: 10212 bytes
 	"\x02Невядомая каманда\x02Сардэчна запрашаем у Help My Pet Bot! 🐾\x0a\x0a" +
 	"Я ваш асабісты памочнік па догляду за хатнімі жывёламі, гатовы дапамагч" +
 	"ы вам лепш клапаціцца пра вашага пухнатага сябра. Я магу дапамагчы вам " +
@@ -150,34 +154,38 @@ const be_BYData string = "" + // Size: 9854 bytes
 	"арыстанне Сэрвісу.\x0a\x0aКалі ў вас ёсць якія-небудзь пытанні або праб" +
 	"лемы адносна гэтых Умоў, або калі вам патрэбна дадатковая інфармацыя, к" +
 	"алі ласка, звяжыцеся па адрасе <i>k.sysoev@me.com</i>.\x02Прабачце, я н" +
-	"е магу апрацоўваць выявы, відэа, аўдыё або дакументы. Калі ласка, адпра" +
-	"ўце сваё пытанне толькі ў выглядзе тэксту.\x02Прабачце, але ваша паведа" +
-	"мленне занадта доўгае для апрацоўкі. Калі ласка, паспрабуйце зрабіць яг" +
-	"о карацейшым і больш лаканічным.\x02Вы дасягнулі максімальнай колькасці" +
-	" запытаў на гадзіну. Калі ласка, паспрабуйце яшчэ раз пазней.\x02Мы дася" +
-	"гнулі нашай штодзённай мяжы запытаў. Калі ласка, вярніцеся заўтра, калі" +
-	" наш бюджэт абноўлены.\x02Прабачце, я ўзнёс памылку пры апрацоўцы вашага" +
-	" запыту. Калі ласка, паспрабуйце яшчэ раз пазней.\x02Прадстаўленая дата " +
-	"не можа быць у будучыні. Калі ласка, прадастаўце дату ў дапушчальным фа" +
-	"рмаце.\x02Калі ласка, прадастаўце дату ў дапушчальным фармаце ГГГГ-ММ-Д" +
-	"Д (напрыклад, 2023-12-31)\x02Профіль пухнатага сябра паспяхова захаваны" +
-	"\x02Як зваліце вашага пухнатага сябра?\x02Якога тыпу жывёлу у вас?\x02са" +
-	"бака\x02кот\x02Якой расы ваш пухнаты сябар?\x02Калі нарадзіўся ваш пухн" +
-	"аты сябар? Калі ласка, увядзіце дату ў фармаце ГГГГ-ММ-ДД (напрыклад, 2" +
-	"010-12-31).\x02Якога ваш пухнатага сябра?\x02мужчынскі\x02жаночы\x02Які " +
-	"вага вашага пухнатага сябра? Калі ласка, пазначце вагу, наступнае за ад" +
-	"зінка, напрыклад, 5 кг"
+	"е магу апрацаваць відэа, аўдыё або дакументы. Калі ласка, паспрабуйце а" +
+	"дправіць ваша пытанне толькі ў тэкставым фармаце.\x02Прабачце, але ваша" +
+	" паведамленне занадта доўгае для апрацоўкі. Калі ласка, паспрабуйце зраб" +
+	"іць яго карацейшым і больш лаканічным.\x02Вы дасягнулі максімальнай кол" +
+	"ькасці запытаў на гадзіну. Калі ласка, паспрабуйце яшчэ раз пазней.\x02" +
+	"Мы дасягнулі нашай штодзённай мяжы запытаў. Калі ласка, вярніцеся заўтр" +
+	"а, калі наш бюджэт абноўлены.\x02Калі ласка, прадастаўце ваша пытанне ў" +
+	" тэкставым фармаце разам з фотаздымкамі\x02Калі ласка, прадастаўце па кр" +
+	"айняй меры адзін фотаздымак\x02Калі ласка, прадастаўце не больш за %[1]" +
+	"d фотаздымкаў\x02Прабачце, я ўзнёс памылку пры апрацоўцы вашага запыту. " +
+	"Калі ласка, паспрабуйце яшчэ раз пазней.\x02Прадстаўленая дата не можа " +
+	"быць у будучыні. Калі ласка, прадастаўце дату ў дапушчальным фармаце." +
+	"\x02Калі ласка, прадастаўце дату ў дапушчальным фармаце ГГГГ-ММ-ДД (напр" +
+	"ыклад, 2023-12-31)\x02Профіль пухнатага сябра паспяхова захаваны\x02Як " +
+	"зваліце вашага пухнатага сябра?\x02Якога тыпу жывёлу у вас?\x02сабака" +
+	"\x02кот\x02Якой расы ваш пухнаты сябар?\x02Калі нарадзіўся ваш пухнаты с" +
+	"ябар? Калі ласка, увядзіце дату ў фармаце ГГГГ-ММ-ДД (напрыклад, 2010-1" +
+	"2-31).\x02Якога ваш пухнатага сябра?\x02мужчынскі\x02жаночы\x02Які вага " +
+	"вашага пухнатага сябра? Калі ласка, пазначце вагу, наступнае за адзінка" +
+	", напрыклад, 5 кг"
 
-var ca_ESIndex = []uint32{ // 22 elements
+var ca_ESIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000012, 0x000002d3, 0x000010e0,
-	0x00001157, 0x000011cf, 0x0000122c, 0x0000129d,
-	0x0000130b, 0x00001363, 0x000013bd, 0x000013e4,
-	0x00001408, 0x00001424, 0x00001428, 0x0000142c,
-	0x0000144d, 0x000014c0, 0x000014e8, 0x000014ef,
-	0x000014f7, 0x00001560,
-} // Size: 112 bytes
+	0x0000114e, 0x000011c6, 0x00001223, 0x00001294,
+	0x000012e5, 0x00001313, 0x00001344, 0x000013b2,
+	0x0000140a, 0x00001464, 0x0000148b, 0x000014af,
+	0x000014cb, 0x000014cf, 0x000014d3, 0x000014f4,
+	0x00001567, 0x0000158f, 0x00001596, 0x0000159e,
+	0x00001607,
+} // Size: 124 bytes
 
-const ca_ESData string = "" + // Size: 5472 bytes
+const ca_ESData string = "" + // Size: 5639 bytes
 	"\x02Ordre desconeguda\x02Benvingut a Help My Pet Bot! 🐾\x0a\x0aSóc el te" +
 	"u assistent personal de cura de mascotes, preparat per ajudar-te a cuida" +
 	"r millor del teu amic pelut. Puc ajudar-te amb:\x0a\x0a• Preguntes sobre" +
@@ -239,34 +247,38 @@ const ca_ESData string = "" + // Size: 5472 bytes
 	"mes.\x0a9.2 Si no estàs d'acord, has de deixar d'utilitzar el Servei imm" +
 	"ediatament.\x0a\x0aSi tens alguna pregunta o preocupació sobre aquests T" +
 	"ermes, o si necessites més aclariments, si us plau, contacta a <i>k.syso" +
-	"ev@me.com</i>.\x02Ho sento, no puc processar imatges, vídeos, àudio o do" +
-	"cuments. Si us plau, envia la teva pregunta només com a text.\x02Ho sent" +
-	"o, però el teu missatge és massa llarg per a mi per processar. Si us pla" +
-	"u, intenta fer-lo més curt i concís.\x02Has arribat al nombre màxim de p" +
-	"eticions per hora. Si us plau, torna-ho a provar més tard.\x02Hem arriba" +
-	"t al nostre límit diari de peticions. Si us plau, torna demà quan el nos" +
-	"tre pressupost es refresqui.\x02Ho sento, he trobat un error mentre proc" +
-	"essava la teva sol·licitud. Si us plau, torna-ho a provar més tard.\x02L" +
-	"a data proporcionada no pot ser en el futur. Si us plau, proporciona una" +
-	" data vàlida.\x02Si us plau, proporciona una data en el format vàlid AAA" +
-	"A-MM-DD (per exemple, 2023-12-31)\x02Perfil de mascota guardat correctam" +
-	"ent\x02Quin és el nom de la teva mascota?\x02Quin tipus de mascota tens?" +
-	"\x02gos\x02gat\x02Quina raça és la teva mascota?\x02Quan va néixer la te" +
-	"va mascota? Si us plau, introdueix la data en el format AAAA-MM-DD (per " +
-	"exemple, 2010-12-31).\x02Quin és el gènere de la teva mascota?\x02mascle" +
-	"\x02femella\x02Quin és el pes de la teva mascota? Si us plau, especifica" +
-	" el pes seguit de la unitat, per exemple, 5 kg"
+	"ev@me.com</i>.\x02Ho sento, no puc processar vídeos, àudio o documents. " +
+	"Si us plau, envia la teva pregunta només com a text.\x02Ho sento, però e" +
+	"l teu missatge és massa llarg per a mi per processar. Si us plau, intent" +
+	"a fer-lo més curt i concís.\x02Has arribat al nombre màxim de peticions " +
+	"per hora. Si us plau, torna-ho a provar més tard.\x02Hem arribat al nost" +
+	"re límit diari de peticions. Si us plau, torna demà quan el nostre press" +
+	"upost es refresqui.\x02Si us plau, proporciona la teva pregunta en forma" +
+	"t de text juntament amb foto(s)\x02Si us plau, proporciona com a mínim u" +
+	"na foto\x02Si us plau, proporciona no més de %[1]d foto(s)\x02Ho sento, " +
+	"he trobat un error mentre processava la teva sol·licitud. Si us plau, to" +
+	"rna-ho a provar més tard.\x02La data proporcionada no pot ser en el futu" +
+	"r. Si us plau, proporciona una data vàlida.\x02Si us plau, proporciona u" +
+	"na data en el format vàlid AAAA-MM-DD (per exemple, 2023-12-31)\x02Perfi" +
+	"l de mascota guardat correctament\x02Quin és el nom de la teva mascota?" +
+	"\x02Quin tipus de mascota tens?\x02gos\x02gat\x02Quina raça és la teva m" +
+	"ascota?\x02Quan va néixer la teva mascota? Si us plau, introdueix la dat" +
+	"a en el format AAAA-MM-DD (per exemple, 2010-12-31).\x02Quin és el gèner" +
+	"e de la teva mascota?\x02mascle\x02femella\x02Quin és el pes de la teva " +
+	"mascota? Si us plau, especifica el pes seguit de la unitat, per exemple," +
+	" 5 kg"
 
-var de_DEIndex = []uint32{ // 22 elements
+var de_DEIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000013, 0x0000030a, 0x000012a6,
-	0x00001328, 0x000013ba, 0x00001421, 0x00001495,
-	0x0000150b, 0x0000156a, 0x000015b9, 0x000015e0,
-	0x000015f9, 0x0000161c, 0x00001621, 0x00001627,
-	0x00001646, 0x000016ae, 0x000016d7, 0x000016e1,
-	0x000016ea, 0x0000174a,
-} // Size: 112 bytes
+	0x0000131a, 0x000013ac, 0x00001413, 0x00001487,
+	0x000014c8, 0x000014ef, 0x0000151f, 0x00001595,
+	0x000015f4, 0x00001643, 0x0000166a, 0x00001683,
+	0x000016a6, 0x000016ab, 0x000016b1, 0x000016d0,
+	0x00001738, 0x00001761, 0x0000176b, 0x00001774,
+	0x000017d4,
+} // Size: 124 bytes
 
-const de_DEData string = "" + // Size: 5962 bytes
+const de_DEData string = "" + // Size: 6100 bytes
 	"\x02Unbekannter Befehl\x02Willkommen bei Help My Pet Bot! 🐾\x0a\x0aIch b" +
 	"in Ihr persönlicher Assistent für die Pflege Ihres Haustieres und helfe " +
 	"Ihnen, sich besser um Ihren pelzigen Freund zu kümmern. Ich kann Ihnen b" +
@@ -335,34 +347,37 @@ const de_DEData string = "" + // Size: 5962 bytes
 	"enstes sofort einstellen.\x0a\x0aWenn Sie Fragen oder Bedenken zu diesen" +
 	" Bedingungen haben oder weitere Klarstellungen benötigen, kontaktieren S" +
 	"ie uns bitte unter <i>k.sysoev@me.com</i>.\x02Entschuldigung, ich kann k" +
-	"eine Bilder, Videos, Audiodateien oder Dokumente verarbeiten. Bitte send" +
-	"en Sie Ihre Frage nur als Text.\x02Es tut mir leid, aber Ihre Nachricht " +
-	"ist zu lang für mich, um sie zu verarbeiten. Bitte versuchen Sie, sie kü" +
-	"rzer und prägnanter zu gestalten.\x02Sie haben die maximale Anzahl von A" +
-	"nfragen pro Stunde erreicht. Bitte versuchen Sie es später erneut.\x02Wi" +
-	"r haben unser tägliches Anfrage-Limit erreicht. Bitte kommen Sie morgen " +
-	"wieder, wenn unser Budget erneuert wird.\x02Entschuldigung, bei der Vera" +
-	"rbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie e" +
-	"s später erneut.\x02Das angegebene Datum kann nicht in der Zukunft liege" +
-	"n. Bitte geben Sie ein gültiges Datum an.\x02Bitte geben Sie ein Datum i" +
-	"m gültigen Format JJJJ-MM-TT an (z. B. 2023-12-31)\x02Haustierprofil erf" +
-	"olgreich gespeichert\x02Wie heißt Ihr Haustier?\x02Welche Art von Hausti" +
-	"er haben Sie?\x02Hund\x02Katze\x02Welche Rasse hat Ihr Haustier?\x02Wann" +
-	" wurde Ihr Haustier geboren? Bitte geben Sie das Datum im Format JJJJ-MM" +
-	"-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihres Haustieres?" +
-	"\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bitte geben Sie" +
-	" das Gewicht gefolgt von der Einheit an, z. B. 5 kg"
+	"eine Videos, Audios oder Dokumente verarbeiten. Bitte senden Sie Ihre Fr" +
+	"age nur als Text.\x02Es tut mir leid, aber Ihre Nachricht ist zu lang fü" +
+	"r mich, um sie zu verarbeiten. Bitte versuchen Sie, sie kürzer und prägn" +
+	"anter zu gestalten.\x02Sie haben die maximale Anzahl von Anfragen pro St" +
+	"unde erreicht. Bitte versuchen Sie es später erneut.\x02Wir haben unser " +
+	"tägliches Anfrage-Limit erreicht. Bitte kommen Sie morgen wieder, wenn u" +
+	"nser Budget erneuert wird.\x02Bitte geben Sie Ihre Frage im Textformat z" +
+	"usammen mit Foto(s) an\x02Bitte geben Sie mindestens ein Foto an\x02Bitt" +
+	"e geben Sie nicht mehr als %[1]d Foto(s) an\x02Entschuldigung, bei der V" +
+	"erarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Si" +
+	"e es später erneut.\x02Das angegebene Datum kann nicht in der Zukunft li" +
+	"egen. Bitte geben Sie ein gültiges Datum an.\x02Bitte geben Sie ein Datu" +
+	"m im gültigen Format JJJJ-MM-TT an (z. B. 2023-12-31)\x02Haustierprofil " +
+	"erfolgreich gespeichert\x02Wie heißt Ihr Haustier?\x02Welche Art von Hau" +
+	"stier haben Sie?\x02Hund\x02Katze\x02Welche Rasse hat Ihr Haustier?\x02W" +
+	"ann wurde Ihr Haustier geboren? Bitte geben Sie das Datum im Format JJJJ" +
+	"-MM-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihres Haustiere" +
+	"s?\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bitte geben S" +
+	"ie das Gewicht gefolgt von der Einheit an, z. B. 5 kg"
 
-var en_GBIndex = []uint32{ // 22 elements
+var en_GBIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000010, 0x0000025c, 0x00000ff7,
-	0x0000105c, 0x000010c9, 0x0000111b, 0x0000117c,
-	0x000011d1, 0x00001215, 0x0000125d, 0x0000127c,
-	0x00001295, 0x000012b3, 0x000012b7, 0x000012bb,
-	0x000012d3, 0x0000132e, 0x00001349, 0x0000134e,
-	0x00001355, 0x000013ab,
-} // Size: 112 bytes
+	0x00001054, 0x000010c1, 0x00001113, 0x00001174,
+	0x000011b5, 0x000011d8, 0x00001204, 0x00001259,
+	0x0000129d, 0x000012e5, 0x00001304, 0x0000131d,
+	0x0000133b, 0x0000133f, 0x00001343, 0x0000135b,
+	0x000013b6, 0x000013d1, 0x000013d6, 0x000013dd,
+	0x00001433,
+} // Size: 124 bytes
 
-const en_GBData string = "" + // Size: 5035 bytes
+const en_GBData string = "" + // Size: 5171 bytes
 	"\x02Unknown command\x02Welcome to Help My Pet Bot! 🐾\x0a\x0aI'm your per" +
 	"sonal pet care assistant, ready to help you take better care of your fur" +
 	"ry friend. I can assist you with:\x0a\x0a• Pet health and behavior quest" +
@@ -422,31 +437,34 @@ const en_GBData string = "" + // Size: 5035 bytes
 	"e, you must cease using the Service immediately.\x0a\x0aIf you have any " +
 	"questions or concerns regarding these Terms, or if you need further clar" +
 	"ification, please contact at <i>k.sysoev@me.com</i>.\x02Sorry, I cannot " +
-	"process images, videos, audio, or documents. Please send your question a" +
-	"s text only.\x02I apologize, but your message is too long for me to proc" +
-	"ess. Please try to make it shorter and more concise.\x02You have reached" +
-	" the maximum number of requests per hour. Please try again later.\x02We " +
-	"have reached our daily request limit. Please come back tomorrow when our" +
-	" budget is refreshed.\x02Sorry, I encountered an error while processing " +
-	"your request. Please try again later.\x02Provided date cannot be in the " +
-	"future. Please provide a valid date.\x02Please provide a date in the val" +
-	"id format YYYY-MM-DD (e.g., 2023-12-31)\x02Pet profile saved successfull" +
-	"y\x02What is your pet's name?\x02What type of pet do you have?\x02dog" +
+	"process videos, audio, or documents. Please send your question as text o" +
+	"nly.\x02I apologize, but your message is too long for me to process. Ple" +
+	"ase try to make it shorter and more concise.\x02You have reached the max" +
+	"imum number of requests per hour. Please try again later.\x02We have rea" +
+	"ched our daily request limit. Please come back tomorrow when our budget " +
+	"is refreshed.\x02Please, provide your question in text format along with" +
+	" photo(s)\x02Please, provide at least one photo\x02Please, provide no mo" +
+	"re than %[1]d photo(s)\x02Sorry, I encountered an error while processing" +
+	" your request. Please try again later.\x02Provided date cannot be in the" +
+	" future. Please provide a valid date.\x02Please provide a date in the va" +
+	"lid format YYYY-MM-DD (e.g., 2023-12-31)\x02Pet profile saved successful" +
+	"ly\x02What is your pet's name?\x02What type of pet do you have?\x02dog" +
 	"\x02cat\x02What breed is your pet?\x02When was your pet born? Please ent" +
 	"er the date in the format YYYY-MM-DD (e.g., 2010-12-31).\x02What is your" +
 	" pet's gender?\x02male\x02female\x02What is your pet's weight? Please sp" +
 	"ecify the weight followed by the unit, e.g., 5 kg"
 
-var es_ESIndex = []uint32{ // 22 elements
+var es_ESIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000014, 0x000002d6, 0x000011a3,
-	0x00001216, 0x0000128a, 0x000012ee, 0x00001368,
-	0x000013cb, 0x00001427, 0x00001483, 0x000014a9,
-	0x000014cd, 0x000014ec, 0x000014f2, 0x000014f7,
-	0x00001512, 0x00001581, 0x000015a6, 0x000015ac,
-	0x000015b3, 0x0000161b,
-} // Size: 112 bytes
+	0x0000120b, 0x0000127f, 0x000012e3, 0x0000135d,
+	0x000013a6, 0x000013cf, 0x000013ff, 0x00001462,
+	0x000014be, 0x0000151a, 0x00001540, 0x00001564,
+	0x00001583, 0x00001589, 0x0000158e, 0x000015a9,
+	0x00001618, 0x0000163d, 0x00001643, 0x0000164a,
+	0x000016b2,
+} // Size: 124 bytes
 
-const es_ESData string = "" + // Size: 5659 bytes
+const es_ESData string = "" + // Size: 5810 bytes
 	"\x02Comando desconocido\x02¡Bienvenido a Help My Pet Bot! 🐾\x0a\x0aSoy t" +
 	"u asistente personal de cuidado de mascotas, listo para ayudarte a cuida" +
 	"r mejor a tu amigo peludo. Puedo asistirte con:\x0a\x0a• Preguntas sobre" +
@@ -511,34 +529,37 @@ const es_ESData string = "" + // Size: 5659 bytes
 	"o está de acuerdo, debe dejar de usar el Servicio inmediatamente.\x0a" +
 	"\x0aSi tiene alguna pregunta o inquietud sobre estos Términos, o si nece" +
 	"sita más aclaraciones, por favor contacte a <i>k.sysoev@me.com</i>.\x02L" +
-	"o siento, no puedo procesar imágenes, videos, audio o documentos. Por fa" +
-	"vor, envíe su pregunta solo como texto.\x02Lo siento, pero tu mensaje es" +
-	" demasiado largo para que lo procese. Por favor, intenta hacerlo más cor" +
-	"to y conciso.\x02Ha alcanzado el número máximo de solicitudes por hora. " +
-	"Por favor, inténtelo de nuevo más tarde.\x02Hemos alcanzado nuestro lími" +
-	"te diario de solicitudes. Por favor, vuelva mañana cuando se actualice n" +
-	"uestro presupuesto.\x02Lo siento, encontré un error al procesar su solic" +
-	"itud. Por favor, inténtelo de nuevo más tarde.\x02La fecha proporcionada" +
-	" no puede ser en el futuro. Por favor, proporcione una fecha válida.\x02" +
-	"Por favor, proporcione una fecha en el formato válido AAAA-MM-DD (por ej" +
-	"emplo, 2023-12-31)\x02Perfil de mascota guardado con éxito\x02¿Cuál es e" +
-	"l nombre de tu mascota?\x02¿Qué tipo de mascota tienes?\x02perro\x02gato" +
-	"\x02¿Qué raza es tu mascota?\x02¿Cuándo nació tu mascota? Por favor, int" +
-	"roduce la fecha en el formato AAAA-MM-DD (por ejemplo, 2010-12-31).\x02¿" +
-	"Cuál es el género de tu mascota?\x02macho\x02hembra\x02¿Cuál es el peso " +
-	"de tu mascota? Por favor, especifica el peso seguido de la unidad, por e" +
-	"jemplo, 5 kg"
+	"o siento, no puedo procesar videos, audio o documentos. Por favor, envía" +
+	" tu pregunta solo como texto.\x02Lo siento, pero tu mensaje es demasiado" +
+	" largo para que lo procese. Por favor, intenta hacerlo más corto y conci" +
+	"so.\x02Ha alcanzado el número máximo de solicitudes por hora. Por favor," +
+	" inténtelo de nuevo más tarde.\x02Hemos alcanzado nuestro límite diario " +
+	"de solicitudes. Por favor, vuelva mañana cuando se actualice nuestro pre" +
+	"supuesto.\x02Por favor, proporcione su pregunta en formato de texto junt" +
+	"o con foto(s)\x02Por favor, proporcione al menos una foto\x02Por favor, " +
+	"proporcione no más de %[1]d foto(s)\x02Lo siento, encontré un error al p" +
+	"rocesar su solicitud. Por favor, inténtelo de nuevo más tarde.\x02La fec" +
+	"ha proporcionada no puede ser en el futuro. Por favor, proporcione una f" +
+	"echa válida.\x02Por favor, proporcione una fecha en el formato válido AA" +
+	"AA-MM-DD (por ejemplo, 2023-12-31)\x02Perfil de mascota guardado con éxi" +
+	"to\x02¿Cuál es el nombre de tu mascota?\x02¿Qué tipo de mascota tienes?" +
+	"\x02perro\x02gato\x02¿Qué raza es tu mascota?\x02¿Cuándo nació tu mascot" +
+	"a? Por favor, introduce la fecha en el formato AAAA-MM-DD (por ejemplo, " +
+	"2010-12-31).\x02¿Cuál es el género de tu mascota?\x02macho\x02hembra\x02" +
+	"¿Cuál es el peso de tu mascota? Por favor, especifica el peso seguido d" +
+	"e la unidad, por ejemplo, 5 kg"
 
-var fa_IRIndex = []uint32{ // 22 elements
+var fa_IRIndex = []uint32{ // 25 elements
 	0x00000000, 0x0000001a, 0x000004ef, 0x000019f4,
-	0x00001ac2, 0x00001b83, 0x00001c1f, 0x00001cdf,
-	0x00001d7b, 0x00001e01, 0x00001e6c, 0x00001eb3,
-	0x00001ee2, 0x00001f11, 0x00001f16, 0x00001f1f,
-	0x00001f50, 0x00001ff7, 0x0000202a, 0x0000202f,
-	0x00002038, 0x000020c7,
-} // Size: 112 bytes
+	0x00001ab3, 0x00001b74, 0x00001c10, 0x00001cd0,
+	0x00001d38, 0x00001d6e, 0x00001da8, 0x00001e44,
+	0x00001eca, 0x00001f35, 0x00001f7c, 0x00001fab,
+	0x00001fda, 0x00001fdf, 0x00001fe8, 0x00002019,
+	0x000020c0, 0x000020f3, 0x000020f8, 0x00002101,
+	0x00002190,
+} // Size: 124 bytes
 
-const fa_IRData string = "" + // Size: 8391 bytes
+const fa_IRData string = "" + // Size: 8592 bytes
 	"\x02دستور نامعلوم\x02به ربات کمک به حیوان خانگی من خوش آمدید! 🐾\x0a\x0aم" +
 	"ن دستیار شخصی شما در مراقبت از حیوان خانگی هستم و آماده\u200cام تا به ش" +
 	"ما کمک کنم تا بهتر از دوست پشمالوی خود مراقبت کنید. من می\u200cتوانم به" +
@@ -597,33 +618,35 @@ const fa_IRData string = "" + // Size: 8391 bytes
 	"ق نیستید، باید فوراً استفاده از این خدمت را متوقف کنید.\x0a\x0aاگر سوال" +
 	"ات یا نگرانی\u200cهایی در مورد این شرایط دارید، یا اگر نیاز به توضیحات " +
 	"بیشتر دارید، لطفاً با <i>k.sysoev@me.com</i> تماس بگیرید.\x02متاسفم، من" +
-	" نمی\u200cتوانم تصاویر، ویدیوها، صداها یا اسناد را پردازش کنم. لطفاً سوا" +
-	"ل خود را فقط به صورت متن ارسال کنید.\x02متاسفم، اما پیام شما برای من خی" +
-	"لی طولانی است تا بتوانم پردازش کنم. لطفاً سعی کنید کوتاه\u200cتر و مختص" +
-	"رتر کنید.\x02شما به حداکثر تعداد درخواست\u200cها در هر ساعت رسیده\u200c" +
-	"اید. لطفاً بعداً دوباره امتحان کنید.\x02ما به حداکثر تعداد درخواست" +
-	"\u200cهای روزانه خود رسیده\u200cایم. لطفاً فردا برگردید وقتی که بودجه" +
-	"\u200cمان تازه شده است.\x02متاسفم، من در حین پردازش درخواست شما با خطا م" +
-	"واجه شدم. لطفاً بعداً دوباره امتحان کنید.\x02تاریخ ارائه شده نمی\u200cت" +
-	"واند در آینده باشد. لطفاً یک تاریخ معتبر ارائه دهید.\x02لطفاً یک تاریخ " +
-	"در قالب معتبر YYYY-MM-DD (مثلاً 2023-12-31) ارائه دهید\x02پروفایل حیوان" +
-	" خانگی با موفقیت ذخیره شد\x02نام حیوان خانگی شما چیست؟\x02چه نوع حیوان خ" +
-	"انگی دارید؟\x02سگ\x02گربه\x02نژاد حیوان خانگی شما چیست؟\x02حیوان خانگی " +
-	"شما چه زمانی متولد شده است؟ لطفاً تاریخ را به صورت YYYY-MM-DD (مثلاً 20" +
-	"10-12-31) وارد کنید.\x02جنسیت حیوان خانگی شما چیست؟\x02نر\x02ماده\x02وزن" +
-	" حیوان خانگی شما چیست؟ لطفاً وزن را به همراه واحد مشخص کنید، مثلاً 5 کیل" +
-	"وگرم"
+	" نمی\u200cتوانم ویدیوها، صداها یا اسناد را پردازش کنم. لطفاً سوال خود را" +
+	" فقط به صورت متن ارسال کنید.\x02متاسفم، اما پیام شما برای من خیلی طولانی" +
+	" است تا بتوانم پردازش کنم. لطفاً سعی کنید کوتاه\u200cتر و مختصرتر کنید." +
+	"\x02شما به حداکثر تعداد درخواست\u200cها در هر ساعت رسیده\u200cاید. لطفاً" +
+	" بعداً دوباره امتحان کنید.\x02ما به حداکثر تعداد درخواست\u200cهای روزانه" +
+	" خود رسیده\u200cایم. لطفاً فردا برگردید وقتی که بودجه\u200cمان تازه شده " +
+	"است.\x02لطفاً سوال خود را به صورت متنی همراه با عکس(ها) ارائه دهید\x02ل" +
+	"طفاً حداقل یک عکس ارائه دهید\x02لطفاً بیش از %[1]d عکس ارائه ندهید\x02م" +
+	"تاسفم، من در حین پردازش درخواست شما با خطا مواجه شدم. لطفاً بعداً دوبار" +
+	"ه امتحان کنید.\x02تاریخ ارائه شده نمی\u200cتواند در آینده باشد. لطفاً ی" +
+	"ک تاریخ معتبر ارائه دهید.\x02لطفاً یک تاریخ در قالب معتبر YYYY-MM-DD (م" +
+	"ثلاً 2023-12-31) ارائه دهید\x02پروفایل حیوان خانگی با موفقیت ذخیره شد" +
+	"\x02نام حیوان خانگی شما چیست؟\x02چه نوع حیوان خانگی دارید؟\x02سگ\x02گربه" +
+	"\x02نژاد حیوان خانگی شما چیست؟\x02حیوان خانگی شما چه زمانی متولد شده است" +
+	"؟ لطفاً تاریخ را به صورت YYYY-MM-DD (مثلاً 2010-12-31) وارد کنید.\x02جن" +
+	"سیت حیوان خانگی شما چیست؟\x02نر\x02ماده\x02وزن حیوان خانگی شما چیست؟ لط" +
+	"فاً وزن را به همراه واحد مشخص کنید، مثلاً 5 کیلوگرم"
 
-var fr_FRIndex = []uint32{ // 22 elements
+var fr_FRIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000012, 0x0000032f, 0x000012bb,
-	0x00001345, 0x000013c8, 0x00001423, 0x00001492,
-	0x000014fb, 0x0000154e, 0x0000159e, 0x000015ca,
-	0x000015f9, 0x00001625, 0x0000162b, 0x00001630,
-	0x00001662, 0x000016d4, 0x00001704, 0x0000170a,
-	0x00001712, 0x00001784,
-} // Size: 112 bytes
+	0x00001343, 0x000013c6, 0x00001421, 0x00001490,
+	0x000014d9, 0x000014fd, 0x0000152c, 0x00001595,
+	0x000015e8, 0x00001638, 0x00001664, 0x00001693,
+	0x000016bf, 0x000016c5, 0x000016ca, 0x000016fc,
+	0x0000176e, 0x0000179e, 0x000017a4, 0x000017ac,
+	0x0000181e,
+} // Size: 124 bytes
 
-const fr_FRData string = "" + // Size: 6020 bytes
+const fr_FRData string = "" + // Size: 6174 bytes
 	"\x02Commande inconnue\x02Bienvenue sur Help My Pet Bot! 🐾\x0a\x0aJe suis" +
 	" votre assistant personnel pour les soins des animaux de compagnie, prêt" +
 	" à vous aider à mieux prendre soin de votre ami à fourrure. Je peux vous" +
@@ -691,35 +714,39 @@ const fr_FRData string = "" + // Size: 6020 bytes
 	"d, vous devez cesser immédiatement d'utiliser le Service.\x0a\x0aSi vous" +
 	" avez des questions ou des préoccupations concernant ces Conditions, ou " +
 	"si vous avez besoin de plus amples informations, veuillez contacter à <i" +
-	">k.sysoev@me.com</i>.\x02Désolé, je ne peux pas traiter les images, vidé" +
-	"os, audio ou documents. Veuillez envoyer votre question uniquement sous " +
-	"forme de texte.\x02Je m'excuse, mais votre message est trop long pour qu" +
-	"e je puisse le traiter. Essayez de le raccourcir et de le rendre plus co" +
-	"ncis.\x02Vous avez atteint le nombre maximum de requêtes par heure. Veui" +
-	"llez réessayer plus tard.\x02Nous avons atteint notre limite de demandes" +
-	" quotidiennes. Revenez demain lorsque notre budget sera rafraîchi.\x02Dé" +
-	"solé, j'ai rencontré une erreur lors du traitement de votre demande. Veu" +
-	"illez réessayer plus tard.\x02La date fournie ne peut pas être dans le f" +
-	"utur. Veuillez fournir une date valide.\x02Veuillez fournir une date au " +
-	"format valide AAAA-MM-JJ (par exemple, 2023-12-31)\x02Profil de l'animal" +
-	" enregistré avec succès\x02Quel est le nom de votre animal de compagnie " +
-	"?\x02Quel type d'animal de compagnie avez-vous ?\x02chien\x02chat\x02Que" +
-	"lle est la race de votre animal de compagnie ?\x02Quand est né votre ani" +
-	"mal de compagnie ? Veuillez entrer la date au format AAAA-MM-JJ (par exe" +
-	"mple, 2010-12-31).\x02Quel est le sexe de votre animal de compagnie ?" +
-	"\x02mâle\x02femelle\x02Quel est le poids de votre animal de compagnie ? " +
-	"Veuillez spécifier le poids suivi de l'unité, par exemple 5 kg"
+	">k.sysoev@me.com</i>.\x02Désolé, je ne peux pas traiter les vidéos, l'au" +
+	"dio ou les documents. Veuillez envoyer votre question sous forme de text" +
+	"e uniquement.\x02Je m'excuse, mais votre message est trop long pour que " +
+	"je puisse le traiter. Essayez de le raccourcir et de le rendre plus conc" +
+	"is.\x02Vous avez atteint le nombre maximum de requêtes par heure. Veuill" +
+	"ez réessayer plus tard.\x02Nous avons atteint notre limite de demandes q" +
+	"uotidiennes. Revenez demain lorsque notre budget sera rafraîchi.\x02Veui" +
+	"llez fournir votre question au format texte accompagnée de photo(s)\x02V" +
+	"euillez fournir au moins une photo\x02Veuillez ne pas fournir plus de %[" +
+	"1]d photo(s)\x02Désolé, j'ai rencontré une erreur lors du traitement de " +
+	"votre demande. Veuillez réessayer plus tard.\x02La date fournie ne peut " +
+	"pas être dans le futur. Veuillez fournir une date valide.\x02Veuillez fo" +
+	"urnir une date au format valide AAAA-MM-JJ (par exemple, 2023-12-31)\x02" +
+	"Profil de l'animal enregistré avec succès\x02Quel est le nom de votre an" +
+	"imal de compagnie ?\x02Quel type d'animal de compagnie avez-vous ?\x02ch" +
+	"ien\x02chat\x02Quelle est la race de votre animal de compagnie ?\x02Quan" +
+	"d est né votre animal de compagnie ? Veuillez entrer la date au format A" +
+	"AAA-MM-JJ (par exemple, 2010-12-31).\x02Quel est le sexe de votre animal" +
+	" de compagnie ?\x02mâle\x02femelle\x02Quel est le poids de votre animal " +
+	"de compagnie ? Veuillez spécifier le poids suivi de l'unité, par exemple" +
+	" 5 kg"
 
-var it_ITIndex = []uint32{ // 22 elements
+var it_ITIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000014, 0x000002ec, 0x00001165,
-	0x000011ef, 0x00001266, 0x000012b0, 0x00001324,
-	0x00001388, 0x000013d9, 0x0000142d, 0x00001461,
-	0x0000148c, 0x000014af, 0x000014b4, 0x000014ba,
-	0x000014e3, 0x0000155a, 0x00001586, 0x0000158e,
-	0x00001596, 0x00001607,
-} // Size: 112 bytes
+	0x000011d2, 0x00001249, 0x00001293, 0x00001307,
+	0x0000134d, 0x00001371, 0x0000139c, 0x00001400,
+	0x00001451, 0x000014a5, 0x000014d9, 0x00001504,
+	0x00001527, 0x0000152c, 0x00001532, 0x0000155b,
+	0x000015d2, 0x000015fe, 0x00001606, 0x0000160e,
+	0x0000167f,
+} // Size: 124 bytes
 
-const it_ITData string = "" + // Size: 5639 bytes
+const it_ITData string = "" + // Size: 5759 bytes
 	"\x02Comando sconosciuto\x02Benvenuto su Help My Pet Bot! 🐾\x0a\x0aSono i" +
 	"l tuo assistente personale per la cura degli animali domestici, pronto a" +
 	"d aiutarti a prenderti cura meglio del tuo amico peloso. Posso assistert" +
@@ -783,35 +810,38 @@ const it_ITData string = "" + // Size: 5639 bytes
 	" accettato di essere vincolato da questi Termini.\x0a9.2 Se non sei d'ac" +
 	"cordo, devi cessare immediatamente l'uso del Servizio.\x0a\x0aSe hai dom" +
 	"ande o dubbi riguardanti questi Termini, o se hai bisogno di ulteriori c" +
-	"hiarimenti, contattaci a <i>k.sysoev@me.com</i>.\x02Désolé, je ne peux p" +
-	"as traiter les images, vidéos, audio ou documents. Veuillez envoyer votr" +
-	"e question uniquement sous forme de texte.\x02Mi scuso, ma il tuo messag" +
-	"gio è troppo lungo per essere elaborato. Per favore, prova a renderlo pi" +
-	"ù breve e conciso.\x02Hai raggiunto il numero massimo di richieste per " +
-	"ora. Riprova più tardi.\x02Abbiamo raggiunto il nostro limite giornalier" +
-	"o di richieste. Torna domani quando il nostro budget sarà aggiornato." +
-	"\x02Spiacente, ho riscontrato un errore durante l'elaborazione della tua" +
-	" richiesta. Riprova più tardi.\x02La data fornita non può essere nel fut" +
-	"uro. Si prega di fornire una data valida.\x02Si prega di fornire una dat" +
-	"a nel formato valido AAAA-MM-GG (ad esempio, 2023-12-31)\x02Profilo dell" +
-	"'animale domestico salvato con successo\x02Qual è il nome del tuo animal" +
-	"e domestico?\x02Che tipo di animale domestico hai?\x02cane\x02gatto\x02Q" +
-	"uale razza è il tuo animale domestico?\x02Quando è nato il tuo animale d" +
-	"omestico? Si prega di inserire la data nel formato AAAA-MM-GG (ad esempi" +
-	"o, 2010-12-31).\x02Qual è il sesso del tuo animale domestico?\x02maschio" +
-	"\x02femmina\x02Qual è il peso del tuo animale domestico? Si prega di spe" +
-	"cificare il peso seguito dall'unità, ad esempio, 5 kg"
+	"hiarimenti, contattaci a <i>k.sysoev@me.com</i>.\x02Spiacente, non posso" +
+	" elaborare video, audio o documenti. Si prega di inviare la tua domanda " +
+	"solo come testo.\x02Mi scuso, ma il tuo messaggio è troppo lungo per ess" +
+	"ere elaborato. Per favore, prova a renderlo più breve e conciso.\x02Hai " +
+	"raggiunto il numero massimo di richieste per ora. Riprova più tardi.\x02" +
+	"Abbiamo raggiunto il nostro limite giornaliero di richieste. Torna doman" +
+	"i quando il nostro budget sarà aggiornato.\x02Si prega di fornire la tua" +
+	" domanda in formato testuale insieme a foto\x02Si prega di fornire almen" +
+	"o una foto\x02Si prega di non fornire più di %[1]d foto\x02Spiacente, ho" +
+	" riscontrato un errore durante l'elaborazione della tua richiesta. Ripro" +
+	"va più tardi.\x02La data fornita non può essere nel futuro. Si prega di " +
+	"fornire una data valida.\x02Si prega di fornire una data nel formato val" +
+	"ido AAAA-MM-GG (ad esempio, 2023-12-31)\x02Profilo dell'animale domestic" +
+	"o salvato con successo\x02Qual è il nome del tuo animale domestico?\x02C" +
+	"he tipo di animale domestico hai?\x02cane\x02gatto\x02Quale razza è il t" +
+	"uo animale domestico?\x02Quando è nato il tuo animale domestico? Si preg" +
+	"a di inserire la data nel formato AAAA-MM-GG (ad esempio, 2010-12-31)." +
+	"\x02Qual è il sesso del tuo animale domestico?\x02maschio\x02femmina\x02" +
+	"Qual è il peso del tuo animale domestico? Si prega di specificare il pes" +
+	"o seguito dall'unità, ad esempio, 5 kg"
 
-var ko_KRIndex = []uint32{ // 22 elements
+var ko_KRIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000016, 0x00000344, 0x000012d0,
-	0x00001363, 0x000013bf, 0x0000141b, 0x00001477,
-	0x000014de, 0x00001537, 0x00001589, 0x000015c9,
-	0x000015f4, 0x0000162d, 0x00001631, 0x0000163b,
-	0x00001666, 0x000016e3, 0x0000170e, 0x00001715,
-	0x0000171c, 0x0000178a,
-} // Size: 112 bytes
+	0x00001352, 0x000013ae, 0x0000140a, 0x00001466,
+	0x000014ac, 0x000014df, 0x00001510, 0x00001577,
+	0x000015d0, 0x00001622, 0x00001662, 0x0000168d,
+	0x000016c6, 0x000016ca, 0x000016d4, 0x000016ff,
+	0x0000177c, 0x000017a7, 0x000017ae, 0x000017b5,
+	0x00001823,
+} // Size: 124 bytes
 
-const ko_KRData string = "" + // Size: 6026 bytes
+const ko_KRData string = "" + // Size: 6179 bytes
 	"\x02알 수 없는 명령\x02Help My Pet Bot에 오신 것을 환영합니다! 🐾\x0a\x0a저는 당신의 개인 반려동물 관" +
 	"리 도우미로, 당신의 털복숭이 친구를 더 잘 돌볼 수 있도록 도와드리겠습니다. 저는 다음과 같은 도움을 드릴 수 있습니다:" +
 	"\x0a\x0a• 반려동물 건강 및 행동 질문\x0a• 식단 및 영양 조언\x0a• 훈련 팁 및 기법\x0a• 일반적인 반려동물 " +
@@ -844,26 +874,28 @@ const ko_KRData string = "" + // Size: 6026 bytes
 	" 법원에서의 소송을 통해 해결됩니다.\x0a\x0a<b>9. 약관의 수락</b>\x0a9.1 서비스를 계속 이용하거나 접근함으로써" +
 	", 귀하는 이 약관을 읽고 이해하였으며 이에 구속되는 것에 동의함을 인정합니다.\x0a9.2 동의하지 않으시면 즉시 서비스를 이용" +
 	"을 중단해야 합니다.\x0a\x0a이 약관에 관한 질문이나 우려 사항이 있거나 추가 설명이 필요하시면 <i>k.sysoev@m" +
-	"e.com</i>으로 연락해 주십시오.\x02죄송합니다. 이미지, 비디오, 오디오 또는 문서를 처리할 수 없습니다. 질문을 텍스트" +
-	" 형식으로만 보내주세요.\x02죄송합니다만, 메시지가 너무 깁니다. 짧고 간결하게 작성해 주세요.\x02시간당 요청 횟수 제한에 " +
-	"도달했습니다. 나중에 다시 시도해 주세요.\x02일일 요청 한도에 도달했습니다. 예산이 갱신되는 내일 다시 오세요.\x02죄송" +
-	"합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.\x02제공된 날짜는 미래일 수 없습니다. 유효한 날짜" +
-	"를 제공해 주세요.\x02유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 주세요.\x02애완동물 " +
-	"프로필이 성공적으로 저장되었습니다\x02애완동물의 이름은 무엇입니까?\x02어떤 종류의 애완동물을 가지고 계십니까?\x02개" +
-	"\x02고양이\x02애완동물의 품종은 무엇입니까?\x02애완동물이 태어난 날짜는 언제입니까? YYYY-MM-DD(예: 2010-1" +
-	"2-31) 형식으로 날짜를 입력해 주세요.\x02애완동물의 성별은 무엇입니까?\x02수컷\x02암컷\x02애완동물의 몸무게는 얼마" +
-	"입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예: 5 kg"
+	"e.com</i>으로 연락해 주십시오.\x02죄송합니다만, 비디오, 오디오 또는 문서를 처리할 수 없습니다. 질문을 텍스트로만 보" +
+	"내 주세요.\x02죄송합니다만, 메시지가 너무 깁니다. 짧고 간결하게 작성해 주세요.\x02시간당 요청 횟수 제한에 도달했습니" +
+	"다. 나중에 다시 시도해 주세요.\x02일일 요청 한도에 도달했습니다. 예산이 갱신되는 내일 다시 오세요.\x02텍스트 형식으" +
+	"로 질문과 함께 사진을 제공해 주세요\x02최소한 한 장의 사진을 제공해 주세요\x02사진을 %[1]d장 이하로 제공해 주세요" +
+	"\x02죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.\x02제공된 날짜는 미래일 수 없습니다. 유효" +
+	"한 날짜를 제공해 주세요.\x02유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 주세요.\x02애" +
+	"완동물 프로필이 성공적으로 저장되었습니다\x02애완동물의 이름은 무엇입니까?\x02어떤 종류의 애완동물을 가지고 계십니까?" +
+	"\x02개\x02고양이\x02애완동물의 품종은 무엇입니까?\x02애완동물이 태어난 날짜는 언제입니까? YYYY-MM-DD(예: 2" +
+	"010-12-31) 형식으로 날짜를 입력해 주세요.\x02애완동물의 성별은 무엇입니까?\x02수컷\x02암컷\x02애완동물의 몸무" +
+	"게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예: 5 kg"
 
-var ms_MYIndex = []uint32{ // 22 elements
+var ms_MYIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000018, 0x00000314, 0x00001277,
-	0x000012ec, 0x00001361, 0x000013b2, 0x00001413,
-	0x00001466, 0x000014b7, 0x00001504, 0x0000152e,
-	0x00001552, 0x00001580, 0x00001587, 0x0000158e,
-	0x000015b4, 0x00001622, 0x00001649, 0x00001650,
-	0x0000165a, 0x000016bb,
-} // Size: 112 bytes
+	0x000012e1, 0x00001356, 0x000013a7, 0x00001408,
+	0x00001449, 0x00001475, 0x000014a4, 0x000014f7,
+	0x00001548, 0x00001595, 0x000015bf, 0x000015e3,
+	0x00001611, 0x00001618, 0x0000161f, 0x00001645,
+	0x000016b3, 0x000016da, 0x000016e1, 0x000016eb,
+	0x0000174c,
+} // Size: 124 bytes
 
-const ms_MYData string = "" + // Size: 5819 bytes
+const ms_MYData string = "" + // Size: 5964 bytes
 	"\x02Perintah tidak dikenali\x02Selamat datang ke Help My Pet Bot! 🐾\x0a" +
 	"\x0aSaya adalah pembantu penjagaan haiwan peliharaan peribadi anda, sedi" +
 	"a membantu anda menjaga rakan berbulu anda dengan lebih baik. Saya boleh" +
@@ -932,33 +964,36 @@ const ms_MYData string = "" + // Size: 5819 bytes
 	"erkhidmatan dengan segera.\x0a\x0aJika anda mempunyai sebarang soalan at" +
 	"au kebimbangan mengenai Terma ini, atau jika anda memerlukan penjelasan " +
 	"lanjut, sila hubungi di <i>k.sysoev@me.com</i>.\x02Maaf, saya tidak dapa" +
-	"t memproses imej, video, audio, atau dokumen. Sila hantar soalan anda da" +
-	"lam bentuk teks sahaja.\x02Saya minta maaf, tetapi mesej anda terlalu pa" +
-	"njang untuk saya proses. Sila cuba membuatnya lebih pendek dan ringkas." +
-	"\x02Anda telah mencapai jumlah permintaan maksimum setiap jam. Sila cuba" +
-	" lagi nanti.\x02Kami telah mencapai had permintaan harian kami. Sila kem" +
-	"bali esok apabila bajet kami disegarkan.\x02Maaf, saya mengalami ralat s" +
-	"emasa memproses permintaan anda. Sila cuba lagi nanti.\x02Tarikh yang di" +
-	"berikan tidak boleh di masa hadapan. Sila berikan tarikh yang sah.\x02Si" +
-	"la berikan tarikh dalam format yang sah YYYY-MM-DD (contohnya, 2023-12-3" +
-	"1)\x02Profil haiwan peliharaan berjaya disimpan\x02Apakah nama haiwan pe" +
-	"liharaan anda?\x02Jenis haiwan peliharaan apa yang anda miliki?\x02anjin" +
-	"g\x02kucing\x02Apakah bangsa haiwan peliharaan anda?\x02Bila haiwan peli" +
-	"haraan anda dilahirkan? Sila masukkan tarikh dalam format YYYY-MM-DD (co" +
-	"ntohnya, 2010-12-31).\x02Apakah jantina haiwan peliharaan anda?\x02lelak" +
-	"i\x02perempuan\x02Berapakah berat haiwan peliharaan anda? Sila nyatakan " +
-	"berat diikuti dengan unit, contohnya, 5 kg"
+	"t memproses video, audio, atau dokumen. Sila hantar soalan anda sebagai " +
+	"teks sahaja.\x02Saya minta maaf, tetapi mesej anda terlalu panjang untuk" +
+	" saya proses. Sila cuba membuatnya lebih pendek dan ringkas.\x02Anda tel" +
+	"ah mencapai jumlah permintaan maksimum setiap jam. Sila cuba lagi nanti." +
+	"\x02Kami telah mencapai had permintaan harian kami. Sila kembali esok ap" +
+	"abila bajet kami disegarkan.\x02Sila berikan soalan anda dalam format te" +
+	"ks bersama dengan gambar\x02Sila berikan sekurang-kurangnya satu gambar" +
+	"\x02Sila berikan tidak lebih daripada %[1]d gambar\x02Maaf, saya mengala" +
+	"mi ralat semasa memproses permintaan anda. Sila cuba lagi nanti.\x02Tari" +
+	"kh yang diberikan tidak boleh di masa hadapan. Sila berikan tarikh yang " +
+	"sah.\x02Sila berikan tarikh dalam format yang sah YYYY-MM-DD (contohnya," +
+	" 2023-12-31)\x02Profil haiwan peliharaan berjaya disimpan\x02Apakah nama" +
+	" haiwan peliharaan anda?\x02Jenis haiwan peliharaan apa yang anda miliki" +
+	"?\x02anjing\x02kucing\x02Apakah bangsa haiwan peliharaan anda?\x02Bila h" +
+	"aiwan peliharaan anda dilahirkan? Sila masukkan tarikh dalam format YYYY" +
+	"-MM-DD (contohnya, 2010-12-31).\x02Apakah jantina haiwan peliharaan anda" +
+	"?\x02lelaki\x02perempuan\x02Berapakah berat haiwan peliharaan anda? Sila" +
+	" nyatakan berat diikuti dengan unit, contohnya, 5 kg"
 
-var nl_NLIndex = []uint32{ // 22 elements
+var nl_NLIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000012, 0x000002be, 0x000011ef,
-	0x00001259, 0x000012c6, 0x00001318, 0x0000137a,
-	0x000013db, 0x00001429, 0x00001470, 0x00001495,
-	0x000014b5, 0x000014d5, 0x000014da, 0x000014de,
-	0x000014f7, 0x00001556, 0x0000157b, 0x00001585,
-	0x00001590, 0x000015f4,
-} // Size: 112 bytes
+	0x00001257, 0x000012c4, 0x00001316, 0x00001378,
+	0x000013b5, 0x000013da, 0x00001408, 0x00001469,
+	0x000014b7, 0x000014fe, 0x00001523, 0x00001543,
+	0x00001563, 0x00001568, 0x0000156c, 0x00001585,
+	0x000015e4, 0x00001609, 0x00001613, 0x0000161e,
+	0x00001682,
+} // Size: 124 bytes
 
-const nl_NLData string = "" + // Size: 5620 bytes
+const nl_NLData string = "" + // Size: 5762 bytes
 	"\x02Onbekend commando\x02Welkom bij Help My Pet Bot! 🐾\x0a\x0aIk ben je " +
 	"persoonlijke assistent voor huisdierverzorging, klaar om je te helpen be" +
 	"ter voor je harige vriend te zorgen. Ik kan je helpen met:\x0a\x0a• Vrag" +
@@ -1025,32 +1060,35 @@ const nl_NLData string = "" + // Size: 5620 bytes
 	"stoppen met het gebruik van de Service.\x0a\x0aAls u vragen of opmerking" +
 	"en heeft over deze Voorwaarden, of als u verdere verduidelijking nodig h" +
 	"eeft, neem dan contact op via <i>k.sysoev@me.com</i>.\x02Sorry, ik kan g" +
-	"een afbeeldingen, video's, audio of documenten verwerken. Stuur uw vraag" +
-	" alleen als tekst.\x02Het spijt me, maar uw bericht is te lang voor mij " +
-	"om te verwerken. Probeer het korter en beknopter te maken.\x02U heeft he" +
-	"t maximale aantal verzoeken per uur bereikt. Probeer het later opnieuw." +
+	"een video's, audio of documenten verwerken. Stuur alstublieft alleen uw " +
+	"vraag als tekst.\x02Het spijt me, maar uw bericht is te lang voor mij om" +
+	" te verwerken. Probeer het korter en beknopter te maken.\x02U heeft het " +
+	"maximale aantal verzoeken per uur bereikt. Probeer het later opnieuw." +
 	"\x02We hebben ons dagelijkse verzoeklimiet bereikt. Kom morgen terug wan" +
-	"neer ons budget is vernieuwd.\x02Sorry, ik heb een fout aangetroffen bij" +
-	" het verwerken van uw verzoek. Probeer het later opnieuw.\x02De opgegeve" +
-	"n datum kan niet in de toekomst liggen. Geef een geldige datum op.\x02Ge" +
-	"ef een datum op in het geldige formaat JJJJ-MM-DD (bijv. 2023-12-31)\x02" +
-	"Huisdierprofiel succesvol opgeslagen\x02Wat is de naam van je huisdier?" +
-	"\x02Wat voor soort huisdier heb je?\x02hond\x02kat\x02Welk ras is je hui" +
-	"sdier?\x02Wanneer is je huisdier geboren? Voer de datum in het formaat J" +
-	"JJJ-MM-DD in (bijv. 2010-12-31).\x02Wat is het geslacht van je huisdier?" +
-	"\x02mannelijk\x02vrouwelijk\x02Wat is het gewicht van je huisdier? Geef " +
-	"het gewicht op, gevolgd door de eenheid, bijvoorbeeld 5 kg"
+	"neer ons budget is vernieuwd.\x02Geef alstublieft uw vraag in tekstforma" +
+	"at samen met foto('s)\x02Geef alstublieft minstens één foto\x02Geef alst" +
+	"ublieft niet meer dan %[1]d foto('s)\x02Sorry, ik heb een fout aangetrof" +
+	"fen bij het verwerken van uw verzoek. Probeer het later opnieuw.\x02De o" +
+	"pgegeven datum kan niet in de toekomst liggen. Geef een geldige datum op" +
+	".\x02Geef een datum op in het geldige formaat JJJJ-MM-DD (bijv. 2023-12-" +
+	"31)\x02Huisdierprofiel succesvol opgeslagen\x02Wat is de naam van je hui" +
+	"sdier?\x02Wat voor soort huisdier heb je?\x02hond\x02kat\x02Welk ras is " +
+	"je huisdier?\x02Wanneer is je huisdier geboren? Voer de datum in het for" +
+	"maat JJJJ-MM-DD in (bijv. 2010-12-31).\x02Wat is het geslacht van je hui" +
+	"sdier?\x02mannelijk\x02vrouwelijk\x02Wat is het gewicht van je huisdier?" +
+	" Geef het gewicht op, gevolgd door de eenheid, bijvoorbeeld 5 kg"
 
-var pl_PLIndex = []uint32{ // 22 elements
+var pl_PLIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000013, 0x000002fe, 0x000011f7,
-	0x0000127c, 0x000012f8, 0x0000134e, 0x000013b1,
-	0x00001417, 0x00001462, 0x000014a2, 0x000014d1,
-	0x000014f4, 0x0000151b, 0x00001520, 0x00001524,
-	0x00001548, 0x000015a4, 0x000015ca, 0x000015d1,
-	0x000015d8, 0x0000162b,
-} // Size: 112 bytes
+	0x00001266, 0x000012e2, 0x00001338, 0x0000139b,
+	0x000013e4, 0x0000140f, 0x00001442, 0x000014a8,
+	0x000014f3, 0x00001533, 0x00001562, 0x00001585,
+	0x000015ac, 0x000015b1, 0x000015b5, 0x000015d9,
+	0x00001635, 0x0000165b, 0x00001662, 0x00001669,
+	0x000016bc,
+} // Size: 124 bytes
 
-const pl_PLData string = "" + // Size: 5675 bytes
+const pl_PLData string = "" + // Size: 5820 bytes
 	"\x02Nieznane polecenie\x02Witamy w Help My Pet Bot! 🐾\x0a\x0aJestem Twoi" +
 	"m osobistym asystentem ds. opieki nad zwierzętami, gotowym pomóc Ci lepi" +
 	"ej dbać o Twojego futrzanego przyjaciela. Mogę pomóc w:\x0a\x0a• Pytania" +
@@ -1115,32 +1153,35 @@ const pl_PLData string = "" + // Size: 5675 bytes
 	" z Usługi.\x0a\x0aJeśli masz jakiekolwiek pytania lub wątpliwości dotycz" +
 	"ące tych Warunków lub potrzebujesz dalszych wyjaśnień, skontaktuj się p" +
 	"od adresem <i>k.sysoev@me.com</i>.\x02Przepraszam, nie mogę przetwarzać " +
-	"obrazów, filmów, dźwięków ani dokumentów. Proszę wysłać swoje pytanie ty" +
-	"lko jako tekst.\x02Przepraszam, ale Twoja wiadomość jest dla mnie zbyt d" +
-	"ługa do przetworzenia. Spróbuj ją skrócić i bardziej zwięźle.\x02Osiągn" +
-	"ąłeś maksymalną liczbę żądań na godzinę. Spróbuj ponownie później.\x02O" +
-	"siągnęliśmy nasz dzienny limit żądań. Wróć jutro, gdy nasz budżet zostan" +
-	"ie odświeżony.\x02Przepraszam, napotkałem błąd podczas przetwarzania Two" +
-	"jego żądania. Spróbuj ponownie później.\x02Podana data nie może być w pr" +
-	"zyszłości. Proszę podaj poprawną datę.\x02Podaj datę w prawidłowym forma" +
-	"cie RRRR-MM-DD (np. 2023-12-31)\x02Profil zwierzątka został pomyślnie za" +
-	"pisany\x02Jak ma na imię Twoje zwierzątko?\x02Jakiego rodzaju zwierzątko" +
-	" posiadasz?\x02pies\x02kot\x02Jaka jest rasa Twojego zwierzątka?\x02Kied" +
-	"y urodziło się Twoje zwierzątko? Podaj datę w formacie RRRR-MM-DD (np. 2" +
-	"010-12-31).\x02Jaka jest płeć Twojego zwierzątka?\x02samiec\x02samica" +
-	"\x02Jaka jest waga Twojego zwierzątka? Podaj wagę, a następnie jednostkę" +
-	", np. 5 kg"
+	"wideo, audio ani dokumentów. Wyślij swoje pytanie tylko w formie tekstu." +
+	"\x02Przepraszam, ale Twoja wiadomość jest dla mnie zbyt długa do przetwo" +
+	"rzenia. Spróbuj ją skrócić i bardziej zwięźle.\x02Osiągnąłeś maksymalną " +
+	"liczbę żądań na godzinę. Spróbuj ponownie później.\x02Osiągnęliśmy nasz " +
+	"dzienny limit żądań. Wróć jutro, gdy nasz budżet zostanie odświeżony." +
+	"\x02Proszę, podaj swoje pytanie w formacie tekstowym wraz z zdjęciem(-am" +
+	"i)\x02Proszę, podaj przynajmniej jedno zdjęcie\x02Proszę, podaj nie więc" +
+	"ej niż %[1]d zdjęcie(-a)\x02Przepraszam, napotkałem błąd podczas przetwa" +
+	"rzania Twojego żądania. Spróbuj ponownie później.\x02Podana data nie moż" +
+	"e być w przyszłości. Proszę podaj poprawną datę.\x02Podaj datę w prawidł" +
+	"owym formacie RRRR-MM-DD (np. 2023-12-31)\x02Profil zwierzątka został po" +
+	"myślnie zapisany\x02Jak ma na imię Twoje zwierzątko?\x02Jakiego rodzaju " +
+	"zwierzątko posiadasz?\x02pies\x02kot\x02Jaka jest rasa Twojego zwierzątk" +
+	"a?\x02Kiedy urodziło się Twoje zwierzątko? Podaj datę w formacie RRRR-MM" +
+	"-DD (np. 2010-12-31).\x02Jaka jest płeć Twojego zwierzątka?\x02samiec" +
+	"\x02samica\x02Jaka jest waga Twojego zwierzątka? Podaj wagę, a następnie" +
+	" jednostkę, np. 5 kg"
 
-var pt_PTIndex = []uint32{ // 22 elements
+var pt_PTIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000015, 0x0000031e, 0x000011ef,
-	0x00001268, 0x000012de, 0x00001341, 0x000013b1,
-	0x0000140f, 0x00001461, 0x000014b6, 0x000014e8,
-	0x00001515, 0x00001542, 0x00001547, 0x0000154c,
-	0x0000157a, 0x000015ef, 0x0000161f, 0x00001625,
-	0x0000162c, 0x0000169d,
-} // Size: 112 bytes
+	0x00001262, 0x000012d8, 0x0000133b, 0x000013ab,
+	0x000013f9, 0x00001421, 0x0000144e, 0x000014ac,
+	0x000014fe, 0x00001553, 0x00001585, 0x000015b2,
+	0x000015df, 0x000015e4, 0x000015e9, 0x00001617,
+	0x0000168c, 0x000016bc, 0x000016c2, 0x000016c9,
+	0x0000173a,
+} // Size: 124 bytes
 
-const pt_PTData string = "" + // Size: 5789 bytes
+const pt_PTData string = "" + // Size: 5946 bytes
 	"\x02Comando desconhecido\x02Bem-vindo ao Help My Pet Bot! 🐾\x0a\x0aSou o" +
 	" seu assistente pessoal de cuidados com animais de estimação, pronto par" +
 	"a ajudá-lo a cuidar melhor do seu amigo peludo. Posso ajudá-lo com:\x0a" +
@@ -1204,35 +1245,38 @@ const pt_PTData string = "" + // Size: 5789 bytes
 	"estes Termos.\x0a9.2 Se você não concordar, deve cessar o uso do Serviço" +
 	" imediatamente.\x0a\x0aSe você tiver alguma dúvida ou preocupação em rel" +
 	"ação a estes Termos, ou se precisar de mais esclarecimentos, entre em co" +
-	"ntato pelo <i>k.sysoev@me.com</i>.\x02Desculpe, não posso processar imag" +
-	"ens, vídeos, áudios ou documentos. Por favor, envie sua pergunta apenas " +
-	"como texto.\x02Peço desculpa, mas a sua mensagem é muito longa para eu p" +
-	"rocessar. Por favor, tente torná-la mais curta e concisa.\x02Você atingi" +
-	"u o número máximo de solicitações por hora. Por favor, tente novamente m" +
-	"ais tarde.\x02Atingimos o nosso limite diário de pedidos. Por favor, vol" +
-	"te amanhã quando o nosso orçamento for atualizado.\x02Desculpe, encontre" +
-	"i um erro ao processar o seu pedido. Por favor, tente novamente mais tar" +
-	"de.\x02A data fornecida não pode estar no futuro. Por favor, forneça uma" +
-	" data válida.\x02Por favor, forneça uma data no formato válido AAAA-MM-D" +
-	"D (por exemplo, 2023-12-31)\x02Perfil do animal de estimação salvo com s" +
-	"ucesso\x02Qual é o nome do seu animal de estimação?\x02Que tipo de anima" +
-	"l de estimação você tem?\x02cão\x02gato\x02Qual é a raça do seu animal d" +
-	"e estimação?\x02Quando nasceu o seu animal de estimação? Por favor, insi" +
-	"ra a data no formato AAAA-MM-DD (por exemplo, 2010-12-31).\x02Qual é o g" +
-	"énero do seu animal de estimação?\x02macho\x02fêmea\x02Qual é o peso do" +
-	" seu animal de estimação? Por favor, especifique o peso seguido da unida" +
-	"de, por exemplo, 5 kg"
+	"ntato pelo <i>k.sysoev@me.com</i>.\x02Desculpe, não consigo processar ví" +
+	"deos, áudio ou documentos. Por favor, envie a sua pergunta apenas como t" +
+	"exto.\x02Peço desculpa, mas a sua mensagem é muito longa para eu process" +
+	"ar. Por favor, tente torná-la mais curta e concisa.\x02Você atingiu o nú" +
+	"mero máximo de solicitações por hora. Por favor, tente novamente mais ta" +
+	"rde.\x02Atingimos o nosso limite diário de pedidos. Por favor, volte ama" +
+	"nhã quando o nosso orçamento for atualizado.\x02Por favor, forneça a sua" +
+	" pergunta em formato de texto juntamente com foto(s)\x02Por favor, forne" +
+	"ça pelo menos uma foto\x02Por favor, forneça no máximo %[1]d foto(s)" +
+	"\x02Desculpe, encontrei um erro ao processar o seu pedido. Por favor, te" +
+	"nte novamente mais tarde.\x02A data fornecida não pode estar no futuro. " +
+	"Por favor, forneça uma data válida.\x02Por favor, forneça uma data no fo" +
+	"rmato válido AAAA-MM-DD (por exemplo, 2023-12-31)\x02Perfil do animal de" +
+	" estimação salvo com sucesso\x02Qual é o nome do seu animal de estimação" +
+	"?\x02Que tipo de animal de estimação você tem?\x02cão\x02gato\x02Qual é " +
+	"a raça do seu animal de estimação?\x02Quando nasceu o seu animal de esti" +
+	"mação? Por favor, insira a data no formato AAAA-MM-DD (por exemplo, 2010" +
+	"-12-31).\x02Qual é o género do seu animal de estimação?\x02macho\x02fême" +
+	"a\x02Qual é o peso do seu animal de estimação? Por favor, especifique o " +
+	"peso seguido da unidade, por exemplo, 5 kg"
 
-var ru_RUIndex = []uint32{ // 22 elements
+var ru_RUIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000026, 0x000004d2, 0x00001eda,
-	0x00001fc4, 0x00002086, 0x0000211f, 0x000021eb,
-	0x00002295, 0x00002329, 0x000023b0, 0x000023ee,
-	0x0000241d, 0x00002455, 0x00002462, 0x0000246d,
-	0x000024a5, 0x00002549, 0x0000257b, 0x0000258a,
-	0x00002599, 0x00002641,
-} // Size: 112 bytes
+	0x00001fba, 0x0000207c, 0x00002115, 0x000021e1,
+	0x00002274, 0x000022cf, 0x0000232d, 0x000023d7,
+	0x0000246b, 0x000024f2, 0x00002530, 0x0000255f,
+	0x00002597, 0x000025a4, 0x000025af, 0x000025e7,
+	0x0000268b, 0x000026bd, 0x000026cc, 0x000026db,
+	0x00002783,
+} // Size: 124 bytes
 
-const ru_RUData string = "" + // Size: 9793 bytes
+const ru_RUData string = "" + // Size: 10115 bytes
 	"\x02Неизвестная команда\x02Добро пожаловать в Help My Pet Bot! 🐾\x0a\x0a" +
 	"Я ваш личный помощник по уходу за домашними животными, готов помочь вам" +
 	" лучше заботиться о вашем пушистом друге. Я могу помочь вам с:\x0a\x0a• " +
@@ -1297,33 +1341,37 @@ const ru_RUData string = "" + // Size: 9793 bytes
 	"дленно прекратить использование Сервиса.\x0a\x0aЕсли у вас есть вопросы" +
 	" или сомнения по поводу этих Условий, или если вам нужна дополнительная " +
 	"информация, пожалуйста, свяжитесь с нами по адресу <i>k.sysoev@me.com</" +
-	"i>.\x02Извините, я не могу обрабатывать изображения, видео, аудио или до" +
-	"кументы. Пожалуйста, отправьте ваш вопрос только в виде текста.\x02Изви" +
-	"ните, но ваше сообщение слишком длинное для обработки. Попробуйте сдела" +
-	"ть его более кратким и сжатым.\x02Вы достигли максимального количества " +
-	"запросов в час. Пожалуйста, попробуйте позже.\x02Мы достигли нашего еже" +
-	"дневного лимита запросов. Пожалуйста, вернитесь завтра, когда наш бюдже" +
-	"т будет обновлен.\x02Извините, я столкнулся с ошибкой при обработке ваш" +
-	"его запроса. Пожалуйста, попробуйте позже.\x02Указанная дата не может б" +
-	"ыть в будущем. Пожалуйста, укажите действительную дату.\x02Пожалуйста, " +
-	"укажите дату в допустимом формате ГГГГ-ММ-ДД (например, 2023-12-31)\x02" +
-	"Профиль питомца успешно сохранен\x02Как зовут вашего питомца?\x02Какое " +
-	"у вас домашнее животное?\x02собака\x02кошка\x02Какая порода у вашего пи" +
-	"томца?\x02Когда родился ваш питомец? Пожалуйста, введите дату в формате" +
-	" ГГГГ-ММ-ДД (например, 2010-12-31).\x02Какой пол у вашего питомца?\x02му" +
-	"жской\x02женский\x02Какой вес у вашего питомца? Укажите вес, за которым" +
-	" следует единица измерения, например, 5 кг"
+	"i>.\x02Извините, я не могу обрабатывать видео, аудио или документы. Пожа" +
+	"луйста, отправьте свой вопрос только в текстовом формате.\x02Извините, " +
+	"но ваше сообщение слишком длинное для обработки. Попробуйте сделать его" +
+	" более кратким и сжатым.\x02Вы достигли максимального количества запросо" +
+	"в в час. Пожалуйста, попробуйте позже.\x02Мы достигли нашего ежедневног" +
+	"о лимита запросов. Пожалуйста, вернитесь завтра, когда наш бюджет будет" +
+	" обновлен.\x02Пожалуйста, предоставьте свой вопрос в текстовом формате в" +
+	"месте с фотографиями\x02Пожалуйста, предоставьте хотя бы одну фотографи" +
+	"ю\x02Пожалуйста, предоставьте не более %[1]d фотографии(й)\x02Извините," +
+	" я столкнулся с ошибкой при обработке вашего запроса. Пожалуйста, попроб" +
+	"уйте позже.\x02Указанная дата не может быть в будущем. Пожалуйста, укаж" +
+	"ите действительную дату.\x02Пожалуйста, укажите дату в допустимом форма" +
+	"те ГГГГ-ММ-ДД (например, 2023-12-31)\x02Профиль питомца успешно сохране" +
+	"н\x02Как зовут вашего питомца?\x02Какое у вас домашнее животное?\x02соб" +
+	"ака\x02кошка\x02Какая порода у вашего питомца?\x02Когда родился ваш пит" +
+	"омец? Пожалуйста, введите дату в формате ГГГГ-ММ-ДД (например, 2010-12-" +
+	"31).\x02Какой пол у вашего питомца?\x02мужской\x02женский\x02Какой вес у" +
+	" вашего питомца? Укажите вес, за которым следует единица измерения, напр" +
+	"имер, 5 кг"
 
-var tr_TRIndex = []uint32{ // 22 elements
+var tr_TRIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000011, 0x000002e4, 0x000011c8,
-	0x00001243, 0x000012af, 0x00001302, 0x0000135e,
-	0x000013c1, 0x00001405, 0x00001461, 0x0000148d,
-	0x000014af, 0x000014d4, 0x000014db, 0x000014e0,
-	0x00001503, 0x0000156b, 0x00001592, 0x00001598,
-	0x0000159e, 0x0000160a,
-} // Size: 112 bytes
+	0x00001236, 0x000012a2, 0x000012f5, 0x00001351,
+	0x00001395, 0x000013bc, 0x000013e8, 0x0000144b,
+	0x0000148f, 0x000014eb, 0x00001517, 0x00001539,
+	0x0000155e, 0x00001565, 0x0000156a, 0x0000158d,
+	0x000015f5, 0x0000161c, 0x00001622, 0x00001628,
+	0x00001694,
+} // Size: 124 bytes
 
-const tr_TRData string = "" + // Size: 5642 bytes
+const tr_TRData string = "" + // Size: 5780 bytes
 	"\x02Bilinmeyen komut\x02Help My Pet Bot'a hoş geldiniz! 🐾\x0a\x0aBen siz" +
 	"in kişisel evcil hayvan bakım asistanınızım, tüylü dostunuza daha iyi ba" +
 	"kmanıza yardımcı olmaya hazırım. Size şu konularda yardımcı olabilirim:" +
@@ -1385,32 +1433,35 @@ const tr_TRData string = "" + // Size: 5642 bytes
 	"meti kullanmayı derhal bırakmalısınız.\x0a\x0aBu Şartlarla ilgili herhan" +
 	"gi bir sorunuz veya endişeniz varsa veya daha fazla açıklama gerekiyorsa" +
 	", lütfen <i>k.sysoev@me.com</i> adresinden iletişime geçin.\x02Üzgünüm, " +
-	"resimleri, videoları, sesleri veya belgeleri işleyemem. Lütfen sorununuz" +
-	"u yalnızca metin olarak gönderin.\x02Özür dilerim, ancak mesajınızı işle" +
-	"mem için çok uzun. Lütfen daha kısa ve öz olmasını deneyin.\x02Saatlik m" +
-	"aksimum istek sayısına ulaştınız. Lütfen daha sonra tekrar deneyin.\x02G" +
-	"ünlük istek limitimize ulaştık. Lütfen yarın geri gelin, bütçemiz yenil" +
-	"endiğinde.\x02Üzgünüm, isteğinizi işlerken bir hata ile karşılaştım. Lüt" +
-	"fen daha sonra tekrar deneyin.\x02Sağlanan tarih gelecekte olamaz. Lütfe" +
-	"n geçerli bir tarih girin.\x02Lütfen geçerli bir biçimde YYYY-AA-GG (örn" +
-	"eğin, 2023-12-31) biçiminde bir tarih girin\x02Evcil hayvan profili başa" +
-	"rıyla kaydedildi\x02Evcil hayvanınızın adı nedir?\x02Hangi türde evcil h" +
-	"ayvanınız var?\x02köpek\x02kedi\x02Evcil hayvanınızın cinsi nedir?\x02Ev" +
-	"cil hayvanınız ne zaman doğdu? Lütfen tarihi YYYY-AA-GG (örneğin, 2010-1" +
-	"2-31) biçiminde girin.\x02Evcil hayvanınızın cinsiyeti nedir?\x02erkek" +
-	"\x02dişi\x02Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte a" +
-	"ğırlığı belirtin, örneğin, 5 kg"
+	"videoları, sesleri veya belgeleri işleyemem. Lütfen sorunuzu yalnızca me" +
+	"tin olarak gönderin.\x02Özür dilerim, ancak mesajınızı işlemem için çok " +
+	"uzun. Lütfen daha kısa ve öz olmasını deneyin.\x02Saatlik maksimum istek" +
+	" sayısına ulaştınız. Lütfen daha sonra tekrar deneyin.\x02Günlük istek l" +
+	"imitimize ulaştık. Lütfen yarın geri gelin, bütçemiz yenilendiğinde.\x02" +
+	"Lütfen sorunuzu metin formatında ve fotoğraflarla birlikte verin\x02Lütf" +
+	"en en az bir fotoğraf sağlayın\x02Lütfen en fazla %[1]d fotoğraf sağlayı" +
+	"n\x02Üzgünüm, isteğinizi işlerken bir hata ile karşılaştım. Lütfen daha " +
+	"sonra tekrar deneyin.\x02Sağlanan tarih gelecekte olamaz. Lütfen geçerli" +
+	" bir tarih girin.\x02Lütfen geçerli bir biçimde YYYY-AA-GG (örneğin, 202" +
+	"3-12-31) biçiminde bir tarih girin\x02Evcil hayvan profili başarıyla kay" +
+	"dedildi\x02Evcil hayvanınızın adı nedir?\x02Hangi türde evcil hayvanınız" +
+	" var?\x02köpek\x02kedi\x02Evcil hayvanınızın cinsi nedir?\x02Evcil hayva" +
+	"nınız ne zaman doğdu? Lütfen tarihi YYYY-AA-GG (örneğin, 2010-12-31) biç" +
+	"iminde girin.\x02Evcil hayvanınızın cinsiyeti nedir?\x02erkek\x02dişi" +
+	"\x02Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte ağırlığı " +
+	"belirtin, örneğin, 5 kg"
 
-var uk_UAIndex = []uint32{ // 22 elements
+var uk_UAIndex = []uint32{ // 25 elements
 	0x00000000, 0x00000020, 0x0000051c, 0x00001d5f,
-	0x00001e48, 0x00001f34, 0x00001fda, 0x00002098,
-	0x0000214e, 0x000021d3, 0x0000225d, 0x000022a1,
-	0x000022d2, 0x0000231a, 0x00002327, 0x0000232e,
-	0x00002363, 0x00002410, 0x00002443, 0x00002454,
-	0x00002461, 0x000024fc,
-} // Size: 112 bytes
+	0x00001e36, 0x00001f22, 0x00001fc8, 0x00002086,
+	0x00002114, 0x00002169, 0x000021be, 0x00002274,
+	0x000022f9, 0x00002383, 0x000023c7, 0x000023f8,
+	0x00002440, 0x0000244d, 0x00002454, 0x00002489,
+	0x00002536, 0x00002569, 0x0000257a, 0x00002587,
+	0x00002622,
+} // Size: 124 bytes
 
-const uk_UAData string = "" + // Size: 9468 bytes
+const uk_UAData string = "" + // Size: 9762 bytes
 	"\x02Невідома команда\x02Ласкаво просимо до Help My Pet Bot! 🐾\x0a\x0aЯ в" +
 	"аш особистий помічник з догляду за домашніми тваринами, готовий допомог" +
 	"ти вам краще піклуватися про вашого пухнастого друга. Я можу допомогти " +
@@ -1472,22 +1523,24 @@ const uk_UAData string = "" + // Size: 9468 bytes
 	"джуєтеся, ви повинні негайно припинити використання Сервісу.\x0a\x0aЯкщ" +
 	"о у вас є будь-які питання або занепокоєння щодо цих Умов, або якщо вам" +
 	" потрібні додаткові роз'яснення, будь ласка, зв'яжіться за адресою <i>k." +
-	"sysoev@me.com</i>.\x02Вибачте, я не можу обробляти зображення, відео, ау" +
-	"діо або документи. Будь ласка, надішліть своє запитання лише у вигляді " +
-	"тексту.\x02Вибачте, але ваше повідомлення занадто довге для мене, щоб о" +
-	"бробити. Будь ласка, спробуйте зробити його коротшим і більш стислим." +
-	"\x02Ви досягли максимальної кількості запитів за годину. Будь ласка, спр" +
-	"обуйте ще раз пізніше.\x02Ми досягли нашого щоденного ліміту запитів. Б" +
-	"удь ласка, повертайтеся завтра, коли оновиться наш бюджет.\x02Вибачте, " +
-	"я стикнувся з помилкою під час обробки вашого запиту. Будь ласка, спроб" +
-	"уйте ще раз пізніше.\x02Наданий дата не може бути у майбутньому. Будь л" +
-	"аска, вкажіть дійсну дату.\x02Будь ласка, вкажіть дату у правильному фо" +
-	"рматі РРРР-ММ-ДД (наприклад, 2023-12-31)\x02Профіль улюбленця успішно з" +
-	"бережено\x02Як звати вашого улюбленця?\x02Якого типу у вас є домашній у" +
-	"любленець?\x02собака\x02кіт\x02Яка порода вашого улюбленця?\x02Коли нар" +
-	"одився ваш улюбленець? Будь ласка, введіть дату у форматі РРРР-ММ-ДД (н" +
-	"априклад, 2010-12-31).\x02Яка стать вашого улюбленця?\x02чоловіча\x02жі" +
-	"ноча\x02Яка вага вашого улюбленця? Будь ласка, вкажіть вагу, вказавши о" +
-	"диницю, наприклад, 5 кг"
+	"sysoev@me.com</i>.\x02Вибачте, я не можу обробляти відео, аудіо або доку" +
+	"менти. Будь ласка, надішліть своє питання лише у текстовому форматі." +
+	"\x02Вибачте, але ваше повідомлення занадто довге для мене, щоб обробити." +
+	" Будь ласка, спробуйте зробити його коротшим і більш стислим.\x02Ви дося" +
+	"гли максимальної кількості запитів за годину. Будь ласка, спробуйте ще " +
+	"раз пізніше.\x02Ми досягли нашого щоденного ліміту запитів. Будь ласка," +
+	" повертайтеся завтра, коли оновиться наш бюджет.\x02Будь ласка, надайте " +
+	"своє питання у текстовому форматі разом з фотографією(ми)\x02Будь ласка" +
+	", надайте принаймні одну фотографію\x02Будь ласка, надайте не більше %[1" +
+	"]d фотографії(й)\x02Вибачте, я стикнувся з помилкою під час обробки вашо" +
+	"го запиту. Будь ласка, спробуйте ще раз пізніше.\x02Наданий дата не мож" +
+	"е бути у майбутньому. Будь ласка, вкажіть дійсну дату.\x02Будь ласка, в" +
+	"кажіть дату у правильному форматі РРРР-ММ-ДД (наприклад, 2023-12-31)" +
+	"\x02Профіль улюбленця успішно збережено\x02Як звати вашого улюбленця?" +
+	"\x02Якого типу у вас є домашній улюбленець?\x02собака\x02кіт\x02Яка поро" +
+	"да вашого улюбленця?\x02Коли народився ваш улюбленець? Будь ласка, введ" +
+	"іть дату у форматі РРРР-ММ-ДД (наприклад, 2010-12-31).\x02Яка стать ваш" +
+	"ого улюбленця?\x02чоловіча\x02жіноча\x02Яка вага вашого улюбленця? Будь" +
+	" ласка, вкажіть вагу, вказавши одиницю, наприклад, 5 кг"
 
-	// Total table size 107656 bytes (105KiB); checksum: 5F9BF1AF
+	// Total table size 110769 bytes (108KiB); checksum: DE59D3CB
