@@ -76,6 +76,10 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, re
 		return nil, fmt.Errorf("failed to get AI response: %w", err)
 	}
 
+	if response.Media != "" {
+		conv.AddMessage("media_description", response.Media)
+	}
+
 	// Add AI's response to conv
 	conv.AddMessage("assistant", response.Text)
 

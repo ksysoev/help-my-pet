@@ -68,16 +68,7 @@ func (p *Provider) Call(ctx context.Context, prompt string, imgs []*message.Imag
 		slog.String("format_instructions", formatInstructions),
 		slog.String("question", prompt))
 
-	if len(imgs) > 0 {
-		imgDescription, err := p.llm.DescribeImages(ctx, imgs)
-		if err != nil {
-			return nil, fmt.Errorf("failed to describe images: %w", err)
-		}
-
-		prompt = fmt.Sprintf("Image Analysis:\n%s\n\n%s", imgDescription, prompt)
-	}
-
-	response, err := p.llm.Call(ctx, formatInstructions, p.systemInfo()+prompt, []*message.Image{})
+	response, err := p.llm.Call(ctx, formatInstructions, p.systemInfo()+prompt, imgs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}

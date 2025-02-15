@@ -2,9 +2,9 @@ package message
 
 // LLMResult represents a structured response from the LLM
 type LLMResult struct {
-	Text         string     `json:"text"`                   // Main response text
-	Questions    []Question `json:"questions"`              // Optional follow-up questions
-	Observations string     `json:"observations,omitempty"` // Optional observations
+	Text      string     `json:"text"`            // Main response text
+	Questions []Question `json:"questions"`       // Optional follow-up questions
+	Media     string     `json:"media,omitempty"` // Optional media description
 }
 
 // Question represents a follow-up question with optional predefined answers
