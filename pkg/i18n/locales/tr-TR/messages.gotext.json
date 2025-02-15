@@ -42,14 +42,14 @@
             "translation": "Lütfen sorunuzu metin formatında ve fotoğraflarla birlikte verin"
         },
         {
-            "id": "Please, provide at least one image",
-            "message": "Please, provide at least one image",
-            "translation": "Lütfen en az bir resim sağlayın"
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Lütfen en az bir fotoğraf sağlayın"
         },
         {
-            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "translation": "Lütfen {MaxAllowedPhotos} resimden fazlasını sağlamayın",
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Lütfen en fazla {MaxAllowedPhotos} fotoğraf sağlayın",
             "placeholders": [
                 {
                     "id": "MaxAllowedPhotos",

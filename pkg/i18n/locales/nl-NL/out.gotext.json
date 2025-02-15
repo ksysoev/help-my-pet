@@ -42,14 +42,14 @@
             "translation": "Geef alstublieft uw vraag in tekstformaat samen met foto('s)"
         },
         {
-            "id": "Please, provide at least one image",
-            "message": "Please, provide at least one image",
-            "translation": "Geef alstublieft minstens één afbeelding"
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Geef alstublieft minstens één foto"
         },
         {
-            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "translation": "Geef alstublieft niet meer dan {MaxAllowedPhotos} afbeelding(en)",
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Geef alstublieft niet meer dan {MaxAllowedPhotos} foto('s)",
             "placeholders": [
                 {
                     "id": "MaxAllowedPhotos",

@@ -36,11 +36,11 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 
 	if len(mediaGroup.PhotoIDs) == 0 {
 		// should be impossible to reach this point in real life
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide at least one image")), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide at least one photo")), nil
 	}
 
 	if len(mediaGroup.PhotoIDs) > maxAllowedPhotos {
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide no more than %d image(s)", maxAllowedPhotos)), nil
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Please, provide no more than %d photo(s)", maxAllowedPhotos)), nil
 	}
 
 	photoData := make([]*message.Image, 0, len(mediaGroup.PhotoIDs))

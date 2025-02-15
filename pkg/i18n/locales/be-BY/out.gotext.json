@@ -42,13 +42,13 @@
             "translation": "Калі ласка, прадастаўце ваша пытанне ў тэкставым фармаце разам з фотаздымкамі"
         },
         {
-            "id": "Please, provide at least one image",
-            "message": "Please, provide at least one image",
-            "translation": "Калі ласка, прадастаўце па крайняй меры адзін малюнак"
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Калі ласка, прадастаўце па крайняй меры адзін фотаздымак"
         },
         {
-            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
             "translation": "Калі ласка, прадастаўце не больш за {MaxAllowedPhotos} фотаздымкаў",
             "placeholders": [
                 {

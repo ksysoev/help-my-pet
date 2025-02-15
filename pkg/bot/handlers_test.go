@@ -27,6 +27,7 @@ func TestService_handleMessage(t *testing.T) {
 		expectError  bool
 		isStart      bool
 		hasPhoto     bool
+		hasVideo     bool
 	}{
 		{
 			name:         "successful response with keyboard",
@@ -110,6 +111,17 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Please, provide your question in text format along with photo(s)",
 		},
 		{
+			name:         "message with video",
+			message:      "",
+			hasVideo:     true,
+			aiResponse:   nil,
+			aiErr:        nil,
+			expectError:  false,
+			userID:       123,
+			langCode:     "en",
+			expectedText: "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
+		},
+		{
 			name:         "message too long",
 			message:      "What food is good for cats? " + strings.Repeat("Very long message. ", 1000),
 			aiResponse:   nil,
@@ -145,6 +157,10 @@ func TestService_handleMessage(t *testing.T) {
 				msg.Photo = []tgbotapi.PhotoSize{{FileID: "test-photo"}}
 			}
 
+			if tt.hasVideo {
+				msg.Video = &tgbotapi.Video{FileID: "test-video"}
+			}
+
 			// Set From field only if userID is not 0
 			if tt.userID != 0 {
 				msg.From = &tgbotapi.User{
@@ -153,7 +169,7 @@ func TestService_handleMessage(t *testing.T) {
 				}
 			}
 
-			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !strings.Contains(tt.name, "message too long") {
+			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !tt.hasVideo && !strings.Contains(tt.name, "message too long") {
 				expectedRequest := &message.UserMessage{
 					UserID: "123",
 					ChatID: "123",
@@ -170,7 +186,7 @@ func TestService_handleMessage(t *testing.T) {
 			}
 
 			assert.NoError(t, err)
-			if tt.message == "" && !tt.hasPhoto {
+			if tt.message == "" && !tt.hasPhoto && !tt.hasVideo {
 				assert.Equal(t, tgbotapi.MessageConfig{}, msgConfig)
 				return
 			}

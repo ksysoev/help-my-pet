@@ -42,14 +42,14 @@
             "translation": "Por favor, proporcione su pregunta en formato de texto junto con foto(s)"
         },
         {
-            "id": "Please, provide at least one image",
-            "message": "Please, provide at least one image",
-            "translation": "Por favor, proporcione al menos una imagen"
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Por favor, proporcione al menos una foto"
         },
         {
-            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "translation": "Por favor, no proporcione más de {MaxAllowedPhotos} imagen(es)",
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Por favor, proporcione no más de {MaxAllowedPhotos} foto(s)",
             "placeholders": [
                 {
                     "id": "MaxAllowedPhotos",

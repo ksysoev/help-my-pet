@@ -58,16 +58,16 @@
             "fuzzy": true
         },
         {
-            "id": "Please, provide at least one image",
-            "message": "Please, provide at least one image",
-            "translation": "Please, provide at least one image",
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "Please, provide at least one photo",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
-            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "translation": "Please, provide no more than {MaxAllowedPhotos} image(s)",
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {

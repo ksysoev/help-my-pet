@@ -42,14 +42,14 @@
             "translation": "텍스트 형식으로 질문과 함께 사진을 제공해 주세요"
         },
         {
-            "id": "Please, provide at least one image",
-            "message": "Please, provide at least one image",
-            "translation": "최소한 하나의 이미지를 제공해 주세요"
+            "id": "Please, provide at least one photo",
+            "message": "Please, provide at least one photo",
+            "translation": "최소한 한 장의 사진을 제공해 주세요"
         },
         {
-            "id": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "message": "Please, provide no more than {MaxAllowedPhotos} image(s)",
-            "translation": "이미지를 {MaxAllowedPhotos}개 이상 제공하지 마세요",
+            "id": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "message": "Please, provide no more than {MaxAllowedPhotos} photo(s)",
+            "translation": "사진을 {MaxAllowedPhotos}장 이하로 제공해 주세요",
             "placeholders": [
                 {
                     "id": "MaxAllowedPhotos",
