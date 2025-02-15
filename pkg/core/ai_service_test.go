@@ -284,6 +284,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(&message.LLMResult{
 						Text:      "Dogs need different food...",
 						Questions: []message.Question{},
+						Media:     "test media",
 					}, nil)
 
 				// Expect second save after LLM response
