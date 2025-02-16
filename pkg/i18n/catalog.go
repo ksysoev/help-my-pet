@@ -53,1199 +53,1374 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"<b>Terms and Conditions</b>\n<i>Last updated: 30.01.2025</i>\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n<b>1. Nature of the Service</b>\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n<b>2. No Veterinary-Client-Patient Relationship</b>\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n<b>3. Limitation of Liability</b>\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n<b>4. No Warranty</b>\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n<b>5. User Responsibilities</b>\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n<b>6. International Use</b>\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n<b>7. Modifications</b>\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n<b>8. Governing Law and Dispute Resolution</b>\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n<b>9. Acceptance of Terms</b>\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at <i>k.sysoev@me.com</i>.": 2,
-	"I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.": 4,
-	"Pet profile saved successfully":                                                               13,
-	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                      12,
-	"Please, provide at least one photo":                                                           8,
-	"Please, provide no more than %d photo(s)":                                                     9,
-	"Please, provide your question in text format along with photo(s)":                             7,
-	"Provided date cannot be in the future. Please provide a valid date.":                          11,
-	"Sorry, I cannot process videos, audio, or documents. Please send your question as text only.": 3,
-	"Sorry, I encountered an error while processing your request. Please try again later.":         10,
-	"Unknown command": 0,
-	"We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.": 6,
-	"Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:\n\n• Pet health and behavior questions\n• Diet and nutrition advice\n• Training tips and techniques\n• General pet care guidance\n\nSimply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet!": 1,
-	"What breed is your pet?":    18,
-	"What is your pet's gender?": 20,
-	"What is your pet's name?":   14,
-	"What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg": 23,
-	"What type of pet do you have?": 15,
-	"When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).": 19,
-	"You have reached the maximum number of requests per hour. Please try again later.":          5,
-	"cat":    17,
-	"dog":    16,
-	"female": 22,
-	"male":   21,
+	"<b>Help My Pet Bot Commands</b>:\n/start - Start the conversation with the bot\n/terms - View the Terms and Conditions of the service\n/editprofile - Update your pet's profile information, such as name, age, breed, etc. This information helps the bot provide more accurate advice.\n/cancel - Cancel the current questionnaire, if any is in progress (e.g., when you want to start over or change your question)\n/help - View this help message": 4,
+	"<b>Terms and Conditions</b>\n<i>Last updated: 30.01.2025</i>\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n<b>1. Nature of the Service</b>\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n<b>2. No Veterinary-Client-Patient Relationship</b>\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n<b>3. Limitation of Liability</b>\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n<b>4. No Warranty</b>\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n<b>5. User Responsibilities</b>\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n<b>6. International Use</b>\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n<b>7. Modifications</b>\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n<b>8. Governing Law and Dispute Resolution</b>\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n<b>9. Acceptance of Terms</b>\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at <i>k.sysoev@me.com</i>.": 3,
+	"I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.": 6,
+	"Pet profile saved successfully":                                                               15,
+	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                      14,
+	"Please, provide at least one photo":                                                           10,
+	"Please, provide no more than %d photo(s)":                                                     11,
+	"Please, provide your question in text format along with photo(s)":                             9,
+	"Provided date cannot be in the future. Please provide a valid date.":                          13,
+	"Questionary is cancelled":                                                                     0,
+	"Sorry, I cannot process videos, audio, or documents. Please send your question as text only.": 5,
+	"Sorry, I encountered an error while processing your request. Please try again later.":         12,
+	"Unknown command": 1,
+	"We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.": 8,
+	"Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can analyze photos of your pet and assist you with:\n\n- Pet health and behavior questions - feel free to share photos of any concerning symptoms or behaviors\n- Diet and nutrition advice, including photos of food or treats you're considering\n- Training tips and techniques - you can send pictures of specific situations you need help with\n- General pet care guidance, with photo analysis of your pet's environment or supplies\n\nSimply type your question or send photos along with your concerns about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. You can send multiple photos if needed to better show the situation.\n\nRemember, while I can offer guidance and analyze photos, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet - with or without photos!": 2,
+	"What breed is your pet?":    20,
+	"What is your pet's gender?": 22,
+	"What is your pet's name?":   16,
+	"What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg": 25,
+	"What type of pet do you have?": 17,
+	"When was your pet born? Please enter the date in the format YYYY-MM-DD (e.g., 2010-12-31).": 21,
+	"You have reached the maximum number of requests per hour. Please try again later.":          7,
+	"cat":    19,
+	"dog":    18,
+	"female": 24,
+	"male":   23,
 }
 
-var be_BYIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000022, 0x0000050d, 0x00001e94,
-	0x00001f88, 0x00002075, 0x00002127, 0x000021df,
-	0x0000226f, 0x000022d8, 0x00002336, 0x000023e4,
-	0x00002495, 0x00002529, 0x0000257a, 0x000025ba,
-	0x000025e6, 0x000025f3, 0x000025fa, 0x0000262e,
-	0x000026e4, 0x00002715, 0x00002728, 0x00002735,
-	0x000027e4,
-} // Size: 124 bytes
+var be_BYIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000022, 0x00000044, 0x000008ef,
+	0x00002276, 0x00002570, 0x00002664, 0x00002751,
+	0x00002803, 0x000028bb, 0x0000294b, 0x000029b4,
+	0x00002a12, 0x00002ac0, 0x00002b71, 0x00002c05,
+	0x00002c56, 0x00002c96, 0x00002cc2, 0x00002ccf,
+	0x00002cd6, 0x00002d0a, 0x00002dc0, 0x00002df1,
+	0x00002e04, 0x00002e11, 0x00002ec0,
+} // Size: 132 bytes
 
-const be_BYData string = "" + // Size: 10212 bytes
-	"\x02Невядомая каманда\x02Сардэчна запрашаем у Help My Pet Bot! 🐾\x0a\x0a" +
-	"Я ваш асабісты памочнік па догляду за хатнімі жывёламі, гатовы дапамагч" +
-	"ы вам лепш клапаціцца пра вашага пухнатага сябра. Я магу дапамагчы вам " +
-	"з:\x0a\x0a• Пытанні здароўя і паводзін хатніх жывёл\x0a• Рэкамендацыі п" +
-	"а харчаванні і дыетах\x0a• Парады і метады дрэсіроўкі\x0a• Агульныя рэк" +
-	"амендацыі па догляду за хатнімі жывёламі\x0a\x0aПроста напішыце сваё пы" +
-	"танне або праблему, звязаную з вашым хатнім жывёлам, і я дам карысныя, " +
-	"інфарматыўныя адказы на аснове надзейных ведаў ветэрынараў. Памятайце, " +
-	"што, хоць я магу даць парады, у выпадку сур'ёзных медыцынскіх праблем з" +
-	"аўсёды звяртайцеся да ветэрынара.\x0a\x0aКаб пачаць, проста задайце мне" +
-	" любое пытанне пра вашага хатняга жывёлу!\x02<b>Умовы і Палажэнні</b>" +
-	"\x0a<i>Апошняе абнаўленне: 30.01.2025</i>\x0a\x0aДзякуй за выкарыстанне " +
-	"нашага чат-бота для ветэрынарных кансультацый («Сэрвіс»). Доступ да гэт" +
-	"ага Сэрвісу або яго выкарыстанне азначае вашу згоду з наступнымі ўмовам" +
-	"і і палажэннямі («Умовы»). Калі вы не згодныя з гэтымі Умовамі, калі ла" +
-	"ска, неадкладна спыніце выкарыстанне.\x0a\x0a<b>1. Характар Сэрвісу</b>" +
-	"\x0a1.1 Сэрвіс прадастаўляе агульную інфармацыю, рэкамендацыі і парады п" +
-	"а догляду за хатнімі жывёламі, уключаючы (але не абмяжоўваючыся) харчав" +
-	"анне, паводзіны і дрэсіроўку.\x0a1.2 Сэрвіс не з'яўляецца заменай прафе" +
-	"сійнай ветэрынарнай дыягностыкі, лячэння або догляду. Заўсёды звяртайце" +
-	"ся за парадай да ліцэнзаванага ветэрынара па любых пытаннях, якія тычац" +
-	"ца здароўя вашага хатняга жывёлы.\x0a\x0a<b>2. Адсутнасць адносін ветэр" +
-	"ынар-кліент-пацыент</b>\x0a2.1 Выкарыстанне Сэрвісу або ўзаемадзеянне з" +
-	" нашым AI-памочнікам не стварае адносін ветэрынар-кліент-пацыент.\x0a2.2" +
-	" Любыя парады або рэкамендацыі, прадастаўленыя Сэрвісам, заснаваны на аб" +
-	"межаванай інфармацыі і павінны разглядацца толькі як агульная інфармацы" +
-	"я.\x0a\x0a<b>3. Абмежаванне адказнасці</b>\x0a3.1 Вы прызнаеце і згаджа" +
-	"ецеся, што выкарыстанне Сэрвісу ажыццяўляецца на ваш уласны рызыка.\x0a" +
-	"3.2 Ні пры якіх абставінах уладальнікі, распрацоўшчыкі або ліцэнзіяры Сэ" +
-	"рвісу не нясуць адказнасці за любыя прамыя, ускосныя, выпадковыя, спецы" +
-	"яльныя або наступныя страты, якія ўзнікаюць у сувязі з вашым доступам д" +
-	"а Сэрвісу або яго выкарыстаннем.\x0a3.3 Вы разумееце, што рашэнні аднос" +
-	"на догляду за вашым хатнім жывёлам і любыя вынікі, якія вынікаюць з гэт" +
-	"ага, з'яўляюцца вашай асабістай адказнасцю. Калі ў вас ёсць сумневы адн" +
-	"осна дабрабыту вашага хатняга жывёлы або яго здароўя, вы павінны неадкл" +
-	"адна звярнуцца да ліцэнзаванага ветэрынара.\x0a\x0a<b>4. Адсутнасць гар" +
-	"антый</b>\x0a4.1 Сэрвіс прадастаўляецца на ўмовах «як ёсць» і «як дасту" +
-	"пна» без якіх-небудзь гарантый, выказаных або маўклівых.\x0a4.2 Мы не г" +
-	"арантуем, што Сэрвіс будзе бесперапынным, без памылак, бяспечным або бе" +
-	"з вірусаў.\x0a\x0a<b>5. Абавязкі карыстальніка</b>\x0a5.1 Вы нясеце адк" +
-	"азнасць за прадастаўленне дакладнай і поўнай інфармацыі пра вашага хатн" +
-	"яга жывёлы пры запыце парады.\x0a5.2 Вы павінны пераканацца, што ўсе пы" +
-	"танні, апісанні і дадзеныя, якія вы прадастаўляеце, не парушаюць правы " +
-	"трэціх асоб або мясцовыя законы.\x0a\x0a<b>6. Міжнароднае выкарыстанне<" +
-	"/b>\x0a6.1 Сэрвіс прызначаны для глабальнага выкарыстання. Вы нясеце адк" +
-	"азнасць за выкананне ўсіх прымяняльных мясцовых законаў і правілаў у ва" +
-	"шай юрысдыкцыі.\x0a6.2 Мы не гарантуем, што Сэрвіс або любы яго змест з" +
-	"'яўляецца адпаведным або дапушчальным у якой-небудзь канкрэтнай краіне а" +
-	"бо рэгіёне.\x0a\x0a<b>7. Змены</b>\x0a7.1 Мы пакідаем за сабой права зм" +
-	"яняць або замяняць гэтыя Умовы ў любы час.\x0a7.2 Калі мы ўнясем істотн" +
-	"ыя змены, мы апублікуем абноўленыя Умовы і ўкажам дату апошняй рэдакцыі" +
-	" ў верхняй частцы гэтага дакумента.\x0a\x0a<b>8. Прымяняльнае права і вы" +
-	"рашэнне спрэчак</b>\x0a8.1 Гэтыя Умовы рэгулююцца і тлумачацца ў адпаве" +
-	"днасці з законамі, якія прымяняюцца ў юрысдыкцыі асноўнага месца вядзен" +
-	"ня бізнесу пастаўшчыка Сэрвісу, без уліку прынцыпаў канфлікту законаў." +
-	"\x0a8.2 Любыя спрэчкі, якія ўзнікаюць з гэтых Умоў або ў сувязі з імі, п" +
-	"авінны вырашацца шляхам сяброўскіх перамоў і, пры неабходнасці, шляхам " +
-	"абавязковага арбітражу або судовага разбору ў адпаведных судах.\x0a\x0a" +
-	"<b>9. Прыняцце Умоў</b>\x0a9.1 Працягваючы доступ да Сэрвісу або яго вык" +
-	"арыстанне, вы прызнаеце, што прачыталі, зразумелі і згаджаецеся з гэтым" +
-	"і Умовамі.\x0a9.2 Калі вы не згодныя, вы павінны неадкладна спыніць вык" +
-	"арыстанне Сэрвісу.\x0a\x0aКалі ў вас ёсць якія-небудзь пытанні або праб" +
-	"лемы адносна гэтых Умоў, або калі вам патрэбна дадатковая інфармацыя, к" +
-	"алі ласка, звяжыцеся па адрасе <i>k.sysoev@me.com</i>.\x02Прабачце, я н" +
-	"е магу апрацаваць відэа, аўдыё або дакументы. Калі ласка, паспрабуйце а" +
-	"дправіць ваша пытанне толькі ў тэкставым фармаце.\x02Прабачце, але ваша" +
-	" паведамленне занадта доўгае для апрацоўкі. Калі ласка, паспрабуйце зраб" +
-	"іць яго карацейшым і больш лаканічным.\x02Вы дасягнулі максімальнай кол" +
-	"ькасці запытаў на гадзіну. Калі ласка, паспрабуйце яшчэ раз пазней.\x02" +
-	"Мы дасягнулі нашай штодзённай мяжы запытаў. Калі ласка, вярніцеся заўтр" +
-	"а, калі наш бюджэт абноўлены.\x02Калі ласка, прадастаўце ваша пытанне ў" +
-	" тэкставым фармаце разам з фотаздымкамі\x02Калі ласка, прадастаўце па кр" +
-	"айняй меры адзін фотаздымак\x02Калі ласка, прадастаўце не больш за %[1]" +
-	"d фотаздымкаў\x02Прабачце, я ўзнёс памылку пры апрацоўцы вашага запыту. " +
-	"Калі ласка, паспрабуйце яшчэ раз пазней.\x02Прадстаўленая дата не можа " +
-	"быць у будучыні. Калі ласка, прадастаўце дату ў дапушчальным фармаце." +
-	"\x02Калі ласка, прадастаўце дату ў дапушчальным фармаце ГГГГ-ММ-ДД (напр" +
-	"ыклад, 2023-12-31)\x02Профіль пухнатага сябра паспяхова захаваны\x02Як " +
-	"зваліце вашага пухнатага сябра?\x02Якога тыпу жывёлу у вас?\x02сабака" +
-	"\x02кот\x02Якой расы ваш пухнаты сябар?\x02Калі нарадзіўся ваш пухнаты с" +
-	"ябар? Калі ласка, увядзіце дату ў фармаце ГГГГ-ММ-ДД (напрыклад, 2010-1" +
-	"2-31).\x02Якога ваш пухнатага сябра?\x02мужчынскі\x02жаночы\x02Які вага " +
-	"вашага пухнатага сябра? Калі ласка, пазначце вагу, наступнае за адзінка" +
-	", напрыклад, 5 кг"
+const be_BYData string = "" + // Size: 11968 bytes
+	"\x02Апытанне адмянена\x02Невядомая каманда\x02Сардэчна запрашаем у Help " +
+	"My Pet Bot! 🐾\x0a\x0aЯ ваш асабісты асістэнт па даглядзе за домашнімі жы" +
+	"вёламі, гатовы дапамагчы вам лепш захоўваць вашага пухнатага сябра. Я м" +
+	"агу аналізаваць фотаздымкі вашага пухнатага сябра і дапамагчы вам з:" +
+	"\x0a\x0a- Пытаннямі пра здароўе і паводзіны жывёла - не саромейцеся дзял" +
+	"іцца фотаздымкамі любых хвалёвых сімптомаў або паводзін\x0a- Парадамі п" +
+	"а харчаванню і харчаванню, уключаючы фотаздымкі ежы або ласункі, якія в" +
+	"ы разглядаеце\x0a- Парадамі па дрэсіравцы і тэхнікай - вы можаце адправ" +
+	"іць фотаздымкі канкрэтных сітуацый, у якіх вам патрэбна дапамога\x0a- А" +
+	"гульнымі парадамі па даглядзе за жывёламі, з аналізам фотаздымкаў асяро" +
+	"ддзя вашага пухнатага сябра або патрэбаў\x0a\x0aПроста ўвядзіце ваша пы" +
+	"танне або адправіце фотаздымкі разам з вашымі праблемамі аб ваш музычны" +
+	"м сябры, і я прадастаўлю карысныя, інфарматыўныя адказы на падставе над" +
+	"зейнай ветэрынарнай ведамасці. Вы можаце адправіць некалькі фотаздымкаў" +
+	", калі гэта неабходна, каб лепш паказаць сітуацыю.\x0a\x0aПамятайце, што" +
+	", хоць я магу прапанаваць парады і аналізаваць фотаздымкі, для сур'ёзных" +
+	" медычных станоўішчаў заўсёды кансультуйцеся з ветэрынарам.\x0a\x0aКаб п" +
+	"ачаць, проста задайце мне любое пытанне аб вашым пухнатым сябры - з фот" +
+	"аздымкамі або без іх!\x02<b>Умовы і Палажэнні</b>\x0a<i>Апошняе абнаўле" +
+	"нне: 30.01.2025</i>\x0a\x0aДзякуй за выкарыстанне нашага чат-бота для в" +
+	"етэрынарных кансультацый («Сэрвіс»). Доступ да гэтага Сэрвісу або яго в" +
+	"ыкарыстанне азначае вашу згоду з наступнымі ўмовамі і палажэннямі («Умо" +
+	"вы»). Калі вы не згодныя з гэтымі Умовамі, калі ласка, неадкладна спыні" +
+	"це выкарыстанне.\x0a\x0a<b>1. Характар Сэрвісу</b>\x0a1.1 Сэрвіс прадас" +
+	"таўляе агульную інфармацыю, рэкамендацыі і парады па догляду за хатнімі" +
+	" жывёламі, уключаючы (але не абмяжоўваючыся) харчаванне, паводзіны і дрэ" +
+	"сіроўку.\x0a1.2 Сэрвіс не з'яўляецца заменай прафесійнай ветэрынарнай д" +
+	"ыягностыкі, лячэння або догляду. Заўсёды звяртайцеся за парадай да ліцэ" +
+	"нзаванага ветэрынара па любых пытаннях, якія тычацца здароўя вашага хат" +
+	"няга жывёлы.\x0a\x0a<b>2. Адсутнасць адносін ветэрынар-кліент-пацыент</" +
+	"b>\x0a2.1 Выкарыстанне Сэрвісу або ўзаемадзеянне з нашым AI-памочнікам н" +
+	"е стварае адносін ветэрынар-кліент-пацыент.\x0a2.2 Любыя парады або рэк" +
+	"амендацыі, прадастаўленыя Сэрвісам, заснаваны на абмежаванай інфармацыі" +
+	" і павінны разглядацца толькі як агульная інфармацыя.\x0a\x0a<b>3. Абмеж" +
+	"аванне адказнасці</b>\x0a3.1 Вы прызнаеце і згаджаецеся, што выкарыстан" +
+	"не Сэрвісу ажыццяўляецца на ваш уласны рызыка.\x0a3.2 Ні пры якіх абста" +
+	"вінах уладальнікі, распрацоўшчыкі або ліцэнзіяры Сэрвісу не нясуць адка" +
+	"знасці за любыя прамыя, ускосныя, выпадковыя, спецыяльныя або наступныя" +
+	" страты, якія ўзнікаюць у сувязі з вашым доступам да Сэрвісу або яго вык" +
+	"арыстаннем.\x0a3.3 Вы разумееце, што рашэнні адносна догляду за вашым х" +
+	"атнім жывёлам і любыя вынікі, якія вынікаюць з гэтага, з'яўляюцца вашай" +
+	" асабістай адказнасцю. Калі ў вас ёсць сумневы адносна дабрабыту вашага " +
+	"хатняга жывёлы або яго здароўя, вы павінны неадкладна звярнуцца да ліцэ" +
+	"нзаванага ветэрынара.\x0a\x0a<b>4. Адсутнасць гарантый</b>\x0a4.1 Сэрві" +
+	"с прадастаўляецца на ўмовах «як ёсць» і «як даступна» без якіх-небудзь " +
+	"гарантый, выказаных або маўклівых.\x0a4.2 Мы не гарантуем, што Сэрвіс б" +
+	"удзе бесперапынным, без памылак, бяспечным або без вірусаў.\x0a\x0a<b>5" +
+	". Абавязкі карыстальніка</b>\x0a5.1 Вы нясеце адказнасць за прадастаўлен" +
+	"не дакладнай і поўнай інфармацыі пра вашага хатняга жывёлы пры запыце п" +
+	"арады.\x0a5.2 Вы павінны пераканацца, што ўсе пытанні, апісанні і дадзе" +
+	"ныя, якія вы прадастаўляеце, не парушаюць правы трэціх асоб або мясцовы" +
+	"я законы.\x0a\x0a<b>6. Міжнароднае выкарыстанне</b>\x0a6.1 Сэрвіс прызн" +
+	"ачаны для глабальнага выкарыстання. Вы нясеце адказнасць за выкананне ў" +
+	"сіх прымяняльных мясцовых законаў і правілаў у вашай юрысдыкцыі.\x0a6.2" +
+	" Мы не гарантуем, што Сэрвіс або любы яго змест з'яўляецца адпаведным аб" +
+	"о дапушчальным у якой-небудзь канкрэтнай краіне або рэгіёне.\x0a\x0a<b>" +
+	"7. Змены</b>\x0a7.1 Мы пакідаем за сабой права змяняць або замяняць гэты" +
+	"я Умовы ў любы час.\x0a7.2 Калі мы ўнясем істотныя змены, мы апублікуем" +
+	" абноўленыя Умовы і ўкажам дату апошняй рэдакцыі ў верхняй частцы гэтага" +
+	" дакумента.\x0a\x0a<b>8. Прымяняльнае права і вырашэнне спрэчак</b>\x0a8" +
+	".1 Гэтыя Умовы рэгулююцца і тлумачацца ў адпаведнасці з законамі, якія п" +
+	"рымяняюцца ў юрысдыкцыі асноўнага месца вядзення бізнесу пастаўшчыка Сэ" +
+	"рвісу, без уліку прынцыпаў канфлікту законаў.\x0a8.2 Любыя спрэчкі, які" +
+	"я ўзнікаюць з гэтых Умоў або ў сувязі з імі, павінны вырашацца шляхам с" +
+	"яброўскіх перамоў і, пры неабходнасці, шляхам абавязковага арбітражу аб" +
+	"о судовага разбору ў адпаведных судах.\x0a\x0a<b>9. Прыняцце Умоў</b>" +
+	"\x0a9.1 Працягваючы доступ да Сэрвісу або яго выкарыстанне, вы прызнаеце" +
+	", што прачыталі, зразумелі і згаджаецеся з гэтымі Умовамі.\x0a9.2 Калі в" +
+	"ы не згодныя, вы павінны неадкладна спыніць выкарыстанне Сэрвісу.\x0a" +
+	"\x0aКалі ў вас ёсць якія-небудзь пытанні або праблемы адносна гэтых Умоў" +
+	", або калі вам патрэбна дадатковая інфармацыя, калі ласка, звяжыцеся па " +
+	"адрасе <i>k.sysoev@me.com</i>.\x02<b>Каманды Help My Pet Bot</b>:\x0a/s" +
+	"tart - Пачаць размовы з ботам\x0a/terms - Праглядзець Умовы і Палажэнні " +
+	"паслугі\x0a/editprofile - Абнавіце інфармацыю пра профіль вашага пухнат" +
+	"ага сябра, такую як імя, узрост, расу і г.д. Гэтая інфармацыя дапамагае" +
+	" боту прадастаўляць болей дакладныя парады.\x0a/cancel - Адмяніць бягуча" +
+	"е апытанне, калі яно ўжо ў працэсе (напрыклад, калі вы хочаце пачаць зн" +
+	"оў або змяніць ваша пытанне)\x0a/help - Праглядзець гэтае паведамленне" +
+	"\x02Прабачце, я не магу апрацаваць відэа, аўдыё або дакументы. Калі ласк" +
+	"а, паспрабуйце адправіць ваша пытанне толькі ў тэкставым фармаце.\x02Пр" +
+	"абачце, але ваша паведамленне занадта доўгае для апрацоўкі. Калі ласка," +
+	" паспрабуйце зрабіць яго карацейшым і больш лаканічным.\x02Вы дасягнулі " +
+	"максімальнай колькасці запытаў на гадзіну. Калі ласка, паспрабуйце яшчэ" +
+	" раз пазней.\x02Мы дасягнулі нашай штодзённай мяжы запытаў. Калі ласка, " +
+	"вярніцеся заўтра, калі наш бюджэт абноўлены.\x02Калі ласка, прадастаўце" +
+	" ваша пытанне ў тэкставым фармаце разам з фотаздымкамі\x02Калі ласка, пр" +
+	"адастаўце па крайняй меры адзін фотаздымак\x02Калі ласка, прадастаўце н" +
+	"е больш за %[1]d фотаздымкаў\x02Прабачце, я ўзнёс памылку пры апрацоўцы" +
+	" вашага запыту. Калі ласка, паспрабуйце яшчэ раз пазней.\x02Прадстаўлена" +
+	"я дата не можа быць у будучыні. Калі ласка, прадастаўце дату ў дапушчал" +
+	"ьным фармаце.\x02Калі ласка, прадастаўце дату ў дапушчальным фармаце ГГ" +
+	"ГГ-ММ-ДД (напрыклад, 2023-12-31)\x02Профіль пухнатага сябра паспяхова з" +
+	"ахаваны\x02Як зваліце вашага пухнатага сябра?\x02Якога тыпу жывёлу у ва" +
+	"с?\x02сабака\x02кот\x02Якой расы ваш пухнаты сябар?\x02Калі нарадзіўся " +
+	"ваш пухнаты сябар? Калі ласка, увядзіце дату ў фармаце ГГГГ-ММ-ДД (напр" +
+	"ыклад, 2010-12-31).\x02Якога ваш пухнатага сябра?\x02мужчынскі\x02жаноч" +
+	"ы\x02Які вага вашага пухнатага сябра? Калі ласка, пазначце вагу, наступ" +
+	"нае за адзінка, напрыклад, 5 кг"
 
-var ca_ESIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000012, 0x000002d3, 0x000010e0,
-	0x0000114e, 0x000011c6, 0x00001223, 0x00001294,
-	0x000012e5, 0x00001313, 0x00001344, 0x000013b2,
-	0x0000140a, 0x00001464, 0x0000148b, 0x000014af,
-	0x000014cb, 0x000014cf, 0x000014d3, 0x000014f4,
-	0x00001567, 0x0000158f, 0x00001596, 0x0000159e,
-	0x00001607,
-} // Size: 124 bytes
+var ca_ESIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000021, 0x00000033, 0x000004d1,
+	0x000012de, 0x000014c5, 0x00001533, 0x000015ab,
+	0x00001608, 0x00001679, 0x000016ca, 0x000016f8,
+	0x00001729, 0x00001797, 0x000017ef, 0x00001849,
+	0x00001870, 0x00001894, 0x000018b0, 0x000018b4,
+	0x000018b8, 0x000018d9, 0x0000194c, 0x00001974,
+	0x0000197b, 0x00001983, 0x000019ec,
+} // Size: 132 bytes
 
-const ca_ESData string = "" + // Size: 5639 bytes
-	"\x02Ordre desconeguda\x02Benvingut a Help My Pet Bot! 🐾\x0a\x0aSóc el te" +
-	"u assistent personal de cura de mascotes, preparat per ajudar-te a cuida" +
-	"r millor del teu amic pelut. Puc ajudar-te amb:\x0a\x0a• Preguntes sobre" +
-	" salut i comportament de mascotes\x0a• Consells sobre dieta i nutrició" +
-	"\x0a• Consells i tècniques d'entrenament\x0a• Orientació general sobre l" +
-	"a cura de mascotes\x0a\x0aSimplement escriu la teva pregunta o preocupac" +
-	"ió sobre la teva mascota, i et proporcionaré respostes útils i informati" +
-	"ves basades en coneixements veterinaris fiables. Recorda, mentre puc ofe" +
-	"rir orientació, per a condicions mèdiques greus, sempre consulta amb un " +
-	"veterinari.\x0a\x0aPer començar, només has de fer-me qualsevol pregunta " +
-	"sobre la teva mascota!\x02<b>Termes i Condicions</b>\x0a<i>Última actual" +
-	"ització: 30.01.2025</i>\x0a\x0aGràcies per utilitzar el nostre chatbot d" +
-	"e consells veterinaris (“el Servei”). En accedir o utilitzar aquest Serv" +
-	"ei, acceptes estar subjecte als següents termes i condicions (“Termes”)." +
-	" Si no estàs d'acord amb aquests Termes, si us plau, deixa d'utilitzar-l" +
-	"o immediatament.\x0a\x0a<b>1. Naturalesa del Servei</b>\x0a1.1 El Servei" +
-	" proporciona informació general, orientació i suggeriments per a la cura" +
-	" de mascotes, incloent (però no limitat a) dieta, comportament i entrena" +
-	"ment.\x0a1.2 El Servei no és un substitut del diagnòstic, tractament o c" +
-	"ura veterinària professional. Sempre busca el consell d'un veterinari ll" +
-	"icenciat per a qualsevol pregunta sobre la salut de la teva mascota.\x0a" +
-	"\x0a<b>2. No hi ha Relació Veterinari-Client-Pacient</b>\x0a2.1 Utilitza" +
-	"r el Servei o interactuar amb el nostre assistent d'IA no crea una relac" +
-	"ió veterinari-client-pacient.\x0a2.2 Qualsevol consell o orientació prop" +
-	"orcionada pel Servei es basa en informació limitada i només s'ha de cons" +
-	"iderar com a informació general.\x0a\x0a<b>3. Limitació de Responsabilit" +
-	"at</b>\x0a3.1 Reconeixes i acceptes que l'ús del Servei és sota el teu p" +
-	"ropi risc.\x0a3.2 En cap cas els propietaris, desenvolupadors o llicenci" +
-	"adors del Servei seran responsables de danys directes, indirectes, incid" +
-	"entals, especials o conseqüents derivats de o en connexió amb el teu acc" +
-	"és o ús del Servei.\x0a3.3 Entens que les decisions sobre la cura de la" +
-	" teva mascota i qualsevol resultat resultant són la teva única responsab" +
-	"ilitat. Si tens algun dubte sobre el benestar de la teva mascota o la se" +
-	"va salut, hauries de consultar immediatament un veterinari llicenciat." +
-	"\x0a\x0a<b>4. Sense Garantia</b>\x0a4.1 El Servei es proporciona “tal co" +
-	"m és”, i “segons disponibilitat”, sense garanties de cap tipus, ja sigui" +
-	"n expresses o implícites.\x0a4.2 No garantim que el Servei serà ininterr" +
-	"omput, lliure d'errors, segur o lliure de virus.\x0a\x0a<b>5. Responsabi" +
-	"litats de l'Usuari</b>\x0a5.1 Ets responsable de proporcionar informació" +
-	" precisa i completa sobre la teva mascota quan busquis consell.\x0a5.2 H" +
-	"as d'assegurar-te que totes les preguntes, descripcions i dades que prop" +
-	"orciones no violen cap dret de tercers o lleis locals.\x0a\x0a<b>6. Ús I" +
-	"nternacional</b>\x0a6.1 El Servei està destinat a ús global. Ets respons" +
-	"able de complir amb totes les lleis i regulacions locals aplicables a la" +
-	" teva jurisdicció.\x0a6.2 No garantim que el Servei o qualsevol del seu " +
-	"contingut sigui apropiat o permès en cap país o regió específica.\x0a" +
-	"\x0a<b>7. Modificacions</b>\x0a7.1 Ens reservem el dret de modificar o r" +
-	"eemplaçar aquests Termes en qualsevol moment.\x0a7.2 Si fem canvis mater" +
-	"ials, publicarem els Termes actualitzats i indicarem la data de l'última" +
-	" revisió a la part superior d'aquest document.\x0a\x0a<b>8. Llei Aplicab" +
-	"le i Resolució de Conflictes</b>\x0a8.1 Aquests Termes es regiran i inte" +
-	"rpretaran d'acord amb les lleis aplicables a la jurisdicció del proveïdo" +
-	"r del Servei, sense tenir en compte els principis de conflicte de lleis." +
-	"\x0a8.2 Qualsevol disputa derivada de o relacionada amb aquests Termes e" +
-	"s resoldrà mitjançant negociació amistosa i, si és necessari, per arbitr" +
-	"atge vinculant o litigi als tribunals aplicables.\x0a\x0a<b>9. Acceptaci" +
-	"ó dels Termes</b>\x0a9.1 En continuar accedint o utilitzant el Servei, " +
-	"reconeixes que has llegit, entès i acceptes estar subjecte a aquests Ter" +
-	"mes.\x0a9.2 Si no estàs d'acord, has de deixar d'utilitzar el Servei imm" +
-	"ediatament.\x0a\x0aSi tens alguna pregunta o preocupació sobre aquests T" +
-	"ermes, o si necessites més aclariments, si us plau, contacta a <i>k.syso" +
-	"ev@me.com</i>.\x02Ho sento, no puc processar vídeos, àudio o documents. " +
-	"Si us plau, envia la teva pregunta només com a text.\x02Ho sento, però e" +
-	"l teu missatge és massa llarg per a mi per processar. Si us plau, intent" +
-	"a fer-lo més curt i concís.\x02Has arribat al nombre màxim de peticions " +
-	"per hora. Si us plau, torna-ho a provar més tard.\x02Hem arribat al nost" +
-	"re límit diari de peticions. Si us plau, torna demà quan el nostre press" +
-	"upost es refresqui.\x02Si us plau, proporciona la teva pregunta en forma" +
-	"t de text juntament amb foto(s)\x02Si us plau, proporciona com a mínim u" +
-	"na foto\x02Si us plau, proporciona no més de %[1]d foto(s)\x02Ho sento, " +
-	"he trobat un error mentre processava la teva sol·licitud. Si us plau, to" +
-	"rna-ho a provar més tard.\x02La data proporcionada no pot ser en el futu" +
-	"r. Si us plau, proporciona una data vàlida.\x02Si us plau, proporciona u" +
-	"na data en el format vàlid AAAA-MM-DD (per exemple, 2023-12-31)\x02Perfi" +
-	"l de mascota guardat correctament\x02Quin és el nom de la teva mascota?" +
-	"\x02Quin tipus de mascota tens?\x02gos\x02gat\x02Quina raça és la teva m" +
-	"ascota?\x02Quan va néixer la teva mascota? Si us plau, introdueix la dat" +
-	"a en el format AAAA-MM-DD (per exemple, 2010-12-31).\x02Quin és el gèner" +
-	"e de la teva mascota?\x02mascle\x02femella\x02Quin és el pes de la teva " +
-	"mascota? Si us plau, especifica el pes seguit de la unitat, per exemple," +
+const ca_ESData string = "" + // Size: 6636 bytes
+	"\x02El qüestionari s'ha cancel·lat\x02Ordre desconeguda\x02Benvingut a H" +
+	"elp My Pet Bot! 🐾\x0a\x0aSóc el teu assistent personal de cura de mascot" +
+	"es, preparat per ajudar-te a cuidar millor del teu amic pelut. Puc anali" +
+	"tzar fotos de la teva mascota i ajudar-te amb:\x0a\x0a- Preguntes sobre " +
+	"la salut i el comportament de la mascota - si us plau, comparteix fotos " +
+	"de qualsevol símptoma o comportament preocupant\x0a- Consells sobre diet" +
+	"a i nutrició, incloent fotos d'aliments o premis que estiguis consideran" +
+	"t\x0a- Suggeriments i tècniques d'entrenament - pots enviar fotos de sit" +
+	"uacions específiques en les quals necessitis ajuda\x0a- Orientació gener" +
+	"al sobre la cura de mascotes, amb anàlisi de fotos de l'entorn o els sub" +
+	"ministraments de la teva mascota\x0a\x0aSimplement escriu la teva pregun" +
+	"ta o envia fotos juntament amb les teves preocupacions sobre la teva mas" +
+	"cota, i et proporcionaré respostes útils i informatives basades en conei" +
+	"xements veterinaris fiables. Pots enviar diverses fotos si cal per mostr" +
+	"ar millor la situació.\x0a\x0aRecorda, tot i que puc oferir orientació i" +
+	" analitzar fotos, per a condicions mèdiques greus, sempre consulta amb u" +
+	"n veterinari.\x0a\x0aPer començar, només em pregunta qualsevol cosa sobr" +
+	"e la teva mascota - amb o sense fotos!\x02<b>Termes i Condicions</b>\x0a" +
+	"<i>Última actualització: 30.01.2025</i>\x0a\x0aGràcies per utilitzar el " +
+	"nostre chatbot de consells veterinaris (“el Servei”). En accedir o utili" +
+	"tzar aquest Servei, acceptes estar subjecte als següents termes i condic" +
+	"ions (“Termes”). Si no estàs d'acord amb aquests Termes, si us plau, dei" +
+	"xa d'utilitzar-lo immediatament.\x0a\x0a<b>1. Naturalesa del Servei</b>" +
+	"\x0a1.1 El Servei proporciona informació general, orientació i suggerime" +
+	"nts per a la cura de mascotes, incloent (però no limitat a) dieta, compo" +
+	"rtament i entrenament.\x0a1.2 El Servei no és un substitut del diagnòsti" +
+	"c, tractament o cura veterinària professional. Sempre busca el consell d" +
+	"'un veterinari llicenciat per a qualsevol pregunta sobre la salut de la " +
+	"teva mascota.\x0a\x0a<b>2. No hi ha Relació Veterinari-Client-Pacient</b" +
+	">\x0a2.1 Utilitzar el Servei o interactuar amb el nostre assistent d'IA " +
+	"no crea una relació veterinari-client-pacient.\x0a2.2 Qualsevol consell " +
+	"o orientació proporcionada pel Servei es basa en informació limitada i n" +
+	"omés s'ha de considerar com a informació general.\x0a\x0a<b>3. Limitació" +
+	" de Responsabilitat</b>\x0a3.1 Reconeixes i acceptes que l'ús del Servei" +
+	" és sota el teu propi risc.\x0a3.2 En cap cas els propietaris, desenvolu" +
+	"padors o llicenciadors del Servei seran responsables de danys directes, " +
+	"indirectes, incidentals, especials o conseqüents derivats de o en connex" +
+	"ió amb el teu accés o ús del Servei.\x0a3.3 Entens que les decisions sob" +
+	"re la cura de la teva mascota i qualsevol resultat resultant són la teva" +
+	" única responsabilitat. Si tens algun dubte sobre el benestar de la teva" +
+	" mascota o la seva salut, hauries de consultar immediatament un veterina" +
+	"ri llicenciat.\x0a\x0a<b>4. Sense Garantia</b>\x0a4.1 El Servei es propo" +
+	"rciona “tal com és”, i “segons disponibilitat”, sense garanties de cap t" +
+	"ipus, ja siguin expresses o implícites.\x0a4.2 No garantim que el Servei" +
+	" serà ininterromput, lliure d'errors, segur o lliure de virus.\x0a\x0a<b" +
+	">5. Responsabilitats de l'Usuari</b>\x0a5.1 Ets responsable de proporcio" +
+	"nar informació precisa i completa sobre la teva mascota quan busquis con" +
+	"sell.\x0a5.2 Has d'assegurar-te que totes les preguntes, descripcions i " +
+	"dades que proporciones no violen cap dret de tercers o lleis locals.\x0a" +
+	"\x0a<b>6. Ús Internacional</b>\x0a6.1 El Servei està destinat a ús globa" +
+	"l. Ets responsable de complir amb totes les lleis i regulacions locals a" +
+	"plicables a la teva jurisdicció.\x0a6.2 No garantim que el Servei o qual" +
+	"sevol del seu contingut sigui apropiat o permès en cap país o regió espe" +
+	"cífica.\x0a\x0a<b>7. Modificacions</b>\x0a7.1 Ens reservem el dret de mo" +
+	"dificar o reemplaçar aquests Termes en qualsevol moment.\x0a7.2 Si fem c" +
+	"anvis materials, publicarem els Termes actualitzats i indicarem la data " +
+	"de l'última revisió a la part superior d'aquest document.\x0a\x0a<b>8. L" +
+	"lei Aplicable i Resolució de Conflictes</b>\x0a8.1 Aquests Termes es reg" +
+	"iran i interpretaran d'acord amb les lleis aplicables a la jurisdicció d" +
+	"el proveïdor del Servei, sense tenir en compte els principis de conflict" +
+	"e de lleis.\x0a8.2 Qualsevol disputa derivada de o relacionada amb aques" +
+	"ts Termes es resoldrà mitjançant negociació amistosa i, si és necessari," +
+	" per arbitratge vinculant o litigi als tribunals aplicables.\x0a\x0a<b>9" +
+	". Acceptació dels Termes</b>\x0a9.1 En continuar accedint o utilitzant e" +
+	"l Servei, reconeixes que has llegit, entès i acceptes estar subjecte a a" +
+	"quests Termes.\x0a9.2 Si no estàs d'acord, has de deixar d'utilitzar el " +
+	"Servei immediatament.\x0a\x0aSi tens alguna pregunta o preocupació sobre" +
+	" aquests Termes, o si necessites més aclariments, si us plau, contacta a" +
+	" <i>k.sysoev@me.com</i>.\x02<b>Comandes de Help My Pet Bot</b>:\x0a/star" +
+	"t - Inicia la conversa amb el bot\x0a/terms - Mostra els Termes i Condic" +
+	"ions del servei\x0a/editprofile - Actualitza la informació del perfil de" +
+	" la teva mascota, com ara el nom, l'edat, la raça, etc. Aquesta informac" +
+	"ió ajuda el bot a proporcionar consells més precisos.\x0a/cancel - Cance" +
+	"l·la el qüestionari actual, si n'hi ha un en curs (per exemple, quan vul" +
+	"guis començar de nou o canviar la teva pregunta)\x0a/help - Mostra aques" +
+	"t missatge d'ajuda\x02Ho sento, no puc processar vídeos, àudio o documen" +
+	"ts. Si us plau, envia la teva pregunta només com a text.\x02Ho sento, pe" +
+	"rò el teu missatge és massa llarg per a mi per processar. Si us plau, in" +
+	"tenta fer-lo més curt i concís.\x02Has arribat al nombre màxim de petici" +
+	"ons per hora. Si us plau, torna-ho a provar més tard.\x02Hem arribat al " +
+	"nostre límit diari de peticions. Si us plau, torna demà quan el nostre p" +
+	"ressupost es refresqui.\x02Si us plau, proporciona la teva pregunta en f" +
+	"ormat de text juntament amb foto(s)\x02Si us plau, proporciona com a mín" +
+	"im una foto\x02Si us plau, proporciona no més de %[1]d foto(s)\x02Ho sen" +
+	"to, he trobat un error mentre processava la teva sol·licitud. Si us plau" +
+	", torna-ho a provar més tard.\x02La data proporcionada no pot ser en el " +
+	"futur. Si us plau, proporciona una data vàlida.\x02Si us plau, proporcio" +
+	"na una data en el format vàlid AAAA-MM-DD (per exemple, 2023-12-31)\x02P" +
+	"erfil de mascota guardat correctament\x02Quin és el nom de la teva masco" +
+	"ta?\x02Quin tipus de mascota tens?\x02gos\x02gat\x02Quina raça és la tev" +
+	"a mascota?\x02Quan va néixer la teva mascota? Si us plau, introdueix la " +
+	"data en el format AAAA-MM-DD (per exemple, 2010-12-31).\x02Quin és el gè" +
+	"nere de la teva mascota?\x02mascle\x02femella\x02Quin és el pes de la te" +
+	"va mascota? Si us plau, especifica el pes seguit de la unitat, per exemp" +
+	"le, 5 kg"
+
+var de_DEIndex = []uint32{ // 27 elements
+	0x00000000, 0x0000001d, 0x00000030, 0x00000546,
+	0x000014e2, 0x000016cb, 0x0000173f, 0x000017d1,
+	0x00001838, 0x000018ac, 0x000018ed, 0x00001914,
+	0x00001944, 0x000019ba, 0x00001a19, 0x00001a68,
+	0x00001a8f, 0x00001aa8, 0x00001acb, 0x00001ad0,
+	0x00001ad6, 0x00001af5, 0x00001b5d, 0x00001b86,
+	0x00001b90, 0x00001b99, 0x00001bf9,
+} // Size: 132 bytes
+
+const de_DEData string = "" + // Size: 7161 bytes
+	"\x02Fragebogen wurde abgebrochen\x02Unbekannter Befehl\x02Willkommen bei" +
+	" Help My Pet Bot! 🐾\x0a\x0aIch bin Ihr persönlicher Assistent für die Ha" +
+	"ustierpflege und stehe bereit, Ihnen zu helfen, sich besser um Ihren pel" +
+	"zigen Freund zu kümmern. Ich kann Fotos Ihres Haustieres analysieren und" +
+	" Ihnen bei folgenden Themen helfen:\x0a\x0a- Fragen zur Gesundheit und z" +
+	"um Verhalten des Haustieres - teilen Sie Fotos von besorgniserregenden S" +
+	"ymptomen oder Verhaltensweisen\x0a- Ratschläge zur Ernährung und Ernähru" +
+	"ng, einschließlich Fotos von Futter oder Leckerlis, die Sie in Betracht " +
+	"ziehen\x0a- Tipps und Techniken zum Training - Sie können Bilder von spe" +
+	"zifischen Situationen senden, bei denen Sie Hilfe benötigen\x0a- Allgeme" +
+	"ine Anleitung zur Haustierpflege, mit Fotoanalyse der Umgebung oder Ausr" +
+	"üstung Ihres Haustieres\x0a\x0aGeben Sie einfach Ihre Frage ein oder se" +
+	"nden Sie Fotos zusammen mit Ihren Bedenken über Ihr Haustier, und ich we" +
+	"rde hilfreiche, informative Antworten basierend auf zuverlässigem tierär" +
+	"ztlichem Wissen geben. Sie können bei Bedarf mehrere Fotos senden, um di" +
+	"e Situation besser zu zeigen.\x0a\x0aDenken Sie daran, dass ich Ratschlä" +
+	"ge anbieten und Fotos analysieren kann, aber bei schwerwiegenden medizin" +
+	"ischen Problemen immer einen Tierarzt konsultieren sollten.\x0a\x0aUm lo" +
+	"szulegen, stellen Sie mir einfach eine Frage zu Ihrem Haustier - mit ode" +
+	"r ohne Fotos!\x02<b>Allgemeine Geschäftsbedingungen</b>\x0a<i>Zuletzt ak" +
+	"tualisiert: 30.01.2025</i>\x0a\x0aVielen Dank, dass Sie unseren Chatbot " +
+	"für tierärztliche Beratung („der Dienst“) nutzen. Durch den Zugriff auf " +
+	"oder die Nutzung dieses Dienstes erklären Sie sich mit den folgenden Bed" +
+	"ingungen („Bedingungen“) einverstanden. Wenn Sie diesen Bedingungen nich" +
+	"t zustimmen, stellen Sie die Nutzung bitte sofort ein.\x0a\x0a<b>1. Art " +
+	"des Dienstes</b>\x0a1.1 Der Dienst bietet allgemeine Informationen, Anle" +
+	"itungen und Vorschläge zur Pflege von Haustieren, einschließlich (aber n" +
+	"icht beschränkt auf) Ernährung, Verhalten und Training.\x0a1.2 Der Diens" +
+	"t ist kein Ersatz für eine professionelle tierärztliche Diagnose, Behand" +
+	"lung oder Pflege. Suchen Sie bei Fragen zur Gesundheit Ihres Haustieres " +
+	"immer den Rat eines zugelassenen Tierarztes.\x0a\x0a<b>2. Keine tierärzt" +
+	"liche Beziehung</b>\x0a2.1 Die Nutzung des Dienstes oder die Interaktion" +
+	" mit unserem KI-Assistenten begründet keine tierärztliche Beziehung.\x0a" +
+	"2.2 Alle vom Dienst bereitgestellten Ratschläge oder Anleitungen basiere" +
+	"n auf begrenzten Informationen und sollten nur als allgemeine Informatio" +
+	"nen betrachtet werden.\x0a\x0a<b>3. Haftungsbeschränkung</b>\x0a3.1 Sie " +
+	"erkennen an und stimmen zu, dass die Nutzung des Dienstes auf eigenes Ri" +
+	"siko erfolgt.\x0a3.2 Unter keinen Umständen haften die Eigentümer, Entwi" +
+	"ckler oder Lizenzgeber des Dienstes für direkte, indirekte, zufällige, b" +
+	"esondere oder Folgeschäden, die sich aus dem Zugriff auf oder der Nutzun" +
+	"g des Dienstes ergeben.\x0a3.3 Sie verstehen, dass Entscheidungen bezügl" +
+	"ich der Pflege Ihres Haustieres und alle daraus resultierenden Ergebniss" +
+	"e in Ihrer alleinigen Verantwortung liegen. Wenn Sie Zweifel am Wohlbefi" +
+	"nden oder der Gesundheit Ihres Haustieres haben, sollten Sie sofort eine" +
+	"n zugelassenen Tierarzt konsultieren.\x0a\x0a<b>4. Keine Gewährleistung<" +
+	"/b>\x0a4.1 Der Dienst wird „wie besehen“ und „wie verfügbar“ ohne jeglic" +
+	"he ausdrückliche oder stillschweigende Gewährleistungen bereitgestellt." +
+	"\x0a4.2 Wir gewährleisten nicht, dass der Dienst ununterbrochen, fehlerf" +
+	"rei, sicher oder virenfrei ist.\x0a\x0a<b>5. Benutzerverantwortlichkeite" +
+	"n</b>\x0a5.1 Sie sind dafür verantwortlich, genaue und vollständige Info" +
+	"rmationen über Ihr Haustier bereitzustellen, wenn Sie Rat suchen.\x0a5.2" +
+	" Sie müssen sicherstellen, dass alle von Ihnen bereitgestellten Fragen, " +
+	"Beschreibungen und Daten keine Rechte Dritter oder lokale Gesetze verlet" +
+	"zen.\x0a\x0a<b>6. Internationale Nutzung</b>\x0a6.1 Der Dienst ist für d" +
+	"ie weltweite Nutzung vorgesehen. Sie sind für die Einhaltung aller gelte" +
+	"nden lokalen Gesetze und Vorschriften in Ihrer Gerichtsbarkeit verantwor" +
+	"tlich.\x0a6.2 Wir garantieren nicht, dass der Dienst oder dessen Inhalte" +
+	" in einem bestimmten Land oder einer bestimmten Region angemessen oder z" +
+	"ulässig sind.\x0a\x0a<b>7. Änderungen</b>\x0a7.1 Wir behalten uns das Re" +
+	"cht vor, diese Bedingungen jederzeit zu ändern oder zu ersetzen.\x0a7.2 " +
+	"Wenn wir wesentliche Änderungen vornehmen, werden wir die aktualisierten" +
+	" Bedingungen veröffentlichen und das Datum der letzten Überarbeitung obe" +
+	"n in diesem Dokument angeben.\x0a\x0a<b>8. Anwendbares Recht und Streitb" +
+	"eilegung</b>\x0a8.1 Diese Bedingungen unterliegen den Gesetzen des Haupt" +
+	"geschäftssitzes des Dienstanbieters und werden in Übereinstimmung mit di" +
+	"esen ausgelegt, ohne Rücksicht auf kollisionsrechtliche Grundsätze.\x0a8" +
+	".2 Alle Streitigkeiten, die sich aus oder im Zusammenhang mit diesen Bed" +
+	"ingungen ergeben, werden durch gütliche Verhandlungen und, falls erforde" +
+	"rlich, durch verbindliche Schiedsverfahren oder Gerichtsverfahren in den" +
+	" zuständigen Gerichten beigelegt.\x0a\x0a<b>9. Annahme der Bedingungen</" +
+	"b>\x0a9.1 Durch den weiteren Zugriff auf oder die Nutzung des Dienstes b" +
+	"estätigen Sie, dass Sie diese Bedingungen gelesen, verstanden und akzept" +
+	"iert haben.\x0a9.2 Wenn Sie nicht zustimmen, müssen Sie die Nutzung des " +
+	"Dienstes sofort einstellen.\x0a\x0aWenn Sie Fragen oder Bedenken zu dies" +
+	"en Bedingungen haben oder weitere Klarstellungen benötigen, kontaktieren" +
+	" Sie uns bitte unter <i>k.sysoev@me.com</i>.\x02<b>Help My Pet Bot Befeh" +
+	"le</b>:\x0a/start - Starten Sie das Gespräch mit dem Bot\x0a/terms - Anz" +
+	"eigen der Nutzungsbedingungen des Dienstes\x0a/editprofile - Aktualisier" +
+	"en Sie die Profilinformationen Ihres Haustieres, wie Name, Alter, Rasse " +
+	"usw. Diese Informationen helfen dem Bot, genauere Ratschläge zu geben." +
+	"\x0a/cancel - Beenden Sie den aktuellen Fragebogen, falls einer in Bearb" +
+	"eitung ist (z. B. wenn Sie von vorne beginnen oder Ihre Frage ändern möc" +
+	"hten)\x0a/help - Anzeigen dieser Hilfemeldung\x02Entschuldigung, ich kan" +
+	"n keine Videos, Audios oder Dokumente verarbeiten. Bitte senden Sie Ihre" +
+	" Frage nur als Text.\x02Es tut mir leid, aber Ihre Nachricht ist zu lang" +
+	" für mich, um sie zu verarbeiten. Bitte versuchen Sie, sie kürzer und pr" +
+	"ägnanter zu gestalten.\x02Sie haben die maximale Anzahl von Anfragen pr" +
+	"o Stunde erreicht. Bitte versuchen Sie es später erneut.\x02Wir haben un" +
+	"ser tägliches Anfrage-Limit erreicht. Bitte kommen Sie morgen wieder, we" +
+	"nn unser Budget erneuert wird.\x02Bitte geben Sie Ihre Frage im Textform" +
+	"at zusammen mit Foto(s) an\x02Bitte geben Sie mindestens ein Foto an\x02" +
+	"Bitte geben Sie nicht mehr als %[1]d Foto(s) an\x02Entschuldigung, bei d" +
+	"er Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuche" +
+	"n Sie es später erneut.\x02Das angegebene Datum kann nicht in der Zukunf" +
+	"t liegen. Bitte geben Sie ein gültiges Datum an.\x02Bitte geben Sie ein " +
+	"Datum im gültigen Format JJJJ-MM-TT an (z. B. 2023-12-31)\x02Haustierpro" +
+	"fil erfolgreich gespeichert\x02Wie heißt Ihr Haustier?\x02Welche Art von" +
+	" Haustier haben Sie?\x02Hund\x02Katze\x02Welche Rasse hat Ihr Haustier?" +
+	"\x02Wann wurde Ihr Haustier geboren? Bitte geben Sie das Datum im Format" +
+	" JJJJ-MM-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihres Haus" +
+	"tieres?\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bitte ge" +
+	"ben Sie das Gewicht gefolgt von der Einheit an, z. B. 5 kg"
+
+var en_GBIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000019, 0x00000029, 0x00000413,
+	0x000011ae, 0x00001361, 0x000013be, 0x0000142b,
+	0x0000147d, 0x000014de, 0x0000151f, 0x00001542,
+	0x0000156e, 0x000015c3, 0x00001607, 0x0000164f,
+	0x0000166e, 0x00001687, 0x000016a5, 0x000016a9,
+	0x000016ad, 0x000016c5, 0x00001720, 0x0000173b,
+	0x00001740, 0x00001747, 0x0000179d,
+} // Size: 132 bytes
+
+const en_GBData string = "" + // Size: 6045 bytes
+	"\x02Questionary is cancelled\x02Unknown command\x02Welcome to Help My Pe" +
+	"t Bot! 🐾\x0a\x0aI'm your personal pet care assistant, ready to help you " +
+	"take better care of your furry friend. I can analyze photos of your pet " +
+	"and assist you with:\x0a\x0a- Pet health and behavior questions - feel f" +
+	"ree to share photos of any concerning symptoms or behaviors\x0a- Diet an" +
+	"d nutrition advice, including photos of food or treats you're considerin" +
+	"g\x0a- Training tips and techniques - you can send pictures of specific " +
+	"situations you need help with\x0a- General pet care guidance, with photo" +
+	" analysis of your pet's environment or supplies\x0a\x0aSimply type your " +
+	"question or send photos along with your concerns about your pet, and I'l" +
+	"l provide helpful, informative answers based on reliable veterinary know" +
+	"ledge. You can send multiple photos if needed to better show the situati" +
+	"on.\x0a\x0aRemember, while I can offer guidance and analyze photos, for " +
+	"serious medical conditions, always consult with a veterinarian.\x0a\x0aT" +
+	"o get started, just ask me any question about your pet - with or without" +
+	" photos!\x02<b>Terms and Conditions</b>\x0a<i>Last updated: 30.01.2025</" +
+	"i>\x0a\x0aThank you for using our veterinary advice chatbot (“the Servic" +
+	"e”). By accessing or using this Service, you agree to be bound by the fo" +
+	"llowing terms and conditions (“Terms”). If you do not agree to these Ter" +
+	"ms, please discontinue use immediately.\x0a\x0a<b>1. Nature of the Servi" +
+	"ce</b>\x0a1.1 The Service provides general information, guidance, and su" +
+	"ggestions for pet care, including (but not limited to) diet, behavior, a" +
+	"nd training.\x0a1.2 The Service is not a substitute for professional vet" +
+	"erinary diagnosis, treatment, or care. Always seek the advice of a licen" +
+	"sed veterinarian for any questions regarding your pet’s health.\x0a\x0a<" +
+	"b>2. No Veterinary-Client-Patient Relationship</b>\x0a2.1 Using the Serv" +
+	"ice or engaging with our AI assistant does not create a veterinarian-cli" +
+	"ent-patient relationship.\x0a2.2 Any advice or guidance provided by the " +
+	"Service is based on limited information and should only be considered ge" +
+	"neral information.\x0a\x0a<b>3. Limitation of Liability</b>\x0a3.1 You a" +
+	"cknowledge and agree that use of the Service is at your own risk.\x0a3.2" +
+	" Under no circumstances shall the owners, developers, or licensors of th" +
+	"e Service be liable for any direct, indirect, incidental, special, or co" +
+	"nsequential damages arising out of or in connection with your access to " +
+	"or use of the Service.\x0a3.3 You understand that decisions regarding yo" +
+	"ur pet’s care and any resulting outcomes are your sole responsibility. I" +
+	"f you have any doubt about the well-being of your pet or its health, you" +
+	" should immediately consult a licensed veterinarian.\x0a\x0a<b>4. No War" +
+	"ranty</b>\x0a4.1 The Service is provided on an “as is” and “as available" +
+	"” basis without warranties of any kind, whether express or implied." +
+	"\x0a4.2 We do not warrant that the Service will be uninterrupted, error-" +
+	"free, secure, or free from viruses.\x0a\x0a<b>5. User Responsibilities</" +
+	"b>\x0a5.1 You are responsible for providing accurate and complete inform" +
+	"ation about your pet when seeking advice.\x0a5.2 You must ensure that al" +
+	"l questions, descriptions, and data you provide do not violate any third" +
+	"-party rights or local laws.\x0a\x0a<b>6. International Use</b>\x0a6.1 T" +
+	"he Service is intended for global use. You are responsible for complianc" +
+	"e with all applicable local laws and regulations in your jurisdiction." +
+	"\x0a6.2 We do not guarantee that the Service or any of its content is ap" +
+	"propriate or permissible in any specific country or region.\x0a\x0a<b>7." +
+	" Modifications</b>\x0a7.1 We reserve the right to modify or replace thes" +
+	"e Terms at any time.\x0a7.2 If we make material changes, we will post th" +
+	"e updated Terms and indicate the date of the latest revision at the top " +
+	"of this document.\x0a\x0a<b>8. Governing Law and Dispute Resolution</b>" +
+	"\x0a8.1 These Terms shall be governed by and construed in accordance wit" +
+	"h the laws applicable in the jurisdiction of the Service provider’s prin" +
+	"cipal place of business, without regard to conflict-of-law principles." +
+	"\x0a8.2 Any dispute arising from or relating to these Terms shall be res" +
+	"olved through amicable negotiation and, if necessary, by binding arbitra" +
+	"tion or litigation in the applicable courts.\x0a\x0a<b>9. Acceptance of " +
+	"Terms</b>\x0a9.1 By continuing to access or use the Service, you acknowl" +
+	"edge that you have read, understood, and agree to be bound by these Term" +
+	"s.\x0a9.2 If you do not agree, you must cease using the Service immediat" +
+	"ely.\x0a\x0aIf you have any questions or concerns regarding these Terms," +
+	" or if you need further clarification, please contact at <i>k.sysoev@me." +
+	"com</i>.\x02<b>Help My Pet Bot Commands</b>:\x0a/start - Start the conve" +
+	"rsation with the bot\x0a/terms - View the Terms and Conditions of the se" +
+	"rvice\x0a/editprofile - Update your pet's profile information, such as n" +
+	"ame, age, breed, etc. This information helps the bot provide more accura" +
+	"te advice.\x0a/cancel - Cancel the current questionnaire, if any is in p" +
+	"rogress (e.g., when you want to start over or change your question)\x0a/" +
+	"help - View this help message\x02Sorry, I cannot process videos, audio, " +
+	"or documents. Please send your question as text only.\x02I apologize, bu" +
+	"t your message is too long for me to process. Please try to make it shor" +
+	"ter and more concise.\x02You have reached the maximum number of requests" +
+	" per hour. Please try again later.\x02We have reached our daily request " +
+	"limit. Please come back tomorrow when our budget is refreshed.\x02Please" +
+	", provide your question in text format along with photo(s)\x02Please, pr" +
+	"ovide at least one photo\x02Please, provide no more than %[1]d photo(s)" +
+	"\x02Sorry, I encountered an error while processing your request. Please " +
+	"try again later.\x02Provided date cannot be in the future. Please provid" +
+	"e a valid date.\x02Please provide a date in the valid format YYYY-MM-DD " +
+	"(e.g., 2023-12-31)\x02Pet profile saved successfully\x02What is your pet" +
+	"'s name?\x02What type of pet do you have?\x02dog\x02cat\x02What breed is" +
+	" your pet?\x02When was your pet born? Please enter the date in the forma" +
+	"t YYYY-MM-DD (e.g., 2010-12-31).\x02What is your pet's gender?\x02male" +
+	"\x02female\x02What is your pet's weight? Please specify the weight follo" +
+	"wed by the unit, e.g., 5 kg"
+
+var es_ESIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000017, 0x0000002b, 0x000004bc,
+	0x00001389, 0x00001564, 0x000015cc, 0x00001640,
+	0x000016a4, 0x0000171e, 0x00001767, 0x00001790,
+	0x000017c0, 0x00001823, 0x0000187f, 0x000018db,
+	0x00001901, 0x00001925, 0x00001944, 0x0000194a,
+	0x0000194f, 0x0000196a, 0x000019d9, 0x000019fe,
+	0x00001a04, 0x00001a0b, 0x00001a73,
+} // Size: 132 bytes
+
+const es_ESData string = "" + // Size: 6771 bytes
+	"\x02Cuestionario cancelado\x02Comando desconocido\x02¡Bienvenido a Help " +
+	"My Pet Bot! 🐾\x0a\x0aSoy tu asistente personal de cuidado de mascotas, l" +
+	"isto para ayudarte a cuidar mejor a tu amigo peludo. Puedo analizar foto" +
+	"s de tu mascota y ayudarte con:\x0a\x0a- Preguntas sobre la salud y el c" +
+	"omportamiento de tu mascota: siéntete libre de compartir fotos de cualqu" +
+	"ier síntoma o comportamiento preocupante\x0a- Consejos sobre dieta y nut" +
+	"rición, incluyendo fotos de alimentos o golosinas que estés considerando" +
+	"\x0a- Consejos y técnicas de entrenamiento: puedes enviar fotos de situa" +
+	"ciones específicas en las que necesites ayuda\x0a- Orientación general s" +
+	"obre el cuidado de mascotas, con análisis de fotos del entorno o suminis" +
+	"tros de tu mascota\x0a\x0aSimplemente escribe tu pregunta o envía fotos " +
+	"junto con tus preocupaciones sobre tu mascota, y te proporcionaré respue" +
+	"stas útiles e informativas basadas en conocimientos veterinarios fiables" +
+	". Puedes enviar varias fotos si es necesario para mostrar mejor la situa" +
+	"ción.\x0a\x0aRecuerda que, aunque puedo ofrecer orientación y analizar f" +
+	"otos, para afecciones médicas graves, siempre consulta con un veterinari" +
+	"o.\x0a\x0aPara empezar, solo pregúntame cualquier cosa sobre tu mascota," +
+	" con o sin fotos.\x02<b>Términos y Condiciones</b>\x0a<i>Última actualiz" +
+	"ación: 30.01.2025</i>\x0a\x0aGracias por usar nuestro chatbot de asesora" +
+	"miento veterinario (“el Servicio”). Al acceder o usar este Servicio, ust" +
+	"ed acepta estar sujeto a los siguientes términos y condiciones (“Término" +
+	"s”). Si no está de acuerdo con estos Términos, por favor, deje de usarlo" +
+	" inmediatamente.\x0a\x0a<b>1. Naturaleza del Servicio</b>\x0a1.1 El Serv" +
+	"icio proporciona información general, orientación y sugerencias para el " +
+	"cuidado de mascotas, incluyendo (pero no limitado a) dieta, comportamien" +
+	"to y entrenamiento.\x0a1.2 El Servicio no es un sustituto del diagnóstic" +
+	"o, tratamiento o cuidado veterinario profesional. Siempre busque el cons" +
+	"ejo de un veterinario licenciado para cualquier pregunta sobre la salud " +
+	"de su mascota.\x0a\x0a<b>2. No hay Relación Veterinario-Cliente-Paciente" +
+	"</b>\x0a2.1 El uso del Servicio o la interacción con nuestro asistente d" +
+	"e IA no crea una relación veterinario-cliente-paciente.\x0a2.2 Cualquier" +
+	" consejo o orientación proporcionada por el Servicio se basa en informac" +
+	"ión limitada y solo debe considerarse como información general.\x0a\x0a<" +
+	"b>3. Limitación de Responsabilidad</b>\x0a3.1 Usted reconoce y acepta qu" +
+	"e el uso del Servicio es bajo su propio riesgo.\x0a3.2 Bajo ninguna circ" +
+	"unstancia los propietarios, desarrolladores o licenciantes del Servicio " +
+	"serán responsables de cualquier daño directo, indirecto, incidental, esp" +
+	"ecial o consecuente que surja de o en conexión con su acceso o uso del S" +
+	"ervicio.\x0a3.3 Usted entiende que las decisiones sobre el cuidado de su" +
+	" mascota y cualquier resultado resultante son su responsabilidad exclusi" +
+	"va. Si tiene alguna duda sobre el bienestar de su mascota o su salud, de" +
+	"be consultar inmediatamente a un veterinario licenciado.\x0a\x0a<b>4. Si" +
+	"n Garantía</b>\x0a4.1 El Servicio se proporciona “tal cual”, y “según di" +
+	"sponibilidad”, sin garantías de ningún tipo, ya sean expresas o implícit" +
+	"as.\x0a4.2 No garantizamos que el Servicio será ininterrumpido, libre de" +
+	" errores, seguro o libre de virus.\x0a\x0a<b>5. Responsabilidades del Us" +
+	"uario</b>\x0a5.1 Usted es responsable de proporcionar información precis" +
+	"a y completa sobre su mascota al buscar asesoramiento.\x0a5.2 Debe asegu" +
+	"rarse de que todas las preguntas, descripciones y datos que proporcione " +
+	"no violen los derechos de terceros ni las leyes locales.\x0a\x0a<b>6. Us" +
+	"o Internacional</b>\x0a6.1 El Servicio está destinado para uso global. U" +
+	"sted es responsable de cumplir con todas las leyes y regulaciones locale" +
+	"s aplicables en su jurisdicción.\x0a6.2 No garantizamos que el Servicio " +
+	"o cualquiera de sus contenidos sean apropiados o permisibles en cualquie" +
+	"r país o región específica.\x0a\x0a<b>7. Modificaciones</b>\x0a7.1 Nos r" +
+	"eservamos el derecho de modificar o reemplazar estos Términos en cualqui" +
+	"er momento.\x0a7.2 Si realizamos cambios materiales, publicaremos los Té" +
+	"rminos actualizados e indicaremos la fecha de la última revisión en la p" +
+	"arte superior de este documento.\x0a\x0a<b>8. Ley Aplicable y Resolución" +
+	" de Disputas</b>\x0a8.1 Estos Términos se regirán e interpretarán de acu" +
+	"erdo con las leyes aplicables en la jurisdicción del lugar principal de " +
+	"negocios del proveedor del Servicio, sin tener en cuenta los principios " +
+	"de conflicto de leyes.\x0a8.2 Cualquier disputa que surja de o esté rela" +
+	"cionada con estos Términos se resolverá mediante negociación amistosa y," +
+	" si es necesario, mediante arbitraje vinculante o litigio en los tribuna" +
+	"les aplicables.\x0a\x0a<b>9. Aceptación de los Términos</b>\x0a9.1 Al co" +
+	"ntinuar accediendo o usando el Servicio, usted reconoce que ha leído, en" +
+	"tendido y acepta estar sujeto a estos Términos.\x0a9.2 Si no está de acu" +
+	"erdo, debe dejar de usar el Servicio inmediatamente.\x0a\x0aSi tiene alg" +
+	"una pregunta o inquietud sobre estos Términos, o si necesita más aclarac" +
+	"iones, por favor contacte a <i>k.sysoev@me.com</i>.\x02<b>Comandos de He" +
+	"lp My Pet Bot</b>:\x0a/start - Iniciar la conversación con el bot\x0a/te" +
+	"rms - Ver los Términos y Condiciones del servicio\x0a/editprofile - Actu" +
+	"alizar la información del perfil de tu mascota, como nombre, edad, raza," +
+	" etc. Esta información ayuda al bot a proporcionar consejos más precisos" +
+	".\x0a/cancel - Cancelar el cuestionario actual, si hay alguno en progres" +
+	"o (por ejemplo, cuando quieras empezar de nuevo o cambiar tu pregunta)" +
+	"\x0a/help - Ver este mensaje de ayuda\x02Lo siento, no puedo procesar vi" +
+	"deos, audio o documentos. Por favor, envía tu pregunta solo como texto." +
+	"\x02Lo siento, pero tu mensaje es demasiado largo para que lo procese. P" +
+	"or favor, intenta hacerlo más corto y conciso.\x02Ha alcanzado el número" +
+	" máximo de solicitudes por hora. Por favor, inténtelo de nuevo más tarde" +
+	".\x02Hemos alcanzado nuestro límite diario de solicitudes. Por favor, vu" +
+	"elva mañana cuando se actualice nuestro presupuesto.\x02Por favor, propo" +
+	"rcione su pregunta en formato de texto junto con foto(s)\x02Por favor, p" +
+	"roporcione al menos una foto\x02Por favor, proporcione no más de %[1]d f" +
+	"oto(s)\x02Lo siento, encontré un error al procesar su solicitud. Por fav" +
+	"or, inténtelo de nuevo más tarde.\x02La fecha proporcionada no puede ser" +
+	" en el futuro. Por favor, proporcione una fecha válida.\x02Por favor, pr" +
+	"oporcione una fecha en el formato válido AAAA-MM-DD (por ejemplo, 2023-1" +
+	"2-31)\x02Perfil de mascota guardado con éxito\x02¿Cuál es el nombre de t" +
+	"u mascota?\x02¿Qué tipo de mascota tienes?\x02perro\x02gato\x02¿Qué raza" +
+	" es tu mascota?\x02¿Cuándo nació tu mascota? Por favor, introduce la fec" +
+	"ha en el formato AAAA-MM-DD (por ejemplo, 2010-12-31).\x02¿Cuál es el gé" +
+	"nero de tu mascota?\x02macho\x02hembra\x02¿Cuál es el peso de tu mascota" +
+	"? Por favor, especifica el peso seguido de la unidad, por ejemplo, 5 kg"
+
+var fa_IRIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000020, 0x0000003a, 0x000007fc,
+	0x00001d01, 0x00001fbe, 0x0000207d, 0x0000213e,
+	0x000021da, 0x0000229a, 0x00002302, 0x00002338,
+	0x00002372, 0x0000240e, 0x00002494, 0x000024ff,
+	0x00002546, 0x00002575, 0x000025a4, 0x000025a9,
+	0x000025b2, 0x000025e3, 0x0000268a, 0x000026bd,
+	0x000026c2, 0x000026cb, 0x0000275a,
+} // Size: 132 bytes
+
+const fa_IRData string = "" + // Size: 10074 bytes
+	"\x02پرسش\u200cنامه لغو شد\x02دستور نامعلوم\x02به ربات Help My Pet خوش آم" +
+	"دید! 🐾\x0a\x0aمن دستیار مراقبت از حیوان خانگی شما هستم، آماده به شما کم" +
+	"ک کنم تا بهتر مراقبت از دوست پشمالوی خود باشید. من می\u200cتوا\ufffd" +
+	"\ufffdم عکس\u200cهای حیوان خانگی شما را تجزیه و تحلیل کرده و به شما کمک " +
+	"کنم با:\x0a\x0a- پرسش\u200cهای مربوط به سلامت و رفتار حیوان خانگی - احس" +
+	"اس راحتی کنید که عکس\u200cهای هر علامت یا رفتار نگران\u200cکننده\u200cا" +
+	"ی را به اشتراک بگذارید\x0a- مشاوره در مورد رژیم غذایی و تغذیه، شامل عکس" +
+	"\u200cهای غذا یا خوراکی\u200cهایی که در نظر دارید\x0a- نکات و تکنیک" +
+	"\u200cهای آموزش - می\u200cتوانید عکس\u200cهایی از موقعیت\u200cهای خاصی ک" +
+	"ه نیاز به کمک دارید، ارسال کنید\x0a- راهنمایی\u200cهای عمومی مراقبت از " +
+	"حیوان خانگی، با تجزیه و تحلیل عکس\u200cهای محیط یا تجهیزات حیوان خانگی " +
+	"شما\x0a\x0aفقط سوال خود را تایپ کنید یا عکس\u200cها را همراه با نگرانی" +
+	"\u200cهای خود در مورد حیوان خانگی خود ارسال کنید، و من پاسخ\u200cهای مفی" +
+	"د و اطلاعاتی بر اساس دانش دامپزشکی قابل اعتماد ارائه خواهم داد. در صورت" +
+	" نیاز می\u200cتوانید چندین عکس را ارسال کنید تا وضعیت بهتری را نشان دهید" +
+	".\x0a\x0aبه یاد داشته باشید، هر چند که من می\u200cتوانم راهنمایی کنم و ع" +
+	"کس\u200cها را تجزیه و تحلیل کنم، برای بیماری\u200cهای جدی، همیشه با یک " +
+	"دامپزشک مشورت کنید.\x0a\x0aبرای شروع، فقط سوالی در مورد حیوان خانگی خود" +
+	" بپرسید - با یا بدون عکس!\x02<b>شرایط و ضوابط</b>\x0a<i>آخرین به\u200cرو" +
+	"زرسانی: 30.01.2025</i>\x0a\x0aاز اینکه از ربات مشاوره دامپزشکی ما (“خدم" +
+	"ت”) استفاده می\u200cکنید، متشکریم. با دسترسی یا استفاده از این خدمت، شم" +
+	"ا موافقت می\u200cکنید که به شرایط و ضوابط زیر (“شرایط”) پایبند باشید. ا" +
+	"گر با این شرایط موافق نیستید، لطفاً فوراً استفاده را متوقف کنید.\x0a" +
+	"\x0a<b>1. ماهیت خدمت</b>\x0a1.1 این خدمت اطلاعات عمومی، راهنمایی\u200cها" +
+	" و پیشنهاداتی برای مراقبت از حیوانات خانگی ارائه می\u200cدهد، از جمله (ا" +
+	"ما نه محدود به) رژیم غذایی، رفتار و آموزش.\x0a1.2 این خدمت جایگزین تشخی" +
+	"ص، درمان یا مراقبت حرفه\u200cای دامپزشکی نیست. همیشه برای هر سوالی در م" +
+	"ورد سلامت حیوان خانگی خود با یک دامپزشک مجاز مشورت کنید.\x0a\x0a<b>2. ع" +
+	"دم وجود رابطه دامپزشک-مشتری-بیمار</b>\x0a2.1 استفاده از این خدمت یا تعا" +
+	"مل با دستیار هوش مصنوعی ما رابطه دامپزشک-مشتری-بیمار ایجاد نمی\u200cکند" +
+	".\x0a2.2 هرگونه مشاوره یا راهنمایی ارائه شده توسط این خدمت بر اساس اطلاع" +
+	"ات محدود است و باید فقط به عنوان اطلاعات عمومی در نظر گرفته شود.\x0a" +
+	"\x0a<b>3. محدودیت مسئولیت</b>\x0a3.1 شما تأیید و موافقت می\u200cکنید که " +
+	"استفاده از این خدمت به عهده خودتان است.\x0a3.2 تحت هیچ شرایطی صاحبان، ت" +
+	"وسعه\u200cدهندگان یا مجوزدهندگان این خدمت مسئول هیچ\u200cگونه خسارت مست" +
+	"قیم، غیرمستقیم، اتفاقی، ویژه یا تبعی ناشی از یا در ارتباط با دسترسی یا " +
+	"استفاده شما از این خدمت نخواهند بود.\x0a3.3 شما درک می\u200cکنید که تصم" +
+	"یمات مربوط به مراقبت از حیوان خانگی شما و هرگونه نتایج حاصل از آن به عه" +
+	"ده خودتان است. اگر در مورد سلامت یا رفاه حیوان خانگی خود شک دارید، باید" +
+	" فوراً با یک دامپزشک مجاز مشورت کنید.\x0a\x0a<b>4. عدم وجود ضمانت</b>" +
+	"\x0a4.1 این خدمت به صورت “همان\u200cطور که هست” و “همان\u200cطور که موجو" +
+	"د است” بدون هیچ\u200cگونه ضمانت، چه صریح و چه ضمنی، ارائه می\u200cشود." +
+	"\x0a4.2 ما ضمانت نمی\u200cکنیم که این خدمت بدون وقفه، بدون خطا، امن یا ع" +
+	"اری از ویروس باشد.\x0a\x0a<b>5. مسئولیت\u200cهای کاربر</b>\x0a5.1 شما م" +
+	"سئول ارائه اطلاعات دقیق و کامل در مورد حیوان خانگی خود هنگام درخواست مش" +
+	"اوره هستید.\x0a5.2 شما باید اطمینان حاصل کنید که تمام سوالات، توضیحات و" +
+	" داده\u200cهایی که ارائه می\u200cدهید، حقوق شخص ثالث یا قوانین محلی را ن" +
+	"قض نمی\u200cکنند.\x0a\x0a<b>6. استفاده بین\u200cالمللی</b>\x0a6.1 این خ" +
+	"دمت برای استفاده جهانی در نظر گرفته شده است. شما مسئول رعایت تمام قوانی" +
+	"ن و مقررات محلی قابل اجرا در حوزه قضایی خود هستید.\x0a6.2 ما تضمین نمی" +
+	"\u200cکنیم که این خدمت یا هر یک از محتوای آن در هر کشور یا منطقه خاصی من" +
+	"اسب یا مجاز باشد.\x0a\x0a<b>7. تغییرات</b>\x0a7.1 ما حق تغییر یا جایگزی" +
+	"نی این شرایط را در هر زمان محفوظ می\u200cداریم.\x0a7.2 اگر تغییرات اساس" +
+	"ی ایجاد کنیم، شرایط به\u200cروزرسانی شده را منتشر خواهیم کرد و تاریخ آخ" +
+	"رین بازبینی را در بالای این سند نشان خواهیم داد.\x0a\x0a<b>8. قانون حاک" +
+	"م و حل اختلاف</b>\x0a8.1 این شرایط باید بر اساس قوانین قابل اجرا در حوز" +
+	"ه قضایی محل اصلی کسب و کار ارائه\u200cدهنده خدمت، بدون توجه به اصول تعا" +
+	"رض قوانین، تفسیر و اجرا شود.\x0a8.2 هرگونه اختلاف ناشی از یا مربوط به ا" +
+	"ین شرایط باید از طریق مذاکره دوستانه و در صورت لزوم، از طریق داوری الزا" +
+	"م\u200cآور یا دادخواهی در دادگاه\u200cهای قابل اجرا حل و فصل شود.\x0a" +
+	"\x0a<b>9. پذیرش شرایط</b>\x0a9.1 با ادامه دسترسی یا استفاده از این خدمت،" +
+	" شما تأیید می\u200cکنید که این شرایط را خوانده، درک کرده و موافقت می" +
+	"\u200cکنید که به آن\u200cها پایبند باشید.\x0a9.2 اگر موافق نیستید، باید " +
+	"فوراً استفاده از این خدمت را متوقف کنید.\x0a\x0aاگر سوالات یا نگرانی" +
+	"\u200cهایی در مورد این شرایط دارید، یا اگر نیاز به توضیحات بیشتر دارید، " +
+	"لطفاً با <i>k.sysoev@me.com</i> تماس بگیرید.\x02<b>دستورات ربات Help My" +
+	" Pet</b>:\x0a/start - شروع گفتگو با ربات\x0a/terms - مشاهده شرایط و ضواب" +
+	"ط خدمت\x0a/editprofile - به\u200cروزرسانی اطلاعات پروفایل حیوان خانگی ش" +
+	"ما، مانند نام، سن، نژاد و غیره. این اطلاعات به ربات کمک می\u200cکند تا " +
+	"مشاوره دقیق\u200cتری ارائه دهد.\x0a/cancel - لغو پرسش\u200cنامه فعلی، ا" +
+	"گر در حال انجام پرسش\u200cنامه\u200cای هستید (مثلاً هنگامی که می\u200cخ" +
+	"واهید از ابتدا شروع کنید یا سوال خود را تغییر دهید)\x0a/help - مشاهده ا" +
+	"ین پیام راهنما\x02متاسفم، من نمی\u200cتوانم ویدیوها، صداها یا اسناد را " +
+	"پردازش کنم. لطفاً سوال خود را فقط به صورت متن ارسال کنید.\x02متاسفم، ام" +
+	"ا پیام شما برای من خیلی طولانی است تا بتوانم پردازش کنم. لطفاً سعی کنید" +
+	" کوتاه\u200cتر و مختصرتر کنید.\x02شما به حداکثر تعداد درخواست\u200cها در" +
+	" هر ساعت رسیده\u200cاید. لطفاً بعداً دوباره امتحان کنید.\x02ما به حداکثر" +
+	" تعداد درخواست\u200cهای روزانه خود رسیده\u200cایم. لطفاً فردا برگردید وق" +
+	"تی که بودجه\u200cمان تازه شده است.\x02لطفاً سوال خود را به صورت متنی هم" +
+	"راه با عکس(ها) ارائه دهید\x02لطفاً حداقل یک عکس ارائه دهید\x02لطفاً بیش" +
+	" از %[1]d عکس ارائه ندهید\x02متاسفم، من در حین پردازش درخواست شما با خطا" +
+	" مواجه شدم. لطفاً بعداً دوباره امتحان کنید.\x02تاریخ ارائه شده نمی\u200c" +
+	"تواند در آینده باشد. لطفاً یک تاریخ معتبر ارائه دهید.\x02لطفاً یک تاریخ" +
+	" در قالب معتبر YYYY-MM-DD (مثلاً 2023-12-31) ارائه دهید\x02پروفایل حیوان" +
+	" خانگی با موفقیت ذخیره شد\x02نام حیوان خانگی شما چیست؟\x02چه نوع حیوان خ" +
+	"انگی دارید؟\x02سگ\x02گربه\x02نژاد حیوان خانگی شما چیست؟\x02حیوان خانگی " +
+	"شما چه زمانی متولد شده است؟ لطفاً تاریخ را به صورت YYYY-MM-DD (مثلاً 20" +
+	"10-12-31) وارد کنید.\x02جنسیت حیوان خانگی شما چیست؟\x02نر\x02ماده\x02وزن" +
+	" حیوان خانگی شما چیست؟ لطفاً وزن را به همراه واحد مشخص کنید، مثلاً 5 کیل" +
+	"وگرم"
+
+var fr_FRIndex = []uint32{ // 27 elements
+	0x00000000, 0x0000001d, 0x0000002f, 0x00000583,
+	0x0000150f, 0x00001601, 0x00001689, 0x0000170c,
+	0x00001767, 0x000017d6, 0x0000181f, 0x00001843,
+	0x00001872, 0x000018db, 0x0000192e, 0x0000197e,
+	0x000019aa, 0x000019d9, 0x00001a05, 0x00001a0b,
+	0x00001a10, 0x00001a42, 0x00001ab4, 0x00001ae4,
+	0x00001aea, 0x00001af2, 0x00001b64,
+} // Size: 132 bytes
+
+const fr_FRData string = "" + // Size: 7012 bytes
+	"\x02Le questionnaire est annulé\x02Commande inconnue\x02Bienvenue sur He" +
+	"lp My Pet Bot! 🐾\x0a\x0aJe suis votre assistant personnel pour les soins" +
+	" des animaux de compagnie, prêt à vous aider à mieux prendre soin de vot" +
+	"re ami à quatre pattes. Je peux analyser les photos de votre animal et v" +
+	"ous aider avec :\x0a\x0a- Questions de santé et de comportement des anim" +
+	"aux de compagnie - n'hésitez pas à partager des photos de symptômes ou d" +
+	"e comportements préoccupants\x0a- Conseils en matière d'alimentation et " +
+	"de nutrition, y compris des photos d'aliments ou de friandises que vous " +
+	"envisagez\x0a- Astuces et techniques de dressage - vous pouvez envoyer d" +
+	"es photos de situations spécifiques pour lesquelles vous avez besoin d'a" +
+	"ide\x0a- Conseils généraux sur les soins des animaux de compagnie, avec " +
+	"analyse des photos de l'environnement ou des fournitures de votre animal" +
+	"\x0a\x0aIl vous suffit de poser une question ou d'envoyer des photos ave" +
+	"c vos préoccupations concernant votre animal, et je vous fournirai des r" +
+	"éponses utiles et informatives basées sur des connaissances vétérinaire" +
+	"s fiables. Vous pouvez envoyer plusieurs photos si nécessaire pour mieux" +
+	" montrer la situation.\x0a\x0aN'oubliez pas que, bien que je puisse offr" +
+	"ir des conseils et analyser des photos, pour des affections médicales gr" +
+	"aves, consultez toujours un vétérinaire.\x0a\x0aPour commencer, posez-mo" +
+	"i simplement une question sur votre animal - avec ou sans photos !\x02<b" +
+	">Conditions générales</b>\x0a<i>Dernière mise à jour : 30.01.2025</i>" +
+	"\x0a\x0aMerci d'utiliser notre chatbot de conseils vétérinaires (« le Se" +
+	"rvice »). En accédant à ce Service ou en l'utilisant, vous acceptez d'êt" +
+	"re lié par les conditions générales suivantes (« Conditions »). Si vous " +
+	"n'acceptez pas ces Conditions, veuillez cesser immédiatement d'utiliser " +
+	"le Service.\x0a\x0a<b>1. Nature du Service</b>\x0a1.1 Le Service fournit" +
+	" des informations générales, des conseils et des suggestions pour les so" +
+	"ins des animaux de compagnie, y compris (mais sans s'y limiter) l'alimen" +
+	"tation, le comportement et le dressage.\x0a1.2 Le Service ne remplace pa" +
+	"s un diagnostic, un traitement ou des soins vétérinaires professionnels." +
+	" Consultez toujours un vétérinaire agréé pour toute question concernant " +
+	"la santé de votre animal.\x0a\x0a<b>2. Absence de relation vétérinaire-c" +
+	"lient-patient</b>\x0a2.1 L'utilisation du Service ou l'interaction avec " +
+	"notre assistant IA ne crée pas de relation vétérinaire-client-patient." +
+	"\x0a2.2 Tout conseil ou orientation fourni par le Service est basé sur d" +
+	"es informations limitées et doit être considéré uniquement comme des inf" +
+	"ormations générales.\x0a\x0a<b>3. Limitation de responsabilité</b>\x0a3." +
+	"1 Vous reconnaissez et acceptez que l'utilisation du Service se fait à v" +
+	"os propres risques.\x0a3.2 En aucun cas, les propriétaires, développeurs" +
+	" ou concédants de licence du Service ne seront responsables des dommages" +
+	" directs, indirects, accessoires, spéciaux ou consécutifs résultant de o" +
+	"u en relation avec votre accès ou utilisation du Service.\x0a3.3 Vous co" +
+	"mprenez que les décisions concernant les soins de votre animal et les ré" +
+	"sultats qui en découlent sont de votre seule responsabilité. Si vous ave" +
+	"z des doutes sur le bien-être ou la santé de votre animal, vous devez im" +
+	"médiatement consulter un vétérinaire agréé.\x0a\x0a<b>4. Absence de gara" +
+	"ntie</b>\x0a4.1 Le Service est fourni « tel quel » et « selon disponibil" +
+	"ité » sans garanties d'aucune sorte, qu'elles soient expresses ou implic" +
+	"ites.\x0a4.2 Nous ne garantissons pas que le Service sera ininterrompu, " +
+	"sans erreur, sécurisé ou exempt de virus.\x0a\x0a<b>5. Responsabilités d" +
+	"e l'utilisateur</b>\x0a5.1 Vous êtes responsable de fournir des informat" +
+	"ions exactes et complètes sur votre animal lorsque vous demandez des con" +
+	"seils.\x0a5.2 Vous devez vous assurer que toutes les questions, descript" +
+	"ions et données que vous fournissez ne violent aucun droit de tiers ou l" +
+	"ois locales.\x0a\x0a<b>6. Utilisation internationale</b>\x0a6.1 Le Servi" +
+	"ce est destiné à une utilisation mondiale. Vous êtes responsable du resp" +
+	"ect de toutes les lois et réglementations locales applicables dans votre" +
+	" juridiction.\x0a6.2 Nous ne garantissons pas que le Service ou son cont" +
+	"enu est approprié ou permis dans un pays ou une région spécifique.\x0a" +
+	"\x0a<b>7. Modifications</b>\x0a7.1 Nous nous réservons le droit de modif" +
+	"ier ou de remplacer ces Conditions à tout moment.\x0a7.2 Si nous apporto" +
+	"ns des modifications importantes, nous publierons les Conditions mises à" +
+	" jour et indiquerons la date de la dernière révision en haut de ce docum" +
+	"ent.\x0a\x0a<b>8. Droit applicable et résolution des litiges</b>\x0a8.1 " +
+	"Ces Conditions seront régies et interprétées conformément aux lois appli" +
+	"cables dans la juridiction du principal lieu d'affaires du fournisseur d" +
+	"e services, sans égard aux principes de conflit de lois.\x0a8.2 Tout lit" +
+	"ige découlant de ou lié à ces Conditions sera résolu par une négociation" +
+	" à l'amiable et, si nécessaire, par arbitrage ou litige contraignant dev" +
+	"ant les tribunaux compétents.\x0a\x0a<b>9. Acceptation des Conditions</b" +
+	">\x0a9.1 En continuant d'accéder ou d'utiliser le Service, vous reconnai" +
+	"ssez avoir lu, compris et accepté d'être lié par ces Conditions.\x0a9.2 " +
+	"Si vous n'êtes pas d'accord, vous devez cesser immédiatement d'utiliser " +
+	"le Service.\x0a\x0aSi vous avez des questions ou des préoccupations conc" +
+	"ernant ces Conditions, ou si vous avez besoin de plus amples information" +
+	"s, veuillez contacter à <i>k.sysoev@me.com</i>.\x02<b>Commandes Help My " +
+	"Pet Bot</b> :\x0a/start - Démarrer la conversation avec le bot\x0a/terms" +
+	" - Afficher les conditions générales du service\x0a/editprofile - Mettre" +
+	" à jour les informations du profil de votre animal, telles que le nom, l" +
+	"'âge, la\x02Désolé, je ne peux pas traiter les vidéos, l'audio ou les do" +
+	"cuments. Veuillez envoyer votre question sous forme de texte uniquement." +
+	"\x02Je m'excuse, mais votre message est trop long pour que je puisse le " +
+	"traiter. Essayez de le raccourcir et de le rendre plus concis.\x02Vous a" +
+	"vez atteint le nombre maximum de requêtes par heure. Veuillez réessayer " +
+	"plus tard.\x02Nous avons atteint notre limite de demandes quotidiennes. " +
+	"Revenez demain lorsque notre budget sera rafraîchi.\x02Veuillez fournir " +
+	"votre question au format texte accompagnée de photo(s)\x02Veuillez fourn" +
+	"ir au moins une photo\x02Veuillez ne pas fournir plus de %[1]d photo(s)" +
+	"\x02Désolé, j'ai rencontré une erreur lors du traitement de votre demand" +
+	"e. Veuillez réessayer plus tard.\x02La date fournie ne peut pas être dan" +
+	"s le futur. Veuillez fournir une date valide.\x02Veuillez fournir une da" +
+	"te au format valide AAAA-MM-JJ (par exemple, 2023-12-31)\x02Profil de l'" +
+	"animal enregistré avec succès\x02Quel est le nom de votre animal de comp" +
+	"agnie ?\x02Quel type d'animal de compagnie avez-vous ?\x02chien\x02chat" +
+	"\x02Quelle est la race de votre animal de compagnie ?\x02Quand est né vo" +
+	"tre animal de compagnie ? Veuillez entrer la date au format AAAA-MM-JJ (" +
+	"par exemple, 2010-12-31).\x02Quel est le sexe de votre animal de compagn" +
+	"ie ?\x02mâle\x02femelle\x02Quel est le poids de votre animal de compagni" +
+	"e ? Veuillez spécifier le poids suivi de l'unité, par exemple 5 kg"
+
+var it_ITIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000017, 0x0000002b, 0x000004c2,
+	0x0000133b, 0x0000152b, 0x00001598, 0x0000160f,
+	0x00001659, 0x000016cd, 0x00001713, 0x00001737,
+	0x00001762, 0x000017c6, 0x00001817, 0x0000186b,
+	0x0000189f, 0x000018ca, 0x000018ed, 0x000018f2,
+	0x000018f8, 0x00001921, 0x00001998, 0x000019c4,
+	0x000019cc, 0x000019d4, 0x00001a45,
+} // Size: 132 bytes
+
+const it_ITData string = "" + // Size: 6725 bytes
+	"\x02Questionario annullato\x02Comando sconosciuto\x02Benvenuto in Help M" +
+	"y Pet Bot! 🐾\x0a\x0aSono il tuo assistente personale per la cura degli a" +
+	"nimali domestici, pronto ad aiutarti a prenderti cura meglio del tuo ami" +
+	"co peloso. Posso analizzare le foto del tuo animale domestico e aiutarti" +
+	" con:\x0a\x0a- Domande sulla salute e il comportamento dell'animale - se" +
+	"ntiti libero di condividere foto di sintomi o comportamenti preoccupanti" +
+	"\x0a- Consigli sulla dieta e la nutrizione, incluse foto di cibo o snack" +
+	" che stai considerando\x0a- Suggerimenti e tecniche di addestramento - p" +
+	"uoi inviare foto di situazioni specifiche di cui hai bisogno\x0a- Orient" +
+	"amenti generali sulla cura degli animali, con analisi fotografica dell'a" +
+	"mbiente o delle forniture del tuo animale domestico\x0a\x0aBasta digitar" +
+	"e la tua domanda o inviare foto insieme alle tue preoccupazioni sul tuo " +
+	"animale domestico, e ti fornirò risposte utili e informative basate su c" +
+	"onoscenze veterinarie affidabili. Puoi inviare più foto se necessario pe" +
+	"r mostrare meglio la situazione.\x0a\x0aRicorda, mentre posso offrire co" +
+	"nsigli e analizzare foto, per condizioni mediche gravi, consulta sempre " +
+	"un veterinario.\x0a\x0aPer iniziare, chiedimi qualsiasi domanda sul tuo " +
+	"animale domestico - con o senza foto!\x02<b>Termini e Condizioni</b>\x0a" +
+	"<i>Ultimo aggiornamento: 30.01.2025</i>\x0a\x0aGrazie per aver utilizzat" +
+	"o il nostro chatbot di consulenza veterinaria (“il Servizio”). Accedendo" +
+	" o utilizzando questo Servizio, accetti di essere vincolato dai seguenti" +
+	" termini e condizioni (“Termini”). Se non accetti questi Termini, interr" +
+	"ompi immediatamente l'uso.\x0a\x0a<b>1. Natura del Servizio</b>\x0a1.1 I" +
+	"l Servizio fornisce informazioni generali, orientamenti e suggerimenti p" +
+	"er la cura degli animali domestici, inclusi (ma non limitati a) dieta, c" +
+	"omportamento e addestramento.\x0a1.2 Il Servizio non è un sostituto dell" +
+	"a diagnosi, trattamento o cura veterinaria professionale. Cerca sempre i" +
+	"l parere di un veterinario autorizzato per qualsiasi domanda riguardante" +
+	" la salute del tuo animale domestico.\x0a\x0a<b>2. Nessuna Relazione Vet" +
+	"erinario-Cliente-Paziente</b>\x0a2.1 L'utilizzo del Servizio o l'interaz" +
+	"ione con il nostro assistente AI non crea una relazione veterinario-clie" +
+	"nte-paziente.\x0a2.2 Qualsiasi consiglio o orientamento fornito dal Serv" +
+	"izio si basa su informazioni limitate e deve essere considerato solo com" +
+	"e informazione generale.\x0a\x0a<b>3. Limitazione di Responsabilità</b>" +
+	"\x0a3.1 Riconosci e accetti che l'uso del Servizio è a tuo rischio.\x0a3" +
+	".2 In nessun caso i proprietari, sviluppatori o licenziatari del Servizi" +
+	"o saranno responsabili per danni diretti, indiretti, incidentali, specia" +
+	"li o consequenziali derivanti da o in connessione con il tuo accesso o u" +
+	"tilizzo del Servizio.\x0a3.3 Comprendi che le decisioni riguardanti la c" +
+	"ura del tuo animale domestico e qualsiasi risultato risultante sono di t" +
+	"ua esclusiva responsabilità. Se hai dubbi sul benessere del tuo animale " +
+	"domestico o sulla sua salute, dovresti consultare immediatamente un vete" +
+	"rinario autorizzato.\x0a\x0a<b>4. Nessuna Garanzia</b>\x0a4.1 Il Servizi" +
+	"o è fornito “così com'è”, e “come disponibile”, senza garanzie di alcun " +
+	"tipo, espresse o implicite.\x0a4.2 Non garantiamo che il Servizio sarà i" +
+	"ninterrotto, privo di errori, sicuro o privo di virus.\x0a\x0a<b>5. Resp" +
+	"onsabilità dell'Utente</b>\x0a5.1 Sei responsabile di fornire informazio" +
+	"ni accurate e complete sul tuo animale domestico quando cerchi consigli." +
+	"\x0a5.2 Devi assicurarti che tutte le domande, descrizioni e dati che fo" +
+	"rnisci non violino i diritti di terzi o le leggi locali.\x0a\x0a<b>6. Us" +
+	"o Internazionale</b>\x0a6.1 Il Servizio è destinato all'uso globale. Sei" +
+	" responsabile del rispetto di tutte le leggi e regolamenti locali applic" +
+	"abili nella tua giurisdizione.\x0a6.2 Non garantiamo che il Servizio o q" +
+	"ualsiasi suo contenuto sia appropriato o consentito in qualsiasi paese o" +
+	" regione specifica.\x0a\x0a<b>7. Modifiche</b>\x0a7.1 Ci riserviamo il d" +
+	"iritto di modificare o sostituire questi Termini in qualsiasi momento." +
+	"\x0a7.2 Se apportiamo modifiche sostanziali, pubblicheremo i Termini agg" +
+	"iornati e indicheremo la data dell'ultima revisione in cima a questo doc" +
+	"umento.\x0a\x0a<b>8. Legge Applicabile e Risoluzione delle Controversie<" +
+	"/b>\x0a8.1 Questi Termini saranno regolati e interpretati in conformità " +
+	"con le leggi applicabili nella giurisdizione della sede principale del f" +
+	"ornitore del Servizio, senza riguardo ai principi di conflitto di leggi." +
+	"\x0a8.2 Qualsiasi controversia derivante da o relativa a questi Termini " +
+	"sarà risolta attraverso negoziazione amichevole e, se necessario, median" +
+	"te arbitrato vincolante o contenzioso nei tribunali competenti.\x0a\x0a<" +
+	"b>9. Accettazione dei Termini</b>\x0a9.1 Continuando ad accedere o utili" +
+	"zzare il Servizio, riconosci di aver letto, compreso e accettato di esse" +
+	"re vincolato da questi Termini.\x0a9.2 Se non sei d'accordo, devi cessar" +
+	"e immediatamente l'uso del Servizio.\x0a\x0aSe hai domande o dubbi rigua" +
+	"rdanti questi Termini, o se hai bisogno di ulteriori chiarimenti, contat" +
+	"taci a <i>k.sysoev@me.com</i>.\x02<b>Comandi di Help My Pet Bot</b>:\x0a" +
+	"/start - Avvia la conversazione con il bot\x0a/terms - Visualizza i Term" +
+	"ini e Condizioni del servizio\x0a/editprofile - Aggiorna le informazioni" +
+	" del profilo del tuo animale domestico, come nome, età, razza, ecc. Ques" +
+	"te informazioni aiutano il bot a fornire consigli più accurati.\x0a/canc" +
+	"el - Annulla il questionario attuale, se ce n'è uno in corso (ad esempio" +
+	", quando vuoi ricominciare da capo o cambiare la tua domanda)\x0a/help -" +
+	" Visualizza questo messaggio di aiuto\x02Spiacente, non posso elaborare " +
+	"video, audio o documenti. Si prega di inviare la tua domanda solo come t" +
+	"esto.\x02Mi scuso, ma il tuo messaggio è troppo lungo per essere elabora" +
+	"to. Per favore, prova a renderlo più breve e conciso.\x02Hai raggiunto i" +
+	"l numero massimo di richieste per ora. Riprova più tardi.\x02Abbiamo rag" +
+	"giunto il nostro limite giornaliero di richieste. Torna domani quando il" +
+	" nostro budget sarà aggiornato.\x02Si prega di fornire la tua domanda in" +
+	" formato testuale insieme a foto\x02Si prega di fornire almeno una foto" +
+	"\x02Si prega di non fornire più di %[1]d foto\x02Spiacente, ho riscontra" +
+	"to un errore durante l'elaborazione della tua richiesta. Riprova più tar" +
+	"di.\x02La data fornita non può essere nel futuro. Si prega di fornire un" +
+	"a data valida.\x02Si prega di fornire una data nel formato valido AAAA-M" +
+	"M-GG (ad esempio, 2023-12-31)\x02Profilo dell'animale domestico salvato " +
+	"con successo\x02Qual è il nome del tuo animale domestico?\x02Che tipo di" +
+	" animale domestico hai?\x02cane\x02gatto\x02Quale razza è il tuo animale" +
+	" domestico?\x02Quando è nato il tuo animale domestico? Si prega di inser" +
+	"ire la data nel formato AAAA-MM-GG (ad esempio, 2010-12-31).\x02Qual è i" +
+	"l sesso del tuo animale domestico?\x02maschio\x02femmina\x02Qual è il pe" +
+	"so del tuo animale domestico? Si prega di specificare il peso seguito da" +
+	"ll'unità, ad esempio, 5 kg"
+
+var ko_KRIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000020, 0x00000036, 0x0000054a,
+	0x000014d6, 0x000016c9, 0x0000174b, 0x000017a7,
+	0x00001803, 0x0000185f, 0x000018a5, 0x000018d8,
+	0x00001909, 0x00001970, 0x000019c9, 0x00001a1b,
+	0x00001a5b, 0x00001a86, 0x00001abf, 0x00001ac3,
+	0x00001acd, 0x00001af8, 0x00001b75, 0x00001ba0,
+	0x00001ba7, 0x00001bae, 0x00001c1c,
+} // Size: 132 bytes
+
+const ko_KRData string = "" + // Size: 7196 bytes
+	"\x02질문이 취소되었습니다\x02알 수 없는 명령\x02Help My Pet Bot에 오신 것을 환영합니다! 🐾\x0a\x0a나" +
+	"는 당신의 개인적인 애완동물 돌보미로, 당신의 털친구를 더 잘 돌보도록 도와드릴 준비가 되어 있습니다. 당신의 애완동물의 사진" +
+	"을 분석하고 다음과 같은 것들을 도와드릴 수 있습니다:\x0a\x0a- 애완동물 건강 및 행동 질문 - 걱정되는 증상이나 행동" +
+	"에 대한 사진을 자유롭게 공유해 주세요\x0a- 사료 및 영양 조언, 고려 중인 음식이나 간식에 대한 사진을 포함\x0a- 훈" +
+	"련 팁 및 기술 - 도움이 필요한 특정 상황에 대한 사진을 보낼 수 있습니다\x0a- 애완동물 환경이나 용품의 사\ufffd" +
+	"\ufffd 분석을 통한 일반적인 돌보기 안내\x0a\x0a간단히 질문을 입력하거나 애완동물에 대한 걱정을 사진과 함께 보내 주시" +
+	"면, 신뢰할 수 있는 수의사 지식을 기반으로 도움이 되고 정보가 있는 답변을 제공해 드리겠습니다. 상황을 더 잘 보여주기 위" +
+	"\ufffd\ufffd\ufffd 필요한 경우 여러 사진을 보낼 수 있습니다.\x0a\x0a중요한 의료 상황에 대해서는 안내를 제" +
+	"공하고 사진\ufffd\ufffd\ufffd 분석할 수 있지만, 항상 수의사와 상담하십시오.\x0a\x0a시작하려면 애완동물에" +
+	" 대한 질문을 하시거나 사진을 첨부해 주세요!\x02<b>이용 약관</b>\x0a<i>마지막 업데이트: 2025.01.30</i>" +
+	"\x0a\x0a저희 수의학 조언 챗봇(“서비스”)을 이용해 주셔서 감사합니다. 이 서비스를 이용하거나 접근함으로써, 귀하는 다음 " +
+	"이용 약관(“약관”)에 동의하는 것으로 간주됩니다. 이 약관에 동의하지 않으시면 즉시 이용을 중단해 주십시오.\x0a\x0a<" +
+	"b>1. 서비스의 성격</b>\x0a1.1 이 서비스는 반려동물 관리에 대한 일반 정보, 지침 및 제안을 제공합니다. 여기에는 (" +
+	"제한되지 않음) 식단, 행동 및 훈련이 포함됩니다.\x0a1.2 이 서비스는 전문 수의학 진단, 치료 또는 관리를 대체하지 않" +
+	"습니다. 반려동물의 건강에 관한 질문이 있을 경우 항상 면허가 있는 수의사의 조언을 구하십시오.\x0a\x0a<b>2. 수의사" +
+	"-고객-환자 관계 없음</b>\x0a2.1 이 서비스를 이용하거나 AI 도우미와 상호작용한다고 해서 수의사-고객-환자 관계가 형성" +
+	"되는 것은 아닙니다.\x0a2.2 이 서비스에서 제공하는 모든 조언이나 지침은 제한된 정보에 기반한 것이며 일반 정보로만 간주" +
+	"되어야 합니다.\x0a\x0a<b>3. 책임의 제한</b>\x0a3.1 귀하는 이 서비스를 이용하는 것이 전적으로 귀하의 책임" +
+	"임을 인정하고 동의합니다.\x0a3.2 서비스의 소유자, 개발자 또는 라이선스 제공자는 서비스에 대한 접근 또는 이용과 관련하" +
+	"여 발생하는 직접적, 간접적, 부수적, 특별 또는 결과적 손해에 대해 어떠한 경우에도 책임을 지지 않습니다.\x0a3.3 귀하" +
+	"는 반려동물 관리에 대한 결정과 그로 인한 결과가 전적으로 귀하의 책임임을 이해합니다. 반려동물의 건강이나 안녕에 대해 의심이" +
+	" 있을 경우 즉시 면허가 있는 수의사와 상담해야 합니다.\x0a\x0a<b>4. 보증 없음</b>\x0a4.1 이 서비스는 명시적" +
+	"이든 묵시적이든 어떠한 종류의 보증 없이 “있는 그대로” 및 “이용 가능한 상태로” 제공됩니다.\x0a4.2 우리는 이 서비스" +
+	"가 중단되지 않거나, 오류가 없거나, 안전하거나, 바이러스가 없음을 보증하지 않습니다.\x0a\x0a<b>5. 사용자 책임</" +
+	"b>\x0a5.1 귀하는 조언을 구할 때 반려동물에 대한 정확하고 완전한 정보를 제공할 책임이 있습니다.\x0a5.2 귀하는 제공" +
+	"하는 모든 질문, 설명 및 데이터가 제3자의 권리나 현지 법률을 위반하지 않도록 해야 합니다.\x0a\x0a<b>6. 국제적 " +
+	"사용</b>\x0a6.1 이 서비스는 전 세계적으로 사용하기 위한 것입니다. 귀하는 귀하의 관할 구역에서 적용되는 모든 현지 " +
+	"법률 및 규정을 준수할 책임이 있습니다.\x0a6.2 우리는 이 서비스나 그 어떤 콘텐츠가 특정 국가나 지역에서 적절하거나 허" +
+	"용된다는 것을 보증하지 않습니다.\x0a\x0a<b>7. 수정</b>\x0a7.1 우리는 언제든지 이 약관을 수정하거나 대체할" +
+	" 권리를 보유합니다.\x0a7.2 중요한 변경 사항이 있을 경우, 업데이트된 약관을 게시하고 이 문서 상단에 최신 개정 날짜를 표" +
+	"시할 것입니다.\x0a\x0a<b>8. 준거법 및 분쟁 해결</b>\x0a8.1 이 약관은 서비스 제공자의 주요 사업장 관할 " +
+	"구역에서 적용되는 법률에 따라 규율되고 해석됩니다. 법률 충돌 원칙은 적용되지 않습니다.\x0a8.2 이 약관에서 발생하거나 " +
+	"이와 관련된 모든 분쟁은 우호적인 협상을 통해 해결되며, 필요시 구속력 있는 중재 또는 해당 법원에서의 소송을 통해 해결됩니다" +
+	".\x0a\x0a<b>9. 약관의 수락</b>\x0a9.1 서비스를 계속 이용하거나 접근함으로써, 귀하는 이 약관을 읽고 이해하였" +
+	"으며 이에 구속되는 것에 동의함을 인정합니다.\x0a9.2 동의하지 않으시면 즉시 서비스를 이용을 중단해야 합니다.\x0a" +
+	"\x0a이 약관에 관한 질문이나 우려 사항이 있거나 추가 설명이 필요하시면 <i>k.sysoev@me.com</i>으로 연락해 주" +
+	"십시오.\x02<b>Help My Pet Bot 명령어</b>:\x0a/start - 봇과 대화를 시작합니다\x0a/terms" +
+	" - 서비스의 이용 약관을 확인합니다\x0a/editprofile - 애완동물의 프로필 정보(이름, 나이, 품종 등)를 업데이트합" +
+	"니다. 이 정보는 봇이 더 정확한 조언을 제공하는 데 도움이 됩니다.\x0a/cancel - 진행 중인 현재 설문을 취소합니다" +
+	"(예: 처음부터 다시 시작하거나 질문을 변경하려는 경우)\x0a/help - 이 도움말 메시지를 확인합니다\x02죄송합니다만, 비" +
+	"디오, 오디오 또는 문서를 처리할 수 없습니다. 질문을 텍스트로만 보내 주세요.\x02죄송합니다만, 메시지가 너무 깁니다. 짧" +
+	"고 간결하게 작성해 주세요.\x02시간당 요청 횟수 제한에 도달했습니다. 나중에 다시 시도해 주세요.\x02일일 요청 한도에 " +
+	"도달했습니다. 예산이 갱신되는 내일 다시 오세요.\x02텍스트 형식으로 질문과 함께 사진을 제공해 주세요\x02최소한 한 장의" +
+	" 사진을 제공해 주세요\x02사진을 %[1]d장 이하로 제공해 주세요\x02죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에" +
+	" 다시 시도해 주세요.\x02제공된 날짜는 미래일 수 없습니다. 유효한 날짜를 제공해 주세요.\x02유효한 형식인 YYYY-MM-" +
+	"DD(예: 2023-12-31)로 날짜를 제공해 주세요.\x02애완동물 프로필이 성공적으로 저장되었습니다\x02애완동물의 이름은 " +
+	"무엇입니까?\x02어떤 종류의 애완동물을 가지고 계십니까?\x02개\x02고양이\x02애완동물의 품종은 무엇입니까?\x02애완" +
+	"동물이 태어난 날짜는 언제입니까? YYYY-MM-DD(예: 2010-12-31) 형식으로 날짜를 입력해 주세요.\x02애완동물" +
+	"의 성별은 무엇입니까?\x02수컷\x02암컷\x02애완동물의 몸무게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예:" +
 	" 5 kg"
 
-var de_DEIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000013, 0x0000030a, 0x000012a6,
-	0x0000131a, 0x000013ac, 0x00001413, 0x00001487,
-	0x000014c8, 0x000014ef, 0x0000151f, 0x00001595,
-	0x000015f4, 0x00001643, 0x0000166a, 0x00001683,
-	0x000016a6, 0x000016ab, 0x000016b1, 0x000016d0,
-	0x00001738, 0x00001761, 0x0000176b, 0x00001774,
-	0x000017d4,
-} // Size: 124 bytes
+var ms_MYIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000018, 0x00000030, 0x0000054d,
+	0x000014b0, 0x00001671, 0x000016db, 0x00001750,
+	0x000017a1, 0x00001802, 0x00001843, 0x0000186f,
+	0x0000189e, 0x000018f1, 0x00001942, 0x0000198f,
+	0x000019b9, 0x000019dd, 0x00001a0b, 0x00001a12,
+	0x00001a19, 0x00001a3f, 0x00001aad, 0x00001ad4,
+	0x00001adb, 0x00001ae5, 0x00001b46,
+} // Size: 132 bytes
 
-const de_DEData string = "" + // Size: 6100 bytes
-	"\x02Unbekannter Befehl\x02Willkommen bei Help My Pet Bot! 🐾\x0a\x0aIch b" +
-	"in Ihr persönlicher Assistent für die Pflege Ihres Haustieres und helfe " +
-	"Ihnen, sich besser um Ihren pelzigen Freund zu kümmern. Ich kann Ihnen b" +
-	"ei folgenden Themen helfen:\x0a\x0a• Fragen zur Gesundheit und zum Verha" +
-	"lten von Haustieren\x0a• Ernährungs- und Diätberatung\x0a• Trainingstipp" +
-	"s und -techniken\x0a• Allgemeine Pflegehinweise für Haustiere\x0a\x0aGeb" +
-	"en Sie einfach Ihre Frage oder Ihr Anliegen zu Ihrem Haustier ein, und i" +
-	"ch werde hilfreiche, informative Antworten basierend auf zuverlässigem v" +
-	"eterinärmedizinischem Wissen geben. Denken Sie daran, dass Sie bei ernst" +
-	"haften medizinischen Problemen immer einen Tierarzt konsultieren sollten" +
-	".\x0a\x0aUm zu beginnen, stellen Sie mir einfach eine Frage zu Ihrem Hau" +
-	"stier!\x02<b>Allgemeine Geschäftsbedingungen</b>\x0a<i>Zuletzt aktualisi" +
-	"ert: 30.01.2025</i>\x0a\x0aVielen Dank, dass Sie unseren Chatbot für tie" +
-	"rärztliche Beratung („der Dienst“) nutzen. Durch den Zugriff auf oder di" +
-	"e Nutzung dieses Dienstes erklären Sie sich mit den folgenden Bedingunge" +
-	"n („Bedingungen“) einverstanden. Wenn Sie diesen Bedingungen nicht zusti" +
-	"mmen, stellen Sie die Nutzung bitte sofort ein.\x0a\x0a<b>1. Art des Die" +
-	"nstes</b>\x0a1.1 Der Dienst bietet allgemeine Informationen, Anleitungen" +
-	" und Vorschläge zur Pflege von Haustieren, einschließlich (aber nicht be" +
-	"schränkt auf) Ernährung, Verhalten und Training.\x0a1.2 Der Dienst ist k" +
-	"ein Ersatz für eine professionelle tierärztliche Diagnose, Behandlung od" +
-	"er Pflege. Suchen Sie bei Fragen zur Gesundheit Ihres Haustieres immer d" +
-	"en Rat eines zugelassenen Tierarztes.\x0a\x0a<b>2. Keine tierärztliche B" +
-	"eziehung</b>\x0a2.1 Die Nutzung des Dienstes oder die Interaktion mit un" +
-	"serem KI-Assistenten begründet keine tierärztliche Beziehung.\x0a2.2 All" +
-	"e vom Dienst bereitgestellten Ratschläge oder Anleitungen basieren auf b" +
-	"egrenzten Informationen und sollten nur als allgemeine Informationen bet" +
-	"rachtet werden.\x0a\x0a<b>3. Haftungsbeschränkung</b>\x0a3.1 Sie erkenne" +
-	"n an und stimmen zu, dass die Nutzung des Dienstes auf eigenes Risiko er" +
-	"folgt.\x0a3.2 Unter keinen Umständen haften die Eigentümer, Entwickler o" +
-	"der Lizenzgeber des Dienstes für direkte, indirekte, zufällige, besonder" +
-	"e oder Folgeschäden, die sich aus dem Zugriff auf oder der Nutzung des D" +
-	"ienstes ergeben.\x0a3.3 Sie verstehen, dass Entscheidungen bezüglich der" +
-	" Pflege Ihres Haustieres und alle daraus resultierenden Ergebnisse in Ih" +
-	"rer alleinigen Verantwortung liegen. Wenn Sie Zweifel am Wohlbefinden od" +
-	"er der Gesundheit Ihres Haustieres haben, sollten Sie sofort einen zugel" +
-	"assenen Tierarzt konsultieren.\x0a\x0a<b>4. Keine Gewährleistung</b>\x0a" +
-	"4.1 Der Dienst wird „wie besehen“ und „wie verfügbar“ ohne jegliche ausd" +
-	"rückliche oder stillschweigende Gewährleistungen bereitgestellt.\x0a4.2 " +
-	"Wir gewährleisten nicht, dass der Dienst ununterbrochen, fehlerfrei, sic" +
-	"her oder virenfrei ist.\x0a\x0a<b>5. Benutzerverantwortlichkeiten</b>" +
-	"\x0a5.1 Sie sind dafür verantwortlich, genaue und vollständige Informati" +
-	"onen über Ihr Haustier bereitzustellen, wenn Sie Rat suchen.\x0a5.2 Sie " +
-	"müssen sicherstellen, dass alle von Ihnen bereitgestellten Fragen, Besch" +
-	"reibungen und Daten keine Rechte Dritter oder lokale Gesetze verletzen." +
-	"\x0a\x0a<b>6. Internationale Nutzung</b>\x0a6.1 Der Dienst ist für die w" +
-	"eltweite Nutzung vorgesehen. Sie sind für die Einhaltung aller geltenden" +
-	" lokalen Gesetze und Vorschriften in Ihrer Gerichtsbarkeit verantwortlic" +
-	"h.\x0a6.2 Wir garantieren nicht, dass der Dienst oder dessen Inhalte in " +
-	"einem bestimmten Land oder einer bestimmten Region angemessen oder zuläs" +
-	"sig sind.\x0a\x0a<b>7. Änderungen</b>\x0a7.1 Wir behalten uns das Recht " +
-	"vor, diese Bedingungen jederzeit zu ändern oder zu ersetzen.\x0a7.2 Wenn" +
-	" wir wesentliche Änderungen vornehmen, werden wir die aktualisierten Bed" +
-	"ingungen veröffentlichen und das Datum der letzten Überarbeitung oben in" +
-	" diesem Dokument angeben.\x0a\x0a<b>8. Anwendbares Recht und Streitbeile" +
-	"gung</b>\x0a8.1 Diese Bedingungen unterliegen den Gesetzen des Hauptgesc" +
-	"häftssitzes des Dienstanbieters und werden in Übereinstimmung mit diesen" +
-	" ausgelegt, ohne Rücksicht auf kollisionsrechtliche Grundsätze.\x0a8.2 A" +
-	"lle Streitigkeiten, die sich aus oder im Zusammenhang mit diesen Bedingu" +
-	"ngen ergeben, werden durch gütliche Verhandlungen und, falls erforderlic" +
-	"h, durch verbindliche Schiedsverfahren oder Gerichtsverfahren in den zus" +
-	"tändigen Gerichten beigelegt.\x0a\x0a<b>9. Annahme der Bedingungen</b>" +
-	"\x0a9.1 Durch den weiteren Zugriff auf oder die Nutzung des Dienstes bes" +
-	"tätigen Sie, dass Sie diese Bedingungen gelesen, verstanden und akzeptie" +
-	"rt haben.\x0a9.2 Wenn Sie nicht zustimmen, müssen Sie die Nutzung des Di" +
-	"enstes sofort einstellen.\x0a\x0aWenn Sie Fragen oder Bedenken zu diesen" +
-	" Bedingungen haben oder weitere Klarstellungen benötigen, kontaktieren S" +
-	"ie uns bitte unter <i>k.sysoev@me.com</i>.\x02Entschuldigung, ich kann k" +
-	"eine Videos, Audios oder Dokumente verarbeiten. Bitte senden Sie Ihre Fr" +
-	"age nur als Text.\x02Es tut mir leid, aber Ihre Nachricht ist zu lang fü" +
-	"r mich, um sie zu verarbeiten. Bitte versuchen Sie, sie kürzer und prägn" +
-	"anter zu gestalten.\x02Sie haben die maximale Anzahl von Anfragen pro St" +
-	"unde erreicht. Bitte versuchen Sie es später erneut.\x02Wir haben unser " +
-	"tägliches Anfrage-Limit erreicht. Bitte kommen Sie morgen wieder, wenn u" +
-	"nser Budget erneuert wird.\x02Bitte geben Sie Ihre Frage im Textformat z" +
-	"usammen mit Foto(s) an\x02Bitte geben Sie mindestens ein Foto an\x02Bitt" +
-	"e geben Sie nicht mehr als %[1]d Foto(s) an\x02Entschuldigung, bei der V" +
-	"erarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Si" +
-	"e es später erneut.\x02Das angegebene Datum kann nicht in der Zukunft li" +
-	"egen. Bitte geben Sie ein gültiges Datum an.\x02Bitte geben Sie ein Datu" +
-	"m im gültigen Format JJJJ-MM-TT an (z. B. 2023-12-31)\x02Haustierprofil " +
-	"erfolgreich gespeichert\x02Wie heißt Ihr Haustier?\x02Welche Art von Hau" +
-	"stier haben Sie?\x02Hund\x02Katze\x02Welche Rasse hat Ihr Haustier?\x02W" +
-	"ann wurde Ihr Haustier geboren? Bitte geben Sie das Datum im Format JJJJ" +
-	"-MM-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihres Haustiere" +
-	"s?\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bitte geben S" +
-	"ie das Gewicht gefolgt von der Einheit an, z. B. 5 kg"
+const ms_MYData string = "" + // Size: 6982 bytes
+	"\x02Soal selidik dibatalkan\x02Perintah tidak dikenali\x02Selamat datang" +
+	" ke Help My Pet Bot! 🐾\x0a\x0aSaya adalah pembantu penjagaan haiwan peli" +
+	"haraan peribadi anda, bersedia untuk membantu anda menjaga haiwan kesaya" +
+	"ngan anda dengan lebih baik. Saya boleh menganalisis gambar haiwan pelih" +
+	"araan anda dan membantu anda dengan:\x0a\x0a- Soalan kesihatan dan tingk" +
+	"ah laku haiwan peliharaan - jangan ragu untuk berkongsi gambar sebarang " +
+	"gejala atau tingkah laku yang membimbangkan\x0a- Nasihat diet dan pemaka" +
+	"nan, termasuk gambar makanan atau makanan kegemaran yang anda pertimbang" +
+	"kan\x0a- Tip dan teknik latihan - anda boleh menghantar gambar situasi t" +
+	"ertentu yang memerlukan bantuan\x0a- Panduan penjagaan haiwan peliharaan" +
+	" secara umum, dengan analisis gambar persekitaran atau bekalan haiwan pe" +
+	"liharaan anda\x0a\x0aHanya taip soalan anda atau hantar gambar bersama d" +
+	"engan kebimbangan anda tentang haiwan peliharaan anda, dan saya akan mem" +
+	"berikan jawapan yang membantu dan informatif berdasarkan pengetahuan vet" +
+	"erinar yang boleh dipercayai. Anda boleh menghantar beberapa gambar jika" +
+	" perlu untuk menunjukkan situasi dengan lebih baik.\x0a\x0aIngat, walaup" +
+	"un saya boleh menawarkan panduan dan menganalisis gambar, untuk keadaan " +
+	"perubatan yang serius, sentiasa berunding dengan doktor haiwan.\x0a\x0aU" +
+	"ntuk memulakan, hanya tanya saya soalan apa pun tentang haiwan peliharaa" +
+	"n anda - dengan atau tanpa gambar!\x02<b>Terma dan Syarat</b>\x0a<i>Dike" +
+	"maskini terakhir: 30.01.2025</i>\x0a\x0aTerima kasih kerana menggunakan " +
+	"chatbot nasihat veterinar kami (“Perkhidmatan”). Dengan mengakses atau m" +
+	"enggunakan Perkhidmatan ini, anda bersetuju untuk terikat dengan terma d" +
+	"an syarat berikut (“Terma”). Jika anda tidak bersetuju dengan Terma ini," +
+	" sila hentikan penggunaan dengan segera.\x0a\x0a<b>1. Sifat Perkhidmatan" +
+	"</b>\x0a1.1 Perkhidmatan menyediakan maklumat umum, panduan, dan cadanga" +
+	"n untuk penjagaan haiwan peliharaan, termasuk (tetapi tidak terhad kepad" +
+	"a) diet, tingkah laku, dan latihan.\x0a1.2 Perkhidmatan ini bukan pengga" +
+	"nti untuk diagnosis, rawatan, atau penjagaan veterinar profesional. Sent" +
+	"iasa dapatkan nasihat daripada doktor haiwan berlesen untuk sebarang soa" +
+	"lan mengenai kesihatan haiwan peliharaan anda.\x0a\x0a<b>2. Tiada Hubung" +
+	"an Veterinar-Pelanggan-Pesakit</b>\x0a2.1 Menggunakan Perkhidmatan atau " +
+	"berinteraksi dengan pembantu AI kami tidak mewujudkan hubungan veterinar" +
+	"-pelanggan-pesakit.\x0a2.2 Sebarang nasihat atau panduan yang diberikan " +
+	"oleh Perkhidmatan adalah berdasarkan maklumat terhad dan hanya boleh dia" +
+	"nggap sebagai maklumat umum.\x0a\x0a<b>3. Had Tanggungjawab</b>\x0a3.1 A" +
+	"nda mengakui dan bersetuju bahawa penggunaan Perkhidmatan adalah atas ri" +
+	"siko anda sendiri.\x0a3.2 Dalam apa jua keadaan, pemilik, pembangun, ata" +
+	"u pemberi lesen Perkhidmatan tidak akan bertanggungjawab atas sebarang k" +
+	"erosakan langsung, tidak langsung, sampingan, khas, atau berbangkit yang" +
+	" timbul daripada atau berkaitan dengan akses atau penggunaan Perkhidmata" +
+	"n anda.\x0a3.3 Anda memahami bahawa keputusan mengenai penjagaan haiwan " +
+	"peliharaan anda dan sebarang hasil yang terhasil adalah tanggungjawab an" +
+	"da sendiri. Jika anda mempunyai sebarang keraguan tentang kesejahteraan " +
+	"atau kesihatan haiwan peliharaan anda, anda harus segera berunding denga" +
+	"n doktor haiwan berlesen.\x0a\x0a<b>4. Tiada Jaminan</b>\x0a4.1 Perkhidm" +
+	"atan disediakan atas dasar “seadanya” dan “sebagaimana tersedia” tanpa s" +
+	"ebarang jaminan, sama ada nyata atau tersirat.\x0a4.2 Kami tidak menjami" +
+	"n bahawa Perkhidmatan akan tidak terganggu, bebas ralat, selamat, atau b" +
+	"ebas daripada virus.\x0a\x0a<b>5. Tanggungjawab Pengguna</b>\x0a5.1 Anda" +
+	" bertanggungjawab untuk memberikan maklumat yang tepat dan lengkap menge" +
+	"nai haiwan peliharaan anda semasa mendapatkan nasihat.\x0a5.2 Anda mesti" +
+	" memastikan bahawa semua soalan, penerangan, dan data yang anda berikan " +
+	"tidak melanggar sebarang hak pihak ketiga atau undang-undang tempatan." +
+	"\x0a\x0a<b>6. Penggunaan Antarabangsa</b>\x0a6.1 Perkhidmatan ini bertuj" +
+	"uan untuk penggunaan global. Anda bertanggungjawab untuk mematuhi semua " +
+	"undang-undang dan peraturan tempatan yang berkenaan di bidang kuasa anda" +
+	".\x0a6.2 Kami tidak menjamin bahawa Perkhidmatan atau mana-mana kandunga" +
+	"nnya sesuai atau dibenarkan di mana-mana negara atau wilayah tertentu." +
+	"\x0a\x0a<b>7. Pengubahsuaian</b>\x0a7.1 Kami berhak untuk mengubah atau " +
+	"menggantikan Terma ini pada bila-bila masa.\x0a7.2 Jika kami membuat per" +
+	"ubahan material, kami akan menyiarkan Terma yang dikemas kini dan menunj" +
+	"ukkan tarikh semakan terkini di bahagian atas dokumen ini.\x0a\x0a<b>8. " +
+	"Undang-undang dan Penyelesaian Pertikaian</b>\x0a8.1 Terma ini akan dita" +
+	"dbir oleh dan ditafsirkan mengikut undang-undang yang terpakai di bidang" +
+	" kuasa tempat perniagaan utama penyedia Perkhidmatan, tanpa mengambil ki" +
+	"ra prinsip konflik undang-undang.\x0a8.2 Sebarang pertikaian yang timbul" +
+	" daripada atau berkaitan dengan Terma ini akan diselesaikan melalui rund" +
+	"ingan secara baik dan, jika perlu, melalui timbang tara atau litigasi ya" +
+	"ng mengikat di mahkamah yang berkenaan.\x0a\x0a<b>9. Penerimaan Terma</b" +
+	">\x0a9.1 Dengan terus mengakses atau menggunakan Perkhidmatan, anda meng" +
+	"akui bahawa anda telah membaca, memahami, dan bersetuju untuk terikat de" +
+	"ngan Terma ini.\x0a9.2 Jika anda tidak bersetuju, anda mesti berhenti me" +
+	"nggunakan Perkhidmatan dengan segera.\x0a\x0aJika anda mempunyai sebaran" +
+	"g soalan atau kebimbangan mengenai Terma ini, atau jika anda memerlukan " +
+	"penjelasan lanjut, sila hubungi di <i>k.sysoev@me.com</i>.\x02<b>Perinta" +
+	"h Help My Pet Bot</b>:\x0a/start - Mula perbualan dengan bot\x0a/terms -" +
+	" Lihat Terma dan Syarat perkhidmatan\x0a/editprofile - Kemaskini makluma" +
+	"t profil haiwan peliharaan anda, seperti nama, umur, bangsa, dan lain-la" +
+	"in. Maklumat ini membantu bot memberikan nasihat yang lebih tepat.\x0a/c" +
+	"ancel - Batal soal selidik semasa, jika ada dalam proses (contohnya, apa" +
+	"bila anda ingin memulakan semula atau menukar soalan anda)\x0a/help - Li" +
+	"hat mesej bantuan ini\x02Maaf, saya tidak dapat memproses video, audio, " +
+	"atau dokumen. Sila hantar soalan anda sebagai teks sahaja.\x02Saya minta" +
+	" maaf, tetapi mesej anda terlalu panjang untuk saya proses. Sila cuba me" +
+	"mbuatnya lebih pendek dan ringkas.\x02Anda telah mencapai jumlah permint" +
+	"aan maksimum setiap jam. Sila cuba lagi nanti.\x02Kami telah mencapai ha" +
+	"d permintaan harian kami. Sila kembali esok apabila bajet kami disegarka" +
+	"n.\x02Sila berikan soalan anda dalam format teks bersama dengan gambar" +
+	"\x02Sila berikan sekurang-kurangnya satu gambar\x02Sila berikan tidak le" +
+	"bih daripada %[1]d gambar\x02Maaf, saya mengalami ralat semasa memproses" +
+	" permintaan anda. Sila cuba lagi nanti.\x02Tarikh yang diberikan tidak b" +
+	"oleh di masa hadapan. Sila berikan tarikh yang sah.\x02Sila berikan tari" +
+	"kh dalam format yang sah YYYY-MM-DD (contohnya, 2023-12-31)\x02Profil ha" +
+	"iwan peliharaan berjaya disimpan\x02Apakah nama haiwan peliharaan anda?" +
+	"\x02Jenis haiwan peliharaan apa yang anda miliki?\x02anjing\x02kucing" +
+	"\x02Apakah bangsa haiwan peliharaan anda?\x02Bila haiwan peliharaan anda" +
+	" dilahirkan? Sila masukkan tarikh dalam format YYYY-MM-DD (contohnya, 20" +
+	"10-12-31).\x02Apakah jantina haiwan peliharaan anda?\x02lelaki\x02peremp" +
+	"uan\x02Berapakah berat haiwan peliharaan anda? Sila nyatakan berat diiku" +
+	"ti dengan unit, contohnya, 5 kg"
 
-var en_GBIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000010, 0x0000025c, 0x00000ff7,
-	0x00001054, 0x000010c1, 0x00001113, 0x00001174,
-	0x000011b5, 0x000011d8, 0x00001204, 0x00001259,
-	0x0000129d, 0x000012e5, 0x00001304, 0x0000131d,
-	0x0000133b, 0x0000133f, 0x00001343, 0x0000135b,
-	0x000013b6, 0x000013d1, 0x000013d6, 0x000013dd,
-	0x00001433,
-} // Size: 124 bytes
+var nl_NLIndex = []uint32{ // 27 elements
+	0x00000000, 0x0000001b, 0x0000002d, 0x000004ac,
+	0x000013dd, 0x000015a0, 0x00001608, 0x00001675,
+	0x000016c7, 0x00001729, 0x00001766, 0x0000178b,
+	0x000017b9, 0x0000181a, 0x00001868, 0x000018af,
+	0x000018d4, 0x000018f4, 0x00001914, 0x00001919,
+	0x0000191d, 0x00001936, 0x00001995, 0x000019ba,
+	0x000019c4, 0x000019cf, 0x00001a33,
+} // Size: 132 bytes
 
-const en_GBData string = "" + // Size: 5171 bytes
-	"\x02Unknown command\x02Welcome to Help My Pet Bot! 🐾\x0a\x0aI'm your per" +
-	"sonal pet care assistant, ready to help you take better care of your fur" +
-	"ry friend. I can assist you with:\x0a\x0a• Pet health and behavior quest" +
-	"ions\x0a• Diet and nutrition advice\x0a• Training tips and techniques" +
-	"\x0a• General pet care guidance\x0a\x0aSimply type your question or conc" +
-	"ern about your pet, and I'll provide helpful, informative answers based " +
-	"on reliable veterinary knowledge. Remember, while I can offer guidance, " +
-	"for serious medical conditions, always consult with a veterinarian.\x0a" +
-	"\x0aTo get started, just ask me any question about your pet!\x02<b>Terms" +
-	" and Conditions</b>\x0a<i>Last updated: 30.01.2025</i>\x0a\x0aThank you " +
-	"for using our veterinary advice chatbot (“the Service”). By accessing or" +
-	" using this Service, you agree to be bound by the following terms and co" +
-	"nditions (“Terms”). If you do not agree to these Terms, please discontin" +
-	"ue use immediately.\x0a\x0a<b>1. Nature of the Service</b>\x0a1.1 The Se" +
-	"rvice provides general information, guidance, and suggestions for pet ca" +
-	"re, including (but not limited to) diet, behavior, and training.\x0a1.2 " +
-	"The Service is not a substitute for professional veterinary diagnosis, t" +
-	"reatment, or care. Always seek the advice of a licensed veterinarian for" +
-	" any questions regarding your pet’s health.\x0a\x0a<b>2. No Veterinary-C" +
-	"lient-Patient Relationship</b>\x0a2.1 Using the Service or engaging with" +
-	" our AI assistant does not create a veterinarian-client-patient relation" +
-	"ship.\x0a2.2 Any advice or guidance provided by the Service is based on " +
-	"limited information and should only be considered general information." +
-	"\x0a\x0a<b>3. Limitation of Liability</b>\x0a3.1 You acknowledge and agr" +
-	"ee that use of the Service is at your own risk.\x0a3.2 Under no circumst" +
-	"ances shall the owners, developers, or licensors of the Service be liabl" +
-	"e for any direct, indirect, incidental, special, or consequential damage" +
-	"s arising out of or in connection with your access to or use of the Serv" +
-	"ice.\x0a3.3 You understand that decisions regarding your pet’s care and " +
-	"any resulting outcomes are your sole responsibility. If you have any dou" +
-	"bt about the well-being of your pet or its health, you should immediatel" +
-	"y consult a licensed veterinarian.\x0a\x0a<b>4. No Warranty</b>\x0a4.1 T" +
-	"he Service is provided on an “as is” and “as available” basis without wa" +
-	"rranties of any kind, whether express or implied.\x0a4.2 We do not warra" +
-	"nt that the Service will be uninterrupted, error-free, secure, or free f" +
-	"rom viruses.\x0a\x0a<b>5. User Responsibilities</b>\x0a5.1 You are respo" +
-	"nsible for providing accurate and complete information about your pet wh" +
-	"en seeking advice.\x0a5.2 You must ensure that all questions, descriptio" +
-	"ns, and data you provide do not violate any third-party rights or local " +
-	"laws.\x0a\x0a<b>6. International Use</b>\x0a6.1 The Service is intended " +
-	"for global use. You are responsible for compliance with all applicable l" +
-	"ocal laws and regulations in your jurisdiction.\x0a6.2 We do not guarant" +
-	"ee that the Service or any of its content is appropriate or permissible " +
-	"in any specific country or region.\x0a\x0a<b>7. Modifications</b>\x0a7.1" +
-	" We reserve the right to modify or replace these Terms at any time.\x0a7" +
-	".2 If we make material changes, we will post the updated Terms and indic" +
-	"ate the date of the latest revision at the top of this document.\x0a\x0a" +
-	"<b>8. Governing Law and Dispute Resolution</b>\x0a8.1 These Terms shall " +
-	"be governed by and construed in accordance with the laws applicable in t" +
-	"he jurisdiction of the Service provider’s principal place of business, w" +
-	"ithout regard to conflict-of-law principles.\x0a8.2 Any dispute arising " +
-	"from or relating to these Terms shall be resolved through amicable negot" +
-	"iation and, if necessary, by binding arbitration or litigation in the ap" +
-	"plicable courts.\x0a\x0a<b>9. Acceptance of Terms</b>\x0a9.1 By continui" +
-	"ng to access or use the Service, you acknowledge that you have read, und" +
-	"erstood, and agree to be bound by these Terms.\x0a9.2 If you do not agre" +
-	"e, you must cease using the Service immediately.\x0a\x0aIf you have any " +
-	"questions or concerns regarding these Terms, or if you need further clar" +
-	"ification, please contact at <i>k.sysoev@me.com</i>.\x02Sorry, I cannot " +
-	"process videos, audio, or documents. Please send your question as text o" +
-	"nly.\x02I apologize, but your message is too long for me to process. Ple" +
-	"ase try to make it shorter and more concise.\x02You have reached the max" +
-	"imum number of requests per hour. Please try again later.\x02We have rea" +
-	"ched our daily request limit. Please come back tomorrow when our budget " +
-	"is refreshed.\x02Please, provide your question in text format along with" +
-	" photo(s)\x02Please, provide at least one photo\x02Please, provide no mo" +
-	"re than %[1]d photo(s)\x02Sorry, I encountered an error while processing" +
-	" your request. Please try again later.\x02Provided date cannot be in the" +
-	" future. Please provide a valid date.\x02Please provide a date in the va" +
-	"lid format YYYY-MM-DD (e.g., 2023-12-31)\x02Pet profile saved successful" +
-	"ly\x02What is your pet's name?\x02What type of pet do you have?\x02dog" +
-	"\x02cat\x02What breed is your pet?\x02When was your pet born? Please ent" +
-	"er the date in the format YYYY-MM-DD (e.g., 2010-12-31).\x02What is your" +
-	" pet's gender?\x02male\x02female\x02What is your pet's weight? Please sp" +
-	"ecify the weight followed by the unit, e.g., 5 kg"
+const nl_NLData string = "" + // Size: 6707 bytes
+	"\x02Vragenlijst is geannuleerd\x02Onbekend commando\x02Welkom bij Help M" +
+	"y Pet Bot! 🐾\x0a\x0aIk ben uw persoonlijke assistent voor huisdierverzor" +
+	"ging, klaar om u te helpen beter voor uw harige vriend te zorgen. Ik kan" +
+	" foto's van uw huisdier analyseren en u helpen met:\x0a\x0a- Vragen over" +
+	" de gezondheid en het gedrag van uw huisdier - voel u vrij om foto's te " +
+	"delen van eventuele zorgwekkende symptomen of gedragingen\x0a- Advies ov" +
+	"er dieet en voeding, inclusief foto's van voedsel of traktaties die u ov" +
+	"erweegt\x0a- Tips en technieken voor training - u kunt foto's sturen van" +
+	" specifieke situaties waarin u hulp nodig heeft\x0a- Algemene begeleidin" +
+	"g voor huisdierverzorging, met fotoanalyse van de omgeving of benodigdhe" +
+	"den van uw huisdier\x0a\x0aTyp gewoon uw vraag of stuur foto's samen met" +
+	" uw zorgen over uw huisdier, en ik zal behulpzame, informatieve antwoord" +
+	"en geven op basis van betrouwbare veterinaire kennis. U kunt meerdere fo" +
+	"to's sturen als dat nodig is om de situatie beter te laten zien.\x0a\x0a" +
+	"Onthoud, hoewel ik begeleiding kan bieden en foto's kan analyseren, moet" +
+	" u voor ernstige medische aandoeningen altijd een dierenarts raadplegen." +
+	"\x0a\x0aOm te beginnen, stel me gewoon een vraag over uw huisdier - met " +
+	"of zonder foto's!\x02<b>Algemene voorwaarden</b>\x0a<i>Laatst bijgewerkt" +
+	": 30.01.2025</i>\x0a\x0aBedankt voor het gebruik van onze chatbot voor v" +
+	"eterinaire adviezen (“de Service”). Door toegang te krijgen tot of gebru" +
+	"ik te maken van deze Service, gaat u akkoord met de volgende algemene vo" +
+	"orwaarden (“Voorwaarden”). Als u niet akkoord gaat met deze Voorwaarden," +
+	" stop dan onmiddellijk met het gebruik.\x0a\x0a<b>1. Aard van de Service" +
+	"</b>\x0a1.1 De Service biedt algemene informatie, begeleiding en suggest" +
+	"ies voor huisdierverzorging, inclusief (maar niet beperkt tot) dieet, ge" +
+	"drag en training.\x0a1.2 De Service is geen vervanging voor professionel" +
+	"e veterinaire diagnose, behandeling of zorg. Raadpleeg altijd een erkend" +
+	"e dierenarts voor vragen over de gezondheid van uw huisdier.\x0a\x0a<b>2" +
+	". Geen Veterinair-Client-Patiënt Relatie</b>\x0a2.1 Het gebruik van de S" +
+	"ervice of interactie met onze AI-assistent creëert geen dierenarts-clien" +
+	"t-patiënt relatie.\x0a2.2 Advies of begeleiding verstrekt door de Servic" +
+	"e is gebaseerd op beperkte informatie en moet alleen als algemene inform" +
+	"atie worden beschouwd.\x0a\x0a<b>3. Beperking van Aansprakelijkheid</b>" +
+	"\x0a3.1 U erkent en gaat ermee akkoord dat het gebruik van de Service op" +
+	" eigen risico is.\x0a3.2 Onder geen enkele omstandigheid zullen de eigen" +
+	"aren, ontwikkelaars of licentiehouders van de Service aansprakelijk zijn" +
+	" voor enige directe, indirecte, incidentele, speciale of gevolgschade di" +
+	"e voortvloeit uit of verband houdt met uw toegang tot of gebruik van de " +
+	"Service.\x0a3.3 U begrijpt dat beslissingen met betrekking tot de zorg v" +
+	"oor uw huisdier en de daaruit voortvloeiende resultaten uw eigen verantw" +
+	"oordelijkheid zijn. Als u twijfelt over het welzijn of de gezondheid van" +
+	" uw huisdier, raadpleeg dan onmiddellijk een erkende dierenarts.\x0a\x0a" +
+	"<b>4. Geen Garantie</b>\x0a4.1 De Service wordt geleverd op een “as is” " +
+	"en “as available” basis zonder enige vorm van garantie, expliciet of imp" +
+	"liciet.\x0a4.2 Wij garanderen niet dat de Service ononderbroken, foutloo" +
+	"s, veilig of vrij van virussen zal zijn.\x0a\x0a<b>5. Verantwoordelijkhe" +
+	"den van de Gebruiker</b>\x0a5.1 U bent verantwoordelijk voor het verstre" +
+	"kken van nauwkeurige en volledige informatie over uw huisdier bij het zo" +
+	"eken naar advies.\x0a5.2 U moet ervoor zorgen dat alle vragen, beschrijv" +
+	"ingen en gegevens die u verstrekt geen inbreuk maken op de rechten van d" +
+	"erden of lokale wetten.\x0a\x0a<b>6. Internationaal Gebruik</b>\x0a6.1 D" +
+	"e Service is bedoeld voor wereldwijd gebruik. U bent verantwoordelijk vo" +
+	"or naleving van alle toepasselijke lokale wetten en voorschriften in uw " +
+	"rechtsgebied.\x0a6.2 Wij garanderen niet dat de Service of enige inhoud " +
+	"ervan geschikt of toegestaan is in een specifiek land of regio.\x0a\x0a<" +
+	"b>7. Wijzigingen</b>\x0a7.1 Wij behouden ons het recht voor om deze Voor" +
+	"waarden op elk moment te wijzigen of te vervangen.\x0a7.2 Als we materië" +
+	"le wijzigingen aanbrengen, zullen we de bijgewerkte Voorwaarden plaatsen" +
+	" en de datum van de laatste herziening bovenaan dit document aangeven." +
+	"\x0a\x0a<b>8. Toepasselijk Recht en Geschillenbeslechting</b>\x0a8.1 Dez" +
+	"e Voorwaarden worden beheerst door en geïnterpreteerd in overeenstemming" +
+	" met de wetten die van toepassing zijn in het rechtsgebied van de hoofdv" +
+	"estiging van de Serviceprovider, zonder rekening te houden met conflicte" +
+	"rende rechtsprincipes.\x0a8.2 Elk geschil dat voortvloeit uit of verband" +
+	" houdt met deze Voorwaarden zal worden opgelost door middel van minnelij" +
+	"ke onderhandelingen en, indien nodig, door bindende arbitrage of rechtsz" +
+	"aken in de toepasselijke rechtbanken.\x0a\x0a<b>9. Aanvaarding van Voorw" +
+	"aarden</b>\x0a9.1 Door toegang te blijven krijgen tot of gebruik te make" +
+	"n van de Service, erkent u dat u deze Voorwaarden hebt gelezen, begrepen" +
+	" en ermee akkoord gaat.\x0a9.2 Als u niet akkoord gaat, moet u onmiddell" +
+	"ijk stoppen met het gebruik van de Service.\x0a\x0aAls u vragen of opmer" +
+	"kingen heeft over deze Voorwaarden, of als u verdere verduidelijking nod" +
+	"ig heeft, neem dan contact op via <i>k.sysoev@me.com</i>.\x02<b>Help My " +
+	"Pet Bot Commands</b>:\x0a/start - Start het gesprek met de bot\x0a/terms" +
+	" - Bekijk de Algemene Voorwaarden van de service\x0a/editprofile - Werk " +
+	"de profielinformatie van uw huisdier bij, zoals naam, leeftijd, ras, enz" +
+	". Deze informatie helpt de bot om nauwkeuriger advies te geven.\x0a/canc" +
+	"el - Annuleer de huidige vragenlijst, indien deze in uitvoering is (bijv" +
+	". wanneer u opnieuw wilt beginnen of uw vraag wilt wijzigen)\x0a/help - " +
+	"Bekijk dit helpbericht\x02Sorry, ik kan geen video's, audio of documente" +
+	"n verwerken. Stuur alstublieft alleen uw vraag als tekst.\x02Het spijt m" +
+	"e, maar uw bericht is te lang voor mij om te verwerken. Probeer het kort" +
+	"er en beknopter te maken.\x02U heeft het maximale aantal verzoeken per u" +
+	"ur bereikt. Probeer het later opnieuw.\x02We hebben ons dagelijkse verzo" +
+	"eklimiet bereikt. Kom morgen terug wanneer ons budget is vernieuwd.\x02G" +
+	"eef alstublieft uw vraag in tekstformaat samen met foto('s)\x02Geef alst" +
+	"ublieft minstens één foto\x02Geef alstublieft niet meer dan %[1]d foto('" +
+	"s)\x02Sorry, ik heb een fout aangetroffen bij het verwerken van uw verzo" +
+	"ek. Probeer het later opnieuw.\x02De opgegeven datum kan niet in de toek" +
+	"omst liggen. Geef een geldige datum op.\x02Geef een datum op in het geld" +
+	"ige formaat JJJJ-MM-DD (bijv. 2023-12-31)\x02Huisdierprofiel succesvol o" +
+	"pgeslagen\x02Wat is de naam van je huisdier?\x02Wat voor soort huisdier " +
+	"heb je?\x02hond\x02kat\x02Welk ras is je huisdier?\x02Wanneer is je huis" +
+	"dier geboren? Voer de datum in het formaat JJJJ-MM-DD in (bijv. 2010-12-" +
+	"31).\x02Wat is het geslacht van je huisdier?\x02mannelijk\x02vrouwelijk" +
+	"\x02Wat is het gewicht van je huisdier? Geef het gewicht op, gevolgd doo" +
+	"r de eenheid, bijvoorbeeld 5 kg"
 
-var es_ESIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000014, 0x000002d6, 0x000011a3,
-	0x0000120b, 0x0000127f, 0x000012e3, 0x0000135d,
-	0x000013a6, 0x000013cf, 0x000013ff, 0x00001462,
-	0x000014be, 0x0000151a, 0x00001540, 0x00001564,
-	0x00001583, 0x00001589, 0x0000158e, 0x000015a9,
-	0x00001618, 0x0000163d, 0x00001643, 0x0000164a,
-	0x000016b2,
-} // Size: 124 bytes
+var pl_PLIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000021, 0x00000034, 0x0000051c,
+	0x00001415, 0x000015d5, 0x00001644, 0x000016c0,
+	0x00001716, 0x00001779, 0x000017c2, 0x000017ed,
+	0x00001820, 0x00001886, 0x000018d1, 0x00001911,
+	0x00001940, 0x00001963, 0x0000198a, 0x0000198f,
+	0x00001993, 0x000019b7, 0x00001a13, 0x00001a39,
+	0x00001a40, 0x00001a47, 0x00001a9a,
+} // Size: 132 bytes
 
-const es_ESData string = "" + // Size: 5810 bytes
-	"\x02Comando desconocido\x02¡Bienvenido a Help My Pet Bot! 🐾\x0a\x0aSoy t" +
-	"u asistente personal de cuidado de mascotas, listo para ayudarte a cuida" +
-	"r mejor a tu amigo peludo. Puedo asistirte con:\x0a\x0a• Preguntas sobre" +
-	" salud y comportamiento de mascotas\x0a• Consejos sobre dieta y nutrició" +
-	"n\x0a• Consejos y técnicas de entrenamiento\x0a• Orientación general sob" +
-	"re el cuidado de mascotas\x0a\x0aSimplemente escribe tu pregunta o preoc" +
-	"upación sobre tu mascota, y te proporcionaré respuestas útiles e informa" +
-	"tivas basadas en conocimientos veterinarios confiables. Recuerda, aunque" +
-	" puedo ofrecer orientación, para condiciones médicas graves, siempre con" +
-	"sulta con un veterinario.\x0a\x0aPara comenzar, solo pregúntame cualquie" +
-	"r cosa sobre tu mascota.\x02<b>Términos y Condiciones</b>\x0a<i>Última a" +
-	"ctualización: 30.01.2025</i>\x0a\x0aGracias por usar nuestro chatbot de " +
-	"asesoramiento veterinario (“el Servicio”). Al acceder o usar este Servic" +
-	"io, usted acepta estar sujeto a los siguientes términos y condiciones (“" +
-	"Términos”). Si no está de acuerdo con estos Términos, por favor, deje de" +
-	" usarlo inmediatamente.\x0a\x0a<b>1. Naturaleza del Servicio</b>\x0a1.1 " +
-	"El Servicio proporciona información general, orientación y sugerencias p" +
-	"ara el cuidado de mascotas, incluyendo (pero no limitado a) dieta, compo" +
-	"rtamiento y entrenamiento.\x0a1.2 El Servicio no es un sustituto del dia" +
-	"gnóstico, tratamiento o cuidado veterinario profesional. Siempre busque " +
-	"el consejo de un veterinario licenciado para cualquier pregunta sobre la" +
-	" salud de su mascota.\x0a\x0a<b>2. No hay Relación Veterinario-Cliente-P" +
-	"aciente</b>\x0a2.1 El uso del Servicio o la interacción con nuestro asis" +
-	"tente de IA no crea una relación veterinario-cliente-paciente.\x0a2.2 Cu" +
-	"alquier consejo o orientación proporcionada por el Servicio se basa en i" +
-	"nformación limitada y solo debe considerarse como información general." +
-	"\x0a\x0a<b>3. Limitación de Responsabilidad</b>\x0a3.1 Usted reconoce y " +
-	"acepta que el uso del Servicio es bajo su propio riesgo.\x0a3.2 Bajo nin" +
-	"guna circunstancia los propietarios, desarrolladores o licenciantes del " +
-	"Servicio serán responsables de cualquier daño directo, indirecto, incide" +
-	"ntal, especial o consecuente que surja de o en conexión con su acceso o " +
-	"uso del Servicio.\x0a3.3 Usted entiende que las decisiones sobre el cuid" +
-	"ado de su mascota y cualquier resultado resultante son su responsabilida" +
-	"d exclusiva. Si tiene alguna duda sobre el bienestar de su mascota o su " +
-	"salud, debe consultar inmediatamente a un veterinario licenciado.\x0a" +
-	"\x0a<b>4. Sin Garantía</b>\x0a4.1 El Servicio se proporciona “tal cual”," +
-	" y “según disponibilidad”, sin garantías de ningún tipo, ya sean expresa" +
-	"s o implícitas.\x0a4.2 No garantizamos que el Servicio será ininterrumpi" +
-	"do, libre de errores, seguro o libre de virus.\x0a\x0a<b>5. Responsabili" +
-	"dades del Usuario</b>\x0a5.1 Usted es responsable de proporcionar inform" +
-	"ación precisa y completa sobre su mascota al buscar asesoramiento.\x0a5." +
-	"2 Debe asegurarse de que todas las preguntas, descripciones y datos que " +
-	"proporcione no violen los derechos de terceros ni las leyes locales.\x0a" +
-	"\x0a<b>6. Uso Internacional</b>\x0a6.1 El Servicio está destinado para u" +
-	"so global. Usted es responsable de cumplir con todas las leyes y regulac" +
-	"iones locales aplicables en su jurisdicción.\x0a6.2 No garantizamos que " +
-	"el Servicio o cualquiera de sus contenidos sean apropiados o permisibles" +
-	" en cualquier país o región específica.\x0a\x0a<b>7. Modificaciones</b>" +
-	"\x0a7.1 Nos reservamos el derecho de modificar o reemplazar estos Términ" +
-	"os en cualquier momento.\x0a7.2 Si realizamos cambios materiales, public" +
-	"aremos los Términos actualizados e indicaremos la fecha de la última rev" +
-	"isión en la parte superior de este documento.\x0a\x0a<b>8. Ley Aplicable" +
-	" y Resolución de Disputas</b>\x0a8.1 Estos Términos se regirán e interpr" +
-	"etarán de acuerdo con las leyes aplicables en la jurisdicción del lugar " +
-	"principal de negocios del proveedor del Servicio, sin tener en cuenta lo" +
-	"s principios de conflicto de leyes.\x0a8.2 Cualquier disputa que surja d" +
-	"e o esté relacionada con estos Términos se resolverá mediante negociació" +
-	"n amistosa y, si es necesario, mediante arbitraje vinculante o litigio e" +
-	"n los tribunales aplicables.\x0a\x0a<b>9. Aceptación de los Términos</b>" +
-	"\x0a9.1 Al continuar accediendo o usando el Servicio, usted reconoce que" +
-	" ha leído, entendido y acepta estar sujeto a estos Términos.\x0a9.2 Si n" +
-	"o está de acuerdo, debe dejar de usar el Servicio inmediatamente.\x0a" +
-	"\x0aSi tiene alguna pregunta o inquietud sobre estos Términos, o si nece" +
-	"sita más aclaraciones, por favor contacte a <i>k.sysoev@me.com</i>.\x02L" +
-	"o siento, no puedo procesar videos, audio o documentos. Por favor, envía" +
-	" tu pregunta solo como texto.\x02Lo siento, pero tu mensaje es demasiado" +
-	" largo para que lo procese. Por favor, intenta hacerlo más corto y conci" +
-	"so.\x02Ha alcanzado el número máximo de solicitudes por hora. Por favor," +
-	" inténtelo de nuevo más tarde.\x02Hemos alcanzado nuestro límite diario " +
-	"de solicitudes. Por favor, vuelva mañana cuando se actualice nuestro pre" +
-	"supuesto.\x02Por favor, proporcione su pregunta en formato de texto junt" +
-	"o con foto(s)\x02Por favor, proporcione al menos una foto\x02Por favor, " +
-	"proporcione no más de %[1]d foto(s)\x02Lo siento, encontré un error al p" +
-	"rocesar su solicitud. Por favor, inténtelo de nuevo más tarde.\x02La fec" +
-	"ha proporcionada no puede ser en el futuro. Por favor, proporcione una f" +
-	"echa válida.\x02Por favor, proporcione una fecha en el formato válido AA" +
-	"AA-MM-DD (por ejemplo, 2023-12-31)\x02Perfil de mascota guardado con éxi" +
-	"to\x02¿Cuál es el nombre de tu mascota?\x02¿Qué tipo de mascota tienes?" +
-	"\x02perro\x02gato\x02¿Qué raza es tu mascota?\x02¿Cuándo nació tu mascot" +
-	"a? Por favor, introduce la fecha en el formato AAAA-MM-DD (por ejemplo, " +
-	"2010-12-31).\x02¿Cuál es el género de tu mascota?\x02macho\x02hembra\x02" +
-	"¿Cuál es el peso de tu mascota? Por favor, especifica el peso seguido d" +
-	"e la unidad, por ejemplo, 5 kg"
+const pl_PLData string = "" + // Size: 6810 bytes
+	"\x02Kwestionariusz został anulowany\x02Nieznane polecenie\x02Witaj w Hel" +
+	"p My Pet Bot! 🐾\x0a\x0aJestem twoim osobistym asystentem do opieki nad z" +
+	"wierzętami, gotowym pomóc ci lepiej zadbać o twojego futrzanego przyjaci" +
+	"ela. Mogę analizować zdjęcia twojego zwierzaka i pomóc ci w:\x0a\x0a- Py" +
+	"taniach dotyczących zdrowia i zachowania zwierząt - śmiało dziel się zdj" +
+	"ęciami wszelkich niepokojących objawów lub zachowań\x0a- Poradach dotyc" +
+	"zących diety i żywienia, w tym zdjęciach jedzenia lub przysmaków, które " +
+	"rozważasz\x0a- Wskazówkach i technikach szkoleniowych - możesz przesyłać" +
+	" zdjęcia konkretnych sytuacji, w których potrzebujesz pomocy\x0a- Ogólny" +
+	"ch wskazówkach dotyczących opieki nad zwierzętami, z analizą zdjęć środo" +
+	"wiska lub wyposażenia twojego zwierzaka\x0a\x0aPo prostu wpisz swoje pyt" +
+	"anie lub prześlij zdjęcia wraz z obawami dotyczącymi twojego zwierzaka, " +
+	"a ja udzielę pomocnych, informacyjnych odpowiedzi opartych na rzetelnej " +
+	"wiedzy weterynaryjnej. Możesz przesłać wiele zdjęć, jeśli jest to koniec" +
+	"zne, aby lepiej pokazać sytuację.\x0a\x0aPamiętaj, że chociaż mogę ofero" +
+	"wać wskazówki i analizować zdjęcia, w przypadku poważnych schorzeń zawsz" +
+	"e skonsultuj się z weterynarzem.\x0a\x0aAby rozpocząć, po prostu zapytaj" +
+	" mnie o cokolwiek dotyczące twojego zwierzaka - z lub bez zdjęć!\x02<b>W" +
+	"arunki korzystania</b>\x0a<i>Ostatnia aktualizacja: 30.01.2025</i>\x0a" +
+	"\x0aDziękujemy za korzystanie z naszego chatbota doradztwa weterynaryjne" +
+	"go („Usługa”). Korzystając z tej Usługi, zgadzasz się na przestrzeganie " +
+	"następujących warunków („Warunki”). Jeśli nie zgadzasz się z tymi Warunk" +
+	"ami, natychmiast przerwij korzystanie.\x0a\x0a<b>1. Charakter Usługi</b>" +
+	"\x0a1.1 Usługa dostarcza ogólnych informacji, wskazówek i sugestii dotyc" +
+	"zących opieki nad zwierzętami, w tym (ale nie tylko) diety, zachowania i" +
+	" szkolenia.\x0a1.2 Usługa nie zastępuje profesjonalnej diagnozy, leczeni" +
+	"a ani opieki weterynaryjnej. Zawsze zasięgaj porady licencjonowanego wet" +
+	"erynarza w przypadku pytań dotyczących zdrowia Twojego zwierzaka.\x0a" +
+	"\x0a<b>2. Brak relacji weterynarz-klient-pacjent</b>\x0a2.1 Korzystanie " +
+	"z Usługi lub interakcja z naszym asystentem AI nie tworzy relacji wetery" +
+	"narz-klient-pacjent.\x0a2.2 Wszelkie porady lub wskazówki udzielane prze" +
+	"z Usługę są oparte na ograniczonych informacjach i powinny być traktowan" +
+	"e wyłącznie jako ogólne informacje.\x0a\x0a<b>3. Ograniczenie odpowiedzi" +
+	"alności</b>\x0a3.1 Uznajesz i zgadzasz się, że korzystanie z Usługi odby" +
+	"wa się na własne ryzyko.\x0a3.2 W żadnym wypadku właściciele, deweloperz" +
+	"y ani licencjodawcy Usługi nie ponoszą odpowiedzialności za jakiekolwiek" +
+	" bezpośrednie, pośrednie, przypadkowe, specjalne lub wynikowe szkody wyn" +
+	"ikające z dostępu do Usługi lub korzystania z niej.\x0a3.3 Rozumiesz, że" +
+	" decyzje dotyczące opieki nad Twoim zwierzakiem i wszelkie wynikające z " +
+	"tego konsekwencje są wyłącznie Twoją odpowiedzialnością. Jeśli masz jaki" +
+	"ekolwiek wątpliwości co do zdrowia lub samopoczucia Twojego zwierzaka, n" +
+	"atychmiast skonsultuj się z licencjonowanym weterynarzem.\x0a\x0a<b>4. B" +
+	"rak gwarancji</b>\x0a4.1 Usługa jest dostarczana „tak jak jest” i „w mia" +
+	"rę dostępności” bez jakichkolwiek gwarancji, wyraźnych ani dorozumianych" +
+	".\x0a4.2 Nie gwarantujemy, że Usługa będzie nieprzerwana, wolna od błędó" +
+	"w, bezpieczna ani wolna od wirusów.\x0a\x0a<b>5. Obowiązki użytkownika</" +
+	"b>\x0a5.1 Jesteś odpowiedzialny za dostarczanie dokładnych i kompletnych" +
+	" informacji o swoim zwierzaku podczas korzystania z porad.\x0a5.2 Musisz" +
+	" upewnić się, że wszystkie pytania, opisy i dane, które podajesz, nie na" +
+	"ruszają praw osób trzecich ani lokalnych przepisów.\x0a\x0a<b>6. Użycie " +
+	"międzynarodowe</b>\x0a6.1 Usługa jest przeznaczona do użytku globalnego." +
+	" Jesteś odpowiedzialny za przestrzeganie wszystkich obowiązujących lokal" +
+	"nych przepisów i regulacji w Twojej jurysdykcji.\x0a6.2 Nie gwarantujemy" +
+	", że Usługa lub jakakolwiek jej zawartość jest odpowiednia lub dozwolona" +
+	" w jakimkolwiek konkretnym kraju lub regionie.\x0a\x0a<b>7. Modyfikacje<" +
+	"/b>\x0a7.1 Zastrzegamy sobie prawo do modyfikowania lub zastępowania tyc" +
+	"h Warunków w dowolnym czasie.\x0a7.2 Jeśli wprowadzimy istotne zmiany, o" +
+	"publikujemy zaktualizowane Warunki i wskażemy datę najnowszej rewizji na" +
+	" górze tego dokumentu.\x0a\x0a<b>8. Prawo właściwe i rozstrzyganie sporó" +
+	"w</b>\x0a8.1 Niniejsze Warunki podlegają i są interpretowane zgodnie z p" +
+	"rawem obowiązującym w jurysdykcji głównego miejsca prowadzenia działalno" +
+	"ści dostawcy Usługi, bez względu na zasady kolizji praw.\x0a8.2 Wszelki" +
+	"e spory wynikające z tych Warunków lub z nimi związane będą rozstrzygane" +
+	" poprzez polubowne negocjacje, a w razie potrzeby przez wiążący arbitraż" +
+	" lub postępowanie sądowe w odpowiednich sądach.\x0a\x0a<b>9. Akceptacja " +
+	"Warunków</b>\x0a9.1 Kontynuując dostęp do Usługi lub korzystanie z niej," +
+	" potwierdzasz, że przeczytałeś, zrozumiałeś i zgadzasz się na przestrzeg" +
+	"anie tych Warunków.\x0a9.2 Jeśli się nie zgadzasz, musisz natychmiast pr" +
+	"zerwać korzystanie z Usługi.\x0a\x0aJeśli masz jakiekolwiek pytania lub " +
+	"wątpliwości dotyczące tych Warunków lub potrzebujesz dalszych wyjaśnień," +
+	" skontaktuj się pod adresem <i>k.sysoev@me.com</i>.\x02<b>Polecenia Help" +
+	" My Pet Bot</b>:\x0a/start - Rozpocznij rozmowę z botem\x0a/terms - Wyśw" +
+	"ietl Warunki korzystania z usługi\x0a/editprofile - Zaktualizuj informac" +
+	"je o profilu swojego zwierzaka, takie jak imię, wiek, rasa itp. Te infor" +
+	"macje pomagają botowi udzielać bardziej precyzyjnych porad.\x0a/cancel -" +
+	" Anuluj bieżący kwestionariusz, jeśli jest w toku (np. gdy chcesz zacząć" +
+	" od nowa lub zmienić pytanie)\x0a/help - Wyświetl tę wiadomość pomocy" +
+	"\x02Przepraszam, nie mogę przetwarzać wideo, audio ani dokumentów. Wyśli" +
+	"j swoje pytanie tylko w formie tekstu.\x02Przepraszam, ale Twoja wiadomo" +
+	"ść jest dla mnie zbyt długa do przetworzenia. Spróbuj ją skrócić i bard" +
+	"ziej zwięźle.\x02Osiągnąłeś maksymalną liczbę żądań na godzinę. Spróbuj " +
+	"ponownie później.\x02Osiągnęliśmy nasz dzienny limit żądań. Wróć jutro, " +
+	"gdy nasz budżet zostanie odświeżony.\x02Proszę, podaj swoje pytanie w fo" +
+	"rmacie tekstowym wraz z zdjęciem(-ami)\x02Proszę, podaj przynajmniej jed" +
+	"no zdjęcie\x02Proszę, podaj nie więcej niż %[1]d zdjęcie(-a)\x02Przepras" +
+	"zam, napotkałem błąd podczas przetwarzania Twojego żądania. Spróbuj pono" +
+	"wnie później.\x02Podana data nie może być w przyszłości. Proszę podaj po" +
+	"prawną datę.\x02Podaj datę w prawidłowym formacie RRRR-MM-DD (np. 2023-1" +
+	"2-31)\x02Profil zwierzątka został pomyślnie zapisany\x02Jak ma na imię T" +
+	"woje zwierzątko?\x02Jakiego rodzaju zwierzątko posiadasz?\x02pies\x02kot" +
+	"\x02Jaka jest rasa Twojego zwierzątka?\x02Kiedy urodziło się Twoje zwier" +
+	"zątko? Podaj datę w formacie RRRR-MM-DD (np. 2010-12-31).\x02Jaka jest p" +
+	"łeć Twojego zwierzątka?\x02samiec\x02samica\x02Jaka jest waga Twojego z" +
+	"wierzątka? Podaj wagę, a następnie jednostkę, np. 5 kg"
 
-var fa_IRIndex = []uint32{ // 25 elements
-	0x00000000, 0x0000001a, 0x000004ef, 0x000019f4,
-	0x00001ab3, 0x00001b74, 0x00001c10, 0x00001cd0,
-	0x00001d38, 0x00001d6e, 0x00001da8, 0x00001e44,
-	0x00001eca, 0x00001f35, 0x00001f7c, 0x00001fab,
-	0x00001fda, 0x00001fdf, 0x00001fe8, 0x00002019,
-	0x000020c0, 0x000020f3, 0x000020f8, 0x00002101,
-	0x00002190,
-} // Size: 124 bytes
+var pt_PTIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000018, 0x0000002d, 0x0000052a,
+	0x000013fb, 0x000015d7, 0x0000164a, 0x000016c0,
+	0x00001723, 0x00001793, 0x000017e1, 0x00001809,
+	0x00001836, 0x00001894, 0x000018e6, 0x0000193b,
+	0x0000196d, 0x0000199a, 0x000019c7, 0x000019cc,
+	0x000019d1, 0x000019ff, 0x00001a74, 0x00001aa4,
+	0x00001aaa, 0x00001ab1, 0x00001b22,
+} // Size: 132 bytes
 
-const fa_IRData string = "" + // Size: 8592 bytes
-	"\x02دستور نامعلوم\x02به ربات کمک به حیوان خانگی من خوش آمدید! 🐾\x0a\x0aم" +
-	"ن دستیار شخصی شما در مراقبت از حیوان خانگی هستم و آماده\u200cام تا به ش" +
-	"ما کمک کنم تا بهتر از دوست پشمالوی خود مراقبت کنید. من می\u200cتوانم به" +
-	" شما در موارد زیر کمک کنم:\x0a\x0a• سوالات مربوط به سلامت و رفتار حیوانا" +
-	"ت خانگی\x0a• مشاوره در مورد رژیم غذایی و تغذیه\x0a• نکات و تکنیک\u200cه" +
-	"ای آموزشی\x0a• راهنمایی\u200cهای عمومی در مورد مراقبت از حیوانات خانگی" +
-	"\x0a\x0aبه سادگی سوال یا نگرانی خود را در مورد حیوان خانگی خود تایپ کنید" +
-	" و من پاسخ\u200cهای مفید و اطلاعاتی بر اساس دانش معتبر دامپزشکی ارائه خو" +
-	"اهم داد. به یاد داشته باشید، در حالی که من می\u200cتوانم راهنمایی ارائه" +
-	" دهم، برای شرایط پزشکی جدی همیشه با یک دامپزشک مشورت کنید.\x0a\x0aبرای ش" +
-	"روع، فقط هر سوالی در مورد حیوان خانگی خود دارید بپرسید!\x02<b>شرایط و ض" +
-	"وابط</b>\x0a<i>آخرین به\u200cروزرسانی: 30.01.2025</i>\x0a\x0aاز اینکه ا" +
-	"ز ربات مشاوره دامپزشکی ما (“خدمت”) استفاده می\u200cکنید، متشکریم. با دس" +
-	"ترسی یا استفاده از این خدمت، شما موافقت می\u200cکنید که به شرایط و ضواب" +
-	"ط زیر (“شرایط”) پایبند باشید. اگر با این شرایط موافق نیستید، لطفاً فورا" +
-	"ً استفاده را متوقف کنید.\x0a\x0a<b>1. ماهیت خدمت</b>\x0a1.1 این خدمت اط" +
-	"لاعات عمومی، راهنمایی\u200cها و پیشنهاداتی برای مراقبت از حیوانات خانگی" +
-	" ارائه می\u200cدهد، از جمله (اما نه محدود به) رژیم غذایی، رفتار و آموزش." +
-	"\x0a1.2 این خدمت جایگزین تشخیص، درمان یا مراقبت حرفه\u200cای دامپزشکی نی" +
-	"ست. همیشه برای هر سوالی در مورد سلامت حیوان خانگی خود با یک دامپزشک مجا" +
-	"ز مشورت کنید.\x0a\x0a<b>2. عدم وجود رابطه دامپزشک-مشتری-بیمار</b>\x0a2." +
-	"1 استفاده از این خدمت یا تعامل با دستیار هوش مصنوعی ما رابطه دامپزشک-مشت" +
-	"ری-بیمار ایجاد نمی\u200cکند.\x0a2.2 هرگونه مشاوره یا راهنمایی ارائه شده" +
-	" توسط این خدمت بر اساس اطلاعات محدود است و باید فقط به عنوان اطلاعات عمو" +
-	"می در نظر گرفته شود.\x0a\x0a<b>3. محدودیت مسئولیت</b>\x0a3.1 شما تأیید " +
-	"و موافقت می\u200cکنید که استفاده از این خدمت به عهده خودتان است.\x0a3.2" +
-	" تحت هیچ شرایطی صاحبان، توسعه\u200cدهندگان یا مجوزدهندگان این خدمت مسئول" +
-	" هیچ\u200cگونه خسارت مستقیم، غیرمستقیم، اتفاقی، ویژه یا تبعی ناشی از یا " +
-	"در ارتباط با دسترسی یا استفاده شما از این خدمت نخواهند بود.\x0a3.3 شما " +
-	"درک می\u200cکنید که تصمیمات مربوط به مراقبت از حیوان خانگی شما و هرگونه" +
-	" نتایج حاصل از آن به عهده خودتان است. اگر در مورد سلامت یا رفاه حیوان خا" +
-	"نگی خود شک دارید، باید فوراً با یک دامپزشک مجاز مشورت کنید.\x0a\x0a<b>4" +
-	". عدم وجود ضمانت</b>\x0a4.1 این خدمت به صورت “همان\u200cطور که هست” و “ه" +
-	"مان\u200cطور که موجود است” بدون هیچ\u200cگونه ضمانت، چه صریح و چه ضمنی،" +
-	" ارائه می\u200cشود.\x0a4.2 ما ضمانت نمی\u200cکنیم که این خدمت بدون وقفه،" +
-	" بدون خطا، امن یا عاری از ویروس باشد.\x0a\x0a<b>5. مسئولیت\u200cهای کارب" +
-	"ر</b>\x0a5.1 شما مسئول ارائه اطلاعات دقیق و کامل در مورد حیوان خانگی خو" +
-	"د هنگام درخواست مشاوره هستید.\x0a5.2 شما باید اطمینان حاصل کنید که تمام" +
-	" سوالات، توضیحات و داده\u200cهایی که ارائه می\u200cدهید، حقوق شخص ثالث ی" +
-	"ا قوانین محلی را نقض نمی\u200cکنند.\x0a\x0a<b>6. استفاده بین\u200cالملل" +
-	"ی</b>\x0a6.1 این خدمت برای استفاده جهانی در نظر گرفته شده است. شما مسئو" +
-	"ل رعایت تمام قوانین و مقررات محلی قابل اجرا در حوزه قضایی خود هستید." +
-	"\x0a6.2 ما تضمین نمی\u200cکنیم که این خدمت یا هر یک از محتوای آن در هر ک" +
-	"شور یا منطقه خاصی مناسب یا مجاز باشد.\x0a\x0a<b>7. تغییرات</b>\x0a7.1 م" +
-	"ا حق تغییر یا جایگزینی این شرایط را در هر زمان محفوظ می\u200cداریم.\x0a" +
-	"7.2 اگر تغییرات اساسی ایجاد کنیم، شرایط به\u200cروزرسانی شده را منتشر خو" +
-	"اهیم کرد و تاریخ آخرین بازبینی را در بالای این سند نشان خواهیم داد.\x0a" +
-	"\x0a<b>8. قانون حاکم و حل اختلاف</b>\x0a8.1 این شرایط باید بر اساس قوانی" +
-	"ن قابل اجرا در حوزه قضایی محل اصلی کسب و کار ارائه\u200cدهنده خدمت، بدو" +
-	"ن توجه به اصول تعارض قوانین، تفسیر و اجرا شود.\x0a8.2 هرگونه اختلاف ناش" +
-	"ی از یا مربوط به این شرایط باید از طریق مذاکره دوستانه و در صورت لزوم، " +
-	"از طریق داوری الزام\u200cآور یا دادخواهی در دادگاه\u200cهای قابل اجرا ح" +
-	"ل و فصل شود.\x0a\x0a<b>9. پذیرش شرایط</b>\x0a9.1 با ادامه دسترسی یا است" +
-	"فاده از این خدمت، شما تأیید می\u200cکنید که این شرایط را خوانده، درک کر" +
-	"ده و موافقت می\u200cکنید که به آن\u200cها پایبند باشید.\x0a9.2 اگر مواف" +
-	"ق نیستید، باید فوراً استفاده از این خدمت را متوقف کنید.\x0a\x0aاگر سوال" +
-	"ات یا نگرانی\u200cهایی در مورد این شرایط دارید، یا اگر نیاز به توضیحات " +
-	"بیشتر دارید، لطفاً با <i>k.sysoev@me.com</i> تماس بگیرید.\x02متاسفم، من" +
-	" نمی\u200cتوانم ویدیوها، صداها یا اسناد را پردازش کنم. لطفاً سوال خود را" +
-	" فقط به صورت متن ارسال کنید.\x02متاسفم، اما پیام شما برای من خیلی طولانی" +
-	" است تا بتوانم پردازش کنم. لطفاً سعی کنید کوتاه\u200cتر و مختصرتر کنید." +
-	"\x02شما به حداکثر تعداد درخواست\u200cها در هر ساعت رسیده\u200cاید. لطفاً" +
-	" بعداً دوباره امتحان کنید.\x02ما به حداکثر تعداد درخواست\u200cهای روزانه" +
-	" خود رسیده\u200cایم. لطفاً فردا برگردید وقتی که بودجه\u200cمان تازه شده " +
-	"است.\x02لطفاً سوال خود را به صورت متنی همراه با عکس(ها) ارائه دهید\x02ل" +
-	"طفاً حداقل یک عکس ارائه دهید\x02لطفاً بیش از %[1]d عکس ارائه ندهید\x02م" +
-	"تاسفم، من در حین پردازش درخواست شما با خطا مواجه شدم. لطفاً بعداً دوبار" +
-	"ه امتحان کنید.\x02تاریخ ارائه شده نمی\u200cتواند در آینده باشد. لطفاً ی" +
-	"ک تاریخ معتبر ارائه دهید.\x02لطفاً یک تاریخ در قالب معتبر YYYY-MM-DD (م" +
-	"ثلاً 2023-12-31) ارائه دهید\x02پروفایل حیوان خانگی با موفقیت ذخیره شد" +
-	"\x02نام حیوان خانگی شما چیست؟\x02چه نوع حیوان خانگی دارید؟\x02سگ\x02گربه" +
-	"\x02نژاد حیوان خانگی شما چیست؟\x02حیوان خانگی شما چه زمانی متولد شده است" +
-	"؟ لطفاً تاریخ را به صورت YYYY-MM-DD (مثلاً 2010-12-31) وارد کنید.\x02جن" +
-	"سیت حیوان خانگی شما چیست؟\x02نر\x02ماده\x02وزن حیوان خانگی شما چیست؟ لط" +
-	"فاً وزن را به همراه واحد مشخص کنید، مثلاً 5 کیلوگرم"
-
-var fr_FRIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000012, 0x0000032f, 0x000012bb,
-	0x00001343, 0x000013c6, 0x00001421, 0x00001490,
-	0x000014d9, 0x000014fd, 0x0000152c, 0x00001595,
-	0x000015e8, 0x00001638, 0x00001664, 0x00001693,
-	0x000016bf, 0x000016c5, 0x000016ca, 0x000016fc,
-	0x0000176e, 0x0000179e, 0x000017a4, 0x000017ac,
-	0x0000181e,
-} // Size: 124 bytes
-
-const fr_FRData string = "" + // Size: 6174 bytes
-	"\x02Commande inconnue\x02Bienvenue sur Help My Pet Bot! 🐾\x0a\x0aJe suis" +
-	" votre assistant personnel pour les soins des animaux de compagnie, prêt" +
-	" à vous aider à mieux prendre soin de votre ami à fourrure. Je peux vous" +
-	" aider avec :\x0a\x0a• Questions sur la santé et le comportement des ani" +
-	"maux\x0a• Conseils sur l'alimentation et la nutrition\x0a• Astuces et te" +
-	"chniques de dressage\x0a• Conseils généraux sur les soins des animaux" +
-	"\x0a\x0aTapez simplement votre question ou votre préoccupation concernan" +
-	"t votre animal, et je vous fournirai des réponses utiles et informatives" +
-	" basées sur des connaissances vétérinaires fiables. N'oubliez pas, bien " +
-	"que je puisse offrir des conseils, pour des conditions médicales graves," +
-	" consultez toujours un vétérinaire.\x0a\x0aPour commencer, posez-moi sim" +
-	"plement une question sur votre animal !\x02<b>Conditions générales</b>" +
-	"\x0a<i>Dernière mise à jour : 30.01.2025</i>\x0a\x0aMerci d'utiliser not" +
-	"re chatbot de conseils vétérinaires (« le Service »). En accédant à ce S" +
-	"ervice ou en l'utilisant, vous acceptez d'être lié par les conditions gé" +
-	"nérales suivantes (« Conditions »). Si vous n'acceptez pas ces Condition" +
-	"s, veuillez cesser immédiatement d'utiliser le Service.\x0a\x0a<b>1. Nat" +
-	"ure du Service</b>\x0a1.1 Le Service fournit des informations générales," +
-	" des conseils et des suggestions pour les soins des animaux de compagnie" +
-	", y compris (mais sans s'y limiter) l'alimentation, le comportement et l" +
-	"e dressage.\x0a1.2 Le Service ne remplace pas un diagnostic, un traiteme" +
-	"nt ou des soins vétérinaires professionnels. Consultez toujours un vétér" +
-	"inaire agréé pour toute question concernant la santé de votre animal." +
-	"\x0a\x0a<b>2. Absence de relation vétérinaire-client-patient</b>\x0a2.1 " +
-	"L'utilisation du Service ou l'interaction avec notre assistant IA ne cré" +
-	"e pas de relation vétérinaire-client-patient.\x0a2.2 Tout conseil ou ori" +
-	"entation fourni par le Service est basé sur des informations limitées et" +
-	" doit être considéré uniquement comme des informations générales.\x0a" +
-	"\x0a<b>3. Limitation de responsabilité</b>\x0a3.1 Vous reconnaissez et a" +
-	"cceptez que l'utilisation du Service se fait à vos propres risques.\x0a3" +
-	".2 En aucun cas, les propriétaires, développeurs ou concédants de licenc" +
-	"e du Service ne seront responsables des dommages directs, indirects, acc" +
-	"essoires, spéciaux ou consécutifs résultant de ou en relation avec votre" +
-	" accès ou utilisation du Service.\x0a3.3 Vous comprenez que les décision" +
-	"s concernant les soins de votre animal et les résultats qui en découlent" +
-	" sont de votre seule responsabilité. Si vous avez des doutes sur le bien" +
-	"-être ou la santé de votre animal, vous devez immédiatement consulter un" +
-	" vétérinaire agréé.\x0a\x0a<b>4. Absence de garantie</b>\x0a4.1 Le Servi" +
-	"ce est fourni « tel quel » et « selon disponibilité » sans garanties d'a" +
-	"ucune sorte, qu'elles soient expresses ou implicites.\x0a4.2 Nous ne gar" +
-	"antissons pas que le Service sera ininterrompu, sans erreur, sécurisé ou" +
-	" exempt de virus.\x0a\x0a<b>5. Responsabilités de l'utilisateur</b>\x0a5" +
-	".1 Vous êtes responsable de fournir des informations exactes et complète" +
-	"s sur votre animal lorsque vous demandez des conseils.\x0a5.2 Vous devez" +
-	" vous assurer que toutes les questions, descriptions et données que vous" +
-	" fournissez ne violent aucun droit de tiers ou lois locales.\x0a\x0a<b>6" +
-	". Utilisation internationale</b>\x0a6.1 Le Service est destiné à une uti" +
-	"lisation mondiale. Vous êtes responsable du respect de toutes les lois e" +
-	"t réglementations locales applicables dans votre juridiction.\x0a6.2 Nou" +
-	"s ne garantissons pas que le Service ou son contenu est approprié ou per" +
-	"mis dans un pays ou une région spécifique.\x0a\x0a<b>7. Modifications</b" +
-	">\x0a7.1 Nous nous réservons le droit de modifier ou de remplacer ces Co" +
-	"nditions à tout moment.\x0a7.2 Si nous apportons des modifications impor" +
-	"tantes, nous publierons les Conditions mises à jour et indiquerons la da" +
-	"te de la dernière révision en haut de ce document.\x0a\x0a<b>8. Droit ap" +
-	"plicable et résolution des litiges</b>\x0a8.1 Ces Conditions seront régi" +
-	"es et interprétées conformément aux lois applicables dans la juridiction" +
-	" du principal lieu d'affaires du fournisseur de services, sans égard aux" +
-	" principes de conflit de lois.\x0a8.2 Tout litige découlant de ou lié à " +
-	"ces Conditions sera résolu par une négociation à l'amiable et, si nécess" +
-	"aire, par arbitrage ou litige contraignant devant les tribunaux compéten" +
-	"ts.\x0a\x0a<b>9. Acceptation des Conditions</b>\x0a9.1 En continuant d'a" +
-	"ccéder ou d'utiliser le Service, vous reconnaissez avoir lu, compris et " +
-	"accepté d'être lié par ces Conditions.\x0a9.2 Si vous n'êtes pas d'accor" +
-	"d, vous devez cesser immédiatement d'utiliser le Service.\x0a\x0aSi vous" +
-	" avez des questions ou des préoccupations concernant ces Conditions, ou " +
-	"si vous avez besoin de plus amples informations, veuillez contacter à <i" +
-	">k.sysoev@me.com</i>.\x02Désolé, je ne peux pas traiter les vidéos, l'au" +
-	"dio ou les documents. Veuillez envoyer votre question sous forme de text" +
-	"e uniquement.\x02Je m'excuse, mais votre message est trop long pour que " +
-	"je puisse le traiter. Essayez de le raccourcir et de le rendre plus conc" +
-	"is.\x02Vous avez atteint le nombre maximum de requêtes par heure. Veuill" +
-	"ez réessayer plus tard.\x02Nous avons atteint notre limite de demandes q" +
-	"uotidiennes. Revenez demain lorsque notre budget sera rafraîchi.\x02Veui" +
-	"llez fournir votre question au format texte accompagnée de photo(s)\x02V" +
-	"euillez fournir au moins une photo\x02Veuillez ne pas fournir plus de %[" +
-	"1]d photo(s)\x02Désolé, j'ai rencontré une erreur lors du traitement de " +
-	"votre demande. Veuillez réessayer plus tard.\x02La date fournie ne peut " +
-	"pas être dans le futur. Veuillez fournir une date valide.\x02Veuillez fo" +
-	"urnir une date au format valide AAAA-MM-JJ (par exemple, 2023-12-31)\x02" +
-	"Profil de l'animal enregistré avec succès\x02Quel est le nom de votre an" +
-	"imal de compagnie ?\x02Quel type d'animal de compagnie avez-vous ?\x02ch" +
-	"ien\x02chat\x02Quelle est la race de votre animal de compagnie ?\x02Quan" +
-	"d est né votre animal de compagnie ? Veuillez entrer la date au format A" +
-	"AAA-MM-JJ (par exemple, 2010-12-31).\x02Quel est le sexe de votre animal" +
-	" de compagnie ?\x02mâle\x02femelle\x02Quel est le poids de votre animal " +
-	"de compagnie ? Veuillez spécifier le poids suivi de l'unité, par exemple" +
-	" 5 kg"
-
-var it_ITIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000014, 0x000002ec, 0x00001165,
-	0x000011d2, 0x00001249, 0x00001293, 0x00001307,
-	0x0000134d, 0x00001371, 0x0000139c, 0x00001400,
-	0x00001451, 0x000014a5, 0x000014d9, 0x00001504,
-	0x00001527, 0x0000152c, 0x00001532, 0x0000155b,
-	0x000015d2, 0x000015fe, 0x00001606, 0x0000160e,
-	0x0000167f,
-} // Size: 124 bytes
-
-const it_ITData string = "" + // Size: 5759 bytes
-	"\x02Comando sconosciuto\x02Benvenuto su Help My Pet Bot! 🐾\x0a\x0aSono i" +
-	"l tuo assistente personale per la cura degli animali domestici, pronto a" +
-	"d aiutarti a prenderti cura meglio del tuo amico peloso. Posso assistert" +
-	"i con:\x0a\x0a• Domande sulla salute e il comportamento degli animali" +
-	"\x0a• Consigli sulla dieta e la nutrizione\x0a• Suggerimenti e tecniche " +
-	"di addestramento\x0a• Guida generale alla cura degli animali\x0a\x0aBast" +
-	"a digitare la tua domanda o preoccupazione riguardo al tuo animale domes" +
-	"tico, e fornirò risposte utili e informative basate su conoscenze veteri" +
-	"narie affidabili. Ricorda, mentre posso offrire indicazioni, per condizi" +
-	"oni mediche gravi, consulta sempre un veterinario.\x0a\x0aPer iniziare, " +
-	"chiedimi qualsiasi cosa riguardo al tuo animale domestico!\x02<b>Termini" +
-	" e Condizioni</b>\x0a<i>Ultimo aggiornamento: 30.01.2025</i>\x0a\x0aGraz" +
-	"ie per aver utilizzato il nostro chatbot di consulenza veterinaria (“il " +
-	"Servizio”). Accedendo o utilizzando questo Servizio, accetti di essere v" +
-	"incolato dai seguenti termini e condizioni (“Termini”). Se non accetti q" +
-	"uesti Termini, interrompi immediatamente l'uso.\x0a\x0a<b>1. Natura del " +
-	"Servizio</b>\x0a1.1 Il Servizio fornisce informazioni generali, orientam" +
-	"enti e suggerimenti per la cura degli animali domestici, inclusi (ma non" +
-	" limitati a) dieta, comportamento e addestramento.\x0a1.2 Il Servizio no" +
-	"n è un sostituto della diagnosi, trattamento o cura veterinaria professi" +
-	"onale. Cerca sempre il parere di un veterinario autorizzato per qualsias" +
-	"i domanda riguardante la salute del tuo animale domestico.\x0a\x0a<b>2. " +
-	"Nessuna Relazione Veterinario-Cliente-Paziente</b>\x0a2.1 L'utilizzo del" +
-	" Servizio o l'interazione con il nostro assistente AI non crea una relaz" +
-	"ione veterinario-cliente-paziente.\x0a2.2 Qualsiasi consiglio o orientam" +
-	"ento fornito dal Servizio si basa su informazioni limitate e deve essere" +
-	" considerato solo come informazione generale.\x0a\x0a<b>3. Limitazione d" +
-	"i Responsabilità</b>\x0a3.1 Riconosci e accetti che l'uso del Servizio è" +
-	" a tuo rischio.\x0a3.2 In nessun caso i proprietari, sviluppatori o lice" +
-	"nziatari del Servizio saranno responsabili per danni diretti, indiretti," +
-	" incidentali, speciali o consequenziali derivanti da o in connessione co" +
-	"n il tuo accesso o utilizzo del Servizio.\x0a3.3 Comprendi che le decisi" +
-	"oni riguardanti la cura del tuo animale domestico e qualsiasi risultato " +
-	"risultante sono di tua esclusiva responsabilità. Se hai dubbi sul beness" +
-	"ere del tuo animale domestico o sulla sua salute, dovresti consultare im" +
-	"mediatamente un veterinario autorizzato.\x0a\x0a<b>4. Nessuna Garanzia</" +
-	"b>\x0a4.1 Il Servizio è fornito “così com'è”, e “come disponibile”, senz" +
-	"a garanzie di alcun tipo, espresse o implicite.\x0a4.2 Non garantiamo ch" +
-	"e il Servizio sarà ininterrotto, privo di errori, sicuro o privo di viru" +
-	"s.\x0a\x0a<b>5. Responsabilità dell'Utente</b>\x0a5.1 Sei responsabile d" +
-	"i fornire informazioni accurate e complete sul tuo animale domestico qua" +
-	"ndo cerchi consigli.\x0a5.2 Devi assicurarti che tutte le domande, descr" +
-	"izioni e dati che fornisci non violino i diritti di terzi o le leggi loc" +
-	"ali.\x0a\x0a<b>6. Uso Internazionale</b>\x0a6.1 Il Servizio è destinato " +
-	"all'uso globale. Sei responsabile del rispetto di tutte le leggi e regol" +
-	"amenti locali applicabili nella tua giurisdizione.\x0a6.2 Non garantiamo" +
-	" che il Servizio o qualsiasi suo contenuto sia appropriato o consentito " +
-	"in qualsiasi paese o regione specifica.\x0a\x0a<b>7. Modifiche</b>\x0a7." +
-	"1 Ci riserviamo il diritto di modificare o sostituire questi Termini in " +
-	"qualsiasi momento.\x0a7.2 Se apportiamo modifiche sostanziali, pubbliche" +
-	"remo i Termini aggiornati e indicheremo la data dell'ultima revisione in" +
-	" cima a questo documento.\x0a\x0a<b>8. Legge Applicabile e Risoluzione d" +
-	"elle Controversie</b>\x0a8.1 Questi Termini saranno regolati e interpret" +
-	"ati in conformità con le leggi applicabili nella giurisdizione della sed" +
-	"e principale del fornitore del Servizio, senza riguardo ai principi di c" +
-	"onflitto di leggi.\x0a8.2 Qualsiasi controversia derivante da o relativa" +
-	" a questi Termini sarà risolta attraverso negoziazione amichevole e, se " +
-	"necessario, mediante arbitrato vincolante o contenzioso nei tribunali co" +
-	"mpetenti.\x0a\x0a<b>9. Accettazione dei Termini</b>\x0a9.1 Continuando a" +
-	"d accedere o utilizzare il Servizio, riconosci di aver letto, compreso e" +
-	" accettato di essere vincolato da questi Termini.\x0a9.2 Se non sei d'ac" +
-	"cordo, devi cessare immediatamente l'uso del Servizio.\x0a\x0aSe hai dom" +
-	"ande o dubbi riguardanti questi Termini, o se hai bisogno di ulteriori c" +
-	"hiarimenti, contattaci a <i>k.sysoev@me.com</i>.\x02Spiacente, non posso" +
-	" elaborare video, audio o documenti. Si prega di inviare la tua domanda " +
-	"solo come testo.\x02Mi scuso, ma il tuo messaggio è troppo lungo per ess" +
-	"ere elaborato. Per favore, prova a renderlo più breve e conciso.\x02Hai " +
-	"raggiunto il numero massimo di richieste per ora. Riprova più tardi.\x02" +
-	"Abbiamo raggiunto il nostro limite giornaliero di richieste. Torna doman" +
-	"i quando il nostro budget sarà aggiornato.\x02Si prega di fornire la tua" +
-	" domanda in formato testuale insieme a foto\x02Si prega di fornire almen" +
-	"o una foto\x02Si prega di non fornire più di %[1]d foto\x02Spiacente, ho" +
-	" riscontrato un errore durante l'elaborazione della tua richiesta. Ripro" +
-	"va più tardi.\x02La data fornita non può essere nel futuro. Si prega di " +
-	"fornire una data valida.\x02Si prega di fornire una data nel formato val" +
-	"ido AAAA-MM-GG (ad esempio, 2023-12-31)\x02Profilo dell'animale domestic" +
-	"o salvato con successo\x02Qual è il nome del tuo animale domestico?\x02C" +
-	"he tipo di animale domestico hai?\x02cane\x02gatto\x02Quale razza è il t" +
-	"uo animale domestico?\x02Quando è nato il tuo animale domestico? Si preg" +
-	"a di inserire la data nel formato AAAA-MM-GG (ad esempio, 2010-12-31)." +
-	"\x02Qual è il sesso del tuo animale domestico?\x02maschio\x02femmina\x02" +
-	"Qual è il peso del tuo animale domestico? Si prega di specificare il pes" +
-	"o seguito dall'unità, ad esempio, 5 kg"
-
-var ko_KRIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000016, 0x00000344, 0x000012d0,
-	0x00001352, 0x000013ae, 0x0000140a, 0x00001466,
-	0x000014ac, 0x000014df, 0x00001510, 0x00001577,
-	0x000015d0, 0x00001622, 0x00001662, 0x0000168d,
-	0x000016c6, 0x000016ca, 0x000016d4, 0x000016ff,
-	0x0000177c, 0x000017a7, 0x000017ae, 0x000017b5,
-	0x00001823,
-} // Size: 124 bytes
-
-const ko_KRData string = "" + // Size: 6179 bytes
-	"\x02알 수 없는 명령\x02Help My Pet Bot에 오신 것을 환영합니다! 🐾\x0a\x0a저는 당신의 개인 반려동물 관" +
-	"리 도우미로, 당신의 털복숭이 친구를 더 잘 돌볼 수 있도록 도와드리겠습니다. 저는 다음과 같은 도움을 드릴 수 있습니다:" +
-	"\x0a\x0a• 반려동물 건강 및 행동 질문\x0a• 식단 및 영양 조언\x0a• 훈련 팁 및 기법\x0a• 일반적인 반려동물 " +
-	"관리 지침\x0a\x0a반려동물에 대한 질문이나 걱정을 간단히 입력해 주세요. 신뢰할 수 있는 수의학 지식을 바탕으로 유용하고" +
-	" 정보가 풍부한 답변을 제공하겠습니다. 기억하세요, 제가 안내를 제공할 수는 있지만, 심각한 의학적 상태에 대해서는 항상 수의사와" +
-	" 상담해야 합니다.\x0a\x0a시작하려면 반려동물에 대한 질문을 해주세요!\x02<b>이용 약관</b>\x0a<i>마지막 업데이" +
-	"트: 2025.01.30</i>\x0a\x0a저희 수의학 조언 챗봇(“서비스”)을 이용해 주셔서 감사합니다. 이 서비스를 이용" +
-	"하거나 접근함으로써, 귀하는 다음 이용 약관(“약관”)에 동의하는 것으로 간주됩니다. 이 약관에 동의하지 않으시면 즉시 이용을" +
-	" 중단해 주십시오.\x0a\x0a<b>1. 서비스의 성격</b>\x0a1.1 이 서비스는 반려동물 관리에 대한 일반 정보, 지침 " +
-	"및 제안을 제공합니다. 여기에는 (제한되지 않음) 식단, 행동 및 훈련이 포함됩니다.\x0a1.2 이 서비스는 전문 수의학 진" +
-	"단, 치료 또는 관리를 대체하지 않습니다. 반려동물의 건강에 관한 질문이 있을 경우 항상 면허가 있는 수의사의 조언을 구하십시" +
-	"오.\x0a\x0a<b>2. 수의사-고객-환자 관계 없음</b>\x0a2.1 이 서비스를 이용하거나 AI 도우미와 상호작용한다" +
-	"고 해서 수의사-고객-환자 관계가 형성되는 것은 아닙니다.\x0a2.2 이 서비스에서 제공하는 모든 조언이나 지침은 제한된 정" +
-	"보에 기반한 것이며 일반 정보로만 간주되어야 합니다.\x0a\x0a<b>3. 책임의 제한</b>\x0a3.1 귀하는 이 서비스" +
-	"를 이용하는 것이 전적으로 귀하의 책임임을 인정하고 동의합니다.\x0a3.2 서비스의 소유자, 개발자 또는 라이선스 제공자는 " +
-	"서비스에 대한 접근 또는 이용과 관련하여 발생하는 직접적, 간접적, 부수적, 특별 또는 결과적 손해에 대해 어떠한 경우에도 책" +
-	"임을 지지 않습니다.\x0a3.3 귀하는 반려동물 관리에 대한 결정과 그로 인한 결과가 전적으로 귀하의 책임임을 이해합니다. " +
-	"반려동물의 건강이나 안녕에 대해 의심이 있을 경우 즉시 면허가 있는 수의사와 상담해야 합니다.\x0a\x0a<b>4. 보증 없" +
-	"음</b>\x0a4.1 이 서비스는 명시적이든 묵시적이든 어떠한 종류의 보증 없이 “있는 그대로” 및 “이용 가능한 상태로” " +
-	"제공됩니다.\x0a4.2 우리는 이 서비스가 중단되지 않거나, 오류가 없거나, 안전하거나, 바이러스가 없음을 보증하지 않습니다" +
-	".\x0a\x0a<b>5. 사용자 책임</b>\x0a5.1 귀하는 조언을 구할 때 반려동물에 대한 정확하고 완전한 정보를 제공할 " +
-	"책임이 있습니다.\x0a5.2 귀하는 제공하는 모든 질문, 설명 및 데이터가 제3자의 권리나 현지 법률을 위반하지 않도록 해야" +
-	" 합니다.\x0a\x0a<b>6. 국제적 사용</b>\x0a6.1 이 서비스는 전 세계적으로 사용하기 위한 것입니다. 귀하는 귀하" +
-	"의 관할 구역에서 적용되는 모든 현지 법률 및 규정을 준수할 책임이 있습니다.\x0a6.2 우리는 이 서비스나 그 어떤 콘텐츠" +
-	"가 특정 국가나 지역에서 적절하거나 허용된다는 것을 보증하지 않습니다.\x0a\x0a<b>7. 수정</b>\x0a7.1 우리는" +
-	" 언제든지 이 약관을 수정하거나 대체할 권리를 보유합니다.\x0a7.2 중요한 변경 사항이 있을 경우, 업데이트된 약관을 게시하고" +
-	" 이 문서 상단에 최신 개정 날짜를 표시할 것입니다.\x0a\x0a<b>8. 준거법 및 분쟁 해결</b>\x0a8.1 이 약관은 " +
-	"서비스 제공자의 주요 사업장 관할 구역에서 적용되는 법률에 따라 규율되고 해석됩니다. 법률 충돌 원칙은 적용되지 않습니다." +
-	"\x0a8.2 이 약관에서 발생하거나 이와 관련된 모든 분쟁은 우호적인 협상을 통해 해결되며, 필요시 구속력 있는 중재 또는 해당" +
-	" 법원에서의 소송을 통해 해결됩니다.\x0a\x0a<b>9. 약관의 수락</b>\x0a9.1 서비스를 계속 이용하거나 접근함으로써" +
-	", 귀하는 이 약관을 읽고 이해하였으며 이에 구속되는 것에 동의함을 인정합니다.\x0a9.2 동의하지 않으시면 즉시 서비스를 이용" +
-	"을 중단해야 합니다.\x0a\x0a이 약관에 관한 질문이나 우려 사항이 있거나 추가 설명이 필요하시면 <i>k.sysoev@m" +
-	"e.com</i>으로 연락해 주십시오.\x02죄송합니다만, 비디오, 오디오 또는 문서를 처리할 수 없습니다. 질문을 텍스트로만 보" +
-	"내 주세요.\x02죄송합니다만, 메시지가 너무 깁니다. 짧고 간결하게 작성해 주세요.\x02시간당 요청 횟수 제한에 도달했습니" +
-	"다. 나중에 다시 시도해 주세요.\x02일일 요청 한도에 도달했습니다. 예산이 갱신되는 내일 다시 오세요.\x02텍스트 형식으" +
-	"로 질문과 함께 사진을 제공해 주세요\x02최소한 한 장의 사진을 제공해 주세요\x02사진을 %[1]d장 이하로 제공해 주세요" +
-	"\x02죄송합니다. 요청 처리 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.\x02제공된 날짜는 미래일 수 없습니다. 유효" +
-	"한 날짜를 제공해 주세요.\x02유효한 형식인 YYYY-MM-DD(예: 2023-12-31)로 날짜를 제공해 주세요.\x02애" +
-	"완동물 프로필이 성공적으로 저장되었습니다\x02애완동물의 이름은 무엇입니까?\x02어떤 종류의 애완동물을 가지고 계십니까?" +
-	"\x02개\x02고양이\x02애완동물의 품종은 무엇입니까?\x02애완동물이 태어난 날짜는 언제입니까? YYYY-MM-DD(예: 2" +
-	"010-12-31) 형식으로 날짜를 입력해 주세요.\x02애완동물의 성별은 무엇입니까?\x02수컷\x02암컷\x02애완동물의 몸무" +
-	"게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예: 5 kg"
-
-var ms_MYIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000018, 0x00000314, 0x00001277,
-	0x000012e1, 0x00001356, 0x000013a7, 0x00001408,
-	0x00001449, 0x00001475, 0x000014a4, 0x000014f7,
-	0x00001548, 0x00001595, 0x000015bf, 0x000015e3,
-	0x00001611, 0x00001618, 0x0000161f, 0x00001645,
-	0x000016b3, 0x000016da, 0x000016e1, 0x000016eb,
-	0x0000174c,
-} // Size: 124 bytes
-
-const ms_MYData string = "" + // Size: 5964 bytes
-	"\x02Perintah tidak dikenali\x02Selamat datang ke Help My Pet Bot! 🐾\x0a" +
-	"\x0aSaya adalah pembantu penjagaan haiwan peliharaan peribadi anda, sedi" +
-	"a membantu anda menjaga rakan berbulu anda dengan lebih baik. Saya boleh" +
-	" membantu anda dengan:\x0a\x0a• Soalan kesihatan dan tingkah laku haiwan" +
-	" peliharaan\x0a• Nasihat diet dan pemakanan\x0a• Petua dan teknik latiha" +
-	"n\x0a• Panduan penjagaan haiwan peliharaan umum\x0a\x0aCuma taip soalan " +
-	"atau kebimbangan anda tentang haiwan peliharaan anda, dan saya akan memb" +
-	"erikan jawapan yang berguna dan bermaklumat berdasarkan pengetahuan vete" +
-	"rinar yang boleh dipercayai. Ingat, walaupun saya boleh memberikan pandu" +
-	"an, untuk keadaan perubatan yang serius, sentiasa berunding dengan dokto" +
-	"r haiwan.\x0a\x0aUntuk memulakan, cuma tanya saya sebarang soalan tentan" +
-	"g haiwan peliharaan anda!\x02<b>Terma dan Syarat</b>\x0a<i>Dikemaskini t" +
-	"erakhir: 30.01.2025</i>\x0a\x0aTerima kasih kerana menggunakan chatbot n" +
-	"asihat veterinar kami (“Perkhidmatan”). Dengan mengakses atau menggunaka" +
-	"n Perkhidmatan ini, anda bersetuju untuk terikat dengan terma dan syarat" +
-	" berikut (“Terma”). Jika anda tidak bersetuju dengan Terma ini, sila hen" +
-	"tikan penggunaan dengan segera.\x0a\x0a<b>1. Sifat Perkhidmatan</b>\x0a1" +
-	".1 Perkhidmatan menyediakan maklumat umum, panduan, dan cadangan untuk p" +
-	"enjagaan haiwan peliharaan, termasuk (tetapi tidak terhad kepada) diet, " +
-	"tingkah laku, dan latihan.\x0a1.2 Perkhidmatan ini bukan pengganti untuk" +
-	" diagnosis, rawatan, atau penjagaan veterinar profesional. Sentiasa dapa" +
-	"tkan nasihat daripada doktor haiwan berlesen untuk sebarang soalan menge" +
-	"nai kesihatan haiwan peliharaan anda.\x0a\x0a<b>2. Tiada Hubungan Veteri" +
-	"nar-Pelanggan-Pesakit</b>\x0a2.1 Menggunakan Perkhidmatan atau berintera" +
-	"ksi dengan pembantu AI kami tidak mewujudkan hubungan veterinar-pelangga" +
-	"n-pesakit.\x0a2.2 Sebarang nasihat atau panduan yang diberikan oleh Perk" +
-	"hidmatan adalah berdasarkan maklumat terhad dan hanya boleh dianggap seb" +
-	"agai maklumat umum.\x0a\x0a<b>3. Had Tanggungjawab</b>\x0a3.1 Anda menga" +
-	"kui dan bersetuju bahawa penggunaan Perkhidmatan adalah atas risiko anda" +
-	" sendiri.\x0a3.2 Dalam apa jua keadaan, pemilik, pembangun, atau pemberi" +
-	" lesen Perkhidmatan tidak akan bertanggungjawab atas sebarang kerosakan " +
-	"langsung, tidak langsung, sampingan, khas, atau berbangkit yang timbul d" +
-	"aripada atau berkaitan dengan akses atau penggunaan Perkhidmatan anda." +
-	"\x0a3.3 Anda memahami bahawa keputusan mengenai penjagaan haiwan pelihar" +
-	"aan anda dan sebarang hasil yang terhasil adalah tanggungjawab anda send" +
-	"iri. Jika anda mempunyai sebarang keraguan tentang kesejahteraan atau ke" +
-	"sihatan haiwan peliharaan anda, anda harus segera berunding dengan dokto" +
-	"r haiwan berlesen.\x0a\x0a<b>4. Tiada Jaminan</b>\x0a4.1 Perkhidmatan di" +
-	"sediakan atas dasar “seadanya” dan “sebagaimana tersedia” tanpa sebarang" +
-	" jaminan, sama ada nyata atau tersirat.\x0a4.2 Kami tidak menjamin bahaw" +
-	"a Perkhidmatan akan tidak terganggu, bebas ralat, selamat, atau bebas da" +
-	"ripada virus.\x0a\x0a<b>5. Tanggungjawab Pengguna</b>\x0a5.1 Anda bertan" +
-	"ggungjawab untuk memberikan maklumat yang tepat dan lengkap mengenai hai" +
-	"wan peliharaan anda semasa mendapatkan nasihat.\x0a5.2 Anda mesti memast" +
-	"ikan bahawa semua soalan, penerangan, dan data yang anda berikan tidak m" +
-	"elanggar sebarang hak pihak ketiga atau undang-undang tempatan.\x0a\x0a<" +
-	"b>6. Penggunaan Antarabangsa</b>\x0a6.1 Perkhidmatan ini bertujuan untuk" +
-	" penggunaan global. Anda bertanggungjawab untuk mematuhi semua undang-un" +
-	"dang dan peraturan tempatan yang berkenaan di bidang kuasa anda.\x0a6.2 " +
-	"Kami tidak menjamin bahawa Perkhidmatan atau mana-mana kandungannya sesu" +
-	"ai atau dibenarkan di mana-mana negara atau wilayah tertentu.\x0a\x0a<b>" +
-	"7. Pengubahsuaian</b>\x0a7.1 Kami berhak untuk mengubah atau menggantika" +
-	"n Terma ini pada bila-bila masa.\x0a7.2 Jika kami membuat perubahan mate" +
-	"rial, kami akan menyiarkan Terma yang dikemas kini dan menunjukkan tarik" +
-	"h semakan terkini di bahagian atas dokumen ini.\x0a\x0a<b>8. Undang-unda" +
-	"ng dan Penyelesaian Pertikaian</b>\x0a8.1 Terma ini akan ditadbir oleh d" +
-	"an ditafsirkan mengikut undang-undang yang terpakai di bidang kuasa temp" +
-	"at perniagaan utama penyedia Perkhidmatan, tanpa mengambil kira prinsip " +
-	"konflik undang-undang.\x0a8.2 Sebarang pertikaian yang timbul daripada a" +
-	"tau berkaitan dengan Terma ini akan diselesaikan melalui rundingan secar" +
-	"a baik dan, jika perlu, melalui timbang tara atau litigasi yang mengikat" +
-	" di mahkamah yang berkenaan.\x0a\x0a<b>9. Penerimaan Terma</b>\x0a9.1 De" +
-	"ngan terus mengakses atau menggunakan Perkhidmatan, anda mengakui bahawa" +
-	" anda telah membaca, memahami, dan bersetuju untuk terikat dengan Terma " +
-	"ini.\x0a9.2 Jika anda tidak bersetuju, anda mesti berhenti menggunakan P" +
-	"erkhidmatan dengan segera.\x0a\x0aJika anda mempunyai sebarang soalan at" +
-	"au kebimbangan mengenai Terma ini, atau jika anda memerlukan penjelasan " +
-	"lanjut, sila hubungi di <i>k.sysoev@me.com</i>.\x02Maaf, saya tidak dapa" +
-	"t memproses video, audio, atau dokumen. Sila hantar soalan anda sebagai " +
-	"teks sahaja.\x02Saya minta maaf, tetapi mesej anda terlalu panjang untuk" +
-	" saya proses. Sila cuba membuatnya lebih pendek dan ringkas.\x02Anda tel" +
-	"ah mencapai jumlah permintaan maksimum setiap jam. Sila cuba lagi nanti." +
-	"\x02Kami telah mencapai had permintaan harian kami. Sila kembali esok ap" +
-	"abila bajet kami disegarkan.\x02Sila berikan soalan anda dalam format te" +
-	"ks bersama dengan gambar\x02Sila berikan sekurang-kurangnya satu gambar" +
-	"\x02Sila berikan tidak lebih daripada %[1]d gambar\x02Maaf, saya mengala" +
-	"mi ralat semasa memproses permintaan anda. Sila cuba lagi nanti.\x02Tari" +
-	"kh yang diberikan tidak boleh di masa hadapan. Sila berikan tarikh yang " +
-	"sah.\x02Sila berikan tarikh dalam format yang sah YYYY-MM-DD (contohnya," +
-	" 2023-12-31)\x02Profil haiwan peliharaan berjaya disimpan\x02Apakah nama" +
-	" haiwan peliharaan anda?\x02Jenis haiwan peliharaan apa yang anda miliki" +
-	"?\x02anjing\x02kucing\x02Apakah bangsa haiwan peliharaan anda?\x02Bila h" +
-	"aiwan peliharaan anda dilahirkan? Sila masukkan tarikh dalam format YYYY" +
-	"-MM-DD (contohnya, 2010-12-31).\x02Apakah jantina haiwan peliharaan anda" +
-	"?\x02lelaki\x02perempuan\x02Berapakah berat haiwan peliharaan anda? Sila" +
-	" nyatakan berat diikuti dengan unit, contohnya, 5 kg"
-
-var nl_NLIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000012, 0x000002be, 0x000011ef,
-	0x00001257, 0x000012c4, 0x00001316, 0x00001378,
-	0x000013b5, 0x000013da, 0x00001408, 0x00001469,
-	0x000014b7, 0x000014fe, 0x00001523, 0x00001543,
-	0x00001563, 0x00001568, 0x0000156c, 0x00001585,
-	0x000015e4, 0x00001609, 0x00001613, 0x0000161e,
-	0x00001682,
-} // Size: 124 bytes
-
-const nl_NLData string = "" + // Size: 5762 bytes
-	"\x02Onbekend commando\x02Welkom bij Help My Pet Bot! 🐾\x0a\x0aIk ben je " +
-	"persoonlijke assistent voor huisdierverzorging, klaar om je te helpen be" +
-	"ter voor je harige vriend te zorgen. Ik kan je helpen met:\x0a\x0a• Vrag" +
-	"en over de gezondheid en het gedrag van huisdieren\x0a• Advies over diee" +
-	"t en voeding\x0a• Trainingstips en -technieken\x0a• Algemene begeleiding" +
-	" bij de verzorging van huisdieren\x0a\x0aTyp gewoon je vraag of zorg ove" +
-	"r je huisdier, en ik zal nuttige, informatieve antwoorden geven op basis" +
-	" van betrouwbare veterinaire kennis. Onthoud dat, hoewel ik begeleiding " +
-	"kan bieden, je bij ernstige medische aandoeningen altijd een dierenarts " +
-	"moet raadplegen.\x0a\x0aOm te beginnen, stel me gewoon een vraag over je" +
-	" huisdier!\x02<b>Algemene voorwaarden</b>\x0a<i>Laatst bijgewerkt: 30.01" +
-	".2025</i>\x0a\x0aBedankt voor het gebruik van onze chatbot voor veterina" +
-	"ire adviezen (“de Service”). Door toegang te krijgen tot of gebruik te m" +
-	"aken van deze Service, gaat u akkoord met de volgende algemene voorwaard" +
-	"en (“Voorwaarden”). Als u niet akkoord gaat met deze Voorwaarden, stop d" +
-	"an onmiddellijk met het gebruik.\x0a\x0a<b>1. Aard van de Service</b>" +
-	"\x0a1.1 De Service biedt algemene informatie, begeleiding en suggesties " +
-	"voor huisdierverzorging, inclusief (maar niet beperkt tot) dieet, gedrag" +
-	" en training.\x0a1.2 De Service is geen vervanging voor professionele ve" +
-	"terinaire diagnose, behandeling of zorg. Raadpleeg altijd een erkende di" +
-	"erenarts voor vragen over de gezondheid van uw huisdier.\x0a\x0a<b>2. Ge" +
-	"en Veterinair-Client-Patiënt Relatie</b>\x0a2.1 Het gebruik van de Servi" +
-	"ce of interactie met onze AI-assistent creëert geen dierenarts-client-pa" +
-	"tiënt relatie.\x0a2.2 Advies of begeleiding verstrekt door de Service is" +
-	" gebaseerd op beperkte informatie en moet alleen als algemene informatie" +
-	" worden beschouwd.\x0a\x0a<b>3. Beperking van Aansprakelijkheid</b>\x0a3" +
-	".1 U erkent en gaat ermee akkoord dat het gebruik van de Service op eige" +
-	"n risico is.\x0a3.2 Onder geen enkele omstandigheid zullen de eigenaren," +
-	" ontwikkelaars of licentiehouders van de Service aansprakelijk zijn voor" +
-	" enige directe, indirecte, incidentele, speciale of gevolgschade die voo" +
-	"rtvloeit uit of verband houdt met uw toegang tot of gebruik van de Servi" +
-	"ce.\x0a3.3 U begrijpt dat beslissingen met betrekking tot de zorg voor u" +
-	"w huisdier en de daaruit voortvloeiende resultaten uw eigen verantwoorde" +
-	"lijkheid zijn. Als u twijfelt over het welzijn of de gezondheid van uw h" +
-	"uisdier, raadpleeg dan onmiddellijk een erkende dierenarts.\x0a\x0a<b>4." +
-	" Geen Garantie</b>\x0a4.1 De Service wordt geleverd op een “as is” en “a" +
-	"s available” basis zonder enige vorm van garantie, expliciet of implicie" +
-	"t.\x0a4.2 Wij garanderen niet dat de Service ononderbroken, foutloos, ve" +
-	"ilig of vrij van virussen zal zijn.\x0a\x0a<b>5. Verantwoordelijkheden v" +
-	"an de Gebruiker</b>\x0a5.1 U bent verantwoordelijk voor het verstrekken " +
-	"van nauwkeurige en volledige informatie over uw huisdier bij het zoeken " +
-	"naar advies.\x0a5.2 U moet ervoor zorgen dat alle vragen, beschrijvingen" +
-	" en gegevens die u verstrekt geen inbreuk maken op de rechten van derden" +
-	" of lokale wetten.\x0a\x0a<b>6. Internationaal Gebruik</b>\x0a6.1 De Ser" +
-	"vice is bedoeld voor wereldwijd gebruik. U bent verantwoordelijk voor na" +
-	"leving van alle toepasselijke lokale wetten en voorschriften in uw recht" +
-	"sgebied.\x0a6.2 Wij garanderen niet dat de Service of enige inhoud ervan" +
-	" geschikt of toegestaan is in een specifiek land of regio.\x0a\x0a<b>7. " +
-	"Wijzigingen</b>\x0a7.1 Wij behouden ons het recht voor om deze Voorwaard" +
-	"en op elk moment te wijzigen of te vervangen.\x0a7.2 Als we materiële wi" +
-	"jzigingen aanbrengen, zullen we de bijgewerkte Voorwaarden plaatsen en d" +
-	"e datum van de laatste herziening bovenaan dit document aangeven.\x0a" +
-	"\x0a<b>8. Toepasselijk Recht en Geschillenbeslechting</b>\x0a8.1 Deze Vo" +
-	"orwaarden worden beheerst door en geïnterpreteerd in overeenstemming met" +
-	" de wetten die van toepassing zijn in het rechtsgebied van de hoofdvesti" +
-	"ging van de Serviceprovider, zonder rekening te houden met conflicterend" +
-	"e rechtsprincipes.\x0a8.2 Elk geschil dat voortvloeit uit of verband hou" +
-	"dt met deze Voorwaarden zal worden opgelost door middel van minnelijke o" +
-	"nderhandelingen en, indien nodig, door bindende arbitrage of rechtszaken" +
-	" in de toepasselijke rechtbanken.\x0a\x0a<b>9. Aanvaarding van Voorwaard" +
-	"en</b>\x0a9.1 Door toegang te blijven krijgen tot of gebruik te maken va" +
-	"n de Service, erkent u dat u deze Voorwaarden hebt gelezen, begrepen en " +
-	"ermee akkoord gaat.\x0a9.2 Als u niet akkoord gaat, moet u onmiddellijk " +
-	"stoppen met het gebruik van de Service.\x0a\x0aAls u vragen of opmerking" +
-	"en heeft over deze Voorwaarden, of als u verdere verduidelijking nodig h" +
-	"eeft, neem dan contact op via <i>k.sysoev@me.com</i>.\x02Sorry, ik kan g" +
-	"een video's, audio of documenten verwerken. Stuur alstublieft alleen uw " +
-	"vraag als tekst.\x02Het spijt me, maar uw bericht is te lang voor mij om" +
-	" te verwerken. Probeer het korter en beknopter te maken.\x02U heeft het " +
-	"maximale aantal verzoeken per uur bereikt. Probeer het later opnieuw." +
-	"\x02We hebben ons dagelijkse verzoeklimiet bereikt. Kom morgen terug wan" +
-	"neer ons budget is vernieuwd.\x02Geef alstublieft uw vraag in tekstforma" +
-	"at samen met foto('s)\x02Geef alstublieft minstens één foto\x02Geef alst" +
-	"ublieft niet meer dan %[1]d foto('s)\x02Sorry, ik heb een fout aangetrof" +
-	"fen bij het verwerken van uw verzoek. Probeer het later opnieuw.\x02De o" +
-	"pgegeven datum kan niet in de toekomst liggen. Geef een geldige datum op" +
-	".\x02Geef een datum op in het geldige formaat JJJJ-MM-DD (bijv. 2023-12-" +
-	"31)\x02Huisdierprofiel succesvol opgeslagen\x02Wat is de naam van je hui" +
-	"sdier?\x02Wat voor soort huisdier heb je?\x02hond\x02kat\x02Welk ras is " +
-	"je huisdier?\x02Wanneer is je huisdier geboren? Voer de datum in het for" +
-	"maat JJJJ-MM-DD in (bijv. 2010-12-31).\x02Wat is het geslacht van je hui" +
-	"sdier?\x02mannelijk\x02vrouwelijk\x02Wat is het gewicht van je huisdier?" +
-	" Geef het gewicht op, gevolgd door de eenheid, bijvoorbeeld 5 kg"
-
-var pl_PLIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000013, 0x000002fe, 0x000011f7,
-	0x00001266, 0x000012e2, 0x00001338, 0x0000139b,
-	0x000013e4, 0x0000140f, 0x00001442, 0x000014a8,
-	0x000014f3, 0x00001533, 0x00001562, 0x00001585,
-	0x000015ac, 0x000015b1, 0x000015b5, 0x000015d9,
-	0x00001635, 0x0000165b, 0x00001662, 0x00001669,
-	0x000016bc,
-} // Size: 124 bytes
-
-const pl_PLData string = "" + // Size: 5820 bytes
-	"\x02Nieznane polecenie\x02Witamy w Help My Pet Bot! 🐾\x0a\x0aJestem Twoi" +
-	"m osobistym asystentem ds. opieki nad zwierzętami, gotowym pomóc Ci lepi" +
-	"ej dbać o Twojego futrzanego przyjaciela. Mogę pomóc w:\x0a\x0a• Pytania" +
-	" dotyczące zdrowia i zachowania zwierząt\x0a• Porady dotyczące diety i ż" +
-	"ywienia\x0a• Wskazówki i techniki szkoleniowe\x0a• Ogólne wskazówki doty" +
-	"czące opieki nad zwierzętami\x0a\x0aWystarczy wpisać swoje pytanie lub p" +
-	"roblem dotyczący Twojego zwierzaka, a ja udzielę pomocnych, informacyjny" +
-	"ch odpowiedzi opartych na wiarygodnej wiedzy weterynaryjnej. Pamiętaj, ż" +
-	"e chociaż mogę udzielać wskazówek, w przypadku poważnych schorzeń zawsze" +
-	" skonsultuj się z weterynarzem.\x0a\x0aAby rozpocząć, po prostu zadaj mi" +
-	" dowolne pytanie dotyczące Twojego zwierzaka!\x02<b>Warunki korzystania<" +
-	"/b>\x0a<i>Ostatnia aktualizacja: 30.01.2025</i>\x0a\x0aDziękujemy za kor" +
-	"zystanie z naszego chatbota doradztwa weterynaryjnego („Usługa”). Korzys" +
-	"tając z tej Usługi, zgadzasz się na przestrzeganie następujących warunkó" +
-	"w („Warunki”). Jeśli nie zgadzasz się z tymi Warunkami, natychmiast prze" +
-	"rwij korzystanie.\x0a\x0a<b>1. Charakter Usługi</b>\x0a1.1 Usługa dostar" +
-	"cza ogólnych informacji, wskazówek i sugestii dotyczących opieki nad zwi" +
-	"erzętami, w tym (ale nie tylko) diety, zachowania i szkolenia.\x0a1.2 Us" +
-	"ługa nie zastępuje profesjonalnej diagnozy, leczenia ani opieki weteryn" +
-	"aryjnej. Zawsze zasięgaj porady licencjonowanego weterynarza w przypadku" +
-	" pytań dotyczących zdrowia Twojego zwierzaka.\x0a\x0a<b>2. Brak relacji " +
-	"weterynarz-klient-pacjent</b>\x0a2.1 Korzystanie z Usługi lub interakcja" +
-	" z naszym asystentem AI nie tworzy relacji weterynarz-klient-pacjent." +
-	"\x0a2.2 Wszelkie porady lub wskazówki udzielane przez Usługę są oparte n" +
-	"a ograniczonych informacjach i powinny być traktowane wyłącznie jako ogó" +
-	"lne informacje.\x0a\x0a<b>3. Ograniczenie odpowiedzialności</b>\x0a3.1 U" +
-	"znajesz i zgadzasz się, że korzystanie z Usługi odbywa się na własne ryz" +
-	"yko.\x0a3.2 W żadnym wypadku właściciele, deweloperzy ani licencjodawcy " +
-	"Usługi nie ponoszą odpowiedzialności za jakiekolwiek bezpośrednie, pośre" +
-	"dnie, przypadkowe, specjalne lub wynikowe szkody wynikające z dostępu do" +
-	" Usługi lub korzystania z niej.\x0a3.3 Rozumiesz, że decyzje dotyczące o" +
-	"pieki nad Twoim zwierzakiem i wszelkie wynikające z tego konsekwencje są" +
-	" wyłącznie Twoją odpowiedzialnością. Jeśli masz jakiekolwiek wątpliwości" +
-	" co do zdrowia lub samopoczucia Twojego zwierzaka, natychmiast skonsultu" +
-	"j się z licencjonowanym weterynarzem.\x0a\x0a<b>4. Brak gwarancji</b>" +
-	"\x0a4.1 Usługa jest dostarczana „tak jak jest” i „w miarę dostępności” b" +
-	"ez jakichkolwiek gwarancji, wyraźnych ani dorozumianych.\x0a4.2 Nie gwar" +
-	"antujemy, że Usługa będzie nieprzerwana, wolna od błędów, bezpieczna ani" +
-	" wolna od wirusów.\x0a\x0a<b>5. Obowiązki użytkownika</b>\x0a5.1 Jesteś " +
-	"odpowiedzialny za dostarczanie dokładnych i kompletnych informacji o swo" +
-	"im zwierzaku podczas korzystania z porad.\x0a5.2 Musisz upewnić się, że " +
-	"wszystkie pytania, opisy i dane, które podajesz, nie naruszają praw osób" +
-	" trzecich ani lokalnych przepisów.\x0a\x0a<b>6. Użycie międzynarodowe</b" +
-	">\x0a6.1 Usługa jest przeznaczona do użytku globalnego. Jesteś odpowiedz" +
-	"ialny za przestrzeganie wszystkich obowiązujących lokalnych przepisów i " +
-	"regulacji w Twojej jurysdykcji.\x0a6.2 Nie gwarantujemy, że Usługa lub j" +
-	"akakolwiek jej zawartość jest odpowiednia lub dozwolona w jakimkolwiek k" +
-	"onkretnym kraju lub regionie.\x0a\x0a<b>7. Modyfikacje</b>\x0a7.1 Zastrz" +
-	"egamy sobie prawo do modyfikowania lub zastępowania tych Warunków w dowo" +
-	"lnym czasie.\x0a7.2 Jeśli wprowadzimy istotne zmiany, opublikujemy zaktu" +
-	"alizowane Warunki i wskażemy datę najnowszej rewizji na górze tego dokum" +
-	"entu.\x0a\x0a<b>8. Prawo właściwe i rozstrzyganie sporów</b>\x0a8.1 Nini" +
-	"ejsze Warunki podlegają i są interpretowane zgodnie z prawem obowiązując" +
-	"ym w jurysdykcji głównego miejsca prowadzenia działalności dostawcy Usłu" +
-	"gi, bez względu na zasady kolizji praw.\x0a8.2 Wszelkie spory wynikające" +
-	" z tych Warunków lub z nimi związane będą rozstrzygane poprzez polubowne" +
-	" negocjacje, a w razie potrzeby przez wiążący arbitraż lub postępowanie " +
-	"sądowe w odpowiednich sądach.\x0a\x0a<b>9. Akceptacja Warunków</b>\x0a9." +
-	"1 Kontynuując dostęp do Usługi lub korzystanie z niej, potwierdzasz, że " +
-	"przeczytałeś, zrozumiałeś i zgadzasz się na przestrzeganie tych Warunków" +
-	".\x0a9.2 Jeśli się nie zgadzasz, musisz natychmiast przerwać korzystanie" +
-	" z Usługi.\x0a\x0aJeśli masz jakiekolwiek pytania lub wątpliwości dotycz" +
-	"ące tych Warunków lub potrzebujesz dalszych wyjaśnień, skontaktuj się p" +
-	"od adresem <i>k.sysoev@me.com</i>.\x02Przepraszam, nie mogę przetwarzać " +
-	"wideo, audio ani dokumentów. Wyślij swoje pytanie tylko w formie tekstu." +
-	"\x02Przepraszam, ale Twoja wiadomość jest dla mnie zbyt długa do przetwo" +
-	"rzenia. Spróbuj ją skrócić i bardziej zwięźle.\x02Osiągnąłeś maksymalną " +
-	"liczbę żądań na godzinę. Spróbuj ponownie później.\x02Osiągnęliśmy nasz " +
-	"dzienny limit żądań. Wróć jutro, gdy nasz budżet zostanie odświeżony." +
-	"\x02Proszę, podaj swoje pytanie w formacie tekstowym wraz z zdjęciem(-am" +
-	"i)\x02Proszę, podaj przynajmniej jedno zdjęcie\x02Proszę, podaj nie więc" +
-	"ej niż %[1]d zdjęcie(-a)\x02Przepraszam, napotkałem błąd podczas przetwa" +
-	"rzania Twojego żądania. Spróbuj ponownie później.\x02Podana data nie moż" +
-	"e być w przyszłości. Proszę podaj poprawną datę.\x02Podaj datę w prawidł" +
-	"owym formacie RRRR-MM-DD (np. 2023-12-31)\x02Profil zwierzątka został po" +
-	"myślnie zapisany\x02Jak ma na imię Twoje zwierzątko?\x02Jakiego rodzaju " +
-	"zwierzątko posiadasz?\x02pies\x02kot\x02Jaka jest rasa Twojego zwierzątk" +
-	"a?\x02Kiedy urodziło się Twoje zwierzątko? Podaj datę w formacie RRRR-MM" +
-	"-DD (np. 2010-12-31).\x02Jaka jest płeć Twojego zwierzątka?\x02samiec" +
-	"\x02samica\x02Jaka jest waga Twojego zwierzątka? Podaj wagę, a następnie" +
-	" jednostkę, np. 5 kg"
-
-var pt_PTIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000015, 0x0000031e, 0x000011ef,
-	0x00001262, 0x000012d8, 0x0000133b, 0x000013ab,
-	0x000013f9, 0x00001421, 0x0000144e, 0x000014ac,
-	0x000014fe, 0x00001553, 0x00001585, 0x000015b2,
-	0x000015df, 0x000015e4, 0x000015e9, 0x00001617,
-	0x0000168c, 0x000016bc, 0x000016c2, 0x000016c9,
-	0x0000173a,
-} // Size: 124 bytes
-
-const pt_PTData string = "" + // Size: 5946 bytes
-	"\x02Comando desconhecido\x02Bem-vindo ao Help My Pet Bot! 🐾\x0a\x0aSou o" +
-	" seu assistente pessoal de cuidados com animais de estimação, pronto par" +
-	"a ajudá-lo a cuidar melhor do seu amigo peludo. Posso ajudá-lo com:\x0a" +
-	"\x0a• Perguntas sobre saúde e comportamento de animais de estimação\x0a•" +
-	" Conselhos sobre dieta e nutrição\x0a• Dicas e técnicas de treinamento" +
-	"\x0a• Orientação geral sobre cuidados com animais de estimação\x0a\x0aBa" +
-	"sta digitar sua pergunta ou preocupação sobre seu animal de estimação, e" +
-	" eu fornecerei respostas úteis e informativas com base em conhecimentos " +
-	"veterinários confiáveis. Lembre-se, embora eu possa oferecer orientações" +
-	", para condições médicas graves, sempre consulte um veterinário.\x0a\x0a" +
-	"Para começar, basta me fazer qualquer pergunta sobre o seu animal de est" +
-	"imação!\x02<b>Termos e Condições</b>\x0a<i>Última atualização: 30.01.202" +
-	"5</i>\x0a\x0aObrigado por usar nosso chatbot de aconselhamento veterinár" +
-	"io (“o Serviço”). Ao acessar ou usar este Serviço, você concorda em esta" +
-	"r vinculado pelos seguintes termos e condições (“Termos”). Se você não c" +
-	"oncordar com estes Termos, interrompa o uso imediatamente.\x0a\x0a<b>1. " +
-	"Natureza do Serviço</b>\x0a1.1 O Serviço fornece informações gerais, ori" +
-	"entações e sugestões para cuidados com animais de estimação, incluindo (" +
-	"mas não se limitando a) dieta, comportamento e treinamento.\x0a1.2 O Ser" +
-	"viço não substitui o diagnóstico, tratamento ou cuidado veterinário prof" +
-	"issional. Sempre procure o conselho de um veterinário licenciado para qu" +
-	"aisquer perguntas sobre a saúde do seu animal de estimação.\x0a\x0a<b>2." +
-	" Nenhuma Relação Veterinário-Cliente-Paciente</b>\x0a2.1 Usar o Serviço " +
-	"ou interagir com nosso assistente de IA não cria uma relação veterinário" +
-	"-cliente-paciente.\x0a2.2 Qualquer conselho ou orientação fornecida pelo" +
-	" Serviço é baseada em informações limitadas e deve ser considerada apena" +
-	"s como informação geral.\x0a\x0a<b>3. Limitação de Responsabilidade</b>" +
-	"\x0a3.1 Você reconhece e concorda que o uso do Serviço é por sua conta e" +
-	" risco.\x0a3.2 Em nenhuma circunstância os proprietários, desenvolvedore" +
-	"s ou licenciadores do Serviço serão responsáveis por quaisquer danos dir" +
-	"etos, indiretos, incidentais, especiais ou consequenciais decorrentes ou" +
-	" relacionados ao seu acesso ou uso do Serviço.\x0a3.3 Você entende que a" +
-	"s decisões sobre o cuidado do seu animal de estimação e quaisquer result" +
-	"ados decorrentes são de sua exclusiva responsabilidade. Se você tiver al" +
-	"guma dúvida sobre o bem-estar ou a saúde do seu animal de estimação, dev" +
-	"e consultar imediatamente um veterinário licenciado.\x0a\x0a<b>4. Nenhum" +
-	"a Garantia</b>\x0a4.1 O Serviço é fornecido “como está” e “conforme disp" +
-	"onível” sem garantias de qualquer tipo, expressas ou implícitas.\x0a4.2 " +
-	"Não garantimos que o Serviço será ininterrupto, livre de erros, seguro o" +
-	"u livre de vírus.\x0a\x0a<b>5. Responsabilidades do Usuário</b>\x0a5.1 V" +
-	"ocê é responsável por fornecer informações precisas e completas sobre se" +
-	"u animal de estimação ao buscar aconselhamento.\x0a5.2 Você deve garanti" +
-	"r que todas as perguntas, descrições e dados fornecidos não violem direi" +
-	"tos de terceiros ou leis locais.\x0a\x0a<b>6. Uso Internacional</b>\x0a6" +
-	".1 O Serviço é destinado ao uso global. Você é responsável pelo cumprime" +
-	"nto de todas as leis e regulamentos locais aplicáveis em sua jurisdição." +
-	"\x0a6.2 Não garantimos que o Serviço ou qualquer um de seus conteúdos se" +
-	"ja apropriado ou permitido em qualquer país ou região específica.\x0a" +
-	"\x0a<b>7. Modificações</b>\x0a7.1 Reservamo-nos o direito de modificar o" +
-	"u substituir estes Termos a qualquer momento.\x0a7.2 Se fizermos alteraç" +
-	"ões materiais, publicaremos os Termos atualizados e indicaremos a data " +
-	"da última revisão no topo deste documento.\x0a\x0a<b>8. Lei Aplicável e " +
-	"Resolução de Disputas</b>\x0a8.1 Estes Termos serão regidos e interpreta" +
-	"dos de acordo com as leis aplicáveis na jurisdição do principal local de" +
-	" negócios do provedor do Serviço, sem considerar os princípios de confli" +
-	"to de leis.\x0a8.2 Qualquer disputa decorrente ou relacionada a estes Te" +
-	"rmos será resolvida por meio de negociação amigável e, se necessário, po" +
-	"r arbitragem vinculativa ou litígio nos tribunais aplicáveis.\x0a\x0a<b>" +
-	"9. Aceitação dos Termos</b>\x0a9.1 Ao continuar a acessar ou usar o Serv" +
-	"iço, você reconhece que leu, entendeu e concorda em estar vinculado por " +
-	"estes Termos.\x0a9.2 Se você não concordar, deve cessar o uso do Serviço" +
-	" imediatamente.\x0a\x0aSe você tiver alguma dúvida ou preocupação em rel" +
-	"ação a estes Termos, ou se precisar de mais esclarecimentos, entre em co" +
-	"ntato pelo <i>k.sysoev@me.com</i>.\x02Desculpe, não consigo processar ví" +
+const pt_PTData string = "" + // Size: 6946 bytes
+	"\x02Questionário cancelado\x02Comando desconhecido\x02Bem-vindo ao Help " +
+	"My Pet Bot! 🐾\x0a\x0aSou o seu assistente pessoal de cuidados com animai" +
+	"s de estimação, pronto para ajudá-lo a cuidar melhor do seu amigo peludo" +
+	". Posso analisar fotos do seu animal de estimação e ajudá-lo com:\x0a" +
+	"\x0a- Perguntas sobre saúde e comportamento de animais de estimação - si" +
+	"nta-se à vontade para partilhar fotos de quaisquer sintomas ou comportam" +
+	"entos preocupantes\x0a- Conselhos sobre dieta e nutrição, incluindo foto" +
+	"s de alimentos ou guloseimas que está a considerar\x0a- Dicas e técnicas" +
+	" de treino - pode enviar fotos de situações específicas em que precisa d" +
+	"e ajuda\x0a- Orientações gerais sobre cuidados com animais de estimação," +
+	" com análise de fotos do ambiente ou suprimentos do seu animal de estima" +
+	"ção\x0a\x0aBasta digitar a sua pergunta ou enviar fotos juntamente com " +
+	"as suas preocupações sobre o seu animal de estimação, e eu fornecerei re" +
+	"spostas úteis e informativas com base em conhecimentos veterinários fiáv" +
+	"eis. Pode enviar várias fotos, se necessário, para mostrar melhor a situ" +
+	"ação.\x0a\x0aLembre-se, embora eu possa oferecer orientação e analisar f" +
+	"otos, para condições médicas graves, consulte sempre um veterinário.\x0a" +
+	"\x0aPara começar, basta fazer-me qualquer pergunta sobre o seu animal de" +
+	" estimação - com ou sem fotos!\x02<b>Termos e Condições</b>\x0a<i>Última" +
+	" atualização: 30.01.2025</i>\x0a\x0aObrigado por usar nosso chatbot de a" +
+	"conselhamento veterinário (“o Serviço”). Ao acessar ou usar este Serviço" +
+	", você concorda em estar vinculado pelos seguintes termos e condições (“" +
+	"Termos”). Se você não concordar com estes Termos, interrompa o uso imedi" +
+	"atamente.\x0a\x0a<b>1. Natureza do Serviço</b>\x0a1.1 O Serviço fornece " +
+	"informações gerais, orientações e sugestões para cuidados com animais de" +
+	" estimação, incluindo (mas não se limitando a) dieta, comportamento e tr" +
+	"einamento.\x0a1.2 O Serviço não substitui o diagnóstico, tratamento ou c" +
+	"uidado veterinário profissional. Sempre procure o conselho de um veterin" +
+	"ário licenciado para quaisquer perguntas sobre a saúde do seu animal de" +
+	" estimação.\x0a\x0a<b>2. Nenhuma Relação Veterinário-Cliente-Paciente</b" +
+	">\x0a2.1 Usar o Serviço ou interagir com nosso assistente de IA não cria" +
+	" uma relação veterinário-cliente-paciente.\x0a2.2 Qualquer conselho ou o" +
+	"rientação fornecida pelo Serviço é baseada em informações limitadas e de" +
+	"ve ser considerada apenas como informação geral.\x0a\x0a<b>3. Limitação " +
+	"de Responsabilidade</b>\x0a3.1 Você reconhece e concorda que o uso do Se" +
+	"rviço é por sua conta e risco.\x0a3.2 Em nenhuma circunstância os propri" +
+	"etários, desenvolvedores ou licenciadores do Serviço serão responsáveis " +
+	"por quaisquer danos diretos, indiretos, incidentais, especiais ou conseq" +
+	"uenciais decorrentes ou relacionados ao seu acesso ou uso do Serviço." +
+	"\x0a3.3 Você entende que as decisões sobre o cuidado do seu animal de es" +
+	"timação e quaisquer resultados decorrentes são de sua exclusiva responsa" +
+	"bilidade. Se você tiver alguma dúvida sobre o bem-estar ou a saúde do se" +
+	"u animal de estimação, deve consultar imediatamente um veterinário licen" +
+	"ciado.\x0a\x0a<b>4. Nenhuma Garantia</b>\x0a4.1 O Serviço é fornecido “c" +
+	"omo está” e “conforme disponível” sem garantias de qualquer tipo, expres" +
+	"sas ou implícitas.\x0a4.2 Não garantimos que o Serviço será ininterrupto" +
+	", livre de erros, seguro ou livre de vírus.\x0a\x0a<b>5. Responsabilidad" +
+	"es do Usuário</b>\x0a5.1 Você é responsável por fornecer informações pre" +
+	"cisas e completas sobre seu animal de estimação ao buscar aconselhamento" +
+	".\x0a5.2 Você deve garantir que todas as perguntas, descrições e dados f" +
+	"ornecidos não violem direitos de terceiros ou leis locais.\x0a\x0a<b>6. " +
+	"Uso Internacional</b>\x0a6.1 O Serviço é destinado ao uso global. Você é" +
+	" responsável pelo cumprimento de todas as leis e regulamentos locais apl" +
+	"icáveis em sua jurisdição.\x0a6.2 Não garantimos que o Serviço ou qualqu" +
+	"er um de seus conteúdos seja apropriado ou permitido em qualquer país ou" +
+	" região específica.\x0a\x0a<b>7. Modificações</b>\x0a7.1 Reservamo-nos o" +
+	" direito de modificar ou substituir estes Termos a qualquer momento.\x0a" +
+	"7.2 Se fizermos alterações materiais, publicaremos os Termos atualizados" +
+	" e indicaremos a data da última revisão no topo deste documento.\x0a\x0a" +
+	"<b>8. Lei Aplicável e Resolução de Disputas</b>\x0a8.1 Estes Termos serã" +
+	"o regidos e interpretados de acordo com as leis aplicáveis na jurisdição" +
+	" do principal local de negócios do provedor do Serviço, sem considerar o" +
+	"s princípios de conflito de leis.\x0a8.2 Qualquer disputa decorrente ou " +
+	"relacionada a estes Termos será resolvida por meio de negociação amigáve" +
+	"l e, se necessário, por arbitragem vinculativa ou litígio nos tribunais " +
+	"aplicáveis.\x0a\x0a<b>9. Aceitação dos Termos</b>\x0a9.1 Ao continuar a " +
+	"acessar ou usar o Serviço, você reconhece que leu, entendeu e concorda e" +
+	"m estar vinculado por estes Termos.\x0a9.2 Se você não concordar, deve c" +
+	"essar o uso do Serviço imediatamente.\x0a\x0aSe você tiver alguma dúvida" +
+	" ou preocupação em relação a estes Termos, ou se precisar de mais esclar" +
+	"ecimentos, entre em contato pelo <i>k.sysoev@me.com</i>.\x02<b>Comandos " +
+	"do Help My Pet Bot</b>:\x0a/start - Iniciar a conversa com o bot\x0a/ter" +
+	"ms - Ver os Termos e Condições do serviço\x0a/editprofile - Atualizar as" +
+	" informações do perfil do seu animal de estimação, como nome, idade, raç" +
+	"a, etc. Essas informações ajudam o bot a fornecer conselhos mais preciso" +
+	"s.\x0a/cancel - Cancelar o questionário atual, se houver algum em andame" +
+	"nto (por exemplo, quando deseja recomeçar ou alterar a sua pergunta)\x0a" +
+	"/help - Ver esta mensagem de ajuda\x02Desculpe, não consigo processar ví" +
 	"deos, áudio ou documentos. Por favor, envie a sua pergunta apenas como t" +
 	"exto.\x02Peço desculpa, mas a sua mensagem é muito longa para eu process" +
 	"ar. Por favor, tente torná-la mais curta e concisa.\x02Você atingiu o nú" +
@@ -1266,48 +1441,56 @@ const pt_PTData string = "" + // Size: 5946 bytes
 	"a\x02Qual é o peso do seu animal de estimação? Por favor, especifique o " +
 	"peso seguido da unidade, por exemplo, 5 kg"
 
-var ru_RUIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000026, 0x000004d2, 0x00001eda,
-	0x00001fba, 0x0000207c, 0x00002115, 0x000021e1,
-	0x00002274, 0x000022cf, 0x0000232d, 0x000023d7,
-	0x0000246b, 0x000024f2, 0x00002530, 0x0000255f,
-	0x00002597, 0x000025a4, 0x000025af, 0x000025e7,
-	0x0000268b, 0x000026bd, 0x000026cc, 0x000026db,
-	0x00002783,
-} // Size: 124 bytes
+var ru_RUIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000020, 0x00000046, 0x000008b5,
+	0x000022bd, 0x000025a2, 0x00002682, 0x00002744,
+	0x000027dd, 0x000028a9, 0x0000293c, 0x00002997,
+	0x000029f5, 0x00002a9f, 0x00002b33, 0x00002bba,
+	0x00002bf8, 0x00002c27, 0x00002c5f, 0x00002c6c,
+	0x00002c77, 0x00002caf, 0x00002d53, 0x00002d85,
+	0x00002d94, 0x00002da3, 0x00002e4b,
+} // Size: 132 bytes
 
-const ru_RUData string = "" + // Size: 10115 bytes
-	"\x02Неизвестная команда\x02Добро пожаловать в Help My Pet Bot! 🐾\x0a\x0a" +
-	"Я ваш личный помощник по уходу за домашними животными, готов помочь вам" +
-	" лучше заботиться о вашем пушистом друге. Я могу помочь вам с:\x0a\x0a• " +
-	"Вопросами о здоровье и поведении питомцев\x0a• Советы по питанию и диет" +
-	"е\x0a• Советы и методы дрессировки\x0a• Общие рекомендации по уходу за " +
-	"питомцами\x0a\x0aПросто напишите свой вопрос или беспокойство о вашем п" +
-	"итомце, и я предоставлю полезные, информативные ответы на основе надежн" +
-	"ых ветеринарных знаний. Помните, что, хотя я могу предложить рекомендац" +
-	"ии, при серьезных медицинских состояниях всегда консультируйтесь с вете" +
-	"ринаром.\x0a\x0aЧтобы начать, просто задайте мне любой вопрос о вашем п" +
-	"итомце!\x02<b>Условия и положения</b>\x0a<i>Последнее обновление: 30.01" +
-	".2025</i>\x0a\x0aСпасибо за использование нашего чат-бота для ветеринарн" +
-	"ых консультаций («Сервис»). Получая доступ или используя этот Сервис, в" +
-	"ы соглашаетесь соблюдать следующие условия и положения («Условия»). Есл" +
-	"и вы не согласны с этими Условиями, пожалуйста, немедленно прекратите и" +
-	"спользование.\x0a\x0a<b>1. Характер Сервиса</b>\x0a1.1 Сервис предостав" +
-	"ляет общую информацию, рекомендации и предложения по уходу за питомцами" +
-	", включая (но не ограничиваясь) диету, поведение и дрессировку.\x0a1.2 С" +
-	"ервис не является заменой профессиональной ветеринарной диагностики, ле" +
-	"чения или ухода. Всегда обращайтесь за советом к лицензированному ветер" +
-	"инару по любым вопросам, касающимся здоровья вашего питомца.\x0a\x0a<b>" +
-	"2. Отсутствие ветеринарно-клиентских отношений</b>\x0a2.1 Использование " +
-	"Сервиса или взаимодействие с нашим AI-помощником не создает ветеринарно" +
-	"-клиентских отношений.\x0a2.2 Любые советы или рекомендации, предоставля" +
-	"емые Сервисом, основаны на ограниченной информации и должны рассматрива" +
-	"ться только как общая информация.\x0a\x0a<b>3. Ограничение ответственно" +
-	"сти</b>\x0a3.1 Вы признаете и соглашаетесь, что использование Сервиса о" +
-	"существляется на ваш собственный риск.\x0a3.2 Ни при каких обстоятельст" +
-	"вах владельцы, разработчики или лицензиары Сервиса не несут ответственн" +
-	"ости за любые прямые, косвенные, случайные, особые или косвенные убытки" +
-	", возникающие в связи с вашим доступом к Сервису или его использованием." +
+const ru_RUData string = "" + // Size: 11851 bytes
+	"\x02Опросник отменен\x02Неизвестная команда\x02Добро пожаловать в Help M" +
+	"y Pet Bot! 🐾\x0a\x0aЯ ваш личный помощник по уходу за питомцем, готов по" +
+	"мочь вам лучше заботиться о вашем пушистом друге. Я могу анализировать " +
+	"фотографии вашего питомца и помочь вам с:\x0a\x0a- Вопросами о здоровье" +
+	" и поведении питомца - не стесняйтесь делиться фотографиями любых беспок" +
+	"оящих симптомов или \ufffd\ufffdоведения\x0a- Советами по диете и питан" +
+	"ию, включая фотографии еды или угощений, которые вы рассматриваете\x0a-" +
+	" Советами и техникой дрессировки - вы можете отправлять фотографии конкр" +
+	"етных ситуаций, в которых вам нужна помощь\x0a- Общими рекомендациями п" +
+	"о уходу за питомцем, с анализом фотографий окру\ufffd\ufffdения или при" +
+	"надлежностей вашего питомца\x0a\x0aПросто задайте мне вопрос или отправ" +
+	"ьте фотографии вместе с вашими опасениями о вашем питомце, и я предоста" +
+	"влю полезные, информативные ответы на основе надежных ветеринарных знан" +
+	"ий. При необходимости вы можете отправить несколько фотографий, чтобы л" +
+	"учше показать ситуацию.\x0a\x0aПомните, что хотя я могу предложить реко" +
+	"мендации и анализировать фотографии, в случае серьезных медицинских сос" +
+	"тояний всегда проконсультируйтесь с ветеринаром.\x0a\x0aЧтобы начать, п" +
+	"росто задайте мне любой вопрос о вашем питомце - с фотографиями или без" +
+	" них!\x02<b>Условия и положения</b>\x0a<i>Последнее обновление: 30.01.20" +
+	"25</i>\x0a\x0aСпасибо за использование нашего чат-бота для ветеринарных " +
+	"консультаций («Сервис»). Получая доступ или используя этот Сервис, вы с" +
+	"оглашаетесь соблюдать следующие условия и положения («Условия»). Если в" +
+	"ы не согласны с этими Условиями, пожалуйста, немедленно прекратите испо" +
+	"льзование.\x0a\x0a<b>1. Характер Сервиса</b>\x0a1.1 Сервис предоставляе" +
+	"т общую информацию, рекомендации и предложения по уходу за питомцами, в" +
+	"ключая (но не ограничиваясь) диету, поведение и дрессировку.\x0a1.2 Сер" +
+	"вис не является заменой профессиональной ветеринарной диагностики, лече" +
+	"ния или ухода. Всегда обращайтесь за советом к лицензированному ветерин" +
+	"ару по любым вопросам, касающимся здоровья вашего питомца.\x0a\x0a<b>2." +
+	" Отсутствие ветеринарно-клиентских отношений</b>\x0a2.1 Использование Се" +
+	"рвиса или взаимодействие с нашим AI-помощником не создает ветеринарно-к" +
+	"лиентских отношений.\x0a2.2 Любые советы или рекомендации, предоставляе" +
+	"мые Сервисом, основаны на ограниченной информации и должны рассматриват" +
+	"ься только как общая информация.\x0a\x0a<b>3. Ограничение ответственнос" +
+	"ти</b>\x0a3.1 Вы признаете и соглашаетесь, что использование Сервиса ос" +
+	"уществляется на ваш собственный риск.\x0a3.2 Ни при каких обстоятельств" +
+	"ах владельцы, разработчики или лицензиары Сервиса не несут ответственно" +
+	"сти за любые прямые, косвенные, случайные, особые или косвенные убытки," +
+	" возникающие в связи с вашим доступом к Сервису или его использованием." +
 	"\x0a3.3 Вы понимаете, что решения, касающиеся ухода за вашим питомцем и " +
 	"любые возникающие последствия, являются вашей личной ответственностью. " +
 	"Если у вас есть сомнения относительно благополучия или здоровья вашего " +
@@ -1341,87 +1524,101 @@ const ru_RUData string = "" + // Size: 10115 bytes
 	"дленно прекратить использование Сервиса.\x0a\x0aЕсли у вас есть вопросы" +
 	" или сомнения по поводу этих Условий, или если вам нужна дополнительная " +
 	"информация, пожалуйста, свяжитесь с нами по адресу <i>k.sysoev@me.com</" +
-	"i>.\x02Извините, я не могу обрабатывать видео, аудио или документы. Пожа" +
-	"луйста, отправьте свой вопрос только в текстовом формате.\x02Извините, " +
-	"но ваше сообщение слишком длинное для обработки. Попробуйте сделать его" +
-	" более кратким и сжатым.\x02Вы достигли максимального количества запросо" +
-	"в в час. Пожалуйста, попробуйте позже.\x02Мы достигли нашего ежедневног" +
-	"о лимита запросов. Пожалуйста, вернитесь завтра, когда наш бюджет будет" +
-	" обновлен.\x02Пожалуйста, предоставьте свой вопрос в текстовом формате в" +
-	"месте с фотографиями\x02Пожалуйста, предоставьте хотя бы одну фотографи" +
-	"ю\x02Пожалуйста, предоставьте не более %[1]d фотографии(й)\x02Извините," +
-	" я столкнулся с ошибкой при обработке вашего запроса. Пожалуйста, попроб" +
-	"уйте позже.\x02Указанная дата не может быть в будущем. Пожалуйста, укаж" +
-	"ите действительную дату.\x02Пожалуйста, укажите дату в допустимом форма" +
-	"те ГГГГ-ММ-ДД (например, 2023-12-31)\x02Профиль питомца успешно сохране" +
-	"н\x02Как зовут вашего питомца?\x02Какое у вас домашнее животное?\x02соб" +
-	"ака\x02кошка\x02Какая порода у вашего питомца?\x02Когда родился ваш пит" +
-	"омец? Пожалуйста, введите дату в формате ГГГГ-ММ-ДД (например, 2010-12-" +
-	"31).\x02Какой пол у вашего питомца?\x02мужской\x02женский\x02Какой вес у" +
-	" вашего питомца? Укажите вес, за которым следует единица измерения, напр" +
-	"имер, 5 кг"
+	"i>.\x02<b>Команды Help My Pet Bot</b>:\x0a/start - Начать разговор с бот" +
+	"ом\x0a/terms - Просмотреть Условия и положения сервиса\x0a/editprofile " +
+	"- Обновить информацию профиля вашего питомца, такую как имя, возраст, по" +
+	"рода и т. д. Эта информация помогает боту предоставлять более точные со" +
+	"веты.\x0a/cancel - Отменить текущий опрос, если он в процессе (например" +
+	", когда вы хотите начать сначала или изменить свой вопрос)\x0a/help - Пр" +
+	"осмотреть это сообщение справки\x02Извините, я не могу обрабатывать вид" +
+	"ео, аудио или документы. Пожалуйста, отправьте свой вопрос только в тек" +
+	"стовом формате.\x02Извините, но ваше сообщение слишком длинное для обра" +
+	"ботки. Попробуйте сделать его более кратким и сжатым.\x02Вы достигли ма" +
+	"ксимального количества запросов в час. Пожалуйста, попробуйте позже." +
+	"\x02Мы достигли нашего ежедневного лимита запросов. Пожалуйста, вернитес" +
+	"ь завтра, когда наш бюджет будет обновлен.\x02Пожалуйста, предоставьте " +
+	"свой вопрос в текстовом формате вместе с фотографиями\x02Пожалуйста, пр" +
+	"едоставьте хотя бы одну фотографию\x02Пожалуйста, предоставьте не более" +
+	" %[1]d фотографии(й)\x02Извините, я столкнулся с ошибкой при обработке в" +
+	"ашего запроса. Пожалуйста, попробуйте позже.\x02Указанная дата не может" +
+	" быть в будущем. Пожалуйста, укажите действительную дату.\x02Пожалуйста," +
+	" укажите дату в допустимом формате ГГГГ-ММ-ДД (например, 2023-12-31)\x02" +
+	"Профиль питомца успешно сохранен\x02Как зовут вашего питомца?\x02Какое " +
+	"у вас домашнее животное?\x02собака\x02кошка\x02Какая порода у вашего пи" +
+	"томца?\x02Когда родился ваш питомец? Пожалуйста, введите дату в формате" +
+	" ГГГГ-ММ-ДД (например, 2010-12-31).\x02Какой пол у вашего питомца?\x02му" +
+	"жской\x02женский\x02Какой вес у вашего питомца? Укажите вес, за которым" +
+	" следует единица измерения, например, 5 кг"
 
-var tr_TRIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000011, 0x000002e4, 0x000011c8,
-	0x00001236, 0x000012a2, 0x000012f5, 0x00001351,
-	0x00001395, 0x000013bc, 0x000013e8, 0x0000144b,
-	0x0000148f, 0x000014eb, 0x00001517, 0x00001539,
-	0x0000155e, 0x00001565, 0x0000156a, 0x0000158d,
-	0x000015f5, 0x0000161c, 0x00001622, 0x00001628,
-	0x00001694,
-} // Size: 124 bytes
+var tr_TRIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000013, 0x00000024, 0x00000550,
+	0x00001434, 0x00001610, 0x0000167e, 0x000016ea,
+	0x0000173d, 0x00001799, 0x000017dd, 0x00001804,
+	0x00001830, 0x00001893, 0x000018d7, 0x00001933,
+	0x0000195f, 0x00001981, 0x000019a6, 0x000019ad,
+	0x000019b2, 0x000019d5, 0x00001a3d, 0x00001a64,
+	0x00001a6a, 0x00001a70, 0x00001adc,
+} // Size: 132 bytes
 
-const tr_TRData string = "" + // Size: 5780 bytes
-	"\x02Bilinmeyen komut\x02Help My Pet Bot'a hoş geldiniz! 🐾\x0a\x0aBen siz" +
-	"in kişisel evcil hayvan bakım asistanınızım, tüylü dostunuza daha iyi ba" +
-	"kmanıza yardımcı olmaya hazırım. Size şu konularda yardımcı olabilirim:" +
-	"\x0a\x0a• Evcil hayvan sağlığı ve davranış soruları\x0a• Diyet ve beslen" +
-	"me tavsiyeleri\x0a• Eğitim ipuçları ve teknikleri\x0a• Genel evcil hayva" +
-	"n bakımı rehberliği\x0a\x0aEvcil hayvanınızla ilgili sorularınızı veya e" +
-	"ndişelerinizi yazmanız yeterli, ben de güvenilir veteriner bilgilerine d" +
-	"ayalı olarak yardımcı, bilgilendirici cevaplar sağlayacağım. Unutmayın, " +
-	"ciddi tıbbi durumlar için her zaman bir veterinerle danışın.\x0a\x0aBaşl" +
-	"amak için, evcil hayvanınızla ilgili herhangi bir soruyu bana sorun!\x02" +
-	"<b>Şartlar ve Koşullar</b>\x0a<i>Son güncelleme: 30.01.2025</i>\x0a\x0aV" +
-	"eterinerlik tavsiye chatbotumuzu (“Hizmet”) kullandığınız için teşekkür " +
-	"ederiz. Bu Hizmete erişerek veya kullanarak, aşağıdaki şartlar ve koşull" +
-	"ara (“Şartlar”) bağlı kalmayı kabul etmiş olursunuz. Bu Şartları kabul e" +
-	"tmiyorsanız, lütfen kullanımı hemen durdurun.\x0a\x0a<b>1. Hizmetin Nite" +
-	"liği</b>\x0a1.1 Hizmet, evcil hayvan bakımı için genel bilgi, rehberlik " +
-	"ve öneriler sağlar, bunlar (ancak bunlarla sınırlı olmamak üzere) diyet," +
-	" davranış ve eğitim konularını içerir.\x0a1.2 Hizmet, profesyonel veteri" +
-	"ner teşhisi, tedavisi veya bakımı yerine geçmez. Evcil hayvanınızın sağl" +
-	"ığı ile ilgili herhangi bir sorunuz olduğunda her zaman lisanslı bir ve" +
-	"terinerin tavsiyesini alın.\x0a\x0a<b>2. Veteriner-Müşteri-Hasta İlişkis" +
-	"i Yok</b>\x0a2.1 Hizmeti kullanmak veya AI asistanımızla etkileşime geçm" +
-	"ek, bir veteriner-müşteri-hasta ilişkisi oluşturmaz.\x0a2.2 Hizmet taraf" +
-	"ından sağlanan herhangi bir tavsiye veya rehberlik, sınırlı bilgilere d" +
-	"ayanmaktadır ve yalnızca genel bilgi olarak değerlendirilmelidir.\x0a" +
-	"\x0a<b>3. Sorumluluğun Sınırlandırılması</b>\x0a3.1 Hizmeti kullanmanın " +
-	"kendi sorumluluğunuzda olduğunu kabul ve beyan edersiniz.\x0a3.2 Hizmeti" +
-	"n sahipleri, geliştiricileri veya lisans verenleri, Hizmete erişiminizde" +
-	"n veya Hizmeti kullanımınızdan kaynaklanan doğrudan, dolaylı, tesadüfi, " +
-	"özel veya sonuç olarak ortaya çıkan zararlardan hiçbir koşulda sorumlu " +
-	"tutulamaz.\x0a3.3 Evcil hayvanınızın bakımı ile ilgili kararlar ve ortay" +
-	"a çıkan sonuçlar tamamen sizin sorumluluğunuzdadır. Evcil hayvanınızın s" +
-	"ağlığı veya refahı konusunda herhangi bir şüpheniz varsa, derhal lisansl" +
-	"ı bir veterinerle danışmalısınız.\x0a\x0a<b>4. Garanti Yok</b>\x0a4.1 H" +
-	"izmet, açık veya zımni herhangi bir garanti olmaksızın “olduğu gibi” ve " +
-	"“mevcut olduğu gibi” sağlanmaktadır.\x0a4.2 Hizmetin kesintisiz, hatas" +
-	"ız, güvenli veya virüslerden arınmış olacağını garanti etmiyoruz.\x0a" +
-	"\x0a<b>5. Kullanıcı Sorumlulukları</b>\x0a5.1 Tavsiye alırken evcil hayv" +
-	"anınız hakkında doğru ve eksiksiz bilgi sağlamak sizin sorumluluğunuzdad" +
-	"ır.\x0a5.2 Sağladığınız tüm soruların, açıklamaların ve verilerin üçünc" +
-	"ü taraf haklarını veya yerel yasaları ihlal etmediğinden emin olmalısın" +
-	"ız.\x0a\x0a<b>6. Uluslararası Kullanım</b>\x0a6.1 Hizmet, küresel kulla" +
-	"nım için tasarlanmıştır. Bulunduğunuz yargı alanındaki tüm geçerli yerel" +
-	" yasa ve düzenlemelere uymaktan siz sorumlusunuz.\x0a6.2 Hizmetin veya i" +
-	"çeriğinin herhangi bir belirli ülkede veya bölgede uygun veya izin veri" +
-	"lebilir olduğunu garanti etmiyoruz.\x0a\x0a<b>7. Değişiklikler</b>\x0a7." +
-	"1 Bu Şartları herhangi bir zamanda değiştirme veya yerine yenisini koyma" +
-	" hakkını saklı tutarız.\x0a7.2 Önemli değişiklikler yaparsak, güncellenm" +
-	"iş Şartları yayınlayacak ve bu belgenin en üstünde en son revizyon tarih" +
-	"ini belirteceğiz.\x0a\x0a<b>8. Geçerli Hukuk ve Uyuşmazlık Çözümü</b>" +
+const tr_TRData string = "" + // Size: 6876 bytes
+	"\x02Anket iptal edildi\x02Bilinmeyen komut\x02Help My Pet Bot'a hoş geld" +
+	"iniz! 🐾\x0a\x0aTüylü dostunuzun daha iyi bakımını yapmanıza yardımcı olm" +
+	"aya hazır kişisel evcil hayvan bakım asistanınızım. Evcil hayvanınızın f" +
+	"otoğraflarını analiz edebilir ve size şunlar konularda yardımcı olabilir" +
+	"im:\x0a\x0a- Evcil hayvan sağlığı ve davranış soruları - endişe verici s" +
+	"emptomlar veya davranışlarla ilgili fotoğrafları paylaşmaktan çekinmeyin" +
+	"\x0a- Düşündüğünüz yiyecek veya ödüllerin fotoğrafları da dahil olmak üz" +
+	"ere diyet ve beslenme tavsiyeleri\x0a- Eğitim ipuçları ve teknikleri - y" +
+	"ardıma ihtiyacınız olan belirli durumların fotoğraflarını gönderebilirsi" +
+	"niz\x0a- Evcil hayvanınızın çevresinin veya malzemelerinin fotoğraf anal" +
+	"izi ile genel evcil hayvan bakım rehberliği\x0a\x0aSadece sorunuzu yazın" +
+	" veya evcil hayvanınızla ilgili endişelerinizle birlikte fotoğraflar gön" +
+	"derin ve güvenilir veteriner bilgilerine dayalı yardımcı, bilgilendirici" +
+	" cevaplar sunacağım. Durumu daha iyi göstermek için gerektiğinde birden " +
+	"fazla fotoğraf gönderebilirsiniz.\x0a\x0aUnutmayın, rehberlik sunabiliri" +
+	"m ve fotoğrafları analiz edebilirim, ancak ciddi tıbbi durumlar için her" +
+	" zaman bir veterinerle danışın.\x0a\x0aBaşlamak için sadece evcil hayvan" +
+	"ınızla ilgili herhangi bir soru sormak yeterlidir - fotoğraflı veya fot" +
+	"oğrafsız!\x02<b>Şartlar ve Koşullar</b>\x0a<i>Son güncelleme: 30.01.2025" +
+	"</i>\x0a\x0aVeterinerlik tavsiye chatbotumuzu (“Hizmet”) kullandığınız i" +
+	"çin teşekkür ederiz. Bu Hizmete erişerek veya kullanarak, aşağıdaki şar" +
+	"tlar ve koşullara (“Şartlar”) bağlı kalmayı kabul etmiş olursunuz. Bu Şa" +
+	"rtları kabul etmiyorsanız, lütfen kullanımı hemen durdurun.\x0a\x0a<b>1." +
+	" Hizmetin Niteliği</b>\x0a1.1 Hizmet, evcil hayvan bakımı için genel bil" +
+	"gi, rehberlik ve öneriler sağlar, bunlar (ancak bunlarla sınırlı olmamak" +
+	" üzere) diyet, davranış ve eğitim konularını içerir.\x0a1.2 Hizmet, prof" +
+	"esyonel veteriner teşhisi, tedavisi veya bakımı yerine geçmez. Evcil hay" +
+	"vanınızın sağlığı ile ilgili herhangi bir sorunuz olduğunda her zaman li" +
+	"sanslı bir veterinerin tavsiyesini alın.\x0a\x0a<b>2. Veteriner-Müşteri-" +
+	"Hasta İlişkisi Yok</b>\x0a2.1 Hizmeti kullanmak veya AI asistanımızla et" +
+	"kileşime geçmek, bir veteriner-müşteri-hasta ilişkisi oluşturmaz.\x0a2.2" +
+	" Hizmet tarafından sağlanan herhangi bir tavsiye veya rehberlik, sınırlı" +
+	" bilgilere dayanmaktadır ve yalnızca genel bilgi olarak değerlendirilmel" +
+	"idir.\x0a\x0a<b>3. Sorumluluğun Sınırlandırılması</b>\x0a3.1 Hizmeti kul" +
+	"lanmanın kendi sorumluluğunuzda olduğunu kabul ve beyan edersiniz.\x0a3." +
+	"2 Hizmetin sahipleri, geliştiricileri veya lisans verenleri, Hizmete eri" +
+	"şiminizden veya Hizmeti kullanımınızdan kaynaklanan doğrudan, dolaylı, " +
+	"tesadüfi, özel veya sonuç olarak ortaya çıkan zararlardan hiçbir koşulda" +
+	" sorumlu tutulamaz.\x0a3.3 Evcil hayvanınızın bakımı ile ilgili kararlar" +
+	" ve ortaya çıkan sonuçlar tamamen sizin sorumluluğunuzdadır. Evcil hayva" +
+	"nınızın sağlığı veya refahı konusunda herhangi bir şüpheniz varsa, derha" +
+	"l lisanslı bir veterinerle danışmalısınız.\x0a\x0a<b>4. Garanti Yok</b>" +
+	"\x0a4.1 Hizmet, açık veya zımni herhangi bir garanti olmaksızın “olduğu " +
+	"gibi” ve “mevcut olduğu gibi” sağlanmaktadır.\x0a4.2 Hizmetin kesintisiz" +
+	", hatasız, güvenli veya virüslerden arınmış olacağını garanti etmiyoruz." +
+	"\x0a\x0a<b>5. Kullanıcı Sorumlulukları</b>\x0a5.1 Tavsiye alırken evcil " +
+	"hayvanınız hakkında doğru ve eksiksiz bilgi sağlamak sizin sorumluluğunu" +
+	"zdadır.\x0a5.2 Sağladığınız tüm soruların, açıklamaların ve verilerin üç" +
+	"üncü taraf haklarını veya yerel yasaları ihlal etmediğinden emin olmalı" +
+	"sınız.\x0a\x0a<b>6. Uluslararası Kullanım</b>\x0a6.1 Hizmet, küresel kul" +
+	"lanım için tasarlanmıştır. Bulunduğunuz yargı alanındaki tüm geçerli yer" +
+	"el yasa ve düzenlemelere uymaktan siz sorumlusunuz.\x0a6.2 Hizmetin veya" +
+	" içeriğinin herhangi bir belirli ülkede veya bölgede uygun veya izin ver" +
+	"ilebilir olduğunu garanti etmiyoruz.\x0a\x0a<b>7. Değişiklikler</b>\x0a7" +
+	".1 Bu Şartları herhangi bir zamanda değiştirme veya yerine yenisini koym" +
+	"a hakkını saklı tutarız.\x0a7.2 Önemli değişiklikler yaparsak, güncellen" +
+	"miş Şartları yayınlayacak ve bu belgenin en üstünde en son revizyon tari" +
+	"hini belirteceğiz.\x0a\x0a<b>8. Geçerli Hukuk ve Uyuşmazlık Çözümü</b>" +
 	"\x0a8.1 Bu Şartlar, Hizmet sağlayıcısının ana iş yerinin bulunduğu yargı" +
 	" alanında geçerli olan yasalara göre yönetilecek ve yorumlanacaktır, çat" +
 	"ışma hukuku ilkelerine bakılmaksızın.\x0a8.2 Bu Şartlardan kaynaklanan " +
@@ -1432,115 +1629,135 @@ const tr_TRData string = "" + // Size: 5780 bytes
 	"kalmayı kabul ettiğinizi kabul edersiniz.\x0a9.2 Kabul etmiyorsanız, Hiz" +
 	"meti kullanmayı derhal bırakmalısınız.\x0a\x0aBu Şartlarla ilgili herhan" +
 	"gi bir sorunuz veya endişeniz varsa veya daha fazla açıklama gerekiyorsa" +
-	", lütfen <i>k.sysoev@me.com</i> adresinden iletişime geçin.\x02Üzgünüm, " +
-	"videoları, sesleri veya belgeleri işleyemem. Lütfen sorunuzu yalnızca me" +
-	"tin olarak gönderin.\x02Özür dilerim, ancak mesajınızı işlemem için çok " +
-	"uzun. Lütfen daha kısa ve öz olmasını deneyin.\x02Saatlik maksimum istek" +
-	" sayısına ulaştınız. Lütfen daha sonra tekrar deneyin.\x02Günlük istek l" +
-	"imitimize ulaştık. Lütfen yarın geri gelin, bütçemiz yenilendiğinde.\x02" +
-	"Lütfen sorunuzu metin formatında ve fotoğraflarla birlikte verin\x02Lütf" +
-	"en en az bir fotoğraf sağlayın\x02Lütfen en fazla %[1]d fotoğraf sağlayı" +
-	"n\x02Üzgünüm, isteğinizi işlerken bir hata ile karşılaştım. Lütfen daha " +
-	"sonra tekrar deneyin.\x02Sağlanan tarih gelecekte olamaz. Lütfen geçerli" +
-	" bir tarih girin.\x02Lütfen geçerli bir biçimde YYYY-AA-GG (örneğin, 202" +
-	"3-12-31) biçiminde bir tarih girin\x02Evcil hayvan profili başarıyla kay" +
-	"dedildi\x02Evcil hayvanınızın adı nedir?\x02Hangi türde evcil hayvanınız" +
-	" var?\x02köpek\x02kedi\x02Evcil hayvanınızın cinsi nedir?\x02Evcil hayva" +
-	"nınız ne zaman doğdu? Lütfen tarihi YYYY-AA-GG (örneğin, 2010-12-31) biç" +
-	"iminde girin.\x02Evcil hayvanınızın cinsiyeti nedir?\x02erkek\x02dişi" +
-	"\x02Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte ağırlığı " +
-	"belirtin, örneğin, 5 kg"
+	", lütfen <i>k.sysoev@me.com</i> adresinden iletişime geçin.\x02<b>Help M" +
+	"y Pet Bot Komutları</b>:\x0a/start - Bot ile sohbeti başlat\x0a/terms - " +
+	"Hizmetin Şartlarını ve Koşullarını görüntüle\x0a/editprofile - Evcil hay" +
+	"vanınızın adı, yaşı, cinsi gibi profil bilgilerini güncelle. Bu bilgiler" +
+	", botun daha doğru tavsiyeler sunmasına yardımcı olur.\x0a/cancel - Eğer" +
+	" devam eden bir anket varsa (örneğin, baştan başlamak veya sorunuzu deği" +
+	"ştirmek istediğinizde) mevcut anketi iptal et\x0a/help - Bu yardım mesa" +
+	"jını görüntüle\x02Üzgünüm, videoları, sesleri veya belgeleri işleyemem. " +
+	"Lütfen sorunuzu yalnızca metin olarak gönderin.\x02Özür dilerim, ancak m" +
+	"esajınızı işlemem için çok uzun. Lütfen daha kısa ve öz olmasını deneyin" +
+	".\x02Saatlik maksimum istek sayısına ulaştınız. Lütfen daha sonra tekrar" +
+	" deneyin.\x02Günlük istek limitimize ulaştık. Lütfen yarın geri gelin, b" +
+	"ütçemiz yenilendiğinde.\x02Lütfen sorunuzu metin formatında ve fotoğraf" +
+	"larla birlikte verin\x02Lütfen en az bir fotoğraf sağlayın\x02Lütfen en " +
+	"fazla %[1]d fotoğraf sağlayın\x02Üzgünüm, isteğinizi işlerken bir hata i" +
+	"le karşılaştım. Lütfen daha sonra tekrar deneyin.\x02Sağlanan tarih gele" +
+	"cekte olamaz. Lütfen geçerli bir tarih girin.\x02Lütfen geçerli bir biçi" +
+	"mde YYYY-AA-GG (örneğin, 2023-12-31) biçiminde bir tarih girin\x02Evcil " +
+	"hayvan profili başarıyla kaydedildi\x02Evcil hayvanınızın adı nedir?\x02" +
+	"Hangi türde evcil hayvanınız var?\x02köpek\x02kedi\x02Evcil hayvanınızın" +
+	" cinsi nedir?\x02Evcil hayvanınız ne zaman doğdu? Lütfen tarihi YYYY-AA-" +
+	"GG (örneğin, 2010-12-31) biçiminde girin.\x02Evcil hayvanınızın cinsiyet" +
+	"i nedir?\x02erkek\x02dişi\x02Evcil hayvanınızın ağırlığı nedir? Lütfen b" +
+	"irimle birlikte ağırlığı belirtin, örneğin, 5 kg"
 
-var uk_UAIndex = []uint32{ // 25 elements
-	0x00000000, 0x00000020, 0x0000051c, 0x00001d5f,
-	0x00001e36, 0x00001f22, 0x00001fc8, 0x00002086,
-	0x00002114, 0x00002169, 0x000021be, 0x00002274,
-	0x000022f9, 0x00002383, 0x000023c7, 0x000023f8,
-	0x00002440, 0x0000244d, 0x00002454, 0x00002489,
-	0x00002536, 0x00002569, 0x0000257a, 0x00002587,
-	0x00002622,
-} // Size: 124 bytes
+var uk_UAIndex = []uint32{ // 27 elements
+	0x00000000, 0x00000028, 0x00000048, 0x000008c1,
+	0x00002104, 0x000023f5, 0x000024cc, 0x000025b8,
+	0x0000265e, 0x0000271c, 0x000027aa, 0x000027ff,
+	0x00002854, 0x0000290a, 0x0000298f, 0x00002a19,
+	0x00002a5d, 0x00002a8e, 0x00002ad6, 0x00002ae3,
+	0x00002aea, 0x00002b1f, 0x00002bcc, 0x00002bff,
+	0x00002c10, 0x00002c1d, 0x00002cb8,
+} // Size: 132 bytes
 
-const uk_UAData string = "" + // Size: 9762 bytes
-	"\x02Невідома команда\x02Ласкаво просимо до Help My Pet Bot! 🐾\x0a\x0aЯ в" +
-	"аш особистий помічник з догляду за домашніми тваринами, готовий допомог" +
-	"ти вам краще піклуватися про вашого пухнастого друга. Я можу допомогти " +
-	"вам з:\x0a\x0a• Питаннями щодо здоров'я та поведінки тварин\x0a• Порада" +
-	"ми щодо дієти та харчування\x0a• Порадами та техніками тренування\x0a• " +
-	"Загальними рекомендаціями по догляду за тваринами\x0a\x0aПросто напишіт" +
-	"ь своє запитання або занепокоєння щодо вашого улюбленця, і я надам кори" +
-	"сні, інформативні відповіді на основі надійних ветеринарних знань. Пам'" +
-	"ятайте, що хоча я можу надати рекомендації, для серйозних медичних стан" +
-	"ів завжди консультуйтеся з ветеринаром.\x0a\x0aЩоб почати, просто задай" +
-	"те мені будь-яке питання про вашого улюбленця!\x02<b>Умови та положення" +
-	"</b>\x0a<i>Останнє оновлення: 30.01.2025</i>\x0a\x0aДякуємо за використа" +
-	"ння нашого чат-бота для ветеринарних порад (“Сервіс”). Використовуючи ц" +
-	"ей Сервіс, ви погоджуєтеся з наступними умовами та положеннями (“Умови”" +
-	"). Якщо ви не погоджуєтеся з цими Умовами, будь ласка, негайно припиніть" +
-	" використання.\x0a\x0a<b>1. Природа Сервісу</b>\x0a1.1 Сервіс надає зага" +
-	"льну інформацію, рекомендації та поради щодо догляду за тваринами, вклю" +
-	"чаючи (але не обмежуючись) дієту, поведінку та тренування.\x0a1.2 Серві" +
-	"с не є заміною професійної ветеринарної діагностики, лікування або догл" +
-	"яду. Завжди звертайтеся до ліцензованого ветеринара з будь-якими питанн" +
-	"ями щодо здоров'я вашого улюбленця.\x0a\x0a<b>2. Відсутність відносин в" +
-	"етеринар-клієнт-пацієнт</b>\x0a2.1 Використання Сервісу або взаємодія з" +
-	" нашим AI-помічником не створює відносин ветеринар-клієнт-пацієнт.\x0a2." +
-	"2 Будь-які поради або рекомендації, надані Сервісом, базуються на обмеже" +
-	"ній інформації і повинні розглядатися лише як загальна інформація.\x0a" +
-	"\x0a<b>3. Обмеження відповідальності</b>\x0a3.1 Ви визнаєте і погоджуєте" +
-	"ся, що використання Сервісу здійснюється на ваш власний ризик.\x0a3.2 З" +
-	"а жодних обставин власники, розробники або ліцензіари Сервісу не несуть" +
-	" відповідальності за будь-які прямі, непрямі, випадкові, спеціальні або " +
-	"наслідкові збитки, що виникають у зв'язку з вашим доступом до або викор" +
-	"истанням Сервісу.\x0a3.3 Ви розумієте, що рішення щодо догляду за вашим" +
-	" улюбленцем і будь-які наслідки цих рішень є вашою особистою відповідаль" +
-	"ністю. Якщо у вас є сумніви щодо здоров'я вашого улюбленця, негайно зве" +
-	"рніться до ліцензованого ветеринара.\x0a\x0a<b>4. Відсутність гарантій<" +
-	"/b>\x0a4.1 Сервіс надається на умовах “як є” і “як доступно” без будь-як" +
-	"их гарантій, явних або неявних.\x0a4.2 Ми не гарантуємо, що Сервіс буде" +
-	" безперервним, безпомилковим, безпечним або без вірусів.\x0a\x0a<b>5. Об" +
-	"ов'язки користувача</b>\x0a5.1 Ви несете відповідальність за надання то" +
-	"чної та повної інформації про вашого улюбленця при зверненні за порадою" +
-	".\x0a5.2 Ви повинні переконатися, що всі питання, описи та дані, які ви " +
-	"надаєте, не порушують права третіх осіб або місцеві закони.\x0a\x0a<b>6" +
-	". Міжнародне використання</b>\x0a6.1 Сервіс призначений для глобального " +
-	"використання. Ви несете відповідальність за дотримання всіх застосовних" +
-	" місцевих законів та нормативних актів у вашій юрисдикції.\x0a6.2 Ми не " +
-	"гарантуємо, що Сервіс або будь-який його вміст є відповідним або дозвол" +
-	"еним у будь-якій конкретній країні або регіоні.\x0a\x0a<b>7. Зміни</b>" +
-	"\x0a7.1 Ми залишаємо за собою право змінювати або замінювати ці Умови в " +
-	"будь-який час.\x0a7.2 Якщо ми внесемо суттєві зміни, ми опублікуємо оно" +
-	"влені Умови та вкажемо дату останньої редакції на початку цього докумен" +
-	"та.\x0a\x0a<b>8. Законодавство та вирішення спорів</b>\x0a8.1 Ці Умови " +
-	"регулюються та тлумачаться відповідно до законів, що застосовуються в ю" +
-	"рисдикції основного місця ведення бізнесу постачальника Сервісу, без ур" +
-	"ахування принципів колізійного права.\x0a8.2 Будь-який спір, що виникає" +
-	" з цих Умов або у зв'язку з ними, вирішується шляхом дружніх переговорів" +
-	" і, за необхідності, шляхом обов'язкового арбітражу або судового розгляд" +
-	"у в компетентних судах.\x0a\x0a<b>9. Прийняття умов</b>\x0a9.1 Продовжу" +
-	"ючи доступ до або використання Сервісу, ви підтверджуєте, що прочитали," +
-	" зрозуміли і погоджуєтеся дотримуватися цих Умов.\x0a9.2 Якщо ви не пого" +
-	"джуєтеся, ви повинні негайно припинити використання Сервісу.\x0a\x0aЯкщ" +
-	"о у вас є будь-які питання або занепокоєння щодо цих Умов, або якщо вам" +
-	" потрібні додаткові роз'яснення, будь ласка, зв'яжіться за адресою <i>k." +
-	"sysoev@me.com</i>.\x02Вибачте, я не можу обробляти відео, аудіо або доку" +
-	"менти. Будь ласка, надішліть своє питання лише у текстовому форматі." +
-	"\x02Вибачте, але ваше повідомлення занадто довге для мене, щоб обробити." +
-	" Будь ласка, спробуйте зробити його коротшим і більш стислим.\x02Ви дося" +
-	"гли максимальної кількості запитів за годину. Будь ласка, спробуйте ще " +
-	"раз пізніше.\x02Ми досягли нашого щоденного ліміту запитів. Будь ласка," +
-	" повертайтеся завтра, коли оновиться наш бюджет.\x02Будь ласка, надайте " +
-	"своє питання у текстовому форматі разом з фотографією(ми)\x02Будь ласка" +
-	", надайте принаймні одну фотографію\x02Будь ласка, надайте не більше %[1" +
-	"]d фотографії(й)\x02Вибачте, я стикнувся з помилкою під час обробки вашо" +
-	"го запиту. Будь ласка, спробуйте ще раз пізніше.\x02Наданий дата не мож" +
-	"е бути у майбутньому. Будь ласка, вкажіть дійсну дату.\x02Будь ласка, в" +
-	"кажіть дату у правильному форматі РРРР-ММ-ДД (наприклад, 2023-12-31)" +
-	"\x02Профіль улюбленця успішно збережено\x02Як звати вашого улюбленця?" +
-	"\x02Якого типу у вас є домашній улюбленець?\x02собака\x02кіт\x02Яка поро" +
-	"да вашого улюбленця?\x02Коли народився ваш улюбленець? Будь ласка, введ" +
-	"іть дату у форматі РРРР-ММ-ДД (наприклад, 2010-12-31).\x02Яка стать ваш" +
-	"ого улюбленця?\x02чоловіча\x02жіноча\x02Яка вага вашого улюбленця? Будь" +
-	" ласка, вкажіть вагу, вказавши одиницю, наприклад, 5 кг"
+const uk_UAData string = "" + // Size: 11448 bytes
+	"\x02Опитування скасовано\x02Невідома команда\x02Ласкаво просимо до Help " +
+	"My Pet Bot! 🐾\x0a\x0aЯ ваш особистий асистент з догляду за домашніми улю" +
+	"бленцями, готовий допомогти вам краще дбати про вашого пухнастого друга" +
+	". Я можу аналізувати фотографії вашого улюбленця та допомагати вам з:" +
+	"\x0a\x0a- Питаннями щодо здоров'я та поведінки тварин - не соромтеся над" +
+	"силати фотографії будь-яких хвилюючих симптомів або поведінки\x0a- Пора" +
+	"дами щодо дієти та харчування, включаючи фотографії їжі або ласощів, як" +
+	"і ви розглядаєте\x0a- Порадами та техніками тренування - ви можете надс" +
+	"илати фотографії конкретних ситуацій, в яких вам потрібна допомога\x0a-" +
+	" Загальними порад\ufffd\ufffdми щодо догляду за тваринами, з аналізом фо" +
+	"тографій середовища або приладів вашого улюбленця\x0a\x0aПросто введіть" +
+	" своє питання або надішліть фотографії разом із своїм\ufffd\ufffd турбот" +
+	"ами про вашого улюбленця, і я надам корисні, інформативні відповіді на " +
+	"основі надійних ветеринарних знань. Ви можете надсилати кілька фотограф" +
+	"ій, якщо це необхідно, щоб краще показати ситуацію.\x0a\x0aПам'ятайте, " +
+	"що хоча я можу надавати поради та аналізувати фотографії, для серйозних" +
+	" медичних станів завжди звертайтеся до ветеринара.\x0a\x0aЩоб почати, пр" +
+	"осто задайте мені будь-яке питання про вашого улюбленця - з фотографіям" +
+	"и або без них!\x02<b>Умови та положення</b>\x0a<i>Останнє оновлення: 30" +
+	".01.2025</i>\x0a\x0aДякуємо за використання нашого чат-бота для ветерина" +
+	"рних порад (“Сервіс”). Використовуючи цей Сервіс, ви погоджуєтеся з нас" +
+	"тупними умовами та положеннями (“Умови”). Якщо ви не погоджуєтеся з цим" +
+	"и Умовами, будь ласка, негайно припиніть використання.\x0a\x0a<b>1. При" +
+	"рода Сервісу</b>\x0a1.1 Сервіс надає загальну інформацію, рекомендації " +
+	"та поради щодо догляду за тваринами, включаючи (але не обмежуючись) діє" +
+	"ту, поведінку та тренування.\x0a1.2 Сервіс не є заміною професійної вет" +
+	"еринарної діагностики, лікування або догляду. Завжди звертайтеся до ліц" +
+	"ензованого ветеринара з будь-якими питаннями щодо здоров'я вашого улюбл" +
+	"енця.\x0a\x0a<b>2. Відсутність відносин ветеринар-клієнт-пацієнт</b>" +
+	"\x0a2.1 Використання Сервісу або взаємодія з нашим AI-помічником не ство" +
+	"рює відносин ветеринар-клієнт-пацієнт.\x0a2.2 Будь-які поради або реком" +
+	"ендації, надані Сервісом, базуються на обмеженій інформації і повинні р" +
+	"озглядатися лише як загальна інформація.\x0a\x0a<b>3. Обмеження відпові" +
+	"дальності</b>\x0a3.1 Ви визнаєте і погоджуєтеся, що використання Сервіс" +
+	"у здійснюється на ваш власний ризик.\x0a3.2 За жодних обставин власники" +
+	", розробники або ліцензіари Сервісу не несуть відповідальності за будь-я" +
+	"кі прямі, непрямі, випадкові, спеціальні або наслідкові збитки, що вини" +
+	"кають у зв'язку з вашим доступом до або використанням Сервісу.\x0a3.3 В" +
+	"и розумієте, що рішення щодо догляду за вашим улюбленцем і будь-які нас" +
+	"лідки цих рішень є вашою особистою відповідальністю. Якщо у вас є сумні" +
+	"ви щодо здоров'я вашого улюбленця, негайно зверніться до ліцензованого " +
+	"ветеринара.\x0a\x0a<b>4. Відсутність гарантій</b>\x0a4.1 Сервіс надаєть" +
+	"ся на умовах “як є” і “як доступно” без будь-яких гарантій, явних або н" +
+	"еявних.\x0a4.2 Ми не гарантуємо, що Сервіс буде безперервним, безпомилк" +
+	"овим, безпечним або без вірусів.\x0a\x0a<b>5. Обов'язки користувача</b>" +
+	"\x0a5.1 Ви несете відповідальність за надання точної та повної інформаці" +
+	"ї про вашого улюбленця при зверненні за порадою.\x0a5.2 Ви повинні пере" +
+	"конатися, що всі питання, описи та дані, які ви надаєте, не порушують п" +
+	"рава третіх осіб або місцеві закони.\x0a\x0a<b>6. Міжнародне використан" +
+	"ня</b>\x0a6.1 Сервіс призначений для глобального використання. Ви несет" +
+	"е відповідальність за дотримання всіх застосовних місцевих законів та н" +
+	"ормативних актів у вашій юрисдикції.\x0a6.2 Ми не гарантуємо, що Сервіс" +
+	" або будь-який його вміст є відповідним або дозволеним у будь-якій конкр" +
+	"етній країні або регіоні.\x0a\x0a<b>7. Зміни</b>\x0a7.1 Ми залишаємо за" +
+	" собою право змінювати або замінювати ці Умови в будь-який час.\x0a7.2 Я" +
+	"кщо ми внесемо суттєві зміни, ми опублікуємо оновлені Умови та вкажемо " +
+	"дату останньої редакції на початку цього документа.\x0a\x0a<b>8. Законо" +
+	"давство та вирішення спорів</b>\x0a8.1 Ці Умови регулюються та тлумачат" +
+	"ься відповідно до законів, що застосовуються в юрисдикції основного міс" +
+	"ця ведення бізнесу постачальника Сервісу, без урахування принципів колі" +
+	"зійного права.\x0a8.2 Будь-який спір, що виникає з цих Умов або у зв'яз" +
+	"ку з ними, вирішується шляхом дружніх переговорів і, за необхідності, ш" +
+	"ляхом обов'язкового арбітражу або судового розгляду в компетентних суда" +
+	"х.\x0a\x0a<b>9. Прийняття умов</b>\x0a9.1 Продовжуючи доступ до або вик" +
+	"ористання Сервісу, ви підтверджуєте, що прочитали, зрозуміли і погоджує" +
+	"теся дотримуватися цих Умов.\x0a9.2 Якщо ви не погоджуєтеся, ви повинні" +
+	" негайно припинити використання Сервісу.\x0a\x0aЯкщо у вас є будь-які пи" +
+	"тання або занепокоєння щодо цих Умов, або якщо вам потрібні додаткові р" +
+	"оз'яснення, будь ласка, зв'яжіться за адресою <i>k.sysoev@me.com</i>." +
+	"\x02<b>Команди Help My Pet Bot</b>:\x0a/start - Почати розмову з ботом" +
+	"\x0a/terms - Переглянути Умови та положення сервісу\x0a/editprofile - Он" +
+	"овити інформацію про профіль вашого улюбленця, таку як ім'я, вік, пород" +
+	"а тощо. Ця інформація допомагає боту надавати більш точні поради.\x0a/c" +
+	"ancel - Скасувати поточне опитування, якщо воно вже в процесі (наприклад" +
+	", коли ви хочете почати спочатку або змінити своє питання)\x0a/help - Пе" +
+	"реглянути це довідкове повідомлення\x02Вибачте, я не можу обробляти від" +
+	"ео, аудіо або документи. Будь ласка, надішліть своє питання лише у текс" +
+	"товому форматі.\x02Вибачте, але ваше повідомлення занадто довге для мен" +
+	"е, щоб обробити. Будь ласка, спробуйте зробити його коротшим і більш ст" +
+	"ислим.\x02Ви досягли максимальної кількості запитів за годину. Будь лас" +
+	"ка, спробуйте ще раз пізніше.\x02Ми досягли нашого щоденного ліміту зап" +
+	"итів. Будь ласка, повертайтеся завтра, коли оновиться наш бюджет.\x02Бу" +
+	"дь ласка, надайте своє питання у текстовому форматі разом з фотографією" +
+	"(ми)\x02Будь ласка, надайте принаймні одну фотографію\x02Будь ласка, над" +
+	"айте не більше %[1]d фотографії(й)\x02Вибачте, я стикнувся з помилкою п" +
+	"ід час обробки вашого запиту. Будь ласка, спробуйте ще раз пізніше.\x02" +
+	"Наданий дата не може бути у майбутньому. Будь ласка, вкажіть дійсну дат" +
+	"у.\x02Будь ласка, вкажіть дату у правильному форматі РРРР-ММ-ДД (наприк" +
+	"лад, 2023-12-31)\x02Профіль улюбленця успішно збережено\x02Як звати ваш" +
+	"ого улюбленця?\x02Якого типу у вас є домашній улюбленець?\x02собака\x02" +
+	"кіт\x02Яка порода вашого улюбленця?\x02Коли народився ваш улюбленець? Б" +
+	"удь ласка, введіть дату у форматі РРРР-ММ-ДД (наприклад, 2010-12-31)." +
+	"\x02Яка стать вашого улюбленця?\x02чоловіча\x02жіноча\x02Яка вага вашого" +
+	" улюбленця? Будь ласка, вкажіть вагу, вказавши одиницю, наприклад, 5 кг"
 
-	// Total table size 110769 bytes (108KiB); checksum: DE59D3CB
+	// Total table size 129320 bytes (126KiB); checksum: E43066E4
