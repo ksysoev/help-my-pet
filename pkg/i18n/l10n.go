@@ -1,4 +1,4 @@
-//go:generate gotext -srclang=en-GB update -out=catalog.go -lang=en-GB,ru-RU,es-ES,fr-FR,de-DE,ko-KR,tr-TR,it-IT,pl-PL,uk-UA,be-BY,nl-NL,ms-MY,pt-PT,ca-ES,fa-IR github.com/ksysoev/help-my-pet/pkg/...
+//go:generate gotext -srclang=en-GB update -out=catalog.go -lang=en-GB,ru-RU,es-ES,fr-FR,de-DE,ko-KR,tr-TR,it-IT,pl-PL,uk-UA,be-BY,nl-NL,ms-MY,pt-PT,ca-ES github.com/ksysoev/help-my-pet/pkg/...
 
 package i18n
 
@@ -25,7 +25,6 @@ var supportedLanguages = map[string]language.Tag{
 	"ms": language.MustParse("ms-MY"),
 	"pt": language.MustParse("pt-PT"),
 	"ca": language.MustParse("ca-ES"),
-	"fa": language.MustParse("fa-IR"),
 }
 
 // Localizer manages message printers for multiple languages, enabling localization support and language-specific formatting.
