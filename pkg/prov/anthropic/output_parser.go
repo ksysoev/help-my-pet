@@ -27,6 +27,7 @@ func NewResponseParser() (*ResponseParser, error) {
 func (p *ResponseParser) FormatInstructions() string {
 	return `Return your response in JSON format with this structure:
 {
+  "thoughs": "Detailed description of your thoughts and reasoning behind the advice",
   "text": "The main response text providing pet care advice",
   "questions": [
     {
@@ -38,6 +39,7 @@ func (p *ResponseParser) FormatInstructions() string {
 }
 
 Note:
+- The "thoughts" field you should use to explain in details your thought process and reasoning behing your response
 - The "text" field is required and must contain your main advice or response
 - The "questions" array is optional and can be empty if no follow-up questions are needed
 - Each question must have a "text" field
@@ -46,6 +48,7 @@ Note:
 
 Example with no questions:
 {
+  "thoughts": "Based on the symptoms described, it sounds like your cat may have hairballs. Try brushing them daily and consider specialized hairball control food.",
   "text": "Based on the symptoms described, it sounds like your cat may have hairballs. Try brushing them daily and consider specialized hairball control food.",
   "questions": [],
   "media": "Size of hairballs is about 1 inch in diameter. It doesn't contain any blood or foreign objects."'
@@ -53,6 +56,7 @@ Example with no questions:
 
 Example with questions:
 {
+  "thoughts": "Anxiety in dogs can be triggered by various factors. To provide proper advice, I need more information. Based on the symptoms described, your dog seems to be anxious in new environments or around loud noises.",
   "text": "To provide proper advice for your dog's anxiety, I need some more information.",
   "questions": [
     {
