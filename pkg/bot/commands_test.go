@@ -76,6 +76,28 @@ func TestHandleCommand(t *testing.T) {
 			mockSetup:    func(m *MockAIProvider) {},
 			expectedMsg:  "Unknown command",
 		},
+		{
+			name:         "cancel command success",
+			command:      "/cancel",
+			languageCode: "en",
+			chatID:       123,
+			userID:       456,
+			mockSetup: func(m *MockAIProvider) {
+				m.EXPECT().CancelQuestionnaire(mock.Anything, "123").Return(nil)
+			},
+			expectedMsg: "Questionary is cancelled",
+		},
+		{
+			name:         "cancel command error",
+			command:      "/cancel",
+			languageCode: "en",
+			chatID:       123,
+			userID:       456,
+			mockSetup: func(m *MockAIProvider) {
+				m.EXPECT().CancelQuestionnaire(mock.Anything, "123").Return(assert.AnError)
+			},
+			expectedError: fmt.Errorf("failed to reset conversation: %w", assert.AnError),
+		},
 	}
 
 	for _, tt := range tests {

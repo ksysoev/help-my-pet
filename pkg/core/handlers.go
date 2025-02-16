@@ -30,9 +30,9 @@ func (s *AIService) ProcessMessage(ctx context.Context, request *message.UserMes
 	}
 }
 
-// ResetConversation resets the conversation state for the given chatID, clearing any prior messages or context.
-// It retrieves or creates the conversation for the chatID, resets it, and saves the updated state to the repository.
-// Returns an error if retrieval or saving of the conversation fails.
+// CancelQuestionnaire cancels the active questionnaire for the specified chat ID.
+// It retrieves or initializes the conversation, updates its state, and persists the changes to the repository.
+// Returns error if retrieving or saving the conversation fails.
 func (s *AIService) CancelQuestionnaire(ctx context.Context, chatID string) error {
 	conv, err := s.repo.FindOrCreate(ctx, chatID)
 	if err != nil {
