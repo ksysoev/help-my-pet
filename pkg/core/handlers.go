@@ -30,6 +30,24 @@ func (s *AIService) ProcessMessage(ctx context.Context, request *message.UserMes
 	}
 }
 
+// CancelQuestionnaire cancels the active questionnaire for the specified chat ID.
+// It retrieves or initializes the conversation, updates its state, and persists the changes to the repository.
+// Returns error if retrieving or saving the conversation fails.
+func (s *AIService) CancelQuestionnaire(ctx context.Context, chatID string) error {
+	conv, err := s.repo.FindOrCreate(ctx, chatID)
+	if err != nil {
+		return fmt.Errorf("failed to get conversation: %w", err)
+	}
+
+	conv.CancelQuestionnaire()
+
+	if err := s.repo.Save(ctx, conv); err != nil {
+		return fmt.Errorf("failed to save conversation: %w", err)
+	}
+
+	return nil
+}
+
 // handleNewQuestion processes a new question from the user
 func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, request *message.UserMessage) (*message.Response, error) {
 	// Check rate limit for new questions

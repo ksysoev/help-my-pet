@@ -24,6 +24,53 @@ func (_m *MockAIProvider) EXPECT() *MockAIProvider_Expecter {
 	return &MockAIProvider_Expecter{mock: &_m.Mock}
 }
 
+// CancelQuestionnaire provides a mock function with given fields: ctx, chatID
+func (_m *MockAIProvider) CancelQuestionnaire(ctx context.Context, chatID string) error {
+	ret := _m.Called(ctx, chatID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CancelQuestionnaire")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = rf(ctx, chatID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockAIProvider_CancelQuestionnaire_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CancelQuestionnaire'
+type MockAIProvider_CancelQuestionnaire_Call struct {
+	*mock.Call
+}
+
+// CancelQuestionnaire is a helper method to define mock.On call
+//   - ctx context.Context
+//   - chatID string
+func (_e *MockAIProvider_Expecter) CancelQuestionnaire(ctx interface{}, chatID interface{}) *MockAIProvider_CancelQuestionnaire_Call {
+	return &MockAIProvider_CancelQuestionnaire_Call{Call: _e.mock.On("CancelQuestionnaire", ctx, chatID)}
+}
+
+func (_c *MockAIProvider_CancelQuestionnaire_Call) Run(run func(ctx context.Context, chatID string)) *MockAIProvider_CancelQuestionnaire_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockAIProvider_CancelQuestionnaire_Call) Return(_a0 error) *MockAIProvider_CancelQuestionnaire_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockAIProvider_CancelQuestionnaire_Call) RunAndReturn(run func(context.Context, string) error) *MockAIProvider_CancelQuestionnaire_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ProcessEditProfile provides a mock function with given fields: ctx, request
 func (_m *MockAIProvider) ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error) {
 	ret := _m.Called(ctx, request)

@@ -207,6 +207,12 @@ func (c *Conversation) GetQuestionnaireResult() ([]QuestionAnswer, error) {
 	}
 }
 
+// CancelQuestionnaire resets the conversation state to normal
+func (c *Conversation) CancelQuestionnaire() {
+	c.State = StateNormal
+	c.Questionnaire = nil
+}
+
 // Unmarshal parses the JSON-encoded data and returns a new conversation.
 func Unmarshal(data []byte) (*Conversation, error) {
 	var tmpConv struct {

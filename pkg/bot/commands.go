@@ -31,6 +31,12 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 		}
 
 		return tgbotapi.NewMessage(msg.Chat.ID, resp.Message), nil
+	case "cancel":
+		if err := s.AISvc.CancelQuestionnaire(ctx, fmt.Sprintf("%d", msg.Chat.ID)); err != nil {
+			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to reset conversation: %w", err)
+		}
+
+		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Questionary is cancelled")), nil
 	default:
 		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Unknown command")), nil
 	}

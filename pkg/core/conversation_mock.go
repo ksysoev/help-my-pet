@@ -116,6 +116,38 @@ func (_c *MockConversation_AddQuestionAnswer_Call) RunAndReturn(run func(string)
 	return _c
 }
 
+// CancelQuestionnaire provides a mock function with no fields
+func (_m *MockConversation) CancelQuestionnaire() {
+	_m.Called()
+}
+
+// MockConversation_CancelQuestionnaire_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CancelQuestionnaire'
+type MockConversation_CancelQuestionnaire_Call struct {
+	*mock.Call
+}
+
+// CancelQuestionnaire is a helper method to define mock.On call
+func (_e *MockConversation_Expecter) CancelQuestionnaire() *MockConversation_CancelQuestionnaire_Call {
+	return &MockConversation_CancelQuestionnaire_Call{Call: _e.mock.On("CancelQuestionnaire")}
+}
+
+func (_c *MockConversation_CancelQuestionnaire_Call) Run(run func()) *MockConversation_CancelQuestionnaire_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockConversation_CancelQuestionnaire_Call) Return() *MockConversation_CancelQuestionnaire_Call {
+	_c.Call.Return()
+	return _c
+}
+
+func (_c *MockConversation_CancelQuestionnaire_Call) RunAndReturn(run func()) *MockConversation_CancelQuestionnaire_Call {
+	_c.Run(run)
+	return _c
+}
+
 // GetCurrentQuestion provides a mock function with no fields
 func (_m *MockConversation) GetCurrentQuestion() (*message.Question, error) {
 	ret := _m.Called()
