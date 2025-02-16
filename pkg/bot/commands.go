@@ -37,6 +37,8 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 		}
 
 		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Questionary is cancelled")), nil
+	case "help":
+		return handleHelp(ctx, msg)
 	default:
 		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Unknown command")), nil
 	}
@@ -45,16 +47,18 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 func (s *ServiceImpl) handleStart(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	startMsg := i18n.GetLocale(ctx).Sprintf(`Welcome to Help My Pet Bot! 🐾
 
-I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can assist you with:
+I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can analyze photos of your pet and assist you with:
 
-• Pet health and behavior questions
-• Diet and nutrition advice
-• Training tips and techniques
-• General pet care guidance
+- Pet health and behavior questions - feel free to share photos of any concerning symptoms or behaviors
+- Diet and nutrition advice, including photos of food or treats you're considering
+- Training tips and techniques - you can send pictures of specific situations you need help with
+- General pet care guidance, with photo analysis of your pet's environment or supplies
 
-Simply type your question or concern about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. Remember, while I can offer guidance, for serious medical conditions, always consult with a veterinarian.
+Simply type your question or send photos along with your concerns about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. You can send multiple photos if needed to better show the situation.
 
-To get started, just ask me any question about your pet!`)
+Remember, while I can offer guidance and analyze photos, for serious medical conditions, always consult with a veterinarian.
+
+To get started, just ask me any question about your pet - with or without photos!`)
 
 	return tgbotapi.NewMessage(msg.Chat.ID, startMsg), nil
 }
@@ -106,4 +110,18 @@ If you have any questions or concerns regarding these Terms, or if you need furt
 	m.ParseMode = "HTML"
 
 	return m, nil
+}
+
+func handleHelp(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+	helpMsg := i18n.GetLocale(ctx).Sprintf(`<b>Help My Pet Bot Commands</b>:
+/start - Start the conversation with the bot
+/terms - View the Terms and Conditions of the service
+/editprofile - Update your pet's profile information, such as name, age, breed, etc. This information helps the bot provide more accurate advice.
+/cancel - Cancel the current questionnaire, if any is in progress (e.g., when you want to start over or change your question)
+/help - View this help message`)
+
+	tgMsg := tgbotapi.NewMessage(msg.Chat.ID, helpMsg)
+	tgMsg.ParseMode = "HTML"
+
+	return tgMsg, nil
 }

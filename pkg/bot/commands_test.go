@@ -98,6 +98,15 @@ func TestHandleCommand(t *testing.T) {
 			},
 			expectedError: fmt.Errorf("failed to reset conversation: %w", assert.AnError),
 		},
+		{
+			name:         "help command",
+			command:      "/help",
+			languageCode: "en",
+			chatID:       123,
+			userID:       456,
+			mockSetup:    func(m *MockAIProvider) {},
+			expectedMsg:  "Help My Pet Bot Commands",
+		},
 	}
 
 	for _, tt := range tests {
