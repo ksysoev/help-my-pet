@@ -31,7 +31,7 @@ type BotAPI interface {
 type AIProvider interface {
 	ProcessMessage(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
-	ResetConversation(ctx context.Context, chatID string) error
+	CancelQuestionnaire(ctx context.Context, chatID string) error
 }
 
 type httpClient interface {

@@ -509,7 +509,7 @@ func TestConversationReset(t *testing.T) {
 	conv.State = StatePetProfileQuestioning
 	conv.Questionnaire = &PetProfileStateImpl{}
 
-	conv.Reset()
+	conv.CancelQuestionnaire()
 
 	assert.Equal(t, StateNormal, conv.State)
 	assert.Nil(t, conv.Questionnaire)

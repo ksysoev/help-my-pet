@@ -207,8 +207,8 @@ func (c *Conversation) GetQuestionnaireResult() ([]QuestionAnswer, error) {
 	}
 }
 
-// Reset resets the conversation state to normal
-func (c *Conversation) Reset() {
+// CancelQuestionnaire resets the conversation state to normal
+func (c *Conversation) CancelQuestionnaire() {
 	c.State = StateNormal
 	c.Questionnaire = nil
 }
