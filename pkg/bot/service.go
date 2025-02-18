@@ -87,13 +87,18 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
-	// Send typing action
-	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
-	if _, err := s.Bot.Request(typing); err != nil {
-		slog.ErrorContext(ctx, "Failed to send typing action",
-			slog.Any("error", err),
-		)
-	}
+	var wg sync.WaitGroup
+	defer wg.Wait()
+
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		s.keepTyping(ctx, message.Chat.ID)
+	}()
 
 	// Handle message with middleware
 	msgConfig, err := s.handler.Handle(ctx, message)
@@ -115,6 +120,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	if msgConfig.Text == "" {
 		return
 	}
+	cancel()
 
 	// Send response
 	if _, err := s.Bot.Send(msgConfig); err != nil {
@@ -179,4 +185,30 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 			return nil
 		}
 	}
+}
+
+func (s *ServiceImpl) sendTyping(ctx context.Context, chatID int64) {
+	typing := tgbotapi.NewChatAction(chatID, tgbotapi.ChatTyping)
+	if _, err := s.Bot.Request(typing); err != nil {
+		slog.ErrorContext(ctx, "Failed to send typing action",
+			slog.Any("error", err),
+		)
+	}
+}
+
+func (s *ServiceImpl) keepTyping(ctx context.Context, chatID int64) {
+	s.sendTyping(ctx, chatID)
+
+	go func() {
+		t := time.NewTicker(5 * time.Second)
+		for {
+			select {
+			case <-ctx.Done():
+				t.Stop()
+				return
+			case <-t.C:
+				s.sendTyping(ctx, chatID)
+			}
+		}
+	}()
 }
