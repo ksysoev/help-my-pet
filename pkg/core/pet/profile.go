@@ -25,7 +25,7 @@ type Profiles struct {
 // This method is safe to use with partially filled Profile instances, as it handles empty or missing fields gracefully.
 // Returns a string representation of the Profile.
 func (p Profile) String() string {
-	age := calculateAge(p.DateOfBirth)
+	age := calculateAge(time.Now(), p.DateOfBirth)
 
 	return fmt.Sprintf(`
 Pet Profile:
@@ -33,7 +33,7 @@ Name: %s
 Species: %s
 Breed: %s
 Date of Birth: %s
-Age in years: %s
+Age: %s
 Gender: %s
 Weight: %s
 `, p.Name, p.Species, p.Breed, p.DateOfBirth, age, p.Gender, p.Weight)
@@ -42,16 +42,23 @@ Weight: %s
 // calculateAge calculates the age in years based on the provided date of birth string in "YYYY-MM-DD" format.
 // It handles invalid input by returning "Not provided" and assumes the input string is correctly formatted.
 // Returns the age as a string or "Not provided" in case of an error during parsing.
-func calculateAge(dateOfBirth string) string {
+func calculateAge(now time.Time, dateOfBirth string) string {
 	dob, err := time.Parse("2006-01-02", dateOfBirth)
 	if err != nil {
 		return "Not provided"
 	}
 
-	now := time.Now()
 	age := now.Year() - dob.Year()
 	if now.YearDay() < dob.YearDay() {
 		age--
+	}
+
+	if age < 0 {
+		return "Not provided"
+	}
+
+	if age == 0 {
+		return "Less than a year"
 	}
 
 	return fmt.Sprintf("%d", age)
