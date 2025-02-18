@@ -2,7 +2,66 @@ package pet
 
 import (
 	"testing"
+	"time"
+
+	"github.com/stretchr/testify/assert"
 )
+
+func TestCalculateAge(t *testing.T) {
+	tests := []struct {
+		name        string
+		now         time.Time
+		dateOfBirth string
+		expectedAge string
+		expectedErr bool
+	}{
+		{
+			name:        "Valid age calculation",
+			now:         time.Date(2023, 10, 1, 0, 0, 0, 0, time.UTC),
+			dateOfBirth: "2000-01-01",
+			expectedAge: "23",
+			expectedErr: false,
+		},
+		{
+			name:        "Date of birth in the future",
+			now:         time.Date(2023, 10, 1, 0, 0, 0, 0, time.UTC),
+			dateOfBirth: "2025-01-01",
+			expectedAge: "Not provided",
+			expectedErr: false,
+		},
+		{
+			name:        "Invalid date format",
+			now:         time.Date(2023, 10, 1, 0, 0, 0, 0, time.UTC),
+			dateOfBirth: "01-01-2000",
+			expectedAge: "Not provided",
+			expectedErr: false,
+		},
+		{
+			name:        "Age less than a year",
+			now:         time.Date(2023, 10, 1, 0, 0, 0, 0, time.UTC),
+			dateOfBirth: "2023-06-01",
+			expectedAge: "Less than a year",
+			expectedErr: false,
+		},
+		{
+			name:        "Empty date of birth",
+			now:         time.Date(2023, 10, 1, 0, 0, 0, 0, time.UTC),
+			dateOfBirth: "",
+			expectedAge: "Not provided",
+			expectedErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Act
+			result := calculateAge(tt.now, tt.dateOfBirth)
+
+			// Assert
+			assert.Equal(t, tt.expectedAge, result)
+		})
+	}
+}
 
 func TestPetProfile_String(t *testing.T) {
 	tests := []struct {
@@ -26,6 +85,7 @@ Name: Buddy
 Species: Dog
 Breed: Golden Retriever
 Date of Birth: 2018-05-10
+Age: 6
 Gender: Male
 Weight: 30.5
 `,
@@ -46,6 +106,7 @@ Name:
 Species: 
 Breed: 
 Date of Birth: 
+Age: Not provided
 Gender: 
 Weight: 
 `,
@@ -63,6 +124,7 @@ Name: Whiskers
 Species: Cat
 Breed: 
 Date of Birth: 
+Age: Not provided
 Gender: 
 Weight: 4.2
 `,
@@ -78,6 +140,7 @@ Name:
 Species: 
 Breed: 
 Date of Birth: 2020-07-15
+Age: 4
 Gender: 
 Weight: 
 `,
@@ -94,6 +157,7 @@ Name: Tiny
 Species: 
 Breed: 
 Date of Birth: 
+Age: Not provided
 Gender: 
 Weight: -1.5
 `,
