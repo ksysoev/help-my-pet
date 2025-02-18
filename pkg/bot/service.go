@@ -97,7 +97,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	go func() {
 		defer wg.Done()
-		s.keepTyping(ctx, message.Chat.ID)
+		s.keepTyping(ctx, message.Chat.ID, 5*time.Second)
 	}()
 
 	// Handle message with middleware
@@ -187,6 +187,9 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 	}
 }
 
+// sendTyping sends a "typing" action to the specified chat to indicate activity to the user.
+// It takes a context for request scoping and chatID to identify the target chat.
+// Returns an error if the request to the bot API fails.
 func (s *ServiceImpl) sendTyping(ctx context.Context, chatID int64) {
 	typing := tgbotapi.NewChatAction(chatID, tgbotapi.ChatTyping)
 	if _, err := s.Bot.Request(typing); err != nil {
@@ -196,11 +199,15 @@ func (s *ServiceImpl) sendTyping(ctx context.Context, chatID int64) {
 	}
 }
 
-func (s *ServiceImpl) keepTyping(ctx context.Context, chatID int64) {
+// keepTyping continuously sends typing notifications to the specified chat at a given interval until the context is canceled.
+// ctx is the context controlling the lifecycle of the typing notifications.
+// chatID is the identifier of the chat to send typing notifications to.
+// interval specifies the duration between consecutive typing notifications.
+func (s *ServiceImpl) keepTyping(ctx context.Context, chatID int64, interval time.Duration) {
 	s.sendTyping(ctx, chatID)
 
 	go func() {
-		t := time.NewTicker(5 * time.Second)
+		t := time.NewTicker(interval)
 		for {
 			select {
 			case <-ctx.Done():
