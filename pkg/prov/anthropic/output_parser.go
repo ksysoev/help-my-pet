@@ -27,7 +27,7 @@ func NewResponseParser() (*ResponseParser, error) {
 func (p *ResponseParser) FormatInstructions() string {
 	return `Return your response in JSON format with this structure:
 {
-  "thoughs": "Detailed description of your thoughts and reasoning behind the advice",
+  "thoughs": "Detailed description of your thought process and reasoning behind the advice",
   "text": "The main response text providing pet care advice",
   "questions": [
     {
@@ -39,7 +39,7 @@ func (p *ResponseParser) FormatInstructions() string {
 }
 
 Note:
-- The "thoughts" field you should use to explain in details your thought process and reasoning behing your response
+- The "thoughts" field you must use to explain your thought process step by step, including the reasoning behind your decisions
 - The "text" field is required and must contain your main advice or response
 - The "questions" array is optional and can be empty if no follow-up questions are needed
 - Each question must have a "text" field
