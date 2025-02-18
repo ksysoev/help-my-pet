@@ -87,13 +87,18 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 }
 
 func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
-	// Send typing action
-	typing := tgbotapi.NewChatAction(message.Chat.ID, tgbotapi.ChatTyping)
-	if _, err := s.Bot.Request(typing); err != nil {
-		slog.ErrorContext(ctx, "Failed to send typing action",
-			slog.Any("error", err),
-		)
-	}
+	var wg sync.WaitGroup
+	defer wg.Wait()
+
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		s.keepTyping(ctx, message.Chat.ID, 5*time.Second)
+	}()
 
 	// Handle message with middleware
 	msgConfig, err := s.handler.Handle(ctx, message)
@@ -115,6 +120,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 	if msgConfig.Text == "" {
 		return
 	}
+	cancel()
 
 	// Send response
 	if _, err := s.Bot.Send(msgConfig); err != nil {
@@ -179,4 +185,37 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 			return nil
 		}
 	}
+}
+
+// sendTyping sends a "typing" action to the specified chat to indicate activity to the user.
+// It takes a context for request scoping and chatID to identify the target chat.
+// Returns an error if the request to the bot API fails.
+func (s *ServiceImpl) sendTyping(ctx context.Context, chatID int64) {
+	typing := tgbotapi.NewChatAction(chatID, tgbotapi.ChatTyping)
+	if _, err := s.Bot.Request(typing); err != nil {
+		slog.ErrorContext(ctx, "Failed to send typing action",
+			slog.Any("error", err),
+		)
+	}
+}
+
+// keepTyping continuously sends typing notifications to the specified chat at a given interval until the context is canceled.
+// ctx is the context controlling the lifecycle of the typing notifications.
+// chatID is the identifier of the chat to send typing notifications to.
+// interval specifies the duration between consecutive typing notifications.
+func (s *ServiceImpl) keepTyping(ctx context.Context, chatID int64, interval time.Duration) {
+	s.sendTyping(ctx, chatID)
+
+	go func() {
+		t := time.NewTicker(interval)
+		for {
+			select {
+			case <-ctx.Done():
+				t.Stop()
+				return
+			case <-t.C:
+				s.sendTyping(ctx, chatID)
+			}
+		}
+	}()
 }

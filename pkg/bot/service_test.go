@@ -284,3 +284,120 @@ func TestServiceImpl_Run(t *testing.T) {
 
 	mockBot.AssertExpectations(t)
 }
+
+func TestServiceImpl_SendTyping(t *testing.T) {
+	tests := []struct {
+		name        string
+		chatID      int64
+		setupMock   func(*MockBotAPI)
+		expectError bool
+	}{
+		{
+			name:   "successful send typing action",
+			chatID: 12345,
+			setupMock: func(mockBot *MockBotAPI) {
+				typing := tgbotapi.NewChatAction(12345, tgbotapi.ChatTyping)
+				mockBot.EXPECT().Request(typing).Return(&tgbotapi.APIResponse{}, nil)
+			},
+			expectError: false,
+		},
+		{
+			name:   "failed to send typing action",
+			chatID: 12345,
+			setupMock: func(mockBot *MockBotAPI) {
+				typing := tgbotapi.NewChatAction(12345, tgbotapi.ChatTyping)
+				mockBot.EXPECT().Request(typing).Return(nil, assert.AnError)
+			},
+			expectError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
+			mockBot := NewMockBotAPI(t)
+
+			service := &ServiceImpl{
+				Bot: mockBot,
+			}
+
+			tt.setupMock(mockBot)
+			service.sendTyping(ctx, tt.chatID)
+
+			mockBot.AssertExpectations(t)
+		})
+	}
+}
+
+func TestServiceImpl_KeepTyping(t *testing.T) {
+	tests := []struct {
+		name          string
+		chatID        int64
+		setupMock     func(mockBot *MockBotAPI)
+		cancelContext bool
+		waitDuration  time.Duration
+	}{
+		{
+			name:   "successful typing",
+			chatID: 12345,
+			setupMock: func(mockBot *MockBotAPI) {
+				mockBot.EXPECT().Request(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+					action, ok := c.(tgbotapi.ChatActionConfig)
+					return ok && action.ChatID == 12345 && action.Action == tgbotapi.ChatTyping
+				})).Return(&tgbotapi.APIResponse{}, nil).Times(2) // Initial + 1 tick
+			},
+			cancelContext: false,
+			waitDuration:  6 * time.Millisecond, // 1 second more than ticker
+		},
+		{
+			name:   "error in typing action",
+			chatID: 67890,
+			setupMock: func(mockBot *MockBotAPI) {
+				mockBot.EXPECT().Request(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+					action, ok := c.(tgbotapi.ChatActionConfig)
+					return ok && action.ChatID == 67890 && action.Action == tgbotapi.ChatTyping
+				})).Return(nil, assert.AnError).Times(2) // Initial + 1 tick
+			},
+			cancelContext: false,
+			waitDuration:  6 * time.Millisecond,
+		},
+		{
+			name:   "context canceled",
+			chatID: 34567,
+			setupMock: func(mockBot *MockBotAPI) {
+				mockBot.EXPECT().Request(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
+					action, ok := c.(tgbotapi.ChatActionConfig)
+					return ok && action.ChatID == 34567 && action.Action == tgbotapi.ChatTyping
+				})).Return(&tgbotapi.APIResponse{}, nil).Times(1) // Only initial send
+			},
+			cancelContext: true,
+			waitDuration:  1 * time.Millisecond, // Ensure cancellation before tick
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx, cancel := context.WithCancel(context.Background())
+			mockBot := NewMockBotAPI(t)
+			service := &ServiceImpl{
+				Bot: mockBot,
+			}
+
+			if tt.cancelContext {
+				go func() {
+					time.Sleep(1 * time.Millisecond) // Cancel before next typing action
+					cancel()
+				}()
+			} else {
+				defer cancel()
+			}
+
+			tt.setupMock(mockBot)
+			service.keepTyping(ctx, tt.chatID, 5*time.Millisecond)
+
+			time.Sleep(tt.waitDuration)
+
+			mockBot.AssertExpectations(t)
+		})
+	}
+}
