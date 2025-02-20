@@ -26,7 +26,6 @@ type Config struct {
 // Config contains essential settings such as API keys, model type, and token limits, which are used to initialize the provider.
 type Provider struct {
 	llm    Model
-	parser *ResponseParser
 	config Config
 }
 
@@ -39,11 +38,6 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("API key is required")
 	}
 
-	parser, err := NewResponseParser()
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize response parser: %w", err)
-	}
-
 	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic model: %w", err)
@@ -52,7 +46,6 @@ func New(cfg Config) (*Provider, error) {
 	return &Provider{
 		llm:    llm,
 		config: cfg,
-		parser: parser,
 	}, nil
 }
 
@@ -62,25 +55,30 @@ func New(cfg Config) (*Provider, error) {
 // ctx is the request context, prompt is the user's input.
 // Returns a structured LLMResult containing the response and any follow-up questions, or an error if the call fails or the response cannot be parsed.
 func (p *Provider) Call(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error) {
-	formatInstructions := p.parser.FormatInstructions()
 
-	slog.DebugContext(ctx, "Anthropic LLM call",
-		slog.String("format_instructions", formatInstructions),
-		slog.String("question", prompt))
+	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", prompt))
 
-	response, err := p.llm.Call(ctx, formatInstructions, p.systemInfo()+prompt, imgs)
+	response, err := p.llm.Analyze(ctx, p.systemInfo()+prompt, imgs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
-	structuredResponse, err := p.parser.Parse(response)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
+	slog.Debug("Anthropic LLM response", slog.Any("response", response))
+
+	result := message.LLMResult{
+		Text:     response.Rejection,
+		Media:    response.Media,
+		Thoughts: response.Context,
 	}
 
-	slog.Debug("Anthropic LLM response", slog.Any("response", structuredResponse))
+	for _, followUp := range response.Questions {
+		result.Questions = append(result.Questions, message.Question{
+			Text:    followUp.Text,
+			Answers: followUp.Answers,
+		})
+	}
 
-	return structuredResponse, nil
+	return &result, nil
 }
 
 // systemInfo retrieves and formats basic system information, including the current date in YYYY-MM-DD format.
