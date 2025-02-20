@@ -23,10 +23,10 @@ type ResponseParser[T any] struct {
 // It returns a pointer to the initialized ResponseParser or an error if initialization fails.
 // inst specifies the format instructions to guide the LLM response parsing.
 // Returns a generic ResponseParser initialized with the given instructions and an error if inst is invalid or empty.
-func NewResponseParser[T any](inst string) (*ResponseParser[T], error) {
+func NewResponseParser[T any](inst string) *ResponseParser[T] {
 	return &ResponseParser[T]{
 		instructions: inst,
-	}, nil
+	}
 }
 
 // FormatInstructions retrieves the format instructions used to guide the parsing process of the response.

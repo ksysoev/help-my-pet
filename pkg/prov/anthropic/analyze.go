@@ -167,6 +167,12 @@ Example 5 - Rejection Case (Unrelated Topic):
 }
 `
 
+// analyzeResponse represents the structured output of an analysis operation.
+// It contains rejection status, media type, context information, and associated questions with their answers.
+// Rejection specifies if and why the analysis was rejected; empty if no rejection occurred.
+// Media indicates the type of media analyzed (e.g., text, image).
+// Context provides additional contextual information regarding the analysis.
+// Questions is a list of items, each containing a question text and a list of possible answers.
 type analyzeResponse struct {
 	Rejection string `json:"rejection,omitempty"`
 	Media     string `json:"media"`
@@ -175,4 +181,11 @@ type analyzeResponse struct {
 		Text    string   `json:"text"`
 		Answers []string `json:"answers"`
 	}
+}
+
+// newAnalyzeResponseParser creates a new ResponseParser specifically for parsing analyzeResponse objects.
+// It utilizes predefined format instructions (analyzeOutput) to guide the parsing process.
+// Returns a pointer to a ResponseParser configured for analyzeResponse parsing.
+func newAnalyzeResponseParser() *ResponseParser[analyzeResponse] {
+	return NewResponseParser[analyzeResponse](analyzeOutput)
 }

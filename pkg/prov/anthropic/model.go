@@ -3,7 +3,6 @@ package anthropic
 import (
 	"context"
 	"fmt"
-	"log/slog"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -12,10 +11,13 @@ import (
 
 // Model defines the interface for LLM interactions
 type Model interface {
-	// Call sends a request to the LLM with a user question and format instructions
-	// formatInstructions contain system-level prompting and formatting guidelines
-	// question is the user's actual querys
-	Call(ctx context.Context, formatInstructions string, question string, imgs []*message.Image) (string, error)
+	// Analyze processes a user request and associated images to generate a structured analysis response.
+	// It constructs a request for the Anthropic API using the provided text and images, adhering to predefined guidelines.
+	// ctx is the context for the API request, allowing for cancellation and timeouts.
+	// request is the user-provided input string to be analyzed.
+	// imgs is a slice of images, each represented by its MIME type and base64-encoded data.
+	// Returns a pointer to analyzeResponse containing the analysis results or an error if the request or parsing fails.
+	Analyze(ctx context.Context, request string, imgs []*message.Image) (*analyzeResponse, error)
 }
 
 const coreGuidelines = `Follow these Core Guidelines rules strictly:
@@ -74,32 +76,43 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 	}, nil
 }
 
-func (m *anthropicModel) Call(ctx context.Context, formatInstructions string, question string, imgs []*message.Image) (string, error) {
-	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("format_instructions", formatInstructions), slog.String("question", question))
-
-	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(question)}
+// Analyze processes a user request and associated images to generate a structured analysis response.
+// It constructs a request for the Anthropic API using the provided text and images, adhering to predefined guidelines.
+// ctx is the context for the API request, allowing for cancellation and timeouts.
+// request is the user-provided input string to be analyzed.
+// imgs is a slice of images, each represented by its MIME type and base64-encoded data.
+// Returns a pointer to analyzeResponse containing the analysis results or an error if the request or parsing fails.
+func (m *anthropicModel) Analyze(ctx context.Context, request string, imgs []*message.Image) (*analyzeResponse, error) {
+	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(request)}
 
 	for _, img := range imgs {
 		blocks = append(blocks, anthropic.NewImageBlockBase64(img.MIME, img.Data))
 	}
+
+	parser := newAnalyzeResponseParser()
 
 	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:     anthropic.F(m.modelID),
 		MaxTokens: anthropic.F(int64(m.maxTokens)),
 		System: anthropic.F([]anthropic.TextBlockParam{
 			anthropic.NewTextBlock(coreGuidelines),
-			anthropic.NewTextBlock(formatInstructions),
+			anthropic.NewTextBlock(parser.FormatInstructions()),
 		}),
 		Messages: anthropic.F([]anthropic.MessageParam{anthropic.NewUserMessage(blocks...)}),
 	})
 
 	if err != nil {
-		return "", fmt.Errorf("failed to call Anthropic API: %w", err)
+		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
 	if len(msg.Content) == 0 {
-		return "", fmt.Errorf("empty response from Anthropic API")
+		return nil, fmt.Errorf("empty response from Anthropic API")
 	}
 
-	return msg.Content[0].Text, nil
+	resp, err := parser.Parse(msg.Content[0].Text)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse analyze response: %w", err)
+	}
+
+	return resp, nil
 }
