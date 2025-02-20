@@ -71,27 +71,31 @@ Notes for Implementation:
   - Identify if request requires emergency veterinary care
   - Provide clear, constructive rejection reasons when needed
   - Suggest appropriate alternatives or resources
+  - Should use user input language for rejection messages
 2. Media Analysis:
   - Focus on measurable, objective observations
   - Note any limitations in image quality or documentation
   - Include specific measurements when possible
   - Flag any concerning visual indicators
+  - Should use English language for media description
 3. Context Building:
   - Organize information chronologically
   - Separate confirmed facts from reported observations
   - Note any inconsistencies or unclear information
   - Highlight critical symptoms or concerns
+  - Should use English language for context
 4. Question Formation:
   - Prioritize questions by clinical significance
   - Structure from general to specific
   - Include purpose-driven answer options
   - Focus on actionable information
+  - Should use user input language for questions
 5. Plan Development:
   - Create clear, logical progression
   - Include decision points and contingencies
   - Specify information utilization
   - Build toward comprehensive assessment
-
+  - Should use English language for plan
 
 Example 1 - Acute Injury Case:
 {
@@ -165,6 +169,18 @@ Example 5 - Rejection Case (Unrelated Topic):
 {
   "rejection": "I am a veterinary care assistant focused specifically on pet health, behavior, nutrition, and general care guidance. I cannot provide advice about car maintenance. For automotive concerns, I recommend consulting a qualified mechanic or automotive specialist."
 }
+
+Questions examples:
+
+Example 1: (Bad predefined answers)
+question: "Does your dog any food allergies?"
+answers: ["Yes", "No", "I don't know"]
+Note: "This is example of bad predefined answers. The predefined answers should be clear and specific. In this case answer will not help to categorize the condition or guide next steps. this should be question without predefined answers."
+
+Example 2: (Good predefined answers)
+question: "How long has your dog been scratching?"
+answers: ["Less than a week", "1-2 weeks", "2-4 weeks", "More than 4 weeks"]
+Note: "This is example of good predefined answers. The predefined answers are clear and specific. This will help to categorize the condition or guide next steps."
 `
 
 // analyzeResponse represents the structured output of an analysis operation.
@@ -177,6 +193,7 @@ type analyzeResponse struct {
 	Rejection string `json:"rejection,omitempty"`
 	Media     string `json:"media"`
 	Context   string `json:"context"`
+	Plan      string `json:"plan"`
 	Questions []struct {
 		Text    string   `json:"text"`
 		Answers []string `json:"answers"`
