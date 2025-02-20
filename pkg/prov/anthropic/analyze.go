@@ -1,5 +1,7 @@
 package anthropic
 
+// analyzePrompt defines the prompt for the AI model to generate a response based on the input data
+// The AI model is expected to analyze veterinary queries and create comprehensive data collection and analysis plans
 const analyzePrompt = `You are an AI veterinary case planning assistant. Your role is to analyze veterinary queries and create comprehensive data collection and analysis plans. Do not provide medical advice or conclusions at this stage.
 Primary Function:
 Create a structured case analysis plan with the following components:
@@ -46,7 +48,9 @@ Remember:
 - Keep all lists and sections clearly organized
 `
 
-const anylyzeOutput = `Return your response in JSON format with this structure:
+// analyzeOutput defines the expected output structure for the AI model analyzing veterinary queries
+// The output should include a detailed analysis of the provided media, context, questions, and a structured plan
+const analyzeOutput = `Return your response in JSON format with this structure:
 {
   "rejection": "Optional field. If present, contains clear explanation why the request cannot be processed, with suggested alternatives if applicable. Field is omitted completely for valid requests.",
   "media": "Detailed technical description of provided media, focusing on clinically relevant details such as measurements, coloration, visible symptoms, and quality of documentation. For images, include precise descriptions of any visible clinical signs, condition of the animal, and relevant environmental factors shown. For documents, extract and summarize pertinent medical history or test results.",
@@ -152,9 +156,23 @@ Example 3 - Dental/Oral Case:
   "plan": "1. Evaluate dental health status:\n   - Document tartar distribution\n   - Assess gum inflammation\n   - Map areas of concern\n   - Grade periodontal disease\n\n2. Analyze symptoms:\n   - Pain level indicators\n   - Eating behavior changes\n   - Secondary complications\n   - Infection risk\n\n3. Review contributing factors:\n   - Current dental care\n   - Diet evaluation\n   - Age-related changes\n   - Preventive measures\n\n4. Develop care recommendations:\n   - Immediate care needs\n   - Professional cleaning urgency\n   - Home care protocol\n   - Diet modifications"
 }
 
-Example - Rejection Case (Surgical Request):
+Example 4 - Rejection Case (Surgical Request):
 {
   "rejection": "I cannot provide guidance on performing surgical procedures as this requires direct veterinary care. Please contact your local veterinary clinic for surgical consultation. I can help you understand post-surgical care procedures or help prepare questions for your veterinary surgeon."
 }
 
+Example 5 - Rejection Case (Unrelated Topic):
+{
+  "rejection": "I am a veterinary care assistant focused specifically on pet health, behavior, nutrition, and general care guidance. I cannot provide advice about car maintenance. For automotive concerns, I recommend consulting a qualified mechanic or automotive specialist."
+}
 `
+
+type analyzeResponse struct {
+	Rejection string `json:"rejection,omitempty"`
+	Media     string `json:"media"`
+	Context   string `json:"context"`
+	Questions []struct {
+		Text    string   `json:"text"`
+		Answers []string `json:"answers"`
+	}
+}
