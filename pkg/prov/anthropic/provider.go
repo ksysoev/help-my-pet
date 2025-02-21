@@ -65,20 +65,7 @@ func (p *Provider) Call(ctx context.Context, prompt string, imgs []*message.Imag
 
 	slog.Debug("Anthropic LLM response", slog.Any("response", response))
 
-	result := message.LLMResult{
-		Text:     response.Rejection,
-		Media:    response.Media,
-		Thoughts: response.Context,
-	}
-
-	for _, followUp := range response.Questions {
-		result.Questions = append(result.Questions, message.Question{
-			Text:    followUp.Text,
-			Answers: followUp.Answers,
-		})
-	}
-
-	return &result, nil
+	return response, nil
 }
 
 // systemInfo retrieves and formats basic system information, including the current date in YYYY-MM-DD format.

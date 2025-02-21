@@ -17,10 +17,10 @@ type Model interface {
 	// request is the user-provided input string to be analyzed.
 	// imgs is a slice of images, each represented by its MIME type and base64-encoded data.
 	// Returns a pointer to analyzeResponse containing the analysis results or an error if the request or parsing fails.
-	Analyze(ctx context.Context, request string, imgs []*message.Image) (*analyzeResponse, error)
+	Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error)
 }
 
-const coreGuidelines = `Follow these Core Guidelines rules strictly:
+const coreGuidelines = `Core Guidelines strictly:
 1. Language Detection and Response:
   - ALWAYS analyze the language of the user's input first
   - MUST respond in the EXACT SAME language as the user's question
@@ -82,20 +82,21 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 // request is the user-provided input string to be analyzed.
 // imgs is a slice of images, each represented by its MIME type and base64-encoded data.
 // Returns a pointer to analyzeResponse containing the analysis results or an error if the request or parsing fails.
-func (m *anthropicModel) Analyze(ctx context.Context, request string, imgs []*message.Image) (*analyzeResponse, error) {
+func (m *anthropicModel) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
 	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(request)}
 
 	for _, img := range imgs {
 		blocks = append(blocks, anthropic.NewImageBlockBase64(img.MIME, img.Data))
 	}
 
-	parser := newAnalyzeResponseParser()
+	parser := newAssistantResponseParser()
 
 	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:     anthropic.F(m.modelID),
 		MaxTokens: anthropic.F(int64(m.maxTokens)),
 		System: anthropic.F([]anthropic.TextBlockParam{
 			anthropic.NewTextBlock(coreGuidelines),
+			anthropic.NewTextBlock(assistantPrompt),
 			anthropic.NewTextBlock(parser.FormatInstructions()),
 		}),
 		Messages: anthropic.F([]anthropic.MessageParam{anthropic.NewUserMessage(blocks...)}),
