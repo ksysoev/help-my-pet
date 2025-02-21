@@ -6,12 +6,21 @@ import (
 	"fmt"
 	"log/slog"
 	"strings"
+
+	"github.com/ksysoev/help-my-pet/pkg/core/message"
 )
 
 var (
 	ErrInvalidJSON = errors.New("invalid JSON format in response")
 	ErrEmptyText   = errors.New("response text is empty")
 )
+
+// newAssistantResponseParser initializes and returns a ResponseParser for structuring assistant LLM responses.
+// It uses the provided prompt as the format instructions for parsing.
+// Returns a ResponseParser configured to parse responses into the message.LLMResult type.
+func newAssistantResponseParser(prompt string) *ResponseParser[message.LLMResult] {
+	return NewResponseParser[message.LLMResult](prompt)
+}
 
 // ResponseParser is a generic type that encapsulates functionality for parsing responses formatted by an LLM.
 // It utilizes the provided format instructions to guide the parsing process and ensure the output conforms to a structured type.
