@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAIService_GetPetAdvice(t *testing.T) {
+func TestAIService_ProcessMessage(t *testing.T) {
 	tests := []struct {
 		request        *message.UserMessage
 		response       *message.LLMResult
@@ -54,7 +54,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
+					Analyze(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text: "Cats need a balanced diet...",
 						Questions: []message.Question{
@@ -100,7 +100,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
+					Analyze(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text:      "Cats need a balanced diet...",
 						Questions: []message.Question{},
@@ -140,7 +140,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: "
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
+					Analyze(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text:      "I understand you have a pet-related question...",
 						Questions: []message.Question{},
@@ -172,7 +172,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 					Return(nil)
 				expectedPrompt := "\nCurrent question: What food is good for cats?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
+					Analyze(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(nil, fmt.Errorf("llm error"))
 			},
 			wantErr:       true,
@@ -280,7 +280,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 
 				expectedPrompt := "Previous conversation:\nuser: What food is good for cats?\nassistant: Cats need a balanced diet...\n\nCurrent question: What about dogs?"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
+					Analyze(context.Background(), expectedPrompt, []*message.Image(nil)).
 					Return(&message.LLMResult{
 						Text:      "Dogs need different food...",
 						Questions: []message.Question{},
@@ -324,7 +324,7 @@ func TestAIService_GetPetAdvice(t *testing.T) {
 	}
 }
 
-func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
+func TestAIService_ProcessMessage_Questionnaire(t *testing.T) {
 	tests := []struct {
 		request        *message.UserMessage
 		expectedResult *message.Response
@@ -410,7 +410,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 
 				expectedPrompt := "\nFollow-up information:\nQuestion: How old is your cat?\nAnswer: 2 years old\nQuestion: Is your cat indoor or outdoor?\nAnswer: Indoor\n"
 				mockLLM.EXPECT().
-					Call(context.Background(), expectedPrompt, []*message.Image(nil)).
+					Report(context.Background(), expectedPrompt).
 					Return(&message.LLMResult{
 						Text: "Based on your answers, here's my advice...",
 					}, nil)
@@ -477,7 +477,7 @@ func TestAIService_GetPetAdvice_Questionnaire(t *testing.T) {
 	}
 }
 
-func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
+func TestAIService_ProcessMessage_RateLimiterRecordError(t *testing.T) {
 	mockLLM := NewMockLLM(t)
 	mockRepo := NewMockConversationRepository(t)
 	mockProfileRepo := NewMockPetProfileRepository(t)
@@ -504,7 +504,7 @@ func TestAIService_GetPetAdvice_RateLimiterRecordError(t *testing.T) {
 	assert.Contains(t, err.Error(), "failed to record rate limit")
 }
 
-func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
+func TestAIService_ProcessMessage_ContextCancellation(t *testing.T) {
 	mockLLM := NewMockLLM(t)
 	mockRepo := NewMockConversationRepository(t)
 	mockProfileRepo := NewMockPetProfileRepository(t)
@@ -528,7 +528,7 @@ func TestAIService_GetPetAdvice_ContextCancellation(t *testing.T) {
 		Return(nil)
 
 	mockLLM.EXPECT().
-		Call(ctx, "\nCurrent question: test question", []*message.Image(nil)).
+		Analyze(ctx, "\nCurrent question: test question", []*message.Image(nil)).
 		Return(nil, context.Canceled)
 
 	svc := NewAIService(mockLLM, mockRepo, mockProfileRepo, mockRateLimiter)

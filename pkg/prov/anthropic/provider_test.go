@@ -49,7 +49,7 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestProvider_Call(t *testing.T) {
+func TestProvider_Anylyze(t *testing.T) {
 	ctx := context.Background()
 	config := Config{
 		APIKey:    "test-api-key",
@@ -78,18 +78,13 @@ func TestProvider_Call(t *testing.T) {
 			},
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				parser, err := NewResponseParser()
-				assert.NoError(t, err)
-
-				formatInstructions := parser.FormatInstructions()
 
 				p := &Provider{
 					llm:    mockModel,
 					config: config,
-					parser: parser,
 				}
 
-				mockModel.EXPECT().Call(ctx, formatInstructions, p.systemInfo()+"test prompt", []*message.Image(nil)).
+				mockModel.EXPECT().Analyze(ctx, p.systemInfo()+"test prompt", []*message.Image(nil)).
 					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
 
 				return p

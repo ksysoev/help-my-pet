@@ -24,27 +24,29 @@ func (_m *MockModel) EXPECT() *MockModel_Expecter {
 	return &MockModel_Expecter{mock: &_m.Mock}
 }
 
-// Call provides a mock function with given fields: ctx, formatInstructions, question, imgs
-func (_m *MockModel) Call(ctx context.Context, formatInstructions string, question string, imgs []*message.Image) (string, error) {
-	ret := _m.Called(ctx, formatInstructions, question, imgs)
+// Analyze provides a mock function with given fields: ctx, request, imgs
+func (_m *MockModel) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
+	ret := _m.Called(ctx, request, imgs)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Analyze")
 	}
 
-	var r0 string
+	var r0 *message.LLMResult
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, string, []*message.Image) (string, error)); ok {
-		return rf(ctx, formatInstructions, question, imgs)
+	if rf, ok := ret.Get(0).(func(context.Context, string, []*message.Image) (*message.LLMResult, error)); ok {
+		return rf(ctx, request, imgs)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string, string, []*message.Image) string); ok {
-		r0 = rf(ctx, formatInstructions, question, imgs)
+	if rf, ok := ret.Get(0).(func(context.Context, string, []*message.Image) *message.LLMResult); ok {
+		r0 = rf(ctx, request, imgs)
 	} else {
-		r0 = ret.Get(0).(string)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*message.LLMResult)
+		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, string, string, []*message.Image) error); ok {
-		r1 = rf(ctx, formatInstructions, question, imgs)
+	if rf, ok := ret.Get(1).(func(context.Context, string, []*message.Image) error); ok {
+		r1 = rf(ctx, request, imgs)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -52,33 +54,91 @@ func (_m *MockModel) Call(ctx context.Context, formatInstructions string, questi
 	return r0, r1
 }
 
-// MockModel_Call_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Analyze'
-type MockModel_Call_Call struct {
+// MockModel_Analyze_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Analyze'
+type MockModel_Analyze_Call struct {
 	*mock.Call
 }
 
-// Call is a helper method to define mock.On call
+// Analyze is a helper method to define mock.On call
 //   - ctx context.Context
-//   - formatInstructions string
-//   - question string
+//   - request string
 //   - imgs []*message.Image
-func (_e *MockModel_Expecter) Call(ctx interface{}, formatInstructions interface{}, question interface{}, imgs interface{}) *MockModel_Call_Call {
-	return &MockModel_Call_Call{Call: _e.mock.On("Analyze", ctx, formatInstructions, question, imgs)}
+func (_e *MockModel_Expecter) Analyze(ctx interface{}, request interface{}, imgs interface{}) *MockModel_Analyze_Call {
+	return &MockModel_Analyze_Call{Call: _e.mock.On("Analyze", ctx, request, imgs)}
 }
 
-func (_c *MockModel_Call_Call) Run(run func(ctx context.Context, formatInstructions string, question string, imgs []*message.Image)) *MockModel_Call_Call {
+func (_c *MockModel_Analyze_Call) Run(run func(ctx context.Context, request string, imgs []*message.Image)) *MockModel_Analyze_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(string), args[2].(string), args[3].([]*message.Image))
+		run(args[0].(context.Context), args[1].(string), args[2].([]*message.Image))
 	})
 	return _c
 }
 
-func (_c *MockModel_Call_Call) Return(_a0 string, _a1 error) *MockModel_Call_Call {
+func (_c *MockModel_Analyze_Call) Return(_a0 *message.LLMResult, _a1 error) *MockModel_Analyze_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockModel_Call_Call) RunAndReturn(run func(context.Context, string, string, []*message.Image) (string, error)) *MockModel_Call_Call {
+func (_c *MockModel_Analyze_Call) RunAndReturn(run func(context.Context, string, []*message.Image) (*message.LLMResult, error)) *MockModel_Analyze_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// Report provides a mock function with given fields: ctx, request
+func (_m *MockModel) Report(ctx context.Context, request string) (*message.LLMResult, error) {
+	ret := _m.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Report")
+	}
+
+	var r0 *message.LLMResult
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*message.LLMResult, error)); ok {
+		return rf(ctx, request)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string) *message.LLMResult); ok {
+		r0 = rf(ctx, request)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*message.LLMResult)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockModel_Report_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Report'
+type MockModel_Report_Call struct {
+	*mock.Call
+}
+
+// Report is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request string
+func (_e *MockModel_Expecter) Report(ctx interface{}, request interface{}) *MockModel_Report_Call {
+	return &MockModel_Report_Call{Call: _e.mock.On("Report", ctx, request)}
+}
+
+func (_c *MockModel_Report_Call) Run(run func(ctx context.Context, request string)) *MockModel_Report_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockModel_Report_Call) Return(_a0 *message.LLMResult, _a1 error) *MockModel_Report_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockModel_Report_Call) RunAndReturn(run func(context.Context, string) (*message.LLMResult, error)) *MockModel_Report_Call {
 	_c.Call.Return(run)
 	return _c
 }

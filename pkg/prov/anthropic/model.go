@@ -11,8 +11,7 @@ import (
 
 // Model defines the interface for LLM interactions
 type Model interface {
-	Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error)
-	Report(ctx context.Context, request string) (*message.LLMResult, error)
+	Call(ctx context.Context, systemPrompts, request string, imgs []*message.Image) (string, error)
 }
 
 const coreGuidelines = `Core Guidelines strictly:
@@ -77,75 +76,30 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 // request is the user-provided input string to be analyzed.
 // imgs is a slice of images, each represented by its MIME type and base64-encoded data.
 // Returns a pointer to analyzeResponse containing the analysis results or an error if the request or parsing fails.
-func (m *anthropicModel) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
+func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string, imgs []*message.Image) (string, error) {
 	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(request)}
 
 	for _, img := range imgs {
 		blocks = append(blocks, anthropic.NewImageBlockBase64(img.MIME, img.Data))
 	}
 
-	parser := newAssistantResponseParser(analyzeOutput)
-
 	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
 		Model:     anthropic.F(m.modelID),
 		MaxTokens: anthropic.F(int64(m.maxTokens)),
 		System: anthropic.F([]anthropic.TextBlockParam{
 			anthropic.NewTextBlock(coreGuidelines),
-			anthropic.NewTextBlock(analyzePrompt),
-			anthropic.NewTextBlock(parser.FormatInstructions()),
+			anthropic.NewTextBlock(systemPrompts),
 		}),
 		Messages: anthropic.F([]anthropic.MessageParam{anthropic.NewUserMessage(blocks...)}),
 	})
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
+		return "", fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
 	if len(msg.Content) == 0 {
-		return nil, fmt.Errorf("empty response from Anthropic API")
+		return "", fmt.Errorf("empty response from Anthropic API")
 	}
 
-	resp, err := parser.Parse(msg.Content[0].Text)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse analyze response: %w", err)
-	}
-
-	return resp, nil
-}
-
-// Report generates a structured response based on a user-provided textual input.
-// It constructs a request for the Anthropic API, adhering to predefined reporting guidelines.
-// ctx is the context for the API request, allowing for cancellation and timeouts.
-// request is the user's text input for which the report will be generated.
-// Returns a pointer to message.LLMResult containing the generated report or an error if the request or parsing fails.
-func (m *anthropicModel) Report(ctx context.Context, request string) (*message.LLMResult, error) {
-	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(request)}
-
-	parser := newAssistantResponseParser(reportOutput)
-
-	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
-		Model:     anthropic.F(m.modelID),
-		MaxTokens: anthropic.F(int64(m.maxTokens)),
-		System: anthropic.F([]anthropic.TextBlockParam{
-			anthropic.NewTextBlock(coreGuidelines),
-			anthropic.NewTextBlock(reportPrompt),
-			anthropic.NewTextBlock(parser.FormatInstructions()),
-		}),
-		Messages: anthropic.F([]anthropic.MessageParam{anthropic.NewUserMessage(blocks...)}),
-	})
-
-	if err != nil {
-		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
-	}
-
-	if len(msg.Content) == 0 {
-		return nil, fmt.Errorf("empty response from Anthropic API")
-	}
-
-	resp, err := parser.Parse(msg.Content[0].Text)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse analyze response: %w", err)
-	}
-
-	return resp, nil
+	return msg.Content[0].Text, nil
 }

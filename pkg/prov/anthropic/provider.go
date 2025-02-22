@@ -52,27 +52,46 @@ func New(cfg Config) (*Provider, error) {
 func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
-	response, err := p.llm.Analyze(ctx, p.systemInfo()+request, imgs)
+	parser := newAssistantResponseParser(analyzePrompt)
+
+	systemPrompt := analyzePrompt + parser.FormatInstructions()
+
+	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, imgs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
 	slog.Debug("Anthropic LLM response", slog.Any("response", response))
 
-	return response, nil
+	result, err := parser.Parse(response)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
+	}
+
+	return result, nil
 }
 
 func (p *Provider) Report(ctx context.Context, request string) (*message.LLMResult, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
-	response, err := p.llm.Report(ctx, p.systemInfo()+request)
+	parser := newAssistantResponseParser(reportPrompt)
+
+	systemPrompt := analyzePrompt + parser.FormatInstructions()
+
+	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, nil)
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
 	slog.Debug("Anthropic LLM response", slog.Any("response", response))
 
-	return response, nil
+	result, err := parser.Parse(response)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
+	}
+
+	return result, nil
 }
 
 // systemInfo retrieves and formats basic system information, including the current date in YYYY-MM-DD format.
