@@ -52,7 +52,7 @@ func New(cfg Config) (*Provider, error) {
 func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
-	parser := newAssistantResponseParser(analyzePrompt)
+	parser := newAssistantResponseParser(analyzeOutput)
 
 	systemPrompt := analyzePrompt + parser.FormatInstructions()
 
@@ -74,9 +74,9 @@ func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.
 func (p *Provider) Report(ctx context.Context, request string) (*message.LLMResult, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
-	parser := newAssistantResponseParser(reportPrompt)
+	parser := newAssistantResponseParser(reportOutput)
 
-	systemPrompt := analyzePrompt + parser.FormatInstructions()
+	systemPrompt := reportPrompt + parser.FormatInstructions()
 
 	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, nil)
 
