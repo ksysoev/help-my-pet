@@ -87,9 +87,4 @@ Example 5 - Out of Scope Response:
 {
 	  "text": "Based on the information provided, it seems that the issue falls outside the scope of veterinary assistance. It's recommended to consult with a professional behaviorist or trainer for guidance on addressing your dog's specific needs. They can provide tailored advice and training programs to help manage your dog's behavior effectively."
 }
-
-Example 6 - Unrelated answers to follow-up questions:
-{
-  	  "text": "Based on the information provided, it seems that the follow-up answers are not directly related to the initial query. Please refrain you question and add more information about to your question."
-}
 `

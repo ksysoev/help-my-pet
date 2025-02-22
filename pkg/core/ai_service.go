@@ -64,8 +64,8 @@ type PetProfileRepository interface {
 
 // LLM interface represents the language model capabilities
 type LLM interface {
-	// Call sends a prompt to the LLM and returns a structured response
-	Call(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error)
+	Analyze(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error)
+	Report(ctx context.Context, request string) (*message.LLMResult, error)
 }
 
 type AIService struct {

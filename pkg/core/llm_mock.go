@@ -25,11 +25,11 @@ func (_m *MockLLM) EXPECT() *MockLLM_Expecter {
 }
 
 // Call provides a mock function with given fields: ctx, prompt, imgs
-func (_m *MockLLM) Call(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error) {
+func (_m *MockLLM) Analyze(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error) {
 	ret := _m.Called(ctx, prompt, imgs)
 
 	if len(ret) == 0 {
-		panic("no return value specified for Call")
+		panic("no return value specified for Analyze")
 	}
 
 	var r0 *message.LLMResult
@@ -54,7 +54,7 @@ func (_m *MockLLM) Call(ctx context.Context, prompt string, imgs []*message.Imag
 	return r0, r1
 }
 
-// MockLLM_Call_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Call'
+// MockLLM_Call_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Analyze'
 type MockLLM_Call_Call struct {
 	*mock.Call
 }
@@ -64,7 +64,7 @@ type MockLLM_Call_Call struct {
 //   - prompt string
 //   - imgs []*message.Image
 func (_e *MockLLM_Expecter) Call(ctx interface{}, prompt interface{}, imgs interface{}) *MockLLM_Call_Call {
-	return &MockLLM_Call_Call{Call: _e.mock.On("Call", ctx, prompt, imgs)}
+	return &MockLLM_Call_Call{Call: _e.mock.On("Analyze", ctx, prompt, imgs)}
 }
 
 func (_c *MockLLM_Call_Call) Run(run func(ctx context.Context, prompt string, imgs []*message.Image)) *MockLLM_Call_Call {

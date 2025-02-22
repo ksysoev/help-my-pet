@@ -89,7 +89,7 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, re
 
 	prompt += fmt.Sprintf("%s\nCurrent question: %s", conv.History(1), request.Text)
 
-	response, err := s.llm.Call(ctx, prompt, request.Images)
+	response, err := s.llm.Analyze(ctx, prompt, request.Images)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get AI response: %w", err)
 	}

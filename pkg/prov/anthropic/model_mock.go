@@ -29,7 +29,7 @@ func (_m *MockModel) Call(ctx context.Context, formatInstructions string, questi
 	ret := _m.Called(ctx, formatInstructions, question, imgs)
 
 	if len(ret) == 0 {
-		panic("no return value specified for Call")
+		panic("no return value specified for Analyze")
 	}
 
 	var r0 string
@@ -52,7 +52,7 @@ func (_m *MockModel) Call(ctx context.Context, formatInstructions string, questi
 	return r0, r1
 }
 
-// MockModel_Call_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Call'
+// MockModel_Call_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Analyze'
 type MockModel_Call_Call struct {
 	*mock.Call
 }
@@ -63,7 +63,7 @@ type MockModel_Call_Call struct {
 //   - question string
 //   - imgs []*message.Image
 func (_e *MockModel_Expecter) Call(ctx interface{}, formatInstructions interface{}, question interface{}, imgs interface{}) *MockModel_Call_Call {
-	return &MockModel_Call_Call{Call: _e.mock.On("Call", ctx, formatInstructions, question, imgs)}
+	return &MockModel_Call_Call{Call: _e.mock.On("Analyze", ctx, formatInstructions, question, imgs)}
 }
 
 func (_c *MockModel_Call_Call) Run(run func(ctx context.Context, formatInstructions string, question string, imgs []*message.Image)) *MockModel_Call_Call {

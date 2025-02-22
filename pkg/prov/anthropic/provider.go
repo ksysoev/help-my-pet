@@ -49,16 +49,23 @@ func New(cfg Config) (*Provider, error) {
 	}, nil
 }
 
-// Call performs a request to the underlying language model (LLM) with the provided context and prompt.
-// It combines internal format instructions and system information with the user prompt to create the full input.
-// If the request succeeds, the LLM response is parsed into a structured format.
-// ctx is the request context, prompt is the user's input.
-// Returns a structured LLMResult containing the response and any follow-up questions, or an error if the call fails or the response cannot be parsed.
-func (p *Provider) Call(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error) {
+func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
+	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
-	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", prompt))
+	response, err := p.llm.Analyze(ctx, p.systemInfo()+request, imgs)
+	if err != nil {
+		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
+	}
 
-	response, err := p.llm.Analyze(ctx, p.systemInfo()+prompt, imgs)
+	slog.Debug("Anthropic LLM response", slog.Any("response", response))
+
+	return response, nil
+}
+
+func (p *Provider) Report(ctx context.Context, request string) (*message.LLMResult, error) {
+	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
+
+	response, err := p.llm.Report(ctx, p.systemInfo()+request)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}

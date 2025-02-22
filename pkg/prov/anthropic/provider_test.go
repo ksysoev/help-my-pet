@@ -148,7 +148,7 @@ func TestProvider_Call(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			provider := tt.setupMock(t)
-			result, err := provider.Call(ctx, tt.prompt, nil)
+			result, err := provider.Analyze(ctx, tt.prompt, nil)
 
 			if tt.wantErr {
 				assert.Error(t, err)
