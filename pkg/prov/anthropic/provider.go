@@ -49,6 +49,10 @@ func New(cfg Config) (*Provider, error) {
 	}, nil
 }
 
+// Analyze processes a request and associated images using the LLM, returning a formatted result or an error.
+// It sends the request combined with system prompts to the LLM, parses the response, and handles errors if the API call or parsing fails.
+// ctx is the context for managing request lifecycle; request is the input query; imgs represents associated images to be analyzed.
+// Returns a structured LLMResult containing the analysis or an error if the LLM call or response parsing fails.
 func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
@@ -71,6 +75,10 @@ func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.
 	return result, nil
 }
 
+// Report generates a formatted analysis based on the provided request using the LLM and parses the response into a structured result.
+// It sends a system prompt combined with the user's input to the LLM and handles errors during the API call or parsing process.
+// ctx is the context for managing the request lifecycle; request is the input query to be analyzed.
+// Returns a structured LLMResult containing the analysis or an error if the LLM call or response parsing fails.
 func (p *Provider) Report(ctx context.Context, request string) (*message.LLMResult, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
