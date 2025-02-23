@@ -198,6 +198,11 @@ newline", "Normal answer"]
 			},
 			wantErr: false,
 		},
+		{
+			name:    "Empty string",
+			input:   "",
+			wantErr: true,
+		},
 	}
 
 	parser := newAssistantResponseParser("text\nquestions")
