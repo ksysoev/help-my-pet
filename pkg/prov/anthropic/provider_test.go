@@ -49,7 +49,7 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestProvider_Call(t *testing.T) {
+func TestProvider_Anylyze(t *testing.T) {
 	ctx := context.Background()
 	config := Config{
 		APIKey:    "test-api-key",
@@ -78,18 +78,13 @@ func TestProvider_Call(t *testing.T) {
 			},
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				parser, err := NewResponseParser()
-				assert.NoError(t, err)
-
-				formatInstructions := parser.FormatInstructions()
 
 				p := &Provider{
 					llm:    mockModel,
 					config: config,
-					parser: parser,
 				}
 
-				mockModel.EXPECT().Call(ctx, formatInstructions, p.systemInfo()+"test prompt", []*message.Image(nil)).
+				mockModel.EXPECT().Call(ctx, analyzePrompt+analyzeOutput, p.systemInfo()+"test prompt", []*message.Image(nil)).
 					Return(`{"text": "test response", "questions": [{"text": "follow up?"}]}`, nil)
 
 				return p
@@ -102,18 +97,13 @@ func TestProvider_Call(t *testing.T) {
 			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				parser, err := NewResponseParser()
-				assert.NoError(t, err)
-
-				formatInstructions := parser.FormatInstructions()
 
 				p := &Provider{
 					llm:    mockModel,
 					config: config,
-					parser: parser,
 				}
 
-				mockModel.EXPECT().Call(ctx, formatInstructions, p.systemInfo()+"test prompt", []*message.Image(nil)).
+				mockModel.EXPECT().Call(ctx, analyzePrompt+analyzeOutput, p.systemInfo()+"test prompt", []*message.Image(nil)).
 					Return("test response", nil)
 
 				return p
@@ -126,18 +116,13 @@ func TestProvider_Call(t *testing.T) {
 			wantResult: nil,
 			setupMock: func(t *testing.T) *Provider {
 				mockModel := NewMockModel(t)
-				parser, err := NewResponseParser()
-				assert.NoError(t, err)
-
-				formatInstructions := parser.FormatInstructions()
 
 				p := &Provider{
 					llm:    mockModel,
 					config: config,
-					parser: parser,
 				}
 
-				mockModel.EXPECT().Call(ctx, formatInstructions, p.systemInfo()+"test prompt", []*message.Image(nil)).
+				mockModel.EXPECT().Call(ctx, analyzePrompt+analyzeOutput, p.systemInfo()+"test prompt", []*message.Image(nil)).
 					Return("", assert.AnError)
 
 				return p
@@ -148,7 +133,104 @@ func TestProvider_Call(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			provider := tt.setupMock(t)
-			result, err := provider.Call(ctx, tt.prompt, nil)
+			result, err := provider.Analyze(ctx, tt.prompt, nil)
+
+			if tt.wantErr {
+				assert.Error(t, err)
+				assert.Nil(t, result)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.wantResult, result)
+			}
+		})
+	}
+}
+
+func TestProvider_Report(t *testing.T) {
+	ctx := context.Background()
+	config := Config{
+		APIKey:    "test-api-key",
+		Model:     "claude-2",
+		MaxTokens: 1000,
+	}
+
+	type testCase struct {
+		wantResult *message.LLMResult
+		setupMock  func(t *testing.T) *Provider
+		name       string
+		request    string
+		wantErr    bool
+	}
+
+	tests := []testCase{
+		{
+			wantErr: false,
+			name:    "successful call with valid JSON response",
+			request: "report request",
+			wantResult: &message.LLMResult{
+				Text: "test report response",
+				Questions: []message.Question{
+					{Text: "additional details?"},
+				},
+			},
+			setupMock: func(t *testing.T) *Provider {
+				mockModel := NewMockModel(t)
+
+				p := &Provider{
+					llm:    mockModel,
+					config: config,
+				}
+
+				mockModel.EXPECT().Call(ctx, reportPrompt+reportOutput, p.systemInfo()+"report request", []*message.Image(nil)).
+					Return(`{"text": "test report response", "questions": [{"text": "additional details?"}]}`, nil)
+
+				return p
+			},
+		},
+		{
+			wantErr:    true,
+			name:       "invalid JSON response from LLM",
+			request:    "report request",
+			wantResult: nil,
+			setupMock: func(t *testing.T) *Provider {
+				mockModel := NewMockModel(t)
+
+				p := &Provider{
+					llm:    mockModel,
+					config: config,
+				}
+
+				mockModel.EXPECT().Call(ctx, reportPrompt+reportOutput, p.systemInfo()+"report request", []*message.Image(nil)).
+					Return("invalid response", nil)
+
+				return p
+			},
+		},
+		{
+			wantErr:    true,
+			name:       "error from LLM",
+			request:    "report request",
+			wantResult: nil,
+			setupMock: func(t *testing.T) *Provider {
+				mockModel := NewMockModel(t)
+
+				p := &Provider{
+					llm:    mockModel,
+					config: config,
+				}
+
+				mockModel.EXPECT().Call(ctx, reportPrompt+reportOutput, p.systemInfo()+"report request", []*message.Image(nil)).
+					Return("", assert.AnError)
+
+				return p
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			provider := tt.setupMock(t)
+			result, err := provider.Report(ctx, tt.request)
 
 			if tt.wantErr {
 				assert.Error(t, err)

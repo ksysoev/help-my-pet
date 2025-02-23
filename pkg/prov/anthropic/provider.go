@@ -26,7 +26,6 @@ type Config struct {
 // Config contains essential settings such as API keys, model type, and token limits, which are used to initialize the provider.
 type Provider struct {
 	llm    Model
-	parser *ResponseParser
 	config Config
 }
 
@@ -39,11 +38,6 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("API key is required")
 	}
 
-	parser, err := NewResponseParser()
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize response parser: %w", err)
-	}
-
 	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic model: %w", err)
@@ -52,35 +46,60 @@ func New(cfg Config) (*Provider, error) {
 	return &Provider{
 		llm:    llm,
 		config: cfg,
-		parser: parser,
 	}, nil
 }
 
-// Call performs a request to the underlying language model (LLM) with the provided context and prompt.
-// It combines internal format instructions and system information with the user prompt to create the full input.
-// If the request succeeds, the LLM response is parsed into a structured format.
-// ctx is the request context, prompt is the user's input.
-// Returns a structured LLMResult containing the response and any follow-up questions, or an error if the call fails or the response cannot be parsed.
-func (p *Provider) Call(ctx context.Context, prompt string, imgs []*message.Image) (*message.LLMResult, error) {
-	formatInstructions := p.parser.FormatInstructions()
+// Analyze processes a request and associated images using the LLM, returning a formatted result or an error.
+// It sends the request combined with system prompts to the LLM, parses the response, and handles errors if the API call or parsing fails.
+// ctx is the context for managing request lifecycle; request is the input query; imgs represents associated images to be analyzed.
+// Returns a structured LLMResult containing the analysis or an error if the LLM call or response parsing fails.
+func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
+	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
-	slog.DebugContext(ctx, "Anthropic LLM call",
-		slog.String("format_instructions", formatInstructions),
-		slog.String("question", prompt))
+	parser := newAssistantResponseParser(analyzeOutput)
 
-	response, err := p.llm.Call(ctx, formatInstructions, p.systemInfo()+prompt, imgs)
+	systemPrompt := analyzePrompt + parser.FormatInstructions()
+
+	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, imgs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
-	structuredResponse, err := p.parser.Parse(response)
+	slog.Debug("Anthropic LLM response", slog.Any("response", response))
+
+	result, err := parser.Parse(response)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
 	}
 
-	slog.Debug("Anthropic LLM response", slog.Any("response", structuredResponse))
+	return result, nil
+}
 
-	return structuredResponse, nil
+// Report generates a formatted analysis based on the provided request using the LLM and parses the response into a structured result.
+// It sends a system prompt combined with the user's input to the LLM and handles errors during the API call or parsing process.
+// ctx is the context for managing the request lifecycle; request is the input query to be analyzed.
+// Returns a structured LLMResult containing the analysis or an error if the LLM call or response parsing fails.
+func (p *Provider) Report(ctx context.Context, request string) (*message.LLMResult, error) {
+	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
+
+	parser := newAssistantResponseParser(reportOutput)
+
+	systemPrompt := reportPrompt + parser.FormatInstructions()
+
+	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, nil)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
+	}
+
+	slog.Debug("Anthropic LLM response", slog.Any("response", response))
+
+	result, err := parser.Parse(response)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
+	}
+
+	return result, nil
 }
 
 // systemInfo retrieves and formats basic system information, including the current date in YYYY-MM-DD format.

@@ -15,60 +15,69 @@ var (
 	ErrEmptyText   = errors.New("response text is empty")
 )
 
-// ResponseParser is a custom output parser for our Response type
-type ResponseParser struct{}
-
-// NewResponseParser creates a new ResponseParser instance
-func NewResponseParser() (*ResponseParser, error) {
-	return &ResponseParser{}, nil
+// newAssistantResponseParser initializes and returns a ResponseParser for structuring assistant LLM responses.
+// It uses the provided prompt as the format instructions for parsing.
+// Returns a ResponseParser configured to parse responses into the message.LLMResult type.
+func newAssistantResponseParser(prompt string) *ResponseParser[message.LLMResult] {
+	return NewResponseParser[message.LLMResult](prompt)
 }
 
-// FormatInstructions returns the format instructions for the LLM
-func (p *ResponseParser) FormatInstructions() string {
-	return `Return your response in JSON format with this structure:
-{
-  "text": "The main response text providing pet care advice",
-  "questions": [
-    {
-      "text": "Any follow-up questions to gather more information",
-      "answers": ["Optional", "Array", "Of", "Predefined", "Answers"]
-    }
-  ],
-  "media": "Optional detailed description of any media content provided if provided(photo, video, documents), this information may be used for future queries"
+// ResponseParser is a generic type that encapsulates functionality for parsing responses formatted by an LLM.
+// It utilizes the provided format instructions to guide the parsing process and ensure the output conforms to a structured type.
+type ResponseParser[T any] struct {
+	instructions string
 }
 
-Note:
-- The "text" field is required and must contain your main advice or response
-- The "questions" array is optional and can be empty if no follow-up questions are needed
-- Each question must have a "text" field
-- The "answers" field in questions is optional
-- The "media" field is optional and can be used to save detailed media information for use in future queries. Focus on information for veterinarians and pet owners.
-
-Example with no questions:
-{
-  "text": "Based on the symptoms described, it sounds like your cat may have hairballs. Try brushing them daily and consider specialized hairball control food.",
-  "questions": [],
-  "media": "Size of hairballs is about 1 inch in diameter. It doesn't contain any blood or foreign objects."'
+// NewResponseParser creates a new instance of ResponseParser with the provided format instructions.
+// It returns a pointer to the initialized ResponseParser or an error if initialization fails.
+// inst specifies the format instructions to guide the LLM response parsing.
+// Returns a generic ResponseParser initialized with the given instructions and an error if inst is invalid or empty.
+func NewResponseParser[T any](inst string) *ResponseParser[T] {
+	return &ResponseParser[T]{
+		instructions: inst,
+	}
 }
 
-Example with questions:
-{
-  "text": "To provide proper advice for your dog's anxiety, I need some more information.",
-  "questions": [
-    {
-      "text": "How often does your dog show these symptoms?",
-      "answers": ["Daily", "Weekly", "Only in specific situations"]
-    },
-    {
-      "text": "Have you noticed any specific triggers?",
-      "answers": []
-    }
-  ],
-  "media": "Your dog seems to be anxious in new environments or around loud noises."
-}`
+// FormatInstructions retrieves the format instructions used to guide the parsing process of the response.
+// It returns a string containing the predefined format instructions stored within the ResponseParser.
+func (p *ResponseParser[T]) FormatInstructions() string {
+	return p.instructions
 }
 
-// sanitizeJSONStringLiterals processes a JSON string, escaping newlines only within string literals
+// Parse extracts and decodes JSON content from the provided text into the generic type T.
+// It sanitizes input by escaping invalid string literals and removes surrounding markdown formatting if present.
+// Returns a pointer to the parsed object of type T on success, or an error if the input is empty,
+// the JSON is invalid, or the sanitization process fails.
+func (p *ResponseParser[T]) Parse(text string) (*T, error) {
+	if text == "" {
+		return nil, ErrEmptyText
+	}
+
+	// Extract JSON content
+	text = extractJSON(text)
+
+	// Sanitize string literals
+	sanitized, err := sanitizeJSONStringLiterals(text)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrInvalidJSON, err)
+	}
+
+	var response T
+	decoder := json.NewDecoder(strings.NewReader(sanitized))
+	decoder.UseNumber()
+	if err := decoder.Decode(&response); err != nil {
+		slog.Error("failed to parse response",
+			slog.Any("error", err),
+			slog.String("original", text))
+		return nil, fmt.Errorf("%w: %v", ErrInvalidJSON, err)
+	}
+
+	return &response, nil
+}
+
+// sanitizeJSONStringLiterals escapes invalid newline and tab characters within JSON string literals.
+// It traverses the input string, ensuring proper escapes for special characters and handles escaped sequences correctly.
+// Returns the sanitized JSON string with proper escaping, or an error if an unterminated string literal is detected.
 func sanitizeJSONStringLiterals(input string) (string, error) {
 	var result strings.Builder
 	var inString bool
@@ -119,7 +128,10 @@ func sanitizeJSONStringLiterals(input string) (string, error) {
 	return result.String(), nil
 }
 
-// extractJSON attempts to extract JSON content from the text
+// extractJSON extracts a JSON string from the provided text, handling both markdown code blocks and inline JSON structures.
+// It removes surrounding markdown syntax such as "```json" and trims spaces around the detected JSON content.
+// Returns the extracted JSON content as a string and ensures well-formed JSON is identified.
+// Returns an empty string if no JSON-like structure is found in the input.
 func extractJSON(text string) string {
 	// Try to find JSON between markdown code blocks
 	if strings.HasPrefix(text, "```json") && strings.HasSuffix(text, "```") {
@@ -140,36 +152,4 @@ func extractJSON(text string) string {
 	}
 
 	return strings.TrimSpace(text)
-}
-
-// Parse parses the LLM output into our Response struct
-func (p *ResponseParser) Parse(text string) (*message.LLMResult, error) {
-	if text == "" {
-		return nil, ErrEmptyText
-	}
-
-	// Extract JSON content
-	text = extractJSON(text)
-
-	// Sanitize string literals
-	sanitized, err := sanitizeJSONStringLiterals(text)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %v", ErrInvalidJSON, err)
-	}
-
-	var response message.LLMResult
-	decoder := json.NewDecoder(strings.NewReader(sanitized))
-	decoder.UseNumber()
-	if err := decoder.Decode(&response); err != nil {
-		slog.Error("failed to parse response",
-			slog.Any("error", err),
-			slog.String("original", text))
-		return nil, fmt.Errorf("%w: %v", ErrInvalidJSON, err)
-	}
-
-	if response.Text == "" {
-		return nil, ErrEmptyText
-	}
-
-	return &response, nil
 }

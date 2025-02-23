@@ -1,10 +1,9 @@
-package anthropic_test
+package anthropic
 
 import (
 	"testing"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-	"github.com/ksysoev/help-my-pet/pkg/prov/anthropic"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -199,10 +198,14 @@ newline", "Normal answer"]
 			},
 			wantErr: false,
 		},
+		{
+			name:    "Empty string",
+			input:   "",
+			wantErr: true,
+		},
 	}
 
-	parser, err := anthropic.NewResponseParser()
-	assert.NoError(t, err)
+	parser := newAssistantResponseParser("text\nquestions")
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -218,8 +221,7 @@ newline", "Normal answer"]
 }
 
 func TestResponseParser_FormatInstructions(t *testing.T) {
-	parser, err := anthropic.NewResponseParser()
-	assert.NoError(t, err)
+	parser := newAssistantResponseParser("text\nquestions\nThe main response text providing pet care advice")
 
 	instructions := parser.FormatInstructions()
 	assert.NotEmpty(t, instructions)
@@ -229,7 +231,6 @@ func TestResponseParser_FormatInstructions(t *testing.T) {
 }
 
 func TestNewResponseParser(t *testing.T) {
-	parser, err := anthropic.NewResponseParser()
-	assert.NoError(t, err)
+	parser := NewResponseParser[message.LLMResult]("test instructions")
 	assert.NotNil(t, parser)
 }
