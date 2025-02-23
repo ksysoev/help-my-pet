@@ -5,7 +5,7 @@ type LLMResult struct {
 	Text      string     `json:"text"`
 	Questions []Question `json:"questions"`
 	Media     string     `json:"media,omitempty"`
-	Reasoning string     `json:"reasoning"`
+	Reasoning string     `json:"reasoning,omitempty"`
 }
 
 // Question represents a follow-up question with optional predefined answers
