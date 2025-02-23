@@ -57,6 +57,12 @@ type anthropicModel struct {
 	maxTokens int
 }
 
+// newAnthropicModel initializes a new instance of anthropicModel configured with the provided parameters.
+// It sets up the Anthropic client using the API key, associates the specified model ID, and configures the maximum tokens.
+// apiKey is the authentication key used to interact with the Anthropic API.
+// modelID identifies the target model to use, such as "claude-2".
+// maxTokens determines the maximum tokens allowed per request, enforcing output length constraints.
+// Returns a pointer to an anthropicModel instance for interacting with Anthropic API and an error if client initialization fails.
 func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropicModel, error) {
 	client := anthropic.NewClient(option.WithAPIKey(apiKey))
 	if client == nil {
@@ -70,12 +76,11 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 	}, nil
 }
 
-// Analyze processes a user request and associated images to generate a structured analysis response.
-// It constructs a request for the Anthropic API using the provided text and images, adhering to predefined guidelines.
-// ctx is the context for the API request, allowing for cancellation and timeouts.
-// request is the user-provided input string to be analyzed.
-// imgs is a slice of images, each represented by its MIME type and base64-encoded data.
-// Returns a pointer to analyzeResponse containing the analysis results or an error if the request or parsing fails.
+// Call sends a request to the Anthropic API with system prompts, user inputs, and optional images.
+// It constructs the message payload using the provided request string, images, and context system settings.
+// ctx is the execution context for the request, systemPrompts is the contextual system instruction,
+// request is the user's input, and imgs is a slice of images to include in the request.
+// Returns the response text from the API and an error if the request fails or the API response is invalid.
 func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string, imgs []*message.Image) (string, error) {
 	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(request)}
 
