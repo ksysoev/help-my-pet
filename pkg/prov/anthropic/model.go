@@ -3,6 +3,7 @@ package anthropic
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
@@ -105,6 +106,13 @@ func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string
 	if len(msg.Content) == 0 {
 		return "", fmt.Errorf("empty response from Anthropic API")
 	}
+
+	slog.InfoContext(
+		ctx, "Model Request",
+		slog.String("model", m.modelID),
+		slog.Int64("input", msg.Usage.InputTokens),
+		slog.Int64("output", msg.Usage.OutputTokens),
+	)
 
 	return msg.Content[0].Text, nil
 }
