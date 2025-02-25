@@ -3,11 +3,11 @@ package anthropic
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
-	"golang.org/x/exp/slog"
 )
 
 // Model defines the interface for LLM interactions
