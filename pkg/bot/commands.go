@@ -36,7 +36,14 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to reset conversation: %w", err)
 		}
 
-		return tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Questionary is cancelled")), nil
+		resp := tgbotapi.NewMessage(msg.Chat.ID, i18n.GetLocale(ctx).Sprintf("Questionary is cancelled"))
+
+		resp.ReplyMarkup = tgbotapi.ReplyKeyboardRemove{
+			RemoveKeyboard: true,
+			Selective:      false,
+		}
+
+		return resp, nil
 	case "help":
 		return handleHelp(ctx, msg)
 	default:
