@@ -50,7 +50,7 @@ func TestValidateDOB(t *testing.T) {
 func TestNewPetProfileQuestionnaireState(t *testing.T) {
 	state := NewPetProfileQuestionnaireState(context.Background())
 	assert.NotNil(t, state)
-	assert.Equal(t, 6, len(state.QAPairs))
+	assert.Equal(t, 10, len(state.QAPairs))
 	assert.Equal(t, 0, state.CurrentIndex)
 }
 
