@@ -89,7 +89,7 @@ func TestProcessProfileAnswer(t *testing.T) {
 			request: &message.UserMessage{
 				ChatID: "123",
 				UserID: "user1",
-				Text:   "25", // The last answer (weight) that completes the profile
+				Text:   "Homemade food, no allergies", // The last answer (weight) that completes the profile
 			},
 			conv: func() *conversation.Conversation {
 				conv := conversation.NewConversation("123")
@@ -103,7 +103,11 @@ func TestProcessProfileAnswer(t *testing.T) {
 				_, _ = conv.AddQuestionAnswer("Labrador")   // breed
 				_, _ = conv.AddQuestionAnswer("2020-01-01") // dob
 				_, _ = conv.AddQuestionAnswer("Male")       // gender
-				// The last answer (weight) will be added during test
+				_, _ = conv.AddQuestionAnswer("10 kg")      // weight
+				_, _ = conv.AddQuestionAnswer("yes")        // neutered
+				_, _ = conv.AddQuestionAnswer("high")       // activity level
+				_, _ = conv.AddQuestionAnswer("None")       // diet
+				// The last answer is the one that will be provided in the test
 				return conv
 			}(),
 			setupMocks: func(repo *MockConversationRepository, profileRepo *MockPetProfileRepository) {
@@ -111,7 +115,9 @@ func TestProcessProfileAnswer(t *testing.T) {
 
 				profileRepo.EXPECT().SaveProfile(mock.Anything, "user1", mock.MatchedBy(func(p *pet.Profile) bool {
 					return p.Name == "Rex" && p.Species == "Dog" && p.Breed == "Labrador" &&
-						p.DateOfBirth == "2020-01-01" && p.Gender == "Male" && p.Weight == "25"
+						p.DateOfBirth == "2020-01-01" && p.Gender == "Male" && p.Weight == "10 kg" &&
+						p.Neutered == "yes" && p.Activity == "high" && p.FoodPreferences == "Homemade food, no allergies" &&
+						p.ChronicDiseases == "None"
 				})).Return(nil)
 			},
 			expectedText: "Pet profile saved successfully",
