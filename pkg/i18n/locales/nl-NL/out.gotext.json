@@ -140,6 +140,51 @@
             "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translation": "Wat is het gewicht van je huisdier? Geef het gewicht op, gevolgd door de eenheid, bijvoorbeeld 5 kg"
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "Is je huisdier gesteriliseerd of gecastreerd?"
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "ja"
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "nee"
+        },
+        {
+            "id": "How active is your pet?",
+            "message": "How active is your pet?",
+            "translation": "Hoe actief is je huisdier?"
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "laag"
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "gemiddeld"
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "hoog"
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "Heeft je huisdier chronische ziekten?"
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "Wat zijn de voedselvoorkeuren of dieetbeperkingen van je huisdier?"
         }
     ]
 }

@@ -140,6 +140,51 @@
             "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translation": "Яка вага вашого улюбленця? Будь ласка, вкажіть вагу, вказавши одиницю, наприклад, 5 кг"
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "Чи стерилізовано вашого улюбленця?"
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "так"
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "ні"
+        },
+        {
+            "id": "How active is your pet?",
+            "message": "How active is your pet?",
+            "translation": "Як активний ваш улюбленець?"
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "низький"
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "середній"
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "високий"
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "Чи має ваш улюбленець які-небудь хронічні захворювання?"
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "Які у вашого улюбленця є вподобання щодо їжі або дієтичні обмеження?"
         }
     ]
 }

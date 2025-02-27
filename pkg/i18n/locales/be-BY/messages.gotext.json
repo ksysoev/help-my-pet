@@ -140,6 +140,51 @@
             "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translation": "Які вага вашага пухнатага сябра? Калі ласка, пазначце вагу, наступнае за адзінка, напрыклад, 5 кг"
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "Ці быў ваш пухнаты сябар стэрылізаваны або кастраваны?"
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "так"
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "не"
+        },
+        {
+            "id": "How active is your pet?",
+            "message": "How active is your pet?",
+            "translation": "Як актыўны ваш пухнаты сябар?"
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "нізкі"
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "сярэдні"
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "высокі"
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "Ці мае ваш пухнаты сябар хронічныя захворванні?"
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "Якія ў вашага пухнатага сябра перавагі ў харчаванні або дыетычныя абмежаванні?"
         }
     ]
 }

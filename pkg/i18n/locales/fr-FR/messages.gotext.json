@@ -140,6 +140,51 @@
             "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translation": "Quel est le poids de votre animal de compagnie ? Veuillez spécifier le poids suivi de l'unité, par exemple 5 kg"
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "Votre animal de compagnie est-il stérilisé ?"
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "oui"
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "non"
+        },
+        {
+            "id": "How active is your pet?",
+            "message": "How active is your pet?",
+            "translation": "À quel point votre animal de compagnie est-il actif ?"
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "faible"
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "moyen"
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "élevé"
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "Votre animal de compagnie a-t-il des maladies chroniques ?"
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "Quelles sont les préférences alimentaires ou les restrictions alimentaires de votre animal de compagnie ?"
         }
     ]
 }

@@ -140,6 +140,51 @@
             "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translation": "Berapakah berat haiwan peliharaan anda? Sila nyatakan berat diikuti dengan unit, contohnya, 5 kg"
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "Adakah haiwan peliharaan anda telah dimandulkan?"
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "ya"
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "tidak"
+        },
+        {
+            "id": "How active is your pet?",
+            "message": "How active is your pet?",
+            "translation": "Seberapa aktif haiwan peliharaan anda?"
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "rendah"
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "sederhana"
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "tinggi"
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "Adakah haiwan peliharaan anda mempunyai sebarang penyakit kronik?"
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "Apakah pilihan makanan haiwan peliharaan anda atau sekatan diet?"
         }
     ]
 }
