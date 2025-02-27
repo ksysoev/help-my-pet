@@ -57,6 +57,32 @@ func NewPetProfileQuestionnaireState(ctx context.Context) *PetProfileStateImpl {
 			},
 			Field: "weight",
 		},
+		{
+			Question: message.Question{
+				Text:    i18n.GetLocale(ctx).Sprintf("Is your pet spayed or neutered?"),
+				Answers: []string{i18n.GetLocale(ctx).Sprintf("yes"), i18n.GetLocale(ctx).Sprintf("no")},
+			},
+			Field: "neutered",
+		},
+		{
+			Question: message.Question{
+				Text:    i18n.GetLocale(ctx).Sprintf("How active is your pet?"),
+				Answers: []string{i18n.GetLocale(ctx).Sprintf("low"), i18n.GetLocale(ctx).Sprintf("medium"), i18n.GetLocale(ctx).Sprintf("high")},
+			},
+			Field: "activity",
+		},
+		{
+			Question: message.Question{
+				Text: i18n.GetLocale(ctx).Sprintf("Does your pet have any chronic diseases?"),
+			},
+			Field: "chronic_diseases",
+		},
+		{
+			Question: message.Question{
+				Text: i18n.GetLocale(ctx).Sprintf("What are your pet's food preferences or dietary restrictions?"),
+			},
+			Field: "food_preferences",
+		},
 	}
 
 	return &PetProfileStateImpl{
