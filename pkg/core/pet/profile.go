@@ -1,18 +1,38 @@
 package pet
 
 import (
+	"cmp"
 	"fmt"
 	"time"
 )
 
+const profileTemplate = `
+Pet Profile:
+Name: %s
+Species: %s
+Breed: %s
+Date of Birth: %s
+Age: %s
+Gender: %s
+Weight: %s
+Neutered: %s
+Activity Level: %s
+Chronic Diseases: %s
+Food Preferences: %s
+`
+
 // Profile represents a pet's profile information
 type Profile struct {
-	Name        string `json:"name"`
-	Species     string `json:"species"`
-	Breed       string `json:"breed"`
-	DateOfBirth string `json:"date_of_birth"`
-	Gender      string `json:"gender"`
-	Weight      string `json:"weight"`
+	Name            string `json:"name"`
+	Species         string `json:"species"`
+	Breed           string `json:"breed"`
+	DateOfBirth     string `json:"date_of_birth"`
+	Gender          string `json:"gender"`
+	Weight          string `json:"weight"`
+	Neurtured       string `json:"neutered,omitempty"`
+	Activity        string `json:"activity,omitempty"`
+	ChronicDiseases string `json:"chronic_diseases,omitempty"`
+	FoodPreferences string `json:"food_preferences,omitempty"`
 }
 
 // Profiles represents a collection of pet profiles for a user
@@ -27,16 +47,21 @@ type Profiles struct {
 func (p Profile) String() string {
 	age := calculateAge(time.Now(), p.DateOfBirth)
 
-	return fmt.Sprintf(`
-Pet Profile:
-Name: %s
-Species: %s
-Breed: %s
-Date of Birth: %s
-Age: %s
-Gender: %s
-Weight: %s
-`, p.Name, p.Species, p.Breed, p.DateOfBirth, age, p.Gender, p.Weight)
+	return fmt.Sprintf(
+		profileTemplate,
+		p.Name,
+		p.Species,
+		p.Breed,
+		p.DateOfBirth,
+		age,
+		p.Gender,
+		p.Weight,
+		cmp.Or(p.Neurtured, "Not provided"),
+		cmp.Or(p.Activity, "Not provided"),
+		cmp.Or(p.ChronicDiseases, "Not provided"),
+		cmp.Or(p.FoodPreferences, "Not provided"),
+	)
+
 }
 
 // calculateAge calculates the age in years based on the provided date of birth string in "YYYY-MM-DD" format.
