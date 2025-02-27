@@ -29,7 +29,7 @@ type Profile struct {
 	DateOfBirth     string `json:"date_of_birth"`
 	Gender          string `json:"gender"`
 	Weight          string `json:"weight"`
-	Neurtured       string `json:"neutered,omitempty"`
+	Neutered        string `json:"neutered,omitempty"`
 	Activity        string `json:"activity,omitempty"`
 	ChronicDiseases string `json:"chronic_diseases,omitempty"`
 	FoodPreferences string `json:"food_preferences,omitempty"`
@@ -56,7 +56,7 @@ func (p Profile) String() string {
 		age,
 		p.Gender,
 		p.Weight,
-		cmp.Or(p.Neurtured, "Not provided"),
+		cmp.Or(p.Neutered, "Not provided"),
 		cmp.Or(p.Activity, "Not provided"),
 		cmp.Or(p.ChronicDiseases, "Not provided"),
 		cmp.Or(p.FoodPreferences, "Not provided"),
