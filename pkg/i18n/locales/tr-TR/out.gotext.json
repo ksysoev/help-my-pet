@@ -157,9 +157,9 @@
             "translation": "hayır"
         },
         {
-            "id": "How active is your pet?",
-            "message": "How active is your pet?",
-            "translation": "Evcil hayvanınız ne kadar aktif?"
+            "id": "How would you describe your pet's activity level?",
+            "message": "How would you describe your pet's activity level?",
+            "translation": "Evcil hayvanınızın aktivite seviyesini nasıl tanımlarsınız?"
         },
         {
             "id": "low",

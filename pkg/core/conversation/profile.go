@@ -85,7 +85,7 @@ func NewPetProfileQuestionnaireState(ctx context.Context) *PetProfileStateImpl {
 		},
 		{
 			Question: message.Question{
-				Text:    i18n.GetLocale(ctx).Sprintf("How active is your pet?"),
+				Text:    i18n.GetLocale(ctx).Sprintf("How would you describe your pet's activity level?"),
 				Answers: []string{i18n.GetLocale(ctx).Sprintf("low"), i18n.GetLocale(ctx).Sprintf("medium"), i18n.GetLocale(ctx).Sprintf("high")},
 			},
 			Field: "activity",

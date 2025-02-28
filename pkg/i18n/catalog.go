@@ -54,19 +54,19 @@ func init() {
 var messageKeyToIndex = map[string]int{
 	"<b>Help My Pet Bot Commands</b>:\n/start - Start the conversation with the bot\n/terms - View the Terms and Conditions of the service\n/editprofile - Update your pet's profile information, such as name, age, breed, etc. This information helps the bot provide more accurate advice.\n/cancel - Cancel the current questionnaire, if any is in progress (e.g., when you want to start over or change your question)\n/help - View this help message": 4,
 	"<b>Terms and Conditions</b>\n<i>Last updated: 30.01.2025</i>\n\nThank you for using our veterinary advice chatbot (“the Service”). By accessing or using this Service, you agree to be bound by the following terms and conditions (“Terms”). If you do not agree to these Terms, please discontinue use immediately.\n\n<b>1. Nature of the Service</b>\n1.1 The Service provides general information, guidance, and suggestions for pet care, including (but not limited to) diet, behavior, and training.\n1.2 The Service is not a substitute for professional veterinary diagnosis, treatment, or care. Always seek the advice of a licensed veterinarian for any questions regarding your pet’s health.\n\n<b>2. No Veterinary-Client-Patient Relationship</b>\n2.1 Using the Service or engaging with our AI assistant does not create a veterinarian-client-patient relationship.\n2.2 Any advice or guidance provided by the Service is based on limited information and should only be considered general information.\n\n<b>3. Limitation of Liability</b>\n3.1 You acknowledge and agree that use of the Service is at your own risk.\n3.2 Under no circumstances shall the owners, developers, or licensors of the Service be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your access to or use of the Service.\n3.3 You understand that decisions regarding your pet’s care and any resulting outcomes are your sole responsibility. If you have any doubt about the well-being of your pet or its health, you should immediately consult a licensed veterinarian.\n\n<b>4. No Warranty</b>\n4.1 The Service is provided on an “as is” and “as available” basis without warranties of any kind, whether express or implied.\n4.2 We do not warrant that the Service will be uninterrupted, error-free, secure, or free from viruses.\n\n<b>5. User Responsibilities</b>\n5.1 You are responsible for providing accurate and complete information about your pet when seeking advice.\n5.2 You must ensure that all questions, descriptions, and data you provide do not violate any third-party rights or local laws.\n\n<b>6. International Use</b>\n6.1 The Service is intended for global use. You are responsible for compliance with all applicable local laws and regulations in your jurisdiction.\n6.2 We do not guarantee that the Service or any of its content is appropriate or permissible in any specific country or region.\n\n<b>7. Modifications</b>\n7.1 We reserve the right to modify or replace these Terms at any time.\n7.2 If we make material changes, we will post the updated Terms and indicate the date of the latest revision at the top of this document.\n\n<b>8. Governing Law and Dispute Resolution</b>\n8.1 These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction of the Service provider’s principal place of business, without regard to conflict-of-law principles.\n8.2 Any dispute arising from or relating to these Terms shall be resolved through amicable negotiation and, if necessary, by binding arbitration or litigation in the applicable courts.\n\n<b>9. Acceptance of Terms</b>\n9.1 By continuing to access or use the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms.\n9.2 If you do not agree, you must cease using the Service immediately.\n\nIf you have any questions or concerns regarding these Terms, or if you need further clarification, please contact at <i>k.sysoev@me.com</i>.": 3,
-	"Does your pet have any chronic diseases?": 33,
-	"How active is your pet?":                  29,
+	"Does your pet have any chronic diseases?":                                                                     33,
+	"How would you describe your pet's activity level?":                                                            29,
 	"I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.": 6,
-	"Is your pet spayed or neutered?":                                                              26,
-	"Pet profile saved successfully":                                                               15,
-	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                      14,
-	"Please, provide at least one photo":                                                           10,
-	"Please, provide no more than %d photo(s)":                                                     11,
-	"Please, provide your question in text format along with photo(s)":                             9,
-	"Provided date cannot be in the future. Please provide a valid date.":                          13,
-	"Questionary is cancelled":                                                                     0,
-	"Sorry, I cannot process videos, audio, or documents. Please send your question as text only.": 5,
-	"Sorry, I encountered an error while processing your request. Please try again later.":         12,
+	"Is your pet spayed or neutered?":                                                                              26,
+	"Pet profile saved successfully":                                                                               15,
+	"Please provide a date in the valid format YYYY-MM-DD (e.g., 2023-12-31)":                                      14,
+	"Please, provide at least one photo":                                                                           10,
+	"Please, provide no more than %d photo(s)":                                                                     11,
+	"Please, provide your question in text format along with photo(s)":                                             9,
+	"Provided date cannot be in the future. Please provide a valid date.":                                          13,
+	"Questionary is cancelled":                                                                                     0,
+	"Sorry, I cannot process videos, audio, or documents. Please send your question as text only.":                 5,
+	"Sorry, I encountered an error while processing your request. Please try again later.":                         12,
 	"Unknown command": 1,
 	"We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.": 8,
 	"Welcome to Help My Pet Bot! 🐾\n\nI'm your personal pet care assistant, ready to help you take better care of your furry friend. I can analyze photos of your pet and assist you with:\n\n- Pet health and behavior questions - feel free to share photos of any concerning symptoms or behaviors\n- Diet and nutrition advice, including photos of food or treats you're considering\n- Training tips and techniques - you can send pictures of specific situations you need help with\n- General pet care guidance, with photo analysis of your pet's environment or supplies\n\nSimply type your question or send photos along with your concerns about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. You can send multiple photos if needed to better show the situation.\n\nRemember, while I can offer guidance and analyze photos, for serious medical conditions, always consult with a veterinarian.\n\nTo get started, just ask me any question about your pet - with or without photos!": 2,
@@ -98,12 +98,12 @@ var be_BYIndex = []uint32{ // 36 elements
 	0x00002c56, 0x00002c96, 0x00002cc2, 0x00002ccf,
 	0x00002cd6, 0x00002d0a, 0x00002dc0, 0x00002df1,
 	0x00002e04, 0x00002e11, 0x00002ec0, 0x00002f25,
-	0x00002f2c, 0x00002f31, 0x00002f67, 0x00002f72,
+	0x00002f2c, 0x00002f31, 0x00002f8b, 0x00002f96,
 	// Entry 20 - 3F
-	0x00002f81, 0x00002f8e, 0x00002fe6, 0x00003078,
+	0x00002fa5, 0x00002fb2, 0x0000300a, 0x0000309c,
 } // Size: 168 bytes
 
-const be_BYData string = "" + // Size: 12408 bytes
+const be_BYData string = "" + // Size: 12444 bytes
 	"\x02Апытанне адмянена\x02Невядомая каманда\x02Сардэчна запрашаем у Help " +
 	"My Pet Bot! 🐾\x0a\x0aЯ ваш асабісты асістэнт па даглядзе за домашнімі жы" +
 	"вёламі, гатовы дапамагчы вам лепш захоўваць вашага пухнатага сябра. Я м" +
@@ -202,10 +202,10 @@ const be_BYData string = "" + // Size: 12408 bytes
 	"ыклад, 2010-12-31).\x02Якога ваш пухнатага сябра?\x02мужчынскі\x02жаноч" +
 	"ы\x02Які вага вашага пухнатага сябра? Калі ласка, пазначце вагу, наступ" +
 	"нае за адзінка, напрыклад, 5 кг\x02Ці быў ваш пухнаты сябар стэрылізава" +
-	"ны або кастраваны?\x02так\x02не\x02Як актыўны ваш пухнаты сябар?\x02ніз" +
-	"кі\x02сярэдні\x02высокі\x02Ці мае ваш пухнаты сябар хронічныя захворван" +
-	"ні?\x02Якія ў вашага пухнатага сябра перавагі ў харчаванні або дыетычны" +
-	"я абмежаванні?"
+	"ны або кастраваны?\x02так\x02не\x02Як вы апішаце актыўнасць вашага пухн" +
+	"атага сябра?\x02нізкі\x02сярэдні\x02высокі\x02Ці мае ваш пухнаты сябар " +
+	"хронічныя захворванні?\x02Якія ў вашага пухнатага сябра перавагі ў харч" +
+	"аванні або дыетычныя абмежаванні?"
 
 var ca_ESIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -216,12 +216,12 @@ var ca_ESIndex = []uint32{ // 36 elements
 	0x00001870, 0x00001894, 0x000018b0, 0x000018b4,
 	0x000018b8, 0x000018d9, 0x0000194c, 0x00001974,
 	0x0000197b, 0x00001983, 0x000019ec, 0x00001a1c,
-	0x00001a20, 0x00001a23, 0x00001a43, 0x00001a48,
+	0x00001a20, 0x00001a23, 0x00001a5d, 0x00001a62,
 	// Entry 20 - 3F
-	0x00001a4f, 0x00001a53, 0x00001a81, 0x00001add,
+	0x00001a69, 0x00001a6d, 0x00001a9b, 0x00001af7,
 } // Size: 168 bytes
 
-const ca_ESData string = "" + // Size: 6877 bytes
+const ca_ESData string = "" + // Size: 6903 bytes
 	"\x02El qüestionari s'ha cancel·lat\x02Ordre desconeguda\x02Benvingut a H" +
 	"elp My Pet Bot! 🐾\x0a\x0aSóc el teu assistent personal de cura de mascot" +
 	"es, preparat per ajudar-te a cuidar millor del teu amic pelut. Puc anali" +
@@ -317,9 +317,10 @@ const ca_ESData string = "" + // Size: 6877 bytes
 	"nere de la teva mascota?\x02mascle\x02femella\x02Quin és el pes de la te" +
 	"va mascota? Si us plau, especifica el pes seguit de la unitat, per exemp" +
 	"le, 5 kg\x02La teva mascota està esterilitzada o castrada?\x02sí\x02no" +
-	"\x02Quan actiu és la teva mascota?\x02baix\x02mitjà\x02alt\x02La teva ma" +
-	"scota té alguna malaltia crònica?\x02Quines són les preferències aliment" +
-	"àries o restriccions dietètiques de la teva mascota?"
+	"\x02Com descriuries el nivell d'activitat de la teva mascota?\x02baix" +
+	"\x02mitjà\x02alt\x02La teva mascota té alguna malaltia crònica?\x02Quine" +
+	"s són les preferències alimentàries o restriccions dietètiques de la tev" +
+	"a mascota?"
 
 var de_DEIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -330,12 +331,12 @@ var de_DEIndex = []uint32{ // 36 elements
 	0x00001a8f, 0x00001aa8, 0x00001acb, 0x00001ad0,
 	0x00001ad6, 0x00001af5, 0x00001b5d, 0x00001b86,
 	0x00001b90, 0x00001b99, 0x00001bf9, 0x00001c27,
-	0x00001c2a, 0x00001c2f, 0x00001c4b, 0x00001c53,
+	0x00001c2a, 0x00001c2f, 0x00001c73, 0x00001c7b,
 	// Entry 20 - 3F
-	0x00001c5a, 0x00001c5f, 0x00001c88, 0x00001cdb,
+	0x00001c82, 0x00001c87, 0x00001cb0, 0x00001d03,
 } // Size: 168 bytes
 
-const de_DEData string = "" + // Size: 7387 bytes
+const de_DEData string = "" + // Size: 7427 bytes
 	"\x02Fragebogen wurde abgebrochen\x02Unbekannter Befehl\x02Willkommen bei" +
 	" Help My Pet Bot! 🐾\x0a\x0aIch bin Ihr persönlicher Assistent für die Ha" +
 	"ustierpflege und stehe bereit, Ihnen zu helfen, sich besser um Ihren pel" +
@@ -438,10 +439,10 @@ const de_DEData string = "" + // Size: 7387 bytes
 	" JJJJ-MM-TT ein (z. B. 2010-12-31).\x02Was ist das Geschlecht Ihres Haus" +
 	"tieres?\x02männlich\x02weiblich\x02Wie viel wiegt Ihr Haustier? Bitte ge" +
 	"ben Sie das Gewicht gefolgt von der Einheit an, z. B. 5 kg\x02Ist Ihr Ha" +
-	"ustier kastriert oder sterilisiert?\x02ja\x02nein\x02Wie aktiv ist Ihr H" +
-	"austier?\x02niedrig\x02mittel\x02hoch\x02Hat Ihr Haustier chronische Kra" +
-	"nkheiten?\x02Was sind die Futtervorlieben oder diätetischen Einschränkun" +
-	"gen Ihres Haustieres?"
+	"ustier kastriert oder sterilisiert?\x02ja\x02nein\x02Wie würden Sie das " +
+	"Aktivitätsniveau Ihres Haustieres beschreiben?\x02niedrig\x02mittel\x02h" +
+	"och\x02Hat Ihr Haustier chronische Krankheiten?\x02Was sind die Futtervo" +
+	"rlieben oder diätetischen Einschränkungen Ihres Haustieres?"
 
 var en_GBIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -452,12 +453,12 @@ var en_GBIndex = []uint32{ // 36 elements
 	0x0000166e, 0x00001687, 0x000016a5, 0x000016a9,
 	0x000016ad, 0x000016c5, 0x00001720, 0x0000173b,
 	0x00001740, 0x00001747, 0x0000179d, 0x000017bd,
-	0x000017c1, 0x000017c4, 0x000017dc, 0x000017e0,
+	0x000017c1, 0x000017c4, 0x000017f6, 0x000017fa,
 	// Entry 20 - 3F
-	0x000017e7, 0x000017ec, 0x00001815, 0x00001853,
+	0x00001801, 0x00001806, 0x0000182f, 0x0000186d,
 } // Size: 168 bytes
 
-const en_GBData string = "" + // Size: 6227 bytes
+const en_GBData string = "" + // Size: 6253 bytes
 	"\x02Questionary is cancelled\x02Unknown command\x02Welcome to Help My Pe" +
 	"t Bot! 🐾\x0a\x0aI'm your personal pet care assistant, ready to help you " +
 	"take better care of your furry friend. I can analyze photos of your pet " +
@@ -546,9 +547,9 @@ const en_GBData string = "" + // Size: 6227 bytes
 	"t YYYY-MM-DD (e.g., 2010-12-31).\x02What is your pet's gender?\x02male" +
 	"\x02female\x02What is your pet's weight? Please specify the weight follo" +
 	"wed by the unit, e.g., 5 kg\x02Is your pet spayed or neutered?\x02yes" +
-	"\x02no\x02How active is your pet?\x02low\x02medium\x02high\x02Does your " +
-	"pet have any chronic diseases?\x02What are your pet's food preferences o" +
-	"r dietary restrictions?"
+	"\x02no\x02How would you describe your pet's activity level?\x02low\x02me" +
+	"dium\x02high\x02Does your pet have any chronic diseases?\x02What are you" +
+	"r pet's food preferences or dietary restrictions?"
 
 var es_ESIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -559,12 +560,12 @@ var es_ESIndex = []uint32{ // 36 elements
 	0x00001901, 0x00001925, 0x00001944, 0x0000194a,
 	0x0000194f, 0x0000196a, 0x000019d9, 0x000019fe,
 	0x00001a04, 0x00001a0b, 0x00001a73, 0x00001a9f,
-	0x00001aa3, 0x00001aa6, 0x00001ac7, 0x00001acc,
+	0x00001aa3, 0x00001aa6, 0x00001ae1, 0x00001ae6,
 	// Entry 20 - 3F
-	0x00001ad2, 0x00001ad7, 0x00001b06, 0x00001b5d,
+	0x00001aec, 0x00001af1, 0x00001b20, 0x00001b77,
 } // Size: 168 bytes
 
-const es_ESData string = "" + // Size: 7005 bytes
+const es_ESData string = "" + // Size: 7031 bytes
 	"\x02Cuestionario cancelado\x02Comando desconocido\x02¡Bienvenido a Help " +
 	"My Pet Bot! 🐾\x0a\x0aSoy tu asistente personal de cuidado de mascotas, l" +
 	"isto para ayudarte a cuidar mejor a tu amigo peludo. Puedo analizar foto" +
@@ -661,10 +662,10 @@ const es_ESData string = "" + // Size: 7005 bytes
 	"ha en el formato AAAA-MM-DD (por ejemplo, 2010-12-31).\x02¿Cuál es el gé" +
 	"nero de tu mascota?\x02macho\x02hembra\x02¿Cuál es el peso de tu mascota" +
 	"? Por favor, especifica el peso seguido de la unidad, por ejemplo, 5 kg" +
-	"\x02¿Tu mascota está esterilizada o castrada?\x02sí\x02no\x02¿Qué tan ac" +
-	"tiva es tu mascota?\x02baja\x02media\x02alta\x02¿Tu mascota tiene alguna" +
-	" enfermedad crónica?\x02¿Cuáles son las preferencias alimenticias o rest" +
-	"ricciones dietéticas de tu mascota?"
+	"\x02¿Tu mascota está esterilizada o castrada?\x02sí\x02no\x02¿Cómo descr" +
+	"ibirías el nivel de actividad de tu mascota?\x02baja\x02media\x02alta" +
+	"\x02¿Tu mascota tiene alguna enfermedad crónica?\x02¿Cuáles son las pref" +
+	"erencias alimenticias o restricciones dietéticas de tu mascota?"
 
 var fr_FRIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -675,12 +676,12 @@ var fr_FRIndex = []uint32{ // 36 elements
 	0x000019aa, 0x000019d9, 0x00001a05, 0x00001a0b,
 	0x00001a10, 0x00001a42, 0x00001ab4, 0x00001ae4,
 	0x00001aea, 0x00001af2, 0x00001b64, 0x00001b93,
-	0x00001b97, 0x00001b9b, 0x00001bd2, 0x00001bd9,
+	0x00001b97, 0x00001b9b, 0x00001be8, 0x00001bef,
 	// Entry 20 - 3F
-	0x00001bdf, 0x00001be7, 0x00001c22, 0x00001c8e,
+	0x00001bf5, 0x00001bfd, 0x00001c38, 0x00001ca4,
 } // Size: 168 bytes
 
-const fr_FRData string = "" + // Size: 7310 bytes
+const fr_FRData string = "" + // Size: 7332 bytes
 	"\x02Le questionnaire est annulé\x02Commande inconnue\x02Bienvenue sur He" +
 	"lp My Pet Bot! 🐾\x0a\x0aJe suis votre assistant personnel pour les soins" +
 	" des animaux de compagnie, prêt à vous aider à mieux prendre soin de vot" +
@@ -780,11 +781,11 @@ const fr_FRData string = "" + // Size: 7310 bytes
 	"par exemple, 2010-12-31).\x02Quel est le sexe de votre animal de compagn" +
 	"ie ?\x02mâle\x02femelle\x02Quel est le poids de votre animal de compagni" +
 	"e ? Veuillez spécifier le poids suivi de l'unité, par exemple 5 kg\x02Vo" +
-	"tre animal de compagnie est-il stérilisé ?\x02oui\x02non\x02À quel point" +
-	" votre animal de compagnie est-il actif ?\x02faible\x02moyen\x02élevé" +
-	"\x02Votre animal de compagnie a-t-il des maladies chroniques ?\x02Quelle" +
-	"s sont les préférences alimentaires ou les restrictions alimentaires de " +
-	"votre animal de compagnie ?"
+	"tre animal de compagnie est-il stérilisé ?\x02oui\x02non\x02Comment décr" +
+	"iriez-vous le niveau d'activité de votre animal de compagnie ?\x02faible" +
+	"\x02moyen\x02élevé\x02Votre animal de compagnie a-t-il des maladies chro" +
+	"niques ?\x02Quelles sont les préférences alimentaires ou les restriction" +
+	"s alimentaires de votre animal de compagnie ?"
 
 var it_ITIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -795,12 +796,12 @@ var it_ITIndex = []uint32{ // 36 elements
 	0x0000189f, 0x000018ca, 0x000018ed, 0x000018f2,
 	0x000018f8, 0x00001921, 0x00001998, 0x000019c4,
 	0x000019cc, 0x000019d4, 0x00001a45, 0x00001a80,
-	0x00001a84, 0x00001a87, 0x00001ab2, 0x00001ab8,
+	0x00001a84, 0x00001a87, 0x00001acd, 0x00001ad3,
 	// Entry 20 - 3F
-	0x00001abe, 0x00001ac3, 0x00001af2, 0x00001b4d,
+	0x00001ad9, 0x00001ade, 0x00001b0d, 0x00001b68,
 } // Size: 168 bytes
 
-const it_ITData string = "" + // Size: 6989 bytes
+const it_ITData string = "" + // Size: 7016 bytes
 	"\x02Questionario annullato\x02Comando sconosciuto\x02Benvenuto in Help M" +
 	"y Pet Bot! 🐾\x0a\x0aSono il tuo assistente personale per la cura degli a" +
 	"nimali domestici, pronto ad aiutarti a prenderti cura meglio del tuo ami" +
@@ -898,10 +899,10 @@ const it_ITData string = "" + // Size: 6989 bytes
 	"l sesso del tuo animale domestico?\x02maschio\x02femmina\x02Qual è il pe" +
 	"so del tuo animale domestico? Si prega di specificare il peso seguito da" +
 	"ll'unità, ad esempio, 5 kg\x02Il tuo animale domestico è stato sterilizz" +
-	"ato o castrato?\x02sì\x02no\x02Quanto è attivo il tuo animale domestico?" +
-	"\x02basso\x02medio\x02alto\x02Il tuo animale domestico ha malattie croni" +
-	"che?\x02Quali sono le preferenze alimentari o le restrizioni dietetiche " +
-	"del tuo animale domestico?"
+	"ato o castrato?\x02sì\x02no\x02Come descriveresti il livello di attività" +
+	" del tuo animale domestico?\x02basso\x02medio\x02alto\x02Il tuo animale " +
+	"domestico ha malattie croniche?\x02Quali sono le preferenze alimentari o" +
+	" le restrizioni dietetiche del tuo animale domestico?"
 
 var ko_KRIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -912,12 +913,12 @@ var ko_KRIndex = []uint32{ // 36 elements
 	0x00001a5b, 0x00001a86, 0x00001abf, 0x00001ac3,
 	0x00001acd, 0x00001af8, 0x00001b75, 0x00001ba0,
 	0x00001ba7, 0x00001bae, 0x00001c1c, 0x00001c43,
-	0x00001c47, 0x00001c51, 0x00001c7f, 0x00001c86,
+	0x00001c47, 0x00001c51, 0x00001c93, 0x00001c9a,
 	// Entry 20 - 3F
-	0x00001c8d, 0x00001c94, 0x00001ccd, 0x00001d1e,
+	0x00001ca1, 0x00001ca8, 0x00001ce1, 0x00001d32,
 } // Size: 168 bytes
 
-const ko_KRData string = "" + // Size: 7454 bytes
+const ko_KRData string = "" + // Size: 7474 bytes
 	"\x02질문이 취소되었습니다\x02알 수 없는 명령\x02Help My Pet Bot에 오신 것을 환영합니다! 🐾\x0a\x0a나" +
 	"는 당신의 개인적인 애완동물 돌보미로, 당신의 털친구를 더 잘 돌보도록 도와드릴 준비가 되어 있습니다. 당신의 애완동물의 사진" +
 	"을 분석하고 다음과 같은 것들을 도와드릴 수 있습니다:\x0a\x0a- 애완동물 건강 및 행동 질문 - 걱정되는 증상이나 행동" +
@@ -967,8 +968,9 @@ const ko_KRData string = "" + // Size: 7454 bytes
 	"무엇입니까?\x02어떤 종류의 애완동물을 가지고 계십니까?\x02개\x02고양이\x02애완동물의 품종은 무엇입니까?\x02애완" +
 	"동물이 태어난 날짜는 언제입니까? YYYY-MM-DD(예: 2010-12-31) 형식으로 날짜를 입력해 주세요.\x02애완동물" +
 	"의 성별은 무엇입니까?\x02수컷\x02암컷\x02애완동물의 몸무게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예:" +
-	" 5 kg\x02애완동물을 중성화했습니까?\x02예\x02아니요\x02애완동물의 활동량은 어떻습니까?\x02낮음\x02중간\x02" +
-	"높음\x02애완동물이 만성 질병을 가지고 있습니까?\x02애완동물의 음식 선호도 또는 식이 제한 사항은 무엇입니까?"
+	" 5 kg\x02애완동물을 중성화했습니까?\x02예\x02아니요\x02애완동물의 활동 수준을 어떻게 설명하겠습니까?\x02낮음" +
+	"\x02중간\x02높음\x02애완동물이 만성 질병을 가지고 있습니까?\x02애완동물의 음식 선호도 또는 식이 제한 사항은 무엇입니" +
+	"까?"
 
 var ms_MYIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -979,12 +981,12 @@ var ms_MYIndex = []uint32{ // 36 elements
 	0x000019b9, 0x000019dd, 0x00001a0b, 0x00001a12,
 	0x00001a19, 0x00001a3f, 0x00001aad, 0x00001ad4,
 	0x00001adb, 0x00001ae5, 0x00001b46, 0x00001b77,
-	0x00001b7a, 0x00001b80, 0x00001ba7, 0x00001bae,
+	0x00001b7a, 0x00001b80, 0x00001bc9, 0x00001bd0,
 	// Entry 20 - 3F
-	0x00001bb8, 0x00001bbf, 0x00001c01, 0x00001c42,
+	0x00001bda, 0x00001be1, 0x00001c23, 0x00001c64,
 } // Size: 168 bytes
 
-const ms_MYData string = "" + // Size: 7234 bytes
+const ms_MYData string = "" + // Size: 7268 bytes
 	"\x02Soal selidik dibatalkan\x02Perintah tidak dikenali\x02Selamat datang" +
 	" ke Help My Pet Bot! 🐾\x0a\x0aSaya adalah pembantu penjagaan haiwan peli" +
 	"haraan peribadi anda, bersedia untuk membantu anda menjaga haiwan kesaya" +
@@ -1086,10 +1088,10 @@ const ms_MYData string = "" + // Size: 7234 bytes
 	"10-12-31).\x02Apakah jantina haiwan peliharaan anda?\x02lelaki\x02peremp" +
 	"uan\x02Berapakah berat haiwan peliharaan anda? Sila nyatakan berat diiku" +
 	"ti dengan unit, contohnya, 5 kg\x02Adakah haiwan peliharaan anda telah d" +
-	"imandulkan?\x02ya\x02tidak\x02Seberapa aktif haiwan peliharaan anda?\x02" +
-	"rendah\x02sederhana\x02tinggi\x02Adakah haiwan peliharaan anda mempunyai" +
-	" sebarang penyakit kronik?\x02Apakah pilihan makanan haiwan peliharaan a" +
-	"nda atau sekatan diet?"
+	"imandulkan?\x02ya\x02tidak\x02Bagaimana anda akan menggambarkan tahap ak" +
+	"tiviti haiwan peliharaan anda?\x02rendah\x02sederhana\x02tinggi\x02Adaka" +
+	"h haiwan peliharaan anda mempunyai sebarang penyakit kronik?\x02Apakah p" +
+	"ilihan makanan haiwan peliharaan anda atau sekatan diet?"
 
 var nl_NLIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -1100,12 +1102,12 @@ var nl_NLIndex = []uint32{ // 36 elements
 	0x000018d4, 0x000018f4, 0x00001914, 0x00001919,
 	0x0000191d, 0x00001936, 0x00001995, 0x000019ba,
 	0x000019c4, 0x000019cf, 0x00001a33, 0x00001a61,
-	0x00001a64, 0x00001a68, 0x00001a83, 0x00001a88,
+	0x00001a64, 0x00001a68, 0x00001aa6, 0x00001aab,
 	// Entry 20 - 3F
-	0x00001a92, 0x00001a97, 0x00001abd, 0x00001b00,
+	0x00001ab5, 0x00001aba, 0x00001ae0, 0x00001b23,
 } // Size: 168 bytes
 
-const nl_NLData string = "" + // Size: 6912 bytes
+const nl_NLData string = "" + // Size: 6947 bytes
 	"\x02Vragenlijst is geannuleerd\x02Onbekend commando\x02Welkom bij Help M" +
 	"y Pet Bot! 🐾\x0a\x0aIk ben uw persoonlijke assistent voor huisdierverzor" +
 	"ging, klaar om u te helpen beter voor uw harige vriend te zorgen. Ik kan" +
@@ -1203,9 +1205,10 @@ const nl_NLData string = "" + // Size: 6912 bytes
 	"31).\x02Wat is het geslacht van je huisdier?\x02mannelijk\x02vrouwelijk" +
 	"\x02Wat is het gewicht van je huisdier? Geef het gewicht op, gevolgd doo" +
 	"r de eenheid, bijvoorbeeld 5 kg\x02Is je huisdier gesteriliseerd of geca" +
-	"streerd?\x02ja\x02nee\x02Hoe actief is je huisdier?\x02laag\x02gemiddeld" +
-	"\x02hoog\x02Heeft je huisdier chronische ziekten?\x02Wat zijn de voedsel" +
-	"voorkeuren of dieetbeperkingen van je huisdier?"
+	"streerd?\x02ja\x02nee\x02Hoe zou je het activiteitsniveau van je huisdie" +
+	"r beschrijven?\x02laag\x02gemiddeld\x02hoog\x02Heeft je huisdier chronis" +
+	"che ziekten?\x02Wat zijn de voedselvoorkeuren of dieetbeperkingen van je" +
+	" huisdier?"
 
 var pl_PLIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -1216,12 +1219,12 @@ var pl_PLIndex = []uint32{ // 36 elements
 	0x00001940, 0x00001963, 0x0000198a, 0x0000198f,
 	0x00001993, 0x000019b7, 0x00001a13, 0x00001a39,
 	0x00001a40, 0x00001a47, 0x00001a9a, 0x00001ad0,
-	0x00001ad4, 0x00001ad8, 0x00001afc, 0x00001b02,
+	0x00001ad4, 0x00001ad8, 0x00001b10, 0x00001b16,
 	// Entry 20 - 3F
-	0x00001b0a, 0x00001b11, 0x00001b47, 0x00001b9b,
+	0x00001b1e, 0x00001b25, 0x00001b5b, 0x00001baf,
 } // Size: 168 bytes
 
-const pl_PLData string = "" + // Size: 7067 bytes
+const pl_PLData string = "" + // Size: 7087 bytes
 	"\x02Kwestionariusz został anulowany\x02Nieznane polecenie\x02Witaj w Hel" +
 	"p My Pet Bot! 🐾\x0a\x0aJestem twoim osobistym asystentem do opieki nad z" +
 	"wierzętami, gotowym pomóc ci lepiej zadbać o twojego futrzanego przyjaci" +
@@ -1316,10 +1319,10 @@ const pl_PLData string = "" + // Size: 7067 bytes
 	"zątko? Podaj datę w formacie RRRR-MM-DD (np. 2010-12-31).\x02Jaka jest p" +
 	"łeć Twojego zwierzątka?\x02samiec\x02samica\x02Jaka jest waga Twojego z" +
 	"wierzątka? Podaj wagę, a następnie jednostkę, np. 5 kg\x02Czy Twoje zwie" +
-	"rzątko jest sterylizowane lub kastrat?\x02tak\x02nie\x02Jak aktywne jest" +
-	" Twoje zwierzątko?\x02niski\x02średni\x02wysoki\x02Czy Twoje zwierzątko " +
-	"ma jakieś przewlekłe choroby?\x02Jakie są preferencje żywieniowe Twojego" +
-	" zwierzątka lub ograniczenia dietetyczne?"
+	"rzątko jest sterylizowane lub kastrat?\x02tak\x02nie\x02Jak opisałbyś po" +
+	"ziom aktywności Twojego zwierzątka?\x02niski\x02średni\x02wysoki\x02Czy " +
+	"Twoje zwierzątko ma jakieś przewlekłe choroby?\x02Jakie są preferencje ż" +
+	"ywieniowe Twojego zwierzątka lub ograniczenia dietetyczne?"
 
 var pt_PTIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -1330,12 +1333,12 @@ var pt_PTIndex = []uint32{ // 36 elements
 	0x0000196d, 0x0000199a, 0x000019c7, 0x000019cc,
 	0x000019d1, 0x000019ff, 0x00001a74, 0x00001aa4,
 	0x00001aaa, 0x00001ab1, 0x00001b22, 0x00001b5e,
-	0x00001b62, 0x00001b67, 0x00001b93, 0x00001b99,
+	0x00001b62, 0x00001b67, 0x00001bac, 0x00001bb2,
 	// Entry 20 - 3F
-	0x00001ba0, 0x00001ba5, 0x00001bde, 0x00001c40,
+	0x00001bb9, 0x00001bbe, 0x00001bf7, 0x00001c59,
 } // Size: 168 bytes
 
-const pt_PTData string = "" + // Size: 7232 bytes
+const pt_PTData string = "" + // Size: 7257 bytes
 	"\x02Questionário cancelado\x02Comando desconhecido\x02Bem-vindo ao Help " +
 	"My Pet Bot! 🐾\x0a\x0aSou o seu assistente pessoal de cuidados com animai" +
 	"s de estimação, pronto para ajudá-lo a cuidar melhor do seu amigo peludo" +
@@ -1433,10 +1436,11 @@ const pt_PTData string = "" + // Size: 7232 bytes
 	"-12-31).\x02Qual é o género do seu animal de estimação?\x02macho\x02fême" +
 	"a\x02Qual é o peso do seu animal de estimação? Por favor, especifique o " +
 	"peso seguido da unidade, por exemplo, 5 kg\x02O seu animal de estimação " +
-	"está esterilizado ou castrado?\x02sim\x02não\x02Quão ativo é o seu anima" +
-	"l de estimação?\x02baixo\x02médio\x02alto\x02O seu animal de estimação t" +
-	"em alguma doença crónica?\x02Quais são as preferências alimentares ou re" +
-	"strições dietéticas do seu animal de estimação?"
+	"está esterilizado ou castrado?\x02sim\x02não\x02Como descreveria o nível" +
+	" de atividade do seu animal de estimação?\x02baixo\x02médio\x02alto\x02O" +
+	" seu animal de estimação tem alguma doença crónica?\x02Quais são as pref" +
+	"erências alimentares ou restrições dietéticas do seu animal de estimação" +
+	"?"
 
 var ru_RUIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -1447,12 +1451,12 @@ var ru_RUIndex = []uint32{ // 36 elements
 	0x00002bf8, 0x00002c27, 0x00002c5f, 0x00002c6c,
 	0x00002c77, 0x00002caf, 0x00002d53, 0x00002d85,
 	0x00002d94, 0x00002da3, 0x00002e4b, 0x00002e99,
-	0x00002e9e, 0x00002ea5, 0x00002ede, 0x00002eeb,
+	0x00002e9e, 0x00002ea5, 0x00002f06, 0x00002f13,
 	// Entry 20 - 3F
-	0x00002efa, 0x00002f09, 0x00002f60, 0x00002feb,
+	0x00002f22, 0x00002f31, 0x00002f88, 0x00003013,
 } // Size: 168 bytes
 
-const ru_RUData string = "" + // Size: 12267 bytes
+const ru_RUData string = "" + // Size: 12307 bytes
 	"\x02Опросник отменен\x02Неизвестная команда\x02Добро пожаловать в Help M" +
 	"y Pet Bot! 🐾\x0a\x0aЯ ваш личный помощник по уходу за питомцем, готов по" +
 	"мочь вам лучше заботиться о вашем пушистом друге. Я могу анализировать " +
@@ -1550,10 +1554,10 @@ const ru_RUData string = "" + // Size: 12267 bytes
 	" ГГГГ-ММ-ДД (например, 2010-12-31).\x02Какой пол у вашего питомца?\x02му" +
 	"жской\x02женский\x02Какой вес у вашего питомца? Укажите вес, за которым" +
 	" следует единица измерения, например, 5 кг\x02Ваш питомец стерилизован и" +
-	"ли кастрирован?\x02да\x02нет\x02Насколько активен ваш питомец?\x02низки" +
-	"й\x02средний\x02высокий\x02У вашего питомца есть хронические заболевани" +
-	"я?\x02Какие у вашего питомца предпочтения в питании или диетические огр" +
-	"аничения?"
+	"ли кастрирован?\x02да\x02нет\x02Как вы бы описали уровень активности ва" +
+	"шего питомца?\x02низкий\x02средний\x02высокий\x02У вашего питомца есть " +
+	"хронические заболевания?\x02Какие у вашего питомца предпочтения в питан" +
+	"ии или диетические ограничения?"
 
 var tr_TRIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -1564,12 +1568,12 @@ var tr_TRIndex = []uint32{ // 36 elements
 	0x0000195f, 0x00001981, 0x000019a6, 0x000019ad,
 	0x000019b2, 0x000019d5, 0x00001a3d, 0x00001a64,
 	0x00001a6a, 0x00001a70, 0x00001adc, 0x00001b0a,
-	0x00001b0f, 0x00001b16, 0x00001b39, 0x00001b42,
+	0x00001b0f, 0x00001b16, 0x00001b59, 0x00001b62,
 	// Entry 20 - 3F
-	0x00001b47, 0x00001b4f, 0x00001b8f, 0x00001bde,
+	0x00001b67, 0x00001b6f, 0x00001baf, 0x00001bfe,
 } // Size: 168 bytes
 
-const tr_TRData string = "" + // Size: 7134 bytes
+const tr_TRData string = "" + // Size: 7166 bytes
 	"\x02Anket iptal edildi\x02Bilinmeyen komut\x02Help My Pet Bot'a hoş geld" +
 	"iniz! 🐾\x0a\x0aTüylü dostunuzun daha iyi bakımını yapmanıza yardımcı olm" +
 	"aya hazır kişisel evcil hayvan bakım asistanınızım. Evcil hayvanınızın f" +
@@ -1662,10 +1666,10 @@ const tr_TRData string = "" + // Size: 7134 bytes
 	"GG (örneğin, 2010-12-31) biçiminde girin.\x02Evcil hayvanınızın cinsiyet" +
 	"i nedir?\x02erkek\x02dişi\x02Evcil hayvanınızın ağırlığı nedir? Lütfen b" +
 	"irimle birlikte ağırlığı belirtin, örneğin, 5 kg\x02Evcil hayvanınız kıs" +
-	"ırlaştırıldı mı?\x02evet\x02hayır\x02Evcil hayvanınız ne kadar aktif?" +
-	"\x02düşük\x02orta\x02yüksek\x02Evcil hayvanınızın herhangi bir kronik ha" +
-	"stalığı var mı?\x02Evcil hayvanınızın yiyecek tercihleri veya diyet kısı" +
-	"tlamaları nelerdir?"
+	"ırlaştırıldı mı?\x02evet\x02hayır\x02Evcil hayvanınızın aktivite seviye" +
+	"sini nasıl tanımlarsınız?\x02düşük\x02orta\x02yüksek\x02Evcil hayvanınız" +
+	"ın herhangi bir kronik hastalığı var mı?\x02Evcil hayvanınızın yiyecek " +
+	"tercihleri veya diyet kısıtlamaları nelerdir?"
 
 var uk_UAIndex = []uint32{ // 36 elements
 	// Entry 0 - 1F
@@ -1676,12 +1680,12 @@ var uk_UAIndex = []uint32{ // 36 elements
 	0x00002a5d, 0x00002a8e, 0x00002ad6, 0x00002ae3,
 	0x00002aea, 0x00002b1f, 0x00002bcc, 0x00002bff,
 	0x00002c10, 0x00002c1d, 0x00002cb8, 0x00002cf9,
-	0x00002d00, 0x00002d05, 0x00002d38, 0x00002d47,
+	0x00002d00, 0x00002d05, 0x00002d63, 0x00002d72,
 	// Entry 20 - 3F
-	0x00002d58, 0x00002d67, 0x00002dce, 0x00002e4c,
+	0x00002d83, 0x00002d92, 0x00002df9, 0x00002e77,
 } // Size: 168 bytes
 
-const uk_UAData string = "" + // Size: 11852 bytes
+const uk_UAData string = "" + // Size: 11895 bytes
 	"\x02Опитування скасовано\x02Невідома команда\x02Ласкаво просимо до Help " +
 	"My Pet Bot! 🐾\x0a\x0aЯ ваш особистий асистент з догляду за домашніми улю" +
 	"бленцями, готовий допомогти вам краще дбати про вашого пухнастого друга" +
@@ -1776,9 +1780,9 @@ const uk_UAData string = "" + // Size: 11852 bytes
 	"удь ласка, введіть дату у форматі РРРР-ММ-ДД (наприклад, 2010-12-31)." +
 	"\x02Яка стать вашого улюбленця?\x02чоловіча\x02жіноча\x02Яка вага вашого" +
 	" улюбленця? Будь ласка, вкажіть вагу, вказавши одиницю, наприклад, 5 кг" +
-	"\x02Чи стерилізовано вашого улюбленця?\x02так\x02ні\x02Як активний ваш у" +
-	"любленець?\x02низький\x02середній\x02високий\x02Чи має ваш улюбленець я" +
-	"кі-небудь хронічні захворювання?\x02Які у вашого улюбленця є вподобання" +
-	" щодо їжі або дієтичні обмеження?"
+	"\x02Чи стерилізовано вашого улюбленця?\x02так\x02ні\x02Як ви оцінюєте рі" +
+	"вень активності вашого улюбленця?\x02низький\x02середній\x02високий\x02" +
+	"Чи має ваш улюбленець які-небудь хронічні захворювання?\x02Які у вашого" +
+	" улюбленця є вподобання щодо їжі або дієтичні обмеження?"
 
-	// Total table size 123875 bytes (120KiB); checksum: 8AB8FDFD
+	// Total table size 124327 bytes (121KiB); checksum: FFBCC29C

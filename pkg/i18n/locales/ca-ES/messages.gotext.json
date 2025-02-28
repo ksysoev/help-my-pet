@@ -157,9 +157,9 @@
             "translation": "no"
         },
         {
-            "id": "How active is your pet?",
-            "message": "How active is your pet?",
-            "translation": "Quan actiu és la teva mascota?"
+            "id": "How would you describe your pet's activity level?",
+            "message": "How would you describe your pet's activity level?",
+            "translation": "Com descriuries el nivell d'activitat de la teva mascota?"
         },
         {
             "id": "low",

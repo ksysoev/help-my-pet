@@ -157,9 +157,9 @@
             "translation": "не"
         },
         {
-            "id": "How active is your pet?",
-            "message": "How active is your pet?",
-            "translation": "Як актыўны ваш пухнаты сябар?"
+            "id": "How would you describe your pet's activity level?",
+            "message": "How would you describe your pet's activity level?",
+            "translation": "Як вы апішаце актыўнасць вашага пухнатага сябра?"
         },
         {
             "id": "low",

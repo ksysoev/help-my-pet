@@ -215,9 +215,9 @@
             "fuzzy": true
         },
         {
-            "id": "How active is your pet?",
-            "message": "How active is your pet?",
-            "translation": "How active is your pet?",
+            "id": "How would you describe your pet's activity level?",
+            "message": "How would you describe your pet's activity level?",
+            "translation": "How would you describe your pet's activity level?",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
