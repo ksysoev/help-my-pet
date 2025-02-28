@@ -72,12 +72,16 @@ func TestPetProfile_String(t *testing.T) {
 		{
 			name: "All fields set",
 			profile: Profile{
-				Name:        "Buddy",
-				Species:     "Dog",
-				Breed:       "Golden Retriever",
-				DateOfBirth: "2018-05-10",
-				Gender:      "Male",
-				Weight:      "30.5",
+				Name:            "Buddy",
+				Species:         "Dog",
+				Breed:           "Golden Retriever",
+				DateOfBirth:     "2018-05-10",
+				Gender:          "Male",
+				Weight:          "30.5",
+				Neutered:        "yes",
+				Activity:        "high",
+				ChronicDiseases: "None",
+				FoodPreferences: "Dry food, no allergies",
 			},
 			expected: `
 Pet Profile:
@@ -88,18 +92,15 @@ Date of Birth: 2018-05-10
 Age: 6
 Gender: Male
 Weight: 30.5
+Neutered: yes
+Activity Level: high
+Chronic Diseases: None
+Food Preferences: Dry food, no allergies
 `,
 		},
 		{
-			name: "Empty fields",
-			profile: Profile{
-				Name:        "",
-				Species:     "",
-				Breed:       "",
-				DateOfBirth: "",
-				Gender:      "",
-				Weight:      "",
-			},
+			name:    "Empty fields",
+			profile: Profile{},
 			expected: `
 Pet Profile:
 Name: 
@@ -109,6 +110,10 @@ Date of Birth:
 Age: Not provided
 Gender: 
 Weight: 
+Neutered: Not provided
+Activity Level: Not provided
+Chronic Diseases: Not provided
+Food Preferences: Not provided
 `,
 		},
 		{
@@ -127,6 +132,10 @@ Date of Birth:
 Age: Not provided
 Gender: 
 Weight: 4.2
+Neutered: Not provided
+Activity Level: Not provided
+Chronic Diseases: Not provided
+Food Preferences: Not provided
 `,
 		},
 		{
@@ -143,6 +152,10 @@ Date of Birth: 2020-07-15
 Age: 4
 Gender: 
 Weight: 
+Neutered: Not provided
+Activity Level: Not provided
+Chronic Diseases: Not provided
+Food Preferences: Not provided
 `,
 		},
 		{
@@ -160,6 +173,10 @@ Date of Birth:
 Age: Not provided
 Gender: 
 Weight: -1.5
+Neutered: Not provided
+Activity Level: Not provided
+Chronic Diseases: Not provided
+Food Preferences: Not provided
 `,
 		},
 	}

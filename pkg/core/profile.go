@@ -127,6 +127,14 @@ func createProfile(result []conversation.QuestionAnswer) (pet.Profile, error) {
 			profile.Gender = qa.Answer
 		case "weight":
 			profile.Weight = qa.Answer
+		case "neutered":
+			profile.Neutered = qa.Answer
+		case "activity":
+			profile.Activity = qa.Answer
+		case "chronic_diseases":
+			profile.ChronicDiseases = qa.Answer
+		case "food_preferences":
+			profile.FoodPreferences = qa.Answer
 		default:
 			return pet.Profile{}, fmt.Errorf("unknown field %s", qa.Field)
 		}

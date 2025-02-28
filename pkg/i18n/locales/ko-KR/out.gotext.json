@@ -140,6 +140,51 @@
             "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translation": "애완동물의 몸무게는 얼마입니까? 몸무게를 지정하고 단위를 붙여 주세요. 예: 5 kg"
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "애완동물을 중성화했습니까?"
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "예"
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "아니요"
+        },
+        {
+            "id": "How would you describe your pet's activity level?",
+            "message": "How would you describe your pet's activity level?",
+            "translation": "애완동물의 활동 수준을 어떻게 설명하겠습니까?"
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "낮음"
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "중간"
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "높음"
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "애완동물이 만성 질병을 가지고 있습니까?"
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "애완동물의 음식 선호도 또는 식이 제한 사항은 무엇입니까?"
         }
     ]
 }

@@ -1,11 +1,30 @@
 package conversation
 
 import (
+	"cmp"
 	"context"
 	"time"
+	"unicode/utf8"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
+)
+
+const defaultMaxLength = 100
+
+var (
+	fieldMaxLength = map[string]int{
+		"name":             20,
+		"species":          20,
+		"breed":            30,
+		"dob":              20,
+		"gender":           20,
+		"weight":           20,
+		"neutered":         20,
+		"activity":         20,
+		"chronic_diseases": 200,
+		"food_preferences": 200,
+	}
 )
 
 // PetProfileStateImpl implements QuestionnaireState
@@ -56,6 +75,32 @@ func NewPetProfileQuestionnaireState(ctx context.Context) *PetProfileStateImpl {
 				Text: i18n.GetLocale(ctx).Sprintf("What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg"),
 			},
 			Field: "weight",
+		},
+		{
+			Question: message.Question{
+				Text:    i18n.GetLocale(ctx).Sprintf("Is your pet spayed or neutered?"),
+				Answers: []string{i18n.GetLocale(ctx).Sprintf("yes"), i18n.GetLocale(ctx).Sprintf("no")},
+			},
+			Field: "neutered",
+		},
+		{
+			Question: message.Question{
+				Text:    i18n.GetLocale(ctx).Sprintf("How would you describe your pet's activity level?"),
+				Answers: []string{i18n.GetLocale(ctx).Sprintf("low"), i18n.GetLocale(ctx).Sprintf("medium"), i18n.GetLocale(ctx).Sprintf("high")},
+			},
+			Field: "activity",
+		},
+		{
+			Question: message.Question{
+				Text: i18n.GetLocale(ctx).Sprintf("Does your pet have any chronic diseases?"),
+			},
+			Field: "chronic_diseases",
+		},
+		{
+			Question: message.Question{
+				Text: i18n.GetLocale(ctx).Sprintf("What are your pet's food preferences or dietary restrictions?"),
+			},
+			Field: "food_preferences",
 		},
 	}
 
@@ -113,14 +158,14 @@ func validate(field string, answer string) error {
 	case "dob":
 		return validateDOB(answer)
 	default:
-		return validateLength(answer, 100)
+		return validateLength(answer, cmp.Or(fieldMaxLength[field], defaultMaxLength))
 	}
 }
 
 // validateLength checks if the length of the input string exceeds the specified maximum length.
 // It returns an error if the string is too long.
 func validateLength(answer string, maxLength int) error {
-	if len(answer) > maxLength {
+	if utf8.RuneCountInString(answer) > maxLength {
 		return message.ErrTextTooLong
 	}
 	return nil

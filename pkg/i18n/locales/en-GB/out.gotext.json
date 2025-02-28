@@ -192,6 +192,69 @@
             "translation": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "Is your pet spayed or neutered?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "yes",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "no",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "How would you describe your pet's activity level?",
+            "message": "How would you describe your pet's activity level?",
+            "translation": "How would you describe your pet's activity level?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "low",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "medium",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "high",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "Does your pet have any chronic diseases?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "What are your pet's food preferences or dietary restrictions?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         }
     ]
 }

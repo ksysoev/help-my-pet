@@ -140,6 +140,51 @@
             "id": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "message": "What is your pet's weight? Please specify the weight followed by the unit, e.g., 5 kg",
             "translation": "Evcil hayvanınızın ağırlığı nedir? Lütfen birimle birlikte ağırlığı belirtin, örneğin, 5 kg"
+        },
+        {
+            "id": "Is your pet spayed or neutered?",
+            "message": "Is your pet spayed or neutered?",
+            "translation": "Evcil hayvanınız kısırlaştırıldı mı?"
+        },
+        {
+            "id": "yes",
+            "message": "yes",
+            "translation": "evet"
+        },
+        {
+            "id": "no",
+            "message": "no",
+            "translation": "hayır"
+        },
+        {
+            "id": "How would you describe your pet's activity level?",
+            "message": "How would you describe your pet's activity level?",
+            "translation": "Evcil hayvanınızın aktivite seviyesini nasıl tanımlarsınız?"
+        },
+        {
+            "id": "low",
+            "message": "low",
+            "translation": "düşük"
+        },
+        {
+            "id": "medium",
+            "message": "medium",
+            "translation": "orta"
+        },
+        {
+            "id": "high",
+            "message": "high",
+            "translation": "yüksek"
+        },
+        {
+            "id": "Does your pet have any chronic diseases?",
+            "message": "Does your pet have any chronic diseases?",
+            "translation": "Evcil hayvanınızın herhangi bir kronik hastalığı var mı?"
+        },
+        {
+            "id": "What are your pet's food preferences or dietary restrictions?",
+            "message": "What are your pet's food preferences or dietary restrictions?",
+            "translation": "Evcil hayvanınızın yiyecek tercihleri veya diyet kısıtlamaları nelerdir?"
         }
     ]
 }
