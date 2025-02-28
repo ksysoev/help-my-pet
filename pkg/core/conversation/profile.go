@@ -1,11 +1,29 @@
 package conversation
 
 import (
+	"cmp"
 	"context"
 	"time"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
+)
+
+const defaultMaxLength = 100
+
+var (
+	fieldMaxLength = map[string]int{
+		"name":             20,
+		"species":          20,
+		"breed":            30,
+		"dob":              20,
+		"gender":           20,
+		"weight":           20,
+		"neutered":         20,
+		"activity":         20,
+		"chronic_diseases": 200,
+		"food_preferences": 200,
+	}
 )
 
 // PetProfileStateImpl implements QuestionnaireState
@@ -139,7 +157,7 @@ func validate(field string, answer string) error {
 	case "dob":
 		return validateDOB(answer)
 	default:
-		return validateLength(answer, 100)
+		return validateLength(answer, cmp.Or(fieldMaxLength[field], defaultMaxLength))
 	}
 }
 

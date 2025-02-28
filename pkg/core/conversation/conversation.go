@@ -44,6 +44,7 @@ type QuestionnaireState interface {
 type QuestionAnswer struct {
 	Answer   string           `json:"answer"`
 	Field    string           `json:"field,omitempty"`
+	MaxLen   int              `json:"max_len,omitempty"`
 	Question message.Question `json:"question"`
 }
 
