@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"context"
 	"time"
+	"unicode/utf8"
 
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
 	"github.com/ksysoev/help-my-pet/pkg/i18n"
@@ -164,7 +165,7 @@ func validate(field string, answer string) error {
 // validateLength checks if the length of the input string exceeds the specified maximum length.
 // It returns an error if the string is too long.
 func validateLength(answer string, maxLength int) error {
-	if len(answer) > maxLength {
+	if utf8.RuneCountInString(answer) > maxLength {
 		return message.ErrTextTooLong
 	}
 	return nil
