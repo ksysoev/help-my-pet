@@ -6,7 +6,7 @@ redis:
 ai:
   model: "claude-3-7-sonnet-latest" # Anthropic model to use
   api_key: "" # Set your Anthropic API key here
-  max_tokens: 1500 # Maximum number of tokens in the response
+  max_tokens: 3000 # Maximum number of tokens in the response
 
 rate_limit:
   user_hourly_limit: 5  # Maximum number of requests per hour per user
