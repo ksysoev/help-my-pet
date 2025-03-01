@@ -72,6 +72,8 @@ func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.
 		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
 	}
 
+	result.Text = cleanMarkdownTextFormat(result.Text)
+
 	return result, nil
 }
 
@@ -98,6 +100,8 @@ func (p *Provider) Report(ctx context.Context, request string) (*message.LLMResu
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
 	}
+
+	result.Text = cleanMarkdownTextFormat(result.Text)
 
 	return result, nil
 }
