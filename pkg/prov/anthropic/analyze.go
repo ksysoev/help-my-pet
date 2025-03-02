@@ -80,7 +80,7 @@ Notes for Implementation:
 2. Textual Response:
   - Respond according to type and structure of textual responses
   - This field is optional in case if information is not sufficient and you need to ask additional questions, otherwise it should be filled
-  - This field should be well formated plain text(No markdown or html tags)
+  - This field should be well formated plain text(No markdown or html tags). Do NOT use **bold** or *italic* formatting.
 3. Question Formation:
   - This field is optional, but if used, should be structured as an array of questions
   - Prioritize questions by clinical significance
