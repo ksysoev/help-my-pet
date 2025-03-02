@@ -62,7 +62,11 @@ Notes for Implementation:
 1. Textual Response:
   - Respond according to type and structure of textual responses
   - This field is optional in case if information is not sufficient and you need to ask additional questions, otherwise it should be filled
-}
+  - This field should be well formated plain text(No markdown or html tags). Do NOT use **bold** or *italic* formatting.
+2. Reasoning:
+  - Provide a detailed explanation of your thought process and decision-making
+  - Justify your response based on the information provided
+  - Include any assumptions or uncertainties in your analysis
 
 Example 1 - Acute Injury Case:
 {
