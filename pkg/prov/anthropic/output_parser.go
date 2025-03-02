@@ -153,15 +153,3 @@ func extractJSON(text string) string {
 
 	return strings.TrimSpace(text)
 }
-
-// cleanMarkdownTextFormat removes specific Markdown formatting from the input string to produce plain text output.
-// It specifically strips bold syntax (`**`) from the text.
-// Accepts text the input string containing Markdown-formatted text.
-// Returns the cleaned string with bold syntax removed.
-// Does not return an error as it performs a simple substitution.
-func cleanMarkdownTextFormat(text string) string {
-	// Remove bold markdown syntax
-	text = strings.ReplaceAll(text, "**", "")
-
-	return text
-}
