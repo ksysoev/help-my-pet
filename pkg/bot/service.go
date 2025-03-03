@@ -143,6 +143,11 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 	for {
 		select {
 		case update := <-updates:
+			if update.MyChatMember != nil && update.MyChatMember.NewChatMember.Status == "kicked" {
+				slog.InfoContext(ctx, "User blocked chat bot")
+				continue
+			}
+
 			if update.Message == nil {
 				continue
 			}
