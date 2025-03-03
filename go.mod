@@ -5,7 +5,7 @@ go 1.22.0
 toolchain go1.23.4
 
 require (
-	github.com/anthropics/anthropic-sdk-go v0.2.0-alpha.10
+	github.com/anthropics/anthropic-sdk-go v0.2.0-alpha.13
 	github.com/go-redis/redismock/v9 v9.2.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/google/uuid v1.6.0
