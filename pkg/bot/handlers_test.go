@@ -50,7 +50,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Cats need a balanced diet...",
 		},
 		{
-			name:         "empty message",
+			name:         "empty update",
 			message:      "",
 			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        nil,
@@ -90,7 +90,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 		},
 		{
-			name:         "message without From field",
+			name:         "update without From field",
 			message:      "What food is good for cats?",
 			aiResponse:   nil,
 			aiErr:        nil,
@@ -100,7 +100,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "",
 		},
 		{
-			name:         "message with photo",
+			name:         "update with photo",
 			message:      "",
 			hasPhoto:     true,
 			aiResponse:   nil,
@@ -111,7 +111,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Please, provide your question in text format along with photo(s)",
 		},
 		{
-			name:         "message with video",
+			name:         "update with video",
 			message:      "",
 			hasVideo:     true,
 			aiResponse:   nil,
@@ -122,14 +122,14 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
 		},
 		{
-			name:         "message too long",
-			message:      "What food is good for cats? " + strings.Repeat("Very long message. ", 1000),
+			name:         "update too long",
+			message:      "What food is good for cats? " + strings.Repeat("Very long update. ", 1000),
 			aiResponse:   nil,
 			aiErr:        nil,
 			expectError:  false,
 			userID:       123,
 			langCode:     "en",
-			expectedText: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
+			expectedText: "I apologize, but your update is too long for me to process. Please try to make it shorter and more concise.",
 		},
 	}
 
@@ -169,7 +169,7 @@ func TestService_handleMessage(t *testing.T) {
 				}
 			}
 
-			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !tt.hasVideo && !strings.Contains(tt.name, "message too long") {
+			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !tt.hasVideo && !strings.Contains(tt.name, "update too long") {
 				expectedRequest := &message.UserMessage{
 					UserID: "123",
 					ChatID: "123",
@@ -235,11 +235,11 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		ProcessMessage(mock.Anything, &message.UserMessage{
 			UserID: "123",
 			ChatID: "123",
-			Text:   "test message",
+			Text:   "test update",
 		}).
 		Return(message.NewResponse("test response", []string{}), nil)
 
-	// Expect message send
+	// Expect update send
 	mockBot.EXPECT().
 		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
 			msg, ok := c.(tgbotapi.MessageConfig)
@@ -260,7 +260,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 
 	updates <- tgbotapi.Update{
 		Message: &tgbotapi.Message{
-			Text: "test message",
+			Text: "test update",
 			Chat: &tgbotapi.Chat{
 				ID: 123,
 			},
@@ -331,6 +331,63 @@ func TestService_handleProcessingError(t *testing.T) {
 				assert.Equal(t, tt.expectedText, msgConfig.Text)
 				assert.Equal(t, int64(123), msgConfig.ChatID)
 			}
+		})
+	}
+}
+
+func TestService_HandleRemovingBot(t *testing.T) {
+	tests := []struct {
+		name      string
+		userID    string
+		chatID    string
+		resetErr  error
+		expectErr bool
+	}{
+		{
+			name:      "successful reset",
+			userID:    "12345",
+			chatID:    "54321",
+			resetErr:  nil,
+			expectErr: false,
+		},
+		{
+			name:      "reset fails",
+			userID:    "12345",
+			chatID:    "54321",
+			resetErr:  fmt.Errorf("AI service failure"),
+			expectErr: true,
+		},
+		{
+			name:      "invalid user and chat IDs",
+			userID:    "",
+			chatID:    "",
+			resetErr:  nil,
+			expectErr: false, // Assuming no error for empty user/chat ID unless AI provider enforces validation
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockAI := NewMockAIProvider(t)
+
+			// Mock the ResetUserConversation method for the test case
+			mockAI.EXPECT().ResetUserConversation(mock.Anything, tt.userID, tt.chatID).Return(tt.resetErr)
+
+			// Arrange
+			svc := &ServiceImpl{
+				AISvc: mockAI,
+			}
+
+			// Act
+			err := svc.HandleRemovingBot(context.Background(), tt.userID, tt.chatID)
+
+			// Assert
+			if tt.expectErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+			mockAI.AssertExpectations(t)
 		})
 	}
 }

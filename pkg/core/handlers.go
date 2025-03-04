@@ -133,3 +133,20 @@ func (s *AIService) handleNewQuestion(ctx context.Context, conv Conversation, re
 
 	return message.NewResponse(response.Text, []string{}), nil
 }
+
+// ResetUserConversation removes all user profiles and deletes the specified conversation.
+// It deletes user-specific profiles using the userID and removes the conversation identified by chatID.
+// Returns error if profile removal or conversation deletion fails.
+func (s *AIService) ResetUserConversation(ctx context.Context, userID, chatID string) error {
+	err := s.profileRepo.RemoveUserProfiles(ctx, userID)
+	if err != nil {
+		return fmt.Errorf("failed to remove user profiles: %w", err)
+	}
+
+	err = s.repo.Delete(ctx, chatID)
+	if err != nil {
+		return fmt.Errorf("failed to remove conversation: %w", err)
+	}
+
+	return nil
+}

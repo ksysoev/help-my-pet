@@ -3,6 +3,7 @@ package bot
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
@@ -22,7 +23,7 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 			msg.Text,
 		)
 		if err != nil {
-			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
+			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user update: %w", err)
 		}
 
 		resp, err := s.AISvc.ProcessEditProfile(ctx, req)
@@ -52,6 +53,11 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 }
 
 func (s *ServiceImpl) handleStart(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+	err := s.AISvc.ResetUserConversation(ctx, fmt.Sprintf("%d", msg.From.ID), fmt.Sprintf("%d", msg.Chat.ID))
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to reset user conversation on start", slog.Any("error", err))
+	}
+
 	startMsg := i18n.GetLocale(ctx).Sprintf(`Welcome to Help My Pet Bot! 🐾
 
 I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can analyze photos of your pet and assist you with:
@@ -125,7 +131,7 @@ func handleHelp(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageCon
 /terms - View the Terms and Conditions of the service
 /editprofile - Update your pet's profile information, such as name, age, breed, etc. This information helps the bot provide more accurate advice.
 /cancel - Cancel the current questionnaire, if any is in progress (e.g., when you want to start over or change your question)
-/help - View this help message`)
+/help - View this help update`)
 
 	tgMsg := tgbotapi.NewMessage(msg.Chat.ID, helpMsg)
 	tgMsg.ParseMode = "HTML"

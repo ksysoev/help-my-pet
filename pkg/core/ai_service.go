@@ -46,6 +46,9 @@ type ConversationRepository interface {
 
 	// FindOrCreate retrieves a conversation by id or creates a new one if it doesn't exist.
 	FindOrCreate(ctx context.Context, id string) (Conversation, error)
+
+	// Delete removes a conversation from the repository.
+	Delete(ctx context.Context, id string) error
 }
 
 // RateLimiter defines the interface for rate limiting functionality
@@ -60,6 +63,7 @@ type RateLimiter interface {
 type PetProfileRepository interface {
 	SaveProfile(ctx context.Context, userID string, profile *pet.Profile) error
 	GetCurrentProfile(ctx context.Context, userID string) (*pet.Profile, error)
+	RemoveUserProfiles(ctx context.Context, userID string) error
 }
 
 // LLM interface represents the language model capabilities
