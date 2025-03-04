@@ -29,8 +29,21 @@ func TestHandleCommand(t *testing.T) {
 			languageCode: "en",
 			chatID:       123,
 			userID:       456,
-			mockSetup:    func(m *MockAIProvider) {},
-			expectedMsg:  "Welcome to Help My Pet Bot",
+			mockSetup: func(m *MockAIProvider) {
+				m.On("ResetUserConversation", mock.Anything, "456", "123").Return(nil)
+			},
+			expectedMsg: "Welcome to Help My Pet Bot",
+		},
+		{
+			name:         "start command with error",
+			command:      "/start",
+			languageCode: "en",
+			chatID:       123,
+			userID:       456,
+			mockSetup: func(m *MockAIProvider) {
+				m.On("ResetUserConversation", mock.Anything, "456", "123").Return(assert.AnError)
+			},
+			expectedMsg: "Welcome to Help My Pet Bot",
 		},
 		{
 			name:              "terms command",

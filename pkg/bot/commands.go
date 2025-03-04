@@ -3,6 +3,7 @@ package bot
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ksysoev/help-my-pet/pkg/core/message"
@@ -52,6 +53,11 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 }
 
 func (s *ServiceImpl) handleStart(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+	err := s.AISvc.ResetUserConversation(ctx, fmt.Sprintf("%d", msg.From.ID), fmt.Sprintf("%d", msg.Chat.ID))
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to reset user conversation on start", slog.Any("error", err))
+	}
+
 	startMsg := i18n.GetLocale(ctx).Sprintf(`Welcome to Help My Pet Bot! 🐾
 
 I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can analyze photos of your pet and assist you with:
