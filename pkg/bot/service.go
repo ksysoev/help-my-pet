@@ -32,6 +32,7 @@ type AIProvider interface {
 	ProcessMessage(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 	ProcessEditProfile(ctx context.Context, request *message.UserMessage) (*message.Response, error)
 	CancelQuestionnaire(ctx context.Context, chatID string) error
+	ResetUserConversation(ctx context.Context, userID, chatID string) error
 }
 
 type httpClient interface {
@@ -86,7 +87,27 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 	return s, nil
 }
 
-func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Message) {
+func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update) {
+	if update.MyChatMember != nil && update.MyChatMember.NewChatMember.Status == "kicked" {
+		chatID := fmt.Sprintf("%d", update.MyChatMember.Chat.ID)
+		userID := fmt.Sprintf("%d", update.MyChatMember.NewChatMember.User.ID)
+
+		err := s.HandleRemovingBot(ctx, userID, chatID)
+		if err != nil {
+			slog.ErrorContext(ctx, "Failed to handle removing bot",
+				slog.Any("error", err),
+			)
+		}
+
+		return
+	}
+
+	if update.Message == nil {
+		return
+	}
+
+	msg := update.Message
+
 	var wg sync.WaitGroup
 	defer wg.Wait()
 
@@ -97,15 +118,15 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	go func() {
 		defer wg.Done()
-		s.keepTyping(ctx, message.Chat.ID, 5*time.Second)
+		s.keepTyping(ctx, msg.Chat.ID, 5*time.Second)
 	}()
 
-	// Handle message with middleware
-	msgConfig, err := s.handler.Handle(ctx, message)
+	// Handle update with middleware
+	msgConfig, err := s.handler.Handle(ctx, msg)
 
 	if errors.Is(err, context.Canceled) {
 		slog.InfoContext(ctx, "Request cancelled",
-			slog.Int64("chat_id", message.Chat.ID),
+			slog.Int64("chat_id", msg.Chat.ID),
 		)
 
 		return
@@ -116,7 +137,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 		return
 	}
 
-	// Skip sending if message is empty
+	// Skip sending if update is empty
 	if msgConfig.Text == "" {
 		return
 	}
@@ -124,7 +145,7 @@ func (s *ServiceImpl) processMessage(ctx context.Context, message *tgbotapi.Mess
 
 	// Send response
 	if _, err := s.Bot.Send(msgConfig); err != nil {
-		slog.ErrorContext(ctx, "Failed to send message",
+		slog.ErrorContext(ctx, "Failed to send update",
 			slog.Any("error", err),
 		)
 	}
@@ -143,15 +164,6 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 	for {
 		select {
 		case update := <-updates:
-			if update.MyChatMember != nil && update.MyChatMember.NewChatMember.Status == "kicked" {
-				slog.InfoContext(ctx, "User blocked chat bot")
-				continue
-			}
-
-			if update.Message == nil {
-				continue
-			}
-
 			wg.Add(1)
 
 			go func() {
@@ -166,14 +178,14 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 				defer cancel()
 
-				s.processMessage(reqCtx, update.Message)
+				s.processUpdate(reqCtx, &update)
 			}()
 
 		case <-ctx.Done():
 			slog.Info("Starting graceful shutdown")
 			s.Bot.StopReceivingUpdates()
 
-			// Wait for ongoing message processors with a timeout
+			// Wait for ongoing update processors with a timeout
 			done := make(chan struct{})
 			go func() {
 				wg.Wait()

@@ -22,7 +22,7 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 			msg.Text,
 		)
 		if err != nil {
-			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
+			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user update: %w", err)
 		}
 
 		resp, err := s.AISvc.ProcessEditProfile(ctx, req)
@@ -125,7 +125,7 @@ func handleHelp(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageCon
 /terms - View the Terms and Conditions of the service
 /editprofile - Update your pet's profile information, such as name, age, breed, etc. This information helps the bot provide more accurate advice.
 /cancel - Cancel the current questionnaire, if any is in progress (e.g., when you want to start over or change your question)
-/help - View this help message`)
+/help - View this help update`)
 
 	tgMsg := tgbotapi.NewMessage(msg.Chat.ID, helpMsg)
 	tgMsg.ParseMode = "HTML"

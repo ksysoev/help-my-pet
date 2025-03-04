@@ -66,27 +66,29 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 	tests := []struct {
 		ctx         context.Context
 		setupMocks  func(*MockBotAPI, *MockAIProvider)
-		message     *tgbotapi.Message
+		update      *tgbotapi.Update
 		name        string
 		expectError bool
 	}{
 		{
-			name: "successful message processing",
+			name: "successful update processing",
 			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				From: &tgbotapi.User{
-					ID:           456,
-					LanguageCode: "en",
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 123},
+					From: &tgbotapi.User{
+						ID:           456,
+						LanguageCode: "en",
+					},
+					Text: "test update",
 				},
-				Text: "test message",
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test message",
+					Text:   "test update",
 				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
@@ -99,20 +101,22 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 		{
 			name: "failed typing action",
 			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				From: &tgbotapi.User{
-					ID:           456,
-					LanguageCode: "en",
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 123},
+					From: &tgbotapi.User{
+						ID:           456,
+						LanguageCode: "en",
+					},
+					Text: "test update",
 				},
-				Text: "test message",
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(nil, assert.AnError)
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test message",
+					Text:   "test update",
 				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
@@ -125,20 +129,22 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 		{
 			name: "context cancelled",
 			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				From: &tgbotapi.User{
-					ID:           456,
-					LanguageCode: "en",
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 123},
+					From: &tgbotapi.User{
+						ID:           456,
+						LanguageCode: "en",
+					},
+					Text: "test update",
 				},
-				Text: "test message",
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test message",
+					Text:   "test update",
 				}).Return(nil, context.Canceled)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
 					return msg.ChatID == 123 && msg.Text != ""
@@ -147,22 +153,24 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			expectError: false,
 		},
 		{
-			name: "failed to send message",
+			name: "failed to send update",
 			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				From: &tgbotapi.User{
-					ID:           456,
-					LanguageCode: "en",
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 123},
+					From: &tgbotapi.User{
+						ID:           456,
+						LanguageCode: "en",
+					},
+					Text: "test update",
 				},
-				Text: "test message",
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test message",
+					Text:   "test update",
 				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
@@ -175,20 +183,22 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 		{
 			name: "empty response",
 			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				From: &tgbotapi.User{
-					ID:           456,
-					LanguageCode: "en",
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 123},
+					From: &tgbotapi.User{
+						ID:           456,
+						LanguageCode: "en",
+					},
+					Text: "test update",
 				},
-				Text: "test message",
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test message",
+					Text:   "test update",
 				}).Return(&message.Response{
 					Message: "",
 				}, nil)
@@ -196,15 +206,17 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			expectError: false,
 		},
 		{
-			name: "empty message",
+			name: "empty update",
 			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				From: &tgbotapi.User{
-					ID:           456,
-					LanguageCode: "en",
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 123},
+					From: &tgbotapi.User{
+						ID:           456,
+						LanguageCode: "en",
+					},
+					Text: "",
 				},
-				Text: "",
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
@@ -214,13 +226,15 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 		{
 			name: "nil From field",
 			ctx:  context.Background(),
-			message: &tgbotapi.Message{
-				Chat: &tgbotapi.Chat{ID: 123},
-				Text: "test message",
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 123},
+					Text: "test update",
+				},
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				// Expect error message to be sent
+				// Expect error update to be sent
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
 					return msg.ChatID == 123 && msg.Text != ""
 				})).Return(tgbotapi.Message{}, nil)
@@ -243,7 +257,7 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 
 			tt.setupMocks(mockBot, mockAI)
 
-			service.processMessage(tt.ctx, tt.message)
+			service.processUpdate(tt.ctx, tt.update)
 
 			mockBot.AssertExpectations(t)
 			mockAI.AssertExpectations(t)
