@@ -163,7 +163,11 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 	for {
 		select {
-		case update := <-updates:
+		case update, ok := <-updates:
+			if !ok {
+				return nil
+			}
+
 			wg.Add(1)
 
 			go func() {

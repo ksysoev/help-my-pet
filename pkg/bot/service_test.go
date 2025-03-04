@@ -241,6 +241,34 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			expectError: false,
 		},
+		{
+			name: "error returned from handler",
+			ctx:  context.Background(),
+			update: &tgbotapi.Update{
+				Message: &tgbotapi.Message{
+					Chat: &tgbotapi.Chat{ID: 789},
+					From: &tgbotapi.User{ID: 456},
+					Text: "handle this",
+				},
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
+				mockBot.EXPECT().Send(mock.Anything).Return(tgbotapi.Message{}, nil).Maybe()
+				mockAI.EXPECT().ProcessMessage(mock.Anything, mock.Anything).Return(nil, assert.AnError)
+			},
+			expectError: false,
+		},
+		{
+			name: "skipped update type",
+			ctx:  context.Background(),
+			update: &tgbotapi.Update{
+				InlineQuery: &tgbotapi.InlineQuery{}, // Unsupported update type
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				// Nothing should happen since the handler skips non-message updates
+			},
+			expectError: false,
+		},
 	}
 
 	for _, tt := range tests {
