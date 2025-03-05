@@ -91,7 +91,7 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 	if update.MyChatMember != nil && update.MyChatMember.NewChatMember.Status == "kicked" {
 		chatID := fmt.Sprintf("%d", update.MyChatMember.Chat.ID)
 
-		// nolint:staticcheck // don't want to have dependecy on cmd package here for now
+		// nolint:staticcheck // don't want to have dependency on cmd package here for now
 		ctx = context.WithValue(ctx, "chat_id", chatID)
 
 		err := s.HandleRemovingBot(ctx, fmt.Sprintf("%d", update.MyChatMember.From.ID), chatID)
