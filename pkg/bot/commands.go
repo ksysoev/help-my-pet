@@ -23,7 +23,7 @@ func (s *ServiceImpl) HandleCommand(ctx context.Context, msg *tgbotapi.Message) 
 			msg.Text,
 		)
 		if err != nil {
-			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user update: %w", err)
+			return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
 		}
 
 		resp, err := s.AISvc.ProcessEditProfile(ctx, req)

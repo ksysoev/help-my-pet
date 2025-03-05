@@ -126,7 +126,7 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 		s.keepTyping(ctx, msg.Chat.ID, 5*time.Second)
 	}()
 
-	// Handle update with middleware
+	// Handle message with middleware
 	msgConfig, err := s.handler.Handle(ctx, msg)
 
 	if errors.Is(err, context.Canceled) {
@@ -142,7 +142,7 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 		return
 	}
 
-	// Skip sending if update is empty
+	// Skip sending if message is empty
 	if msgConfig.Text == "" {
 		return
 	}
@@ -150,7 +150,7 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 
 	// Send response
 	if _, err := s.Bot.Send(msgConfig); err != nil {
-		slog.ErrorContext(ctx, "Failed to send update",
+		slog.ErrorContext(ctx, "Failed to send message",
 			slog.Any("error", err),
 		)
 	}
@@ -192,7 +192,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 			slog.Info("Starting graceful shutdown")
 			s.Bot.StopReceivingUpdates()
 
-			// Wait for ongoing update processors with a timeout
+			// Wait for ongoing message processors with a timeout
 			done := make(chan struct{})
 			go func() {
 				wg.Wait()

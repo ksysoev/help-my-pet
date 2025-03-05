@@ -50,7 +50,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Cats need a balanced diet...",
 		},
 		{
-			name:         "empty update",
+			name:         "empty message",
 			message:      "",
 			aiResponse:   message.NewResponse("", []string{}),
 			aiErr:        nil,
@@ -90,7 +90,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "We have reached our daily request limit. Please come back tomorrow when our budget is refreshed.",
 		},
 		{
-			name:         "update without From field",
+			name:         "message without From field",
 			message:      "What food is good for cats?",
 			aiResponse:   nil,
 			aiErr:        nil,
@@ -100,7 +100,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "",
 		},
 		{
-			name:         "update with photo",
+			name:         "message with photo",
 			message:      "",
 			hasPhoto:     true,
 			aiResponse:   nil,
@@ -111,7 +111,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Please, provide your question in text format along with photo(s)",
 		},
 		{
-			name:         "update with video",
+			name:         "message with video",
 			message:      "",
 			hasVideo:     true,
 			aiResponse:   nil,
@@ -122,8 +122,8 @@ func TestService_handleMessage(t *testing.T) {
 			expectedText: "Sorry, I cannot process videos, audio, or documents. Please send your question as text only.",
 		},
 		{
-			name:         "update too long",
-			message:      "What food is good for cats? " + strings.Repeat("Very long update. ", 1000),
+			name:         "message too long",
+			message:      "What food is good for cats? " + strings.Repeat("Very long message. ", 1000),
 			aiResponse:   nil,
 			aiErr:        nil,
 			expectError:  false,
@@ -169,7 +169,7 @@ func TestService_handleMessage(t *testing.T) {
 				}
 			}
 
-			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !tt.hasVideo && !strings.Contains(tt.name, "update too long") {
+			if !tt.isStart && tt.message != "" && msg.From != nil && !tt.hasPhoto && !tt.hasVideo && !strings.Contains(tt.name, "message too long") {
 				expectedRequest := &message.UserMessage{
 					UserID: "123",
 					ChatID: "123",
@@ -235,11 +235,11 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 		ProcessMessage(mock.Anything, &message.UserMessage{
 			UserID: "123",
 			ChatID: "123",
-			Text:   "test update",
+			Text:   "test message",
 		}).
 		Return(message.NewResponse("test response", []string{}), nil)
 
-	// Expect update send
+	// Expect message send
 	mockBot.EXPECT().
 		Send(mock.MatchedBy(func(c tgbotapi.Chattable) bool {
 			msg, ok := c.(tgbotapi.MessageConfig)
@@ -260,7 +260,7 @@ func TestService_Run_SuccessfulMessageHandling(t *testing.T) {
 
 	updates <- tgbotapi.Update{
 		Message: &tgbotapi.Message{
-			Text: "test update",
+			Text: "test message",
 			Chat: &tgbotapi.Chat{
 				ID: 123,
 			},

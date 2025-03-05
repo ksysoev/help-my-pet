@@ -71,7 +71,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 		expectError bool
 	}{
 		{
-			name: "successful update processing",
+			name: "successful message processing",
 			ctx:  context.Background(),
 			update: &tgbotapi.Update{
 				Message: &tgbotapi.Message{
@@ -80,7 +80,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 						ID:           456,
 						LanguageCode: "en",
 					},
-					Text: "test update",
+					Text: "test message",
 				},
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
@@ -88,7 +88,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test update",
+					Text:   "test message",
 				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
@@ -108,7 +108,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 						ID:           456,
 						LanguageCode: "en",
 					},
-					Text: "test update",
+					Text: "test message",
 				},
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
@@ -116,7 +116,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test update",
+					Text:   "test message",
 				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
@@ -136,7 +136,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 						ID:           456,
 						LanguageCode: "en",
 					},
-					Text: "test update",
+					Text: "test message",
 				},
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
@@ -144,7 +144,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test update",
+					Text:   "test message",
 				}).Return(nil, context.Canceled)
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
 					return msg.ChatID == 123 && msg.Text != ""
@@ -153,7 +153,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 			expectError: false,
 		},
 		{
-			name: "failed to send update",
+			name: "failed to send message",
 			ctx:  context.Background(),
 			update: &tgbotapi.Update{
 				Message: &tgbotapi.Message{
@@ -162,7 +162,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 						ID:           456,
 						LanguageCode: "en",
 					},
-					Text: "test update",
+					Text: "test message",
 				},
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
@@ -170,7 +170,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test update",
+					Text:   "test message",
 				}).Return(&message.Response{
 					Message: "AI response",
 				}, nil)
@@ -190,7 +190,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 						ID:           456,
 						LanguageCode: "en",
 					},
-					Text: "test update",
+					Text: "test message",
 				},
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
@@ -198,7 +198,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 				mockAI.EXPECT().ProcessMessage(mock.Anything, &message.UserMessage{
 					ChatID: "123",
 					UserID: "456",
-					Text:   "test update",
+					Text:   "test message",
 				}).Return(&message.Response{
 					Message: "",
 				}, nil)
@@ -206,7 +206,7 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 			expectError: false,
 		},
 		{
-			name: "empty update",
+			name: "empty message",
 			ctx:  context.Background(),
 			update: &tgbotapi.Update{
 				Message: &tgbotapi.Message{
@@ -229,12 +229,12 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 			update: &tgbotapi.Update{
 				Message: &tgbotapi.Message{
 					Chat: &tgbotapi.Chat{ID: 123},
-					Text: "test update",
+					Text: "test message",
 				},
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				mockBot.EXPECT().Request(mock.Anything).Return(&tgbotapi.APIResponse{}, nil)
-				// Expect error update to be sent
+				// Expect error message to be sent
 				mockBot.EXPECT().Send(mock.MatchedBy(func(msg tgbotapi.MessageConfig) bool {
 					return msg.ChatID == 123 && msg.Text != ""
 				})).Return(tgbotapi.Message{}, nil)
@@ -259,10 +259,10 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 			expectError: false,
 		},
 		{
-			name: "skipped update type",
+			name: "skipped message type",
 			ctx:  context.Background(),
 			update: &tgbotapi.Update{
-				InlineQuery: &tgbotapi.InlineQuery{}, // Unsupported update type
+				InlineQuery: &tgbotapi.InlineQuery{}, // Unsupported message type
 			},
 			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
 				// Nothing should happen since the handler skips non-message updates

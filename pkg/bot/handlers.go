@@ -14,10 +14,10 @@ import (
 )
 
 // Handler defines the interface for processing and responding to incoming messages in a Telegram bot context.
-// It handles a update by performing necessary processing and returns the configuration for the outgoing update or an error.
+// It handles a message by performing necessary processing and returns the configuration for the outgoing message or an error.
 // ctx is the context for managing request lifecycle and cancellation.
-// update is the incoming Telegram update to be processed.
-// Returns a configured update object for sending a response and an error if processing fails.
+// message is the incoming Telegram message to be processed.
+// Returns a configured message object for sending a response and an error if processing fails.
 type Handler interface {
 	Handle(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error)
 }
@@ -39,13 +39,13 @@ func (s *ServiceImpl) setupHandler() Handler {
 	return h
 }
 
-// Handle processes an incoming Telegram update and generates an appropriate response.
-// It validates the update, handles commands, constructs contextual responses using AI,
+// Handle processes an incoming Telegram message and generates an appropriate response.
+// It validates the message, handles commands, constructs contextual responses using AI,
 // and supports reply markup for user interactions.
 // Accepts ctx, the request context for cancellation or deadlines, and msg, the Telegram
-// update to process.
-// Returns a configured Telegram update response (tgbotapi.MessageConfig) or an error
-// if validation fails, the input is unsupported, or update handling encounters issues.
+// message to process.
+// Returns a configured Telegram message response (tgbotapi.MessageConfig) or an error
+// if validation fails, the input is unsupported, or message handling encounters issues.
 func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	slog.DebugContext(ctx, "Received msg", slog.String("text", msg.Text))
 
@@ -53,7 +53,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 		return tgbotapi.MessageConfig{}, fmt.Errorf("msg from is nil")
 	}
 
-	// Validate if update contains unsupported media type like images, videos, etc.
+	// Validate if message contains unsupported media type like images, videos, etc.
 	if msg.Video != nil || msg.Audio != nil || msg.Voice != nil || msg.Document != nil {
 		return tgbotapi.NewMessage(
 			msg.Chat.ID,
@@ -96,7 +96,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 			i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."),
 		), nil
 	} else if err != nil {
-		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user update: %w", err)
+		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
 	}
 
 	response, err := s.AISvc.ProcessMessage(ctx, request)
@@ -131,8 +131,8 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 }
 
 // handleProcessingError maps specific processing errors to localized user-facing messages or provides a default error response.
-// It accepts err, the error encountered during update handling, and msg, the user's incoming update for context.
-// Returns a configured update with an appropriate response and an error if the failure is unrecognized or unexpected.
+// It accepts err, the error encountered during message handling, and msg, the user's incoming message for context.
+// Returns a configured message with an appropriate response and an error if the failure is unrecognized or unexpected.
 func (s *ServiceImpl) handleProcessingError(ctx context.Context, err error, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	switch {
 	case errors.Is(err, core.ErrRateLimit):

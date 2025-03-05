@@ -135,7 +135,7 @@ func TestHandleCommand(t *testing.T) {
 				AISvc: mockAI,
 			}
 
-			// Create update with proper command structure
+			// Create message with proper command structure
 			cmdText := tt.command + " " // Add space after command to ensure proper parsing
 			msg := &tgbotapi.Message{
 				Text: cmdText,

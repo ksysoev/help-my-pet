@@ -20,10 +20,10 @@ const (
 	maxFileSize      = 1024 * 1024
 )
 
-// handlePhoto processes a photo sent by the user and responds with a confirmation update.
+// handlePhoto processes a photo sent by the user and responds with a confirmation message.
 // It reduces the photo group using the photoReducer function and logs the media group ID.
-// Accepts ctx, the request context, and msg, the incoming Telegram update containing the photo.
-// Returns a confirmation Telegram update response or an error if photo reduction fails.
+// Accepts ctx, the request context, and msg, the incoming Telegram message containing the photo.
+// Returns a confirmation Telegram message response or an error if photo reduction fails.
 func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 	mediaGroup, err := s.photoReducer(ctx, msg)
 	if err != nil {
@@ -65,13 +65,13 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 	usrMsg.Images = photoData
 
 	if err != nil {
-		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user update: %w", err)
+		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user message: %w", err)
 	}
 
 	response, err := s.AISvc.ProcessMessage(ctx, usrMsg)
 
 	if err != nil {
-		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to process user update: %w", err)
+		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to process user message: %w", err)
 	}
 
 	// Create msg with buttons if available
@@ -100,10 +100,10 @@ func (s *ServiceImpl) handlePhoto(ctx context.Context, msg *tgbotapi.Message) (t
 	return resp, nil
 }
 
-// photoReducer consolidates a Telegram photo update into a media group for processing.
+// photoReducer consolidates a Telegram photo message into a media group for processing.
 // It extracts the best quality photo ID, adds it to the collector with the associated group ID and caption,
 // and waits briefly before finalizing the media group if no cancellation occurs.
-// Accepts ctx to manage cancellation or deadlines, and msg, the incoming Telegram update with the photo.
+// Accepts ctx to manage cancellation or deadlines, and msg, the incoming Telegram message with the photo.
 // Returns a pointer to the finalized media group containing the group's caption and photo IDs,
 // or an error if the context is canceled or other issues arise.
 func (s *ServiceImpl) photoReducer(ctx context.Context, msg *tgbotapi.Message) (*media.Group, error) {
