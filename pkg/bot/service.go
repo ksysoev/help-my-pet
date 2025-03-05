@@ -90,9 +90,10 @@ func NewService(cfg *Config, aiSvc AIProvider) (*ServiceImpl, error) {
 func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update) {
 	if update.MyChatMember != nil && update.MyChatMember.NewChatMember.Status == "kicked" {
 		chatID := fmt.Sprintf("%d", update.MyChatMember.Chat.ID)
-		userID := fmt.Sprintf("%d", update.MyChatMember.NewChatMember.User.ID)
 
-		err := s.HandleRemovingBot(ctx, userID, chatID)
+		ctx = context.WithValue(ctx, "chat_id", fmt.Sprintf("%d", chatID))
+
+		err := s.HandleRemovingBot(ctx, fmt.Sprintf("%d", update.MyChatMember.From.ID), chatID)
 		if err != nil {
 			slog.ErrorContext(ctx, "Failed to handle removing bot",
 				slog.Any("error", err),
@@ -105,6 +106,9 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 	if update.Message == nil {
 		return
 	}
+
+	// nolint:staticcheck // don't want to have dependecy on cmd package here for now
+	ctx = context.WithValue(ctx, "chat_id", fmt.Sprintf("%d", update.Message.Chat.ID))
 
 	msg := update.Message
 
@@ -177,8 +181,6 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 				// nolint:staticcheck // don't want to have dependecy on cmd package here for now
 				reqCtx = context.WithValue(reqCtx, "req_id", uuid.New().String())
-				// nolint:staticcheck // don't want to have dependecy on cmd package here for now
-				reqCtx = context.WithValue(reqCtx, "chat_id", fmt.Sprintf("%d", update.Message.Chat.ID))
 
 				defer cancel()
 
