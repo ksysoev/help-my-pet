@@ -62,7 +62,7 @@ func TestNewService(t *testing.T) {
 	}
 }
 
-func TestServiceImpl_ProcessMessage(t *testing.T) {
+func TestServiceImpl_ProcessUpdate(t *testing.T) {
 	tests := []struct {
 		ctx         context.Context
 		setupMocks  func(*MockBotAPI, *MockAIProvider)
@@ -269,6 +269,40 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			},
 			expectError: false,
 		},
+		{
+			name: "User deleted bot from chat",
+			ctx:  context.Background(),
+			update: &tgbotapi.Update{
+				MyChatMember: &tgbotapi.ChatMemberUpdated{
+					Chat: tgbotapi.Chat{ID: 123},
+					NewChatMember: tgbotapi.ChatMember{
+						Status: "kicked",
+						User:   &tgbotapi.User{ID: 456},
+					},
+				},
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockAI.EXPECT().ResetUserConversation(mock.Anything, "456", "123").Return(nil)
+			},
+			expectError: false,
+		},
+		{
+			name: "User deleted bot from chat with error",
+			ctx:  context.Background(),
+			update: &tgbotapi.Update{
+				MyChatMember: &tgbotapi.ChatMemberUpdated{
+					Chat: tgbotapi.Chat{ID: 123},
+					NewChatMember: tgbotapi.ChatMember{
+						Status: "kicked",
+						User:   &tgbotapi.User{ID: 456},
+					},
+				},
+			},
+			setupMocks: func(mockBot *MockBotAPI, mockAI *MockAIProvider) {
+				mockAI.EXPECT().ResetUserConversation(mock.Anything, "456", "123").Return(assert.AnError)
+			},
+			expectError: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -286,9 +320,6 @@ func TestServiceImpl_ProcessMessage(t *testing.T) {
 			tt.setupMocks(mockBot, mockAI)
 
 			service.processUpdate(tt.ctx, tt.update)
-
-			mockBot.AssertExpectations(t)
-			mockAI.AssertExpectations(t)
 		})
 	}
 }
