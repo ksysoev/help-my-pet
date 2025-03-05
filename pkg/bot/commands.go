@@ -131,7 +131,7 @@ func handleHelp(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageCon
 /terms - View the Terms and Conditions of the service
 /editprofile - Update your pet's profile information, such as name, age, breed, etc. This information helps the bot provide more accurate advice.
 /cancel - Cancel the current questionnaire, if any is in progress (e.g., when you want to start over or change your question)
-/help - View this help update`)
+/help - View this help message`)
 
 	tgMsg := tgbotapi.NewMessage(msg.Chat.ID, helpMsg)
 	tgMsg.ParseMode = "HTML"

@@ -129,7 +129,7 @@ func TestService_handleMessage(t *testing.T) {
 			expectError:  false,
 			userID:       123,
 			langCode:     "en",
-			expectedText: "I apologize, but your update is too long for me to process. Please try to make it shorter and more concise.",
+			expectedText: "I apologize, but your message is too long for me to process. Please try to make it shorter and more concise.",
 		},
 	}
 

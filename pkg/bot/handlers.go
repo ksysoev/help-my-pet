@@ -93,7 +93,7 @@ func (s *ServiceImpl) Handle(ctx context.Context, msg *tgbotapi.Message) (tgbota
 	if errors.Is(err, message.ErrTextTooLong) {
 		return tgbotapi.NewMessage(
 			msg.Chat.ID,
-			i18n.GetLocale(ctx).Sprintf("I apologize, but your update is too long for me to process. Please try to make it shorter and more concise."),
+			i18n.GetLocale(ctx).Sprintf("I apologize, but your message is too long for me to process. Please try to make it shorter and more concise."),
 		), nil
 	} else if err != nil {
 		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to create user update: %w", err)
