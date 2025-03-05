@@ -275,9 +275,9 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 			update: &tgbotapi.Update{
 				MyChatMember: &tgbotapi.ChatMemberUpdated{
 					Chat: tgbotapi.Chat{ID: 123},
+					From: tgbotapi.User{ID: 456},
 					NewChatMember: tgbotapi.ChatMember{
 						Status: "kicked",
-						User:   &tgbotapi.User{ID: 456},
 					},
 				},
 			},
@@ -292,9 +292,9 @@ func TestServiceImpl_ProcessUpdate(t *testing.T) {
 			update: &tgbotapi.Update{
 				MyChatMember: &tgbotapi.ChatMemberUpdated{
 					Chat: tgbotapi.Chat{ID: 123},
+					From: tgbotapi.User{ID: 456},
 					NewChatMember: tgbotapi.ChatMember{
 						Status: "kicked",
-						User:   &tgbotapi.User{ID: 456},
 					},
 				},
 			},
