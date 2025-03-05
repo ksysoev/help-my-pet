@@ -334,3 +334,60 @@ func TestService_handleProcessingError(t *testing.T) {
 		})
 	}
 }
+
+func TestService_HandleRemovingBot(t *testing.T) {
+	tests := []struct {
+		name      string
+		userID    string
+		chatID    string
+		resetErr  error
+		expectErr bool
+	}{
+		{
+			name:      "successful reset",
+			userID:    "12345",
+			chatID:    "54321",
+			resetErr:  nil,
+			expectErr: false,
+		},
+		{
+			name:      "reset fails",
+			userID:    "12345",
+			chatID:    "54321",
+			resetErr:  fmt.Errorf("AI service failure"),
+			expectErr: true,
+		},
+		{
+			name:      "invalid user and chat IDs",
+			userID:    "",
+			chatID:    "",
+			resetErr:  nil,
+			expectErr: false, // Assuming no error for empty user/chat ID unless AI provider enforces validation
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockAI := NewMockAIProvider(t)
+
+			// Mock the ResetUserConversation method for the test case
+			mockAI.EXPECT().ResetUserConversation(mock.Anything, tt.userID, tt.chatID).Return(tt.resetErr)
+
+			// Arrange
+			svc := &ServiceImpl{
+				AISvc: mockAI,
+			}
+
+			// Act
+			err := svc.HandleRemovingBot(context.Background(), tt.userID, tt.chatID)
+
+			// Assert
+			if tt.expectErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+			mockAI.AssertExpectations(t)
+		})
+	}
+}

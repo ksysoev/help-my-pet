@@ -83,6 +83,53 @@ func (_c *MockPetProfileRepository_GetCurrentProfile_Call) RunAndReturn(run func
 	return _c
 }
 
+// RemoveUserProfiles provides a mock function with given fields: ctx, userID
+func (_m *MockPetProfileRepository) RemoveUserProfiles(ctx context.Context, userID string) error {
+	ret := _m.Called(ctx, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveUserProfiles")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = rf(ctx, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockPetProfileRepository_RemoveUserProfiles_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveUserProfiles'
+type MockPetProfileRepository_RemoveUserProfiles_Call struct {
+	*mock.Call
+}
+
+// RemoveUserProfiles is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+func (_e *MockPetProfileRepository_Expecter) RemoveUserProfiles(ctx interface{}, userID interface{}) *MockPetProfileRepository_RemoveUserProfiles_Call {
+	return &MockPetProfileRepository_RemoveUserProfiles_Call{Call: _e.mock.On("RemoveUserProfiles", ctx, userID)}
+}
+
+func (_c *MockPetProfileRepository_RemoveUserProfiles_Call) Run(run func(ctx context.Context, userID string)) *MockPetProfileRepository_RemoveUserProfiles_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockPetProfileRepository_RemoveUserProfiles_Call) Return(_a0 error) *MockPetProfileRepository_RemoveUserProfiles_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockPetProfileRepository_RemoveUserProfiles_Call) RunAndReturn(run func(context.Context, string) error) *MockPetProfileRepository_RemoveUserProfiles_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // SaveProfile provides a mock function with given fields: ctx, userID, profile
 func (_m *MockPetProfileRepository) SaveProfile(ctx context.Context, userID string, profile *pet.Profile) error {
 	ret := _m.Called(ctx, userID, profile)

@@ -147,3 +147,61 @@ func TestConversationRepository_FindOrCreate(t *testing.T) {
 		assert.NoError(t, mock.ExpectationsWereMet())
 	})
 }
+
+func TestConversationRepository_Delete(t *testing.T) {
+	db, mock := redismock.NewClientMock()
+	repo := NewConversationRepository(db)
+	ctx := context.Background()
+
+	tests := []struct {
+		name      string
+		id        string
+		mockSetup func()
+		wantError error
+	}{
+		{
+			name: "successful delete",
+			id:   "test-id",
+			mockSetup: func() {
+				mock.ExpectDel("conversation:test-id").SetVal(1)
+			},
+			wantError: nil,
+		},
+		{
+			name: "delete non-existing conversation",
+			id:   "non-existent-id",
+			mockSetup: func() {
+				mock.ExpectDel("conversation:non-existent-id").SetVal(0)
+			},
+			wantError: nil, // Deleting a non-existent key in Redis is not treated as an error
+		},
+		{
+			name: "error during deletion",
+			id:   "error-id",
+			mockSetup: func() {
+				mock.ExpectDel("conversation:error-id").SetErr(fmt.Errorf("redis error"))
+			},
+			wantError: fmt.Errorf("redis error"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Arrange
+			tt.mockSetup()
+
+			// Act
+			err := repo.Delete(ctx, tt.id)
+
+			// Assert
+			if tt.wantError != nil {
+				assert.Error(t, err)
+				assert.EqualError(t, err, tt.wantError.Error())
+			} else {
+				assert.NoError(t, err)
+			}
+
+			assert.NoError(t, mock.ExpectationsWereMet())
+		})
+	}
+}

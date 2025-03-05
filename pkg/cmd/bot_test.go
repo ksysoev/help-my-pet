@@ -33,7 +33,7 @@ func TestBotRunner_WithBotService(t *testing.T) {
 
 func TestBotRunner_RunBot(t *testing.T) {
 	tests := []struct {
-		setupRunner func() *BotRunner
+		setupRunner func(t *testing.T) *BotRunner
 		cfg         *Config
 		name        string
 		errMsg      string
@@ -41,7 +41,7 @@ func TestBotRunner_RunBot(t *testing.T) {
 	}{
 		{
 			name: "success with custom bot service",
-			setupRunner: func() *BotRunner {
+			setupRunner: func(t *testing.T) *BotRunner {
 				mockService := NewMockBotService(t)
 				mockService.On("Run", mock.Anything).Return(nil)
 				runner := NewBotRunner()
@@ -52,10 +52,9 @@ func TestBotRunner_RunBot(t *testing.T) {
 		},
 		{
 			name: "success with custom LLM provider",
-			setupRunner: func() *BotRunner {
+			setupRunner: func(t *testing.T) *BotRunner {
 				mockBotAPI := bot.NewMockBotAPI(t)
 				ch := make(chan tgbotapi.Update)
-				close(ch)
 				mockBotAPI.On("GetUpdatesChan", mock.Anything).Return(tgbotapi.UpdatesChannel(ch)).Once()
 				mockBotAPI.On("StopReceivingUpdates").Return().Once()
 
@@ -79,7 +78,7 @@ func TestBotRunner_RunBot(t *testing.T) {
 		},
 		{
 			name: "error creating bot service",
-			setupRunner: func() *BotRunner {
+			setupRunner: func(t *testing.T) *BotRunner {
 				runner := NewBotRunner()
 				runner.createService = func(cfg *bot.Config, aiSvc bot.AIProvider) (*bot.ServiceImpl, error) {
 					return nil, errors.New("service creation error")
@@ -99,7 +98,7 @@ func TestBotRunner_RunBot(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())
-			runner := tt.setupRunner()
+			runner := tt.setupRunner(t)
 
 			go func() {
 				// Cancel context after a short delay to simulate shutdown

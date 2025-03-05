@@ -143,3 +143,14 @@ func (s *ServiceImpl) handleProcessingError(ctx context.Context, err error, msg 
 		return tgbotapi.MessageConfig{}, fmt.Errorf("failed to get AI response: %w", err)
 	}
 }
+
+// HandleRemovingBot resets the conversation context for a user in a chat upon bot removal.
+// It ensures the conversation state is cleared for the given userID and chatID.
+// Returns error if the reset operation fails, including details about the failure.
+func (s *ServiceImpl) HandleRemovingBot(ctx context.Context, userID, chatID string) error {
+	if err := s.AISvc.ResetUserConversation(ctx, userID, chatID); err != nil {
+		return fmt.Errorf("failed to reset user conversation: %w", err)
+	}
+
+	return nil
+}

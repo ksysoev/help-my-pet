@@ -189,6 +189,54 @@ func (_c *MockAIProvider_ProcessMessage_Call) RunAndReturn(run func(context.Cont
 	return _c
 }
 
+// ResetUserConversation provides a mock function with given fields: ctx, userID, chatID
+func (_m *MockAIProvider) ResetUserConversation(ctx context.Context, userID string, chatID string) error {
+	ret := _m.Called(ctx, userID, chatID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ResetUserConversation")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = rf(ctx, userID, chatID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MockAIProvider_ResetUserConversation_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ResetUserConversation'
+type MockAIProvider_ResetUserConversation_Call struct {
+	*mock.Call
+}
+
+// ResetUserConversation is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+//   - chatID string
+func (_e *MockAIProvider_Expecter) ResetUserConversation(ctx interface{}, userID interface{}, chatID interface{}) *MockAIProvider_ResetUserConversation_Call {
+	return &MockAIProvider_ResetUserConversation_Call{Call: _e.mock.On("ResetUserConversation", ctx, userID, chatID)}
+}
+
+func (_c *MockAIProvider_ResetUserConversation_Call) Run(run func(ctx context.Context, userID string, chatID string)) *MockAIProvider_ResetUserConversation_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string), args[2].(string))
+	})
+	return _c
+}
+
+func (_c *MockAIProvider_ResetUserConversation_Call) Return(_a0 error) *MockAIProvider_ResetUserConversation_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockAIProvider_ResetUserConversation_Call) RunAndReturn(run func(context.Context, string, string) error) *MockAIProvider_ResetUserConversation_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // NewMockAIProvider creates a new instance of MockAIProvider. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewMockAIProvider(t interface {

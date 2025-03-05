@@ -236,3 +236,57 @@ func TestPetProfileRepository_GetProfiles_Empty(t *testing.T) {
 	assert.NoError(t, mock.ExpectationsWereMet())
 
 }
+
+func TestPetProfileRepository_RemoveUserProfiles(t *testing.T) {
+	tests := []struct {
+		name        string
+		userID      string
+		mockSetup   func(mock redismock.ClientMock, userID string)
+		expectedErr error
+	}{
+		{
+			name:   "successful removal",
+			userID: "user123",
+			mockSetup: func(mock redismock.ClientMock, userID string) {
+				mock.ExpectHDel(petProfilesKey, userID).SetVal(1) // Simulating Redis HDel success
+			},
+			expectedErr: nil,
+		},
+		{
+			name:   "profile does not exist",
+			userID: "user404",
+			mockSetup: func(mock redismock.ClientMock, userID string) {
+				mock.ExpectHDel(petProfilesKey, userID).SetVal(0) // Simulating Redis HDel success with no key deleted
+			},
+			expectedErr: nil,
+		},
+		{
+			name:   "redis error",
+			userID: "user500",
+			mockSetup: func(mock redismock.ClientMock, userID string) {
+				mock.ExpectHDel(petProfilesKey, userID).SetErr(fmt.Errorf("redis unavailable")) // Simulating Redis error
+			},
+			expectedErr: fmt.Errorf("failed to remove pet profiles: redis unavailable"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client, mock := redismock.NewClientMock()
+			repo := NewPetProfileRepository(client)
+
+			tt.mockSetup(mock, tt.userID)
+
+			err := repo.RemoveUserProfiles(context.Background(), tt.userID)
+
+			if tt.expectedErr != nil {
+				assert.Error(t, err)
+				assert.EqualError(t, err, tt.expectedErr.Error())
+			} else {
+				assert.NoError(t, err)
+			}
+
+			assert.NoError(t, mock.ExpectationsWereMet())
+		})
+	}
+}
