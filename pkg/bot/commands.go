@@ -60,18 +60,18 @@ func (s *ServiceImpl) handleStart(ctx context.Context, msg *tgbotapi.Message) (t
 
 	startMsg := i18n.GetLocale(ctx).Sprintf(`Welcome to Help My Pet Bot! 🐾
 
-I'm your personal pet care assistant, ready to help you take better care of your furry friend. I can analyze photos of your pet and assist you with:
+I'm your personal pet care assistant, ready to provide guidance for your furry friends. I can help with:
 
-- Pet health and behavior questions - feel free to share photos of any concerning symptoms or behaviors
-- Diet and nutrition advice, including photos of food or treats you're considering
-- Training tips and techniques - you can send pictures of specific situations you need help with
-- General pet care guidance, with photo analysis of your pet's environment or supplies
+- Health concerns and symptom assessment
+- Behavior questions and training techniques
+- Diet and nutrition recommendations
+- General pet care and wellness advice
 
-Simply type your question or send photos along with your concerns about your pet, and I'll provide helpful, informative answers based on reliable veterinary knowledge. You can send multiple photos if needed to better show the situation.
+Simply type your question or concern about your pet. You can also include photos to help me better understand your situation.
 
-Remember, while I can offer guidance and analyze photos, for serious medical conditions, always consult with a veterinarian.
+Remember, while I offer helpful guidance based on reliable veterinary knowledge, I'm not a replacement for professional veterinary care. Always consult a veterinarian for serious medical concerns.
 
-To get started, just ask me any question about your pet - with or without photos!`)
+What pet question can I help you with today?`)
 
 	return tgbotapi.NewMessage(msg.Chat.ID, startMsg), nil
 }
