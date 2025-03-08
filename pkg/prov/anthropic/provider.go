@@ -13,11 +13,13 @@ import (
 // It includes parameters for API authentication, model selection, and token usage limits.
 // APIKey specifies the API key used for authenticating with the language model provider.
 // Model identifies the specific language model to interact with, such as "claude-2".
+// MediaModel specifies the model used for media analysis, such as "haiku".
 // MaxTokens sets the maximum number of tokens allowed per request, controlling output length and cost.
 type Config struct {
-	APIKey    string `mapstructure:"api_key"`
-	Model     string `mapstructure:"model"`
-	MaxTokens int    `mapstructure:"max_tokens"`
+	APIKey     string `mapstructure:"api_key"`
+	Model      string `mapstructure:"model"`
+	MediaModel string `mapstructure:"media_model"`
+	MaxTokens  int    `mapstructure:"max_tokens"`
 }
 
 // Provider encapsulates the LLM model, response parser, and configuration for handling language model interactions.
@@ -25,8 +27,9 @@ type Config struct {
 // The response parser is responsible for converting the raw LLM output into a structured format as defined by the ResponseParser.
 // Config contains essential settings such as API keys, model type, and token limits, which are used to initialize the provider.
 type Provider struct {
-	llm    Model
-	config Config
+	llm        Model
+	mediaModel Model
+	config     Config
 }
 
 // New initializes and returns a new Provider instance based on the provided configuration.
@@ -43,9 +46,15 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("failed to initialize Anthropic model: %w", err)
 	}
 
+	mediaModel, err := newAnthropicModel(cfg.APIKey, cfg.MediaModel, cfg.MaxTokens)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize Anthropic media model: %w", err)
+	}
+
 	return &Provider{
-		llm:    llm,
-		config: cfg,
+		llm:        llm,
+		mediaModel: mediaModel,
+		config:     cfg,
 	}, nil
 }
 
