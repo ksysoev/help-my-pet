@@ -77,7 +77,7 @@ func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.
 		slog.Debug("Anthropic media model response", slog.String("response", mediaDesc))
 
 		if mediaDesc != "" {
-			request += "\n\n Description for attached photo files:\n" + mediaDesc
+			request += "\n\nMedia content:\n" + mediaDesc
 		}
 	}
 
