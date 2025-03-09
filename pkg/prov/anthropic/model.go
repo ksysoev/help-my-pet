@@ -49,6 +49,7 @@ const coreGuidelines = `Core Guidelines strictly:
     - media_description: detailed description of media content provided by user
   - Follow-up information - this section contains the assistant's follow-up questions and user's responses. You should analyze last user's question and last assistant's response from the previous conversation section and based on follow-up information section, you provide final response. You SHOULD NOT ask additional question at this point. 
   - Current question - this section contains the user's current question. You should analyze this question and if information is not enough, you can ask additional questions to get more details for you diagnosis. You can use previous conversation section to get more context.
+  - Media content - this section contains textual description of media content provided by user. You should analyze this content and use it to provide more accurate advice.
 `
 
 // anthropicModel adapts the Anthropic API to the Model interface
