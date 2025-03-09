@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	maxAllowedPhotos = 2
+	maxAllowedPhotos = 5
 	maxFileSize      = 1024 * 1024
 )
 

@@ -1,8 +1,8 @@
 package anthropic
 
-// haikuMediaExtractionPrompt defines instructions for the Haiku model to extract detailed
+// mediaExtractionPrompt defines instructions for the Haiku model to extract detailed
 // information from both pet photos and lab test results
-const haikuMediaExtractionPrompt = `Extract and describe all objective information from the provided media (pet photo or lab test results).
+const mediaExtractionPrompt = `Extract and describe all objective information from the provided media (pet photo or lab test results).
 Determine the media type first, then focus ONLY on visible elements and factual information without making diagnoses.
 
 IF PET PHOTO:
@@ -67,8 +67,8 @@ Be precise, factual, and avoid interpretations or diagnoses.
 Include measurements when possible using visible references.
 Document colors, textures, specific locations, and values accurately.`
 
-// haikuMediaOutputFormat defines the structured output format for both photo and lab test information
-const haikuMediaOutputFormat = `First, identify the type of media provided and then use the appropriate format below.
+// mediaOutputFormat defines the structured output format for both photo and lab test information
+const mediaOutputFormat = `First, identify the type of media provided and then use the appropriate format below.
 
 FOR PET PHOTOS:
 SUBJECT:

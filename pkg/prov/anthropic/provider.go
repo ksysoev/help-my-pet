@@ -65,11 +65,27 @@ func New(cfg Config) (*Provider, error) {
 func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.Image) (*message.LLMResult, error) {
 	slog.DebugContext(ctx, "Anthropic LLM call", slog.String("question", request))
 
+	mediaDesc := ""
+	if len(imgs) > 0 {
+		var err error
+
+		mediaDesc, err = p.mediaModel.Call(ctx, mediaExtractionPrompt, mediaOutputFormat, imgs)
+		if err != nil {
+			return nil, fmt.Errorf("failed to call Anthropic media model: %w", err)
+		}
+
+		slog.Debug("Anthropic media model response", slog.String("response", mediaDesc))
+
+		if mediaDesc != "" {
+			request += "\n\n Description for attached photo files:\n" + mediaDesc
+		}
+	}
+
 	parser := newAssistantResponseParser(analyzeOutput)
 
 	systemPrompt := analyzePrompt + parser.FormatInstructions()
 
-	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, imgs)
+	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
@@ -79,6 +95,10 @@ func (p *Provider) Analyze(ctx context.Context, request string, imgs []*message.
 	result, err := parser.Parse(response)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse LLM response: %w", err)
+	}
+
+	if mediaDesc != "" {
+		result.Media = mediaDesc
 	}
 
 	return result, nil
