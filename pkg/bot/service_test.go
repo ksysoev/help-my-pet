@@ -420,7 +420,7 @@ func TestServiceImpl_KeepTyping(t *testing.T) {
 				})).Return(&tgbotapi.APIResponse{}, nil).Times(2) // Initial + 1 tick
 			},
 			cancelContext: false,
-			waitDuration:  6 * time.Millisecond, // 1 second more than ticker
+			waitDuration:  9 * time.Millisecond, // 1 second more than ticker
 		},
 		{
 			name:   "error in typing action",
@@ -432,7 +432,7 @@ func TestServiceImpl_KeepTyping(t *testing.T) {
 				})).Return(nil, assert.AnError).Times(2) // Initial + 1 tick
 			},
 			cancelContext: false,
-			waitDuration:  6 * time.Millisecond,
+			waitDuration:  9 * time.Millisecond,
 		},
 		{
 			name:   "context canceled",
