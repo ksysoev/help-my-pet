@@ -97,7 +97,6 @@ ai:
 			if tt.configData != "" {
 				tmpfile, err := os.CreateTemp("", "config-*.yaml")
 				require.NoError(t, err)
-				defer os.Remove(tmpfile.Name())
 
 				_, err = tmpfile.WriteString(tt.configData)
 				require.NoError(t, err)
@@ -187,7 +186,6 @@ ai:
 `
 	tmpfile, err := os.CreateTemp("", "config-*.yaml")
 	require.NoError(t, err)
-	defer os.Remove(tmpfile.Name())
 
 	_, err = tmpfile.WriteString(configData)
 	require.NoError(t, err)
