@@ -54,7 +54,7 @@ const coreGuidelines = `Core Guidelines strictly:
 
 // anthropicModel adapts the Anthropic API to the Model interface
 type anthropicModel struct {
-	client    *anthropic.Client
+	client    anthropic.Client
 	modelID   string
 	maxTokens int
 }
@@ -67,9 +67,6 @@ type anthropicModel struct {
 // Returns a pointer to an anthropicModel instance for interacting with Anthropic API and an error if client initialization fails.
 func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropicModel, error) {
 	client := anthropic.NewClient(option.WithAPIKey(apiKey))
-	if client == nil {
-		return nil, fmt.Errorf("failed to create Anthropic client")
-	}
 
 	return &anthropicModel{
 		client:    client,
@@ -91,13 +88,13 @@ func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string
 	}
 
 	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
-		Model:     anthropic.F(m.modelID),
-		MaxTokens: anthropic.F(int64(m.maxTokens)),
-		System: anthropic.F([]anthropic.TextBlockParam{
-			anthropic.NewTextBlock(coreGuidelines),
-			anthropic.NewTextBlock(systemPrompts),
-		}),
-		Messages: anthropic.F([]anthropic.MessageParam{anthropic.NewUserMessage(blocks...)}),
+		Model:     m.modelID,
+		MaxTokens: int64(m.maxTokens),
+		System: []anthropic.TextBlockParam{
+			{Text: coreGuidelines},
+			{Text: systemPrompts},
+		},
+		Messages: []anthropic.MessageParam{anthropic.NewUserMessage(blocks...)},
 	})
 
 	if err != nil {
