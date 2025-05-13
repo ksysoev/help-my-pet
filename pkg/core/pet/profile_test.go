@@ -89,7 +89,7 @@ Name: Buddy
 Species: Dog
 Breed: Golden Retriever
 Date of Birth: 2018-05-10
-Age: 6
+Age: 7
 Gender: Male
 Weight: 30.5
 Neutered: yes
