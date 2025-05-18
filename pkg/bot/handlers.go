@@ -30,6 +30,7 @@ func (s *ServiceImpl) setupHandler() Handler {
 	h := middleware.Use(
 		s,
 		middleware.WithRequestReducer(),
+		middleware.WithRequestSequencer(),
 		middleware.WithThrottler(30),
 		middleware.WithMetrics(),
 		middleware.WithErrorHandling(),
