@@ -420,7 +420,7 @@ func TestServiceImpl_KeepTyping(t *testing.T) {
 				})).Return(&tgbotapi.APIResponse{}, nil).Times(2) // Initial + 1 tick
 			},
 			cancelContext: false,
-			waitDuration:  9 * time.Millisecond, // 1 second more than ticker
+			waitDuration:  900 * time.Millisecond, // 1 second more than ticker
 		},
 		{
 			name:   "error in typing action",
@@ -432,7 +432,7 @@ func TestServiceImpl_KeepTyping(t *testing.T) {
 				})).Return(nil, assert.AnError).Times(2) // Initial + 1 tick
 			},
 			cancelContext: false,
-			waitDuration:  9 * time.Millisecond,
+			waitDuration:  900 * time.Millisecond,
 		},
 		{
 			name:   "context canceled",
@@ -444,7 +444,7 @@ func TestServiceImpl_KeepTyping(t *testing.T) {
 				})).Return(&tgbotapi.APIResponse{}, nil).Times(1) // Only initial send
 			},
 			cancelContext: true,
-			waitDuration:  1 * time.Millisecond, // Ensure cancellation before tick
+			waitDuration:  100 * time.Millisecond, // Ensure cancellation before tick
 		},
 	}
 
@@ -466,7 +466,7 @@ func TestServiceImpl_KeepTyping(t *testing.T) {
 			}
 
 			tt.setupMock(mockBot)
-			service.keepTyping(ctx, tt.chatID, 5*time.Millisecond)
+			service.keepTyping(ctx, tt.chatID, 500*time.Millisecond)
 
 			time.Sleep(tt.waitDuration)
 

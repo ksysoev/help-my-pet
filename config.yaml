@@ -1,11 +1,11 @@
 redis:
-  url: "redis://localhost:6379" # Redis connection URL
+  url: "localhost:6379" # Redis connection URL
   password: "" # Redis password (if required)
   db: 0 # Redis database number
 
 ai:
-  model: "claude-3-7-sonnet-latest" # Anthropic model to use
-  media_model: "claude-3-5-haiku-20241022" # Anthropic model for media processing
+  model: "claude-sonnet-4-20250514" # Anthropic model to use
+  media_model: "claude-3-5-haiku-latest" # Anthropic model for media processing
   api_key: "" # Set your Anthropic API key here
   max_tokens: 3000 # Maximum number of tokens in the response
 
