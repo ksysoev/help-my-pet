@@ -88,7 +88,7 @@ func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string
 	}
 
 	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
-		Model:     m.modelID,
+		Model:     anthropic.Model(m.modelID),
 		MaxTokens: int64(m.maxTokens),
 		System: []anthropic.TextBlockParam{
 			{Text: coreGuidelines},
