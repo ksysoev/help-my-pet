@@ -1,6 +1,7 @@
 package pet
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -64,6 +65,9 @@ func TestCalculateAge(t *testing.T) {
 }
 
 func TestPetProfile_String(t *testing.T) {
+	dateOfBirth := "2018-05-10"
+	age := calculateAge(time.Now(), dateOfBirth)
+
 	tests := []struct {
 		name     string
 		profile  Profile
@@ -75,7 +79,7 @@ func TestPetProfile_String(t *testing.T) {
 				Name:            "Buddy",
 				Species:         "Dog",
 				Breed:           "Golden Retriever",
-				DateOfBirth:     "2018-05-10",
+				DateOfBirth:     dateOfBirth,
 				Gender:          "Male",
 				Weight:          "30.5",
 				Neutered:        "yes",
@@ -83,20 +87,20 @@ func TestPetProfile_String(t *testing.T) {
 				ChronicDiseases: "None",
 				FoodPreferences: "Dry food, no allergies",
 			},
-			expected: `
+			expected: fmt.Sprintf(`
 Pet Profile:
 Name: Buddy
 Species: Dog
 Breed: Golden Retriever
-Date of Birth: 2018-05-10
-Age: 7
+Date of Birth: %s
+Age: %s
 Gender: Male
 Weight: 30.5
 Neutered: yes
 Activity Level: high
 Chronic Diseases: None
 Food Preferences: Dry food, no allergies
-`,
+`, dateOfBirth, age),
 		},
 		{
 			name:    "Empty fields",
@@ -141,22 +145,22 @@ Food Preferences: Not provided
 		{
 			name: "Date of birth set alone",
 			profile: Profile{
-				DateOfBirth: "2020-07-15",
+				DateOfBirth: dateOfBirth,
 			},
-			expected: `
+			expected: fmt.Sprintf(`
 Pet Profile:
 Name: 
 Species: 
 Breed: 
-Date of Birth: 2020-07-15
-Age: 4
+Date of Birth: %s
+Age: %s
 Gender: 
 Weight: 
 Neutered: Not provided
 Activity Level: Not provided
 Chronic Diseases: Not provided
 Food Preferences: Not provided
-`,
+`, dateOfBirth, age),
 		},
 		{
 			name: "Negative weight",
