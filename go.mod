@@ -1,6 +1,6 @@
 module github.com/ksysoev/help-my-pet
 
-go 1.24.1
+go 1.24.5
 
 require (
 	github.com/anthropics/anthropic-sdk-go v1.5.0
