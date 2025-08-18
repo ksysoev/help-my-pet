@@ -3,7 +3,7 @@ module github.com/ksysoev/help-my-pet
 go 1.24.5
 
 require (
-	github.com/anthropics/anthropic-sdk-go v1.8.0
+	github.com/anthropics/anthropic-sdk-go v1.9.1
 	github.com/go-redis/redismock/v9 v9.2.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/google/uuid v1.6.0
@@ -36,6 +36,6 @@ require (
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
