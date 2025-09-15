@@ -3,7 +3,7 @@ module github.com/ksysoev/help-my-pet
 go 1.24.5
 
 require (
-	github.com/anthropics/anthropic-sdk-go v1.11.0
+	github.com/anthropics/anthropic-sdk-go v1.12.0
 	github.com/go-redis/redismock/v9 v9.2.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/google/uuid v1.6.0
