@@ -203,6 +203,24 @@ newline", "Normal answer"]
 			input:   "",
 			wantErr: true,
 		},
+		{
+			name:  "JSON with trailing content after closing brace",
+			input: `{"text": "Clean advice.", "questions": []} some trailing text here`,
+			expected: &message.LLMResult{
+				Text:      "Clean advice.",
+				Questions: []message.Question{},
+			},
+			wantErr: false,
+		},
+		{
+			name:  "JSON with leading preamble before opening brace",
+			input: `Here is the response: {"text": "Preamble advice.", "questions": []}`,
+			expected: &message.LLMResult{
+				Text:      "Preamble advice.",
+				Questions: []message.Question{},
+			},
+			wantErr: false,
+		},
 	}
 
 	parser := newAssistantResponseParser("text\nquestions")

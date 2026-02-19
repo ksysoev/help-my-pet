@@ -62,8 +62,8 @@ func TestProvider_Anylyze(t *testing.T) {
 		setupMock  func(t *testing.T) *Provider
 		name       string
 		prompt     string
-		wantErr    bool
 		images     []*message.Image
+		wantErr    bool
 	}
 
 	tests := []testCase{

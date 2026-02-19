@@ -140,14 +140,13 @@ func extractJSON(text string) string {
 		return strings.TrimSpace(text)
 	}
 
-	// Try to find JSON between curly braces if no code block
-	if !strings.HasPrefix(text, "{") {
-		start := strings.Index(text, "{")
-		if start != -1 {
-			end := strings.LastIndex(text, "}")
-			if end != -1 && end > start {
-				return strings.TrimSpace(text[start : end+1])
-			}
+	// Extract the JSON object by finding the outermost { ... } bounds.
+	// This strips any leading preamble or trailing content around the JSON.
+	start := strings.Index(text, "{")
+	if start != -1 {
+		end := strings.LastIndex(text, "}")
+		if end != -1 && end > start {
+			return strings.TrimSpace(text[start : end+1])
 		}
 	}
 
