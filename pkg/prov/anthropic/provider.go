@@ -41,7 +41,7 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("API key is required")
 	}
 
-	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens, true)
+	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens, false)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic model: %w", err)
 	}
@@ -116,7 +116,6 @@ func (p *Provider) Report(ctx context.Context, request string) (*message.LLMResu
 	systemPrompt := reportPrompt + parser.FormatInstructions()
 
 	response, err := p.llm.Call(ctx, systemPrompt, p.systemInfo()+request, nil)
-
 	if err != nil {
 		return nil, fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
