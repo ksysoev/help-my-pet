@@ -51,6 +51,12 @@ Type and structure of textual responses:
   - When to seek veterinary care If needed
   - Preventive care advice
 
+Response length:
+- The "text" field MUST NOT exceed 3800 characters. This is a hard limit.
+- Be concise and direct. Avoid repetition and filler phrases.
+- Prioritize the most critical information first.
+- Use short paragraphs. Do not pad the response unnecessarily.
+
 `
 
 const analyzeOutput = `Return your response in JSON format with this structure:
@@ -71,6 +77,7 @@ Notes for Implementation:
   - Respond according to type and structure of textual responses
   - This field is optional in case if information is not sufficient and you need to ask additional questions, otherwise it should be filled
   - This field should be well formated plain text(No markdown or html tags). Do NOT use **bold** or *italic* formatting.
+  - HARD LIMIT: the value of this field MUST NOT exceed 3800 characters. Count carefully before outputting. If your draft is longer, trim it.
 2. Question Formation:
   - This field is optional, but if used, should be structured as an array of questions
   - Prioritize questions by clinical significance
@@ -82,7 +89,7 @@ Notes for Implementation:
   - Provide a detailed explanation of your thought process and decision-making
   - Justify your response based on the information provided
   - Include any assumptions or uncertainties in your analysis
-4. Important, You should return ether test or questions, not both. If you have enough information to provide response, you should return text response. If you need more information, you should return questions. 
+4. Important, You should return ether text or questions, not both. If you have enough information to provide response, you should return text response. If you need more information, you should return questions.
 
 
 Example 1 - Acute Injury Case:
