@@ -7,7 +7,7 @@ ai:
   model: "claude-sonnet-4-6" # Anthropic model to use
   media_model: "claude-haiku-4-5" # Anthropic model for media processing
   api_key: "" # Set your Anthropic API key here
-  max_tokens: 3000 # Maximum number of tokens in the response
+  max_tokens: 16000 # Maximum number of tokens in the response (includes thinking + text tokens)
 
 rate_limit:
   user_hourly_limit: 5  # Maximum number of requests per hour per user

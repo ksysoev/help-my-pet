@@ -52,26 +52,32 @@ const coreGuidelines = `Core Guidelines strictly:
   - Media content - this section contains textual description of media content provided by user. You should analyze this content and use it to provide more accurate advice.
 `
 
-// anthropicModel adapts the Anthropic API to the Model interface
+// anthropicModel adapts the Anthropic API to the Model interface.
+// When thinking is true, adaptive thinking is enabled for the model which
+// allows Claude to dynamically determine when and how much extended reasoning to use.
 type anthropicModel struct {
-	client    anthropic.Client
 	modelID   string
+	client    anthropic.Client
 	maxTokens int
+	thinking  bool
 }
 
 // newAnthropicModel initializes a new instance of anthropicModel configured with the provided parameters.
 // It sets up the Anthropic client using the API key, associates the specified model ID, and configures the maximum tokens.
 // apiKey is the authentication key used to interact with the Anthropic API.
-// modelID identifies the target model to use, such as "claude-2".
+// modelID identifies the target model to use, such as "claude-sonnet-4-6".
 // maxTokens determines the maximum tokens allowed per request, enforcing output length constraints.
+// thinking enables adaptive thinking mode for the model, allowing Claude to dynamically determine
+// when and how much to use extended reasoning based on request complexity.
 // Returns a pointer to an anthropicModel instance for interacting with Anthropic API and an error if client initialization fails.
-func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropicModel, error) {
+func newAnthropicModel(apiKey string, modelID string, maxTokens int, thinking bool) (*anthropicModel, error) {
 	client := anthropic.NewClient(option.WithAPIKey(apiKey))
 
 	return &anthropicModel{
 		client:    client,
 		modelID:   modelID,
 		maxTokens: maxTokens,
+		thinking:  thinking,
 	}, nil
 }
 
@@ -79,7 +85,8 @@ func newAnthropicModel(apiKey string, modelID string, maxTokens int) (*anthropic
 // It constructs the message payload using the provided request string, images, and context system settings.
 // ctx is the execution context for the request, systemPrompts is the contextual system instruction,
 // request is the user's input, and imgs is a slice of images to include in the request.
-// Returns the response text from the API and an error if the request fails or the API response is invalid.
+// Returns the response text from the API and an error if the request fails, the response is truncated,
+// or the API response is invalid.
 func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string, imgs []*message.Image) (string, error) {
 	blocks := []anthropic.ContentBlockParamUnion{anthropic.NewTextBlock(request)}
 
@@ -87,7 +94,7 @@ func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string
 		blocks = append(blocks, anthropic.NewImageBlockBase64(img.MIME, img.Data))
 	}
 
-	msg, err := m.client.Messages.New(ctx, anthropic.MessageNewParams{
+	params := anthropic.MessageNewParams{
 		Model:     anthropic.Model(m.modelID),
 		MaxTokens: int64(m.maxTokens),
 		System: []anthropic.TextBlockParam{
@@ -95,14 +102,24 @@ func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string
 			{Text: systemPrompts},
 		},
 		Messages: []anthropic.MessageParam{anthropic.NewUserMessage(blocks...)},
-	})
+	}
 
+	if m.thinking {
+		adaptive := anthropic.NewThinkingConfigAdaptiveParam()
+		params.Thinking = anthropic.ThinkingConfigParamUnion{OfAdaptive: &adaptive}
+	}
+
+	msg, err := m.client.Messages.New(ctx, params)
 	if err != nil {
 		return "", fmt.Errorf("failed to call Anthropic API: %w", err)
 	}
 
 	if len(msg.Content) == 0 {
 		return "", fmt.Errorf("empty response from Anthropic API")
+	}
+
+	if msg.StopReason == anthropic.StopReasonMaxTokens {
+		return "", fmt.Errorf("response truncated: max_tokens limit reached, consider increasing max_tokens in config")
 	}
 
 	slog.InfoContext(
@@ -112,5 +129,13 @@ func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string
 		slog.Int64("output", msg.Usage.OutputTokens),
 	)
 
-	return msg.Content[0].Text, nil
+	// When thinking is enabled the response contains thinking blocks before the text block.
+	// Iterate to find the first text-type content block rather than assuming index 0.
+	for _, block := range msg.Content {
+		if block.Type == "text" {
+			return block.Text, nil
+		}
+	}
+
+	return "", fmt.Errorf("no text block in Anthropic API response")
 }

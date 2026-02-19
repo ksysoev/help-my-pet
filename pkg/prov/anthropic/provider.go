@@ -41,12 +41,12 @@ func New(cfg Config) (*Provider, error) {
 		return nil, fmt.Errorf("API key is required")
 	}
 
-	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens)
+	llm, err := newAnthropicModel(cfg.APIKey, cfg.Model, cfg.MaxTokens, true)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic model: %w", err)
 	}
 
-	mediaModel, err := newAnthropicModel(cfg.APIKey, cfg.MediaModel, cfg.MaxTokens)
+	mediaModel, err := newAnthropicModel(cfg.APIKey, cfg.MediaModel, cfg.MaxTokens, false)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Anthropic media model: %w", err)
 	}
