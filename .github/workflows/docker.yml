@@ -52,3 +52,35 @@ jobs:
           build-args: |
             VERSION=${{ env.VERSION }}
             BUILD=${{ github.sha }}
+
+  deploy:
+    needs: build-and-push
+    if: github.ref_type == 'tag'
+    uses: ksysoev/cloudlab/.github/workflows/deploy-service.yml@main
+    with:
+      environment_name: production
+      docker_compose_file: deploy/docker-compose.yml
+      service_name: helpmypet
+      # Non-secret environment variables
+      environment_vars: |
+        {
+          "VERSION": "${{ github.ref_name }}",
+          "NETWORK_NAME": "helpmypet-network",
+          "AI_MODEL": "claude-sonnet-4-20250514",
+          "AI_MEDIA_MODEL": "claude-3-5-haiku-latest",
+          "AI_MAX_TOKENS": "1000",
+          "RATE_LIMIT_USER_HOURLY_LIMIT": "5",
+          "RATE_LIMIT_USER_DAILY_LIMIT": "15",
+          "RATE_LIMIT_GLOBAL_DAILY_LIMIT": "4000"
+        }
+    secrets:
+      # SSH connection parameters (reuse existing secret names)
+      ssh_host: ${{ secrets.DO_HOST }}
+      ssh_user: ${{ secrets.DO_USER }}
+      ssh_key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+      # Deployment secrets (map existing secret names to container env vars)
+      deployment_secrets: |
+        {
+          "BOT_TELEGRAM_TOKEN": "${{ secrets.TELEGRAM_TOKEN }}",
+          "AI_API_KEY": "${{ secrets.ANTHROPIC_API_KEY }}"
+        }
