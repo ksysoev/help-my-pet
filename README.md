@@ -103,44 +103,91 @@ docker run -v $(pwd)/config.local.yaml:/app/config.yaml help-my-pet bot
 
 ## Deployment
 
-The application can be automatically deployed to Digital Ocean using GitHub Actions. The deployment process is triggered automatically when changes are pushed to the main branch.
+The application is deployed to production using GitHub Actions and the cloudlab deployment workflow.
 
 ### Prerequisites
 
-1. A Digital Ocean droplet with Docker and Docker Compose installed
-2. SSH access to the droplet
-3. GitHub repository secrets configured
+- Docker Swarm initialized on the cloudlab server
+- GitHub Actions secrets configured
+- Bot images published to GitHub Container Registry (ghcr.io)
 
 ### Required GitHub Secrets
 
-Set up the following secrets in your GitHub repository (Settings -> Secrets and variables -> Actions):
+Set up the following secrets in your GitHub repository (Settings → Secrets and variables → Actions):
 
-- `DO_SSH_PRIVATE_KEY`: SSH private key for accessing the Digital Ocean droplet
-- `DO_HOST`: Your Digital Ocean droplet's IP address or hostname
-- `DO_USER`: SSH user for the Digital Ocean droplet
-- `ANTHROPIC_API_KEY`: Your Anthropic API key for the deployed instance
+**SSH Connection**:
+- `DO_SSH_PRIVATE_KEY` - SSH private key for accessing the cloudlab server
+- `DO_HOST` - Cloudlab server IP address (e.g., `167.172.190.133`)
+- `DO_USER` - SSH username for deployment (e.g., `deployer`)
+
+**Application Secrets**:
+- `TELEGRAM_TOKEN` - Telegram bot token from [@BotFather](https://t.me/botfather)
+- `ANTHROPIC_API_KEY` - Anthropic API key from [Anthropic Console](https://console.anthropic.com/)
+- `CODECOV_TOKEN` - Codecov token for coverage reports
+
+**Environment Variable Mapping**:
+- `TELEGRAM_TOKEN` (GitHub secret) → `BOT_TELEGRAM_TOKEN` (container)
+- `ANTHROPIC_API_KEY` (GitHub secret) → `AI_API_KEY` (container)
 
 ### Deployment Process
 
-1. Push your changes to the main branch
-2. GitHub Actions will automatically:
-   - Build and push the Docker image to GitHub Container Registry
-   - Deploy the latest version to your Digital Ocean droplet
-   - Set up the configuration and start the container
+The deployment is fully automated via GitHub Actions:
 
-### Manual Deployment
+1. **On Pull Request**: Build and test the Docker image (amd64 only)
+2. **On Tag Push** (e.g., `v1.0.0`):
+   - Build multi-arch Docker images (amd64, arm64)
+   - Push images to GitHub Container Registry
+   - Deploy to production using the cloudlab workflow
+   - Automatic rollback on failure
 
-If you need to deploy manually, you can:
+**To deploy a new version**:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
 
-1. SSH into your Digital Ocean droplet
-2. Pull the latest image:
-   ```bash
-   docker pull ghcr.io/ksysoev/help-my-pet:main
-   ```
-3. Update the container:
-   ```bash
-   docker-compose pull && docker-compose up -d
-   ```
+**Manual deployment** (if needed):
+```bash
+# SSH to the cloudlab server
+ssh -p 1923 deployer@167.172.190.133
+
+# Navigate to deployment directory
+cd ~/cloudlab/stacks/helpmypet
+
+# Deploy the stack
+docker stack deploy -c docker-compose.yml helpmypet
+```
+
+### Monitoring
+
+**Check service status**:
+```bash
+ssh -p 1923 deployer@167.172.190.133
+docker stack ps helpmypet
+```
+
+**View service logs**:
+```bash
+# Bot logs
+docker service logs -f helpmypet_help-my-pet
+
+# Redis logs
+docker service logs -f helpmypet_redis
+```
+
+**Health check**:
+```bash
+# Check if services are running
+docker service ls | grep helpmypet
+```
+
+### Rollback
+
+If deployment fails, the system automatically rolls back to the previous version. For manual rollback:
+
+```bash
+docker service update --rollback helpmypet_help-my-pet
+```
 
 ## Project Structure
 
