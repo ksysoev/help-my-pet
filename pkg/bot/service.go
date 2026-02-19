@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	requestTimeout = 60 * time.Second
+	requestTimeout = 120 * time.Second
 )
 
 // BotAPI interface represents the Telegram bot API capabilities we use
