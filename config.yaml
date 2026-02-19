@@ -4,8 +4,8 @@ redis:
   db: 0 # Redis database number
 
 ai:
-  model: "claude-sonnet-4-20250514" # Anthropic model to use
-  media_model: "claude-3-5-haiku-latest" # Anthropic model for media processing
+  model: "claude-sonnet-4-6" # Anthropic model to use
+  media_model: "claude-haiku-4-5" # Anthropic model for media processing
   api_key: "" # Set your Anthropic API key here
   max_tokens: 3000 # Maximum number of tokens in the response
 
