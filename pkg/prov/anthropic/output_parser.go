@@ -130,8 +130,9 @@ func sanitizeJSONStringLiterals(input string) (string, error) {
 
 // extractJSON extracts a JSON string from the provided text, handling both markdown code blocks and inline JSON structures.
 // It removes surrounding markdown syntax such as "```json" and trims spaces around the detected JSON content.
-// Returns the extracted JSON content as a string and ensures well-formed JSON is identified.
-// Returns an empty string if no JSON-like structure is found in the input.
+// If the text starts with a "```json" code block it strips those markers and returns the inner content.
+// Otherwise it attempts to extract the outermost {...} bounds to strip any leading preamble or trailing content.
+// If no JSON object bounds are found the trimmed input is returned as-is.
 func extractJSON(text string) string {
 	// Try to find JSON between markdown code blocks
 	if strings.HasPrefix(text, "```json") && strings.HasSuffix(text, "```") {
