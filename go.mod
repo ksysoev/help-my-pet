@@ -7,7 +7,7 @@ require (
 	github.com/go-redis/redismock/v9 v9.2.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/google/uuid v1.6.0
-	github.com/redis/go-redis/v9 v9.17.3
+	github.com/redis/go-redis/v9 v9.18.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
@@ -35,6 +35,7 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
