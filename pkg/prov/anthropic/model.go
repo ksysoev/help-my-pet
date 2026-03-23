@@ -105,7 +105,7 @@ func (m *anthropicModel) Call(ctx context.Context, systemPrompts, request string
 	}
 
 	if m.thinking {
-		adaptive := anthropic.NewThinkingConfigAdaptiveParam()
+		adaptive := anthropic.ThinkingConfigAdaptiveParam{}
 		params.Thinking = anthropic.ThinkingConfigParamUnion{OfAdaptive: &adaptive}
 	}
 
